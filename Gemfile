@@ -47,4 +47,4 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'dotenv-rails', groups: [:development, :test]
-gem 'cartowrap', git: 'http://github.com/tiagojsag/cartowrap.git'
+gem 'cartowrap', git: 'http://github.com/tiagojsag/cartowrap.git', branch: 'feature/update-carto-url'

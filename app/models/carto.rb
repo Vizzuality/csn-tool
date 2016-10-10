@@ -1,4 +1,4 @@
-class CartoDb
+class Carto
   include ActiveModel::Serialization
 
   alias :read_attribute_for_serialization :send
