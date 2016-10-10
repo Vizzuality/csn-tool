@@ -1,2 +1,27 @@
-<h1>Species#index</h1>
-<p>Find me in app/views/species/index.html.erb</p>
+<h1>Species</h1>
+
+<%= form_tag species_path, method: :get do %>
+  <%= text_field_tag :query, params[:query] %>
+  <%= submit_tag "Search" %>
+<% end %>
+<table>
+  <thead>
+    <tr>
+      <th>Scientific name</th>
+      <th>Common name</th>
+      <th>Red List Status</th>
+      <th>SSID</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @species.each do |spc| %>
+      <tr>
+        <td><%= spc.scientificname %></td>
+        <td><%= spc.commonname %></td>
+        <td><%= spc.red_list_status %></td>
+        <td><%= spc.ssid %></td>
+        <td><%= link_to "view details", "#" %></td>
+      </tr>
+    <% end %>
+</table>
