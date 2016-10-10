@@ -21,3 +21,11 @@
 
 en:
   hello: "Hello world"
+  views:
+    shared:
+      _nav:
+        countries: "Countries"
+        sites: "Sites"
+        species: "Species"
+        guidelines: "Guidelines"
+        about: "About"

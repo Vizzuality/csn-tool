@@ -1,2 +1,10 @@
 fr:
   hello: "Bonjour monde"
+  views:
+    shared:
+      _nav:
+        countries: "Pays"
+        sites: "Sites"
+        species: "Espèce"
+        guidelines: "Directrices"
+        about: "Sur"
