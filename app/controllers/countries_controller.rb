@@ -1,5 +1,9 @@
 class CountriesController < ApplicationController
   def index
-    @countries = Country.all
+    @countries = if params[:query]
+                   Country.where("country", params[:query])
+                 else
+                   Country.all
+                 end
   end
 end

@@ -11,6 +11,15 @@ class Country < Carto
 
   private
 
+  def self.where_query field, value
+    %Q(
+      SELECT DISTINCT #{columns.join(", ")}
+      FROM #{table_name}
+      WHERE #{field} ilike '#{value}%'
+      ORDER BY #{order_column}
+    )
+  end
+
   def self.list_query
     %Q(
       SELECT DISTINCT #{columns.join(", ")}

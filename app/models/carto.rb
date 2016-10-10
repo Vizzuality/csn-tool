@@ -23,6 +23,11 @@ class Carto
       parse(results)
     end
 
+    def where field, value
+      results = send_query(where_query(field, value))
+      parse(results)
+    end
+
     private
 
     def list_query
