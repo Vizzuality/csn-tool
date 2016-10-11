@@ -8,3 +8,17 @@ fr:
         species: "Espèce"
         guidelines: "Directrices"
         about: "Sur"
+    countries:
+      index:
+        title: "Des pays"
+        search: "Chercher"
+        country: "Pays"
+        actions: "Actes"
+    species:
+      index:
+        title: "Espèces"
+        search: "Chercher"
+        scientific_name: "Nom scientifique"
+        common_name: "Nom commun"
+        red_list_status: "État de la liste rouge"
+        actions: "Actes"
