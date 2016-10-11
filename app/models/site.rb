@@ -11,6 +11,15 @@ class Site < Carto
 
   private
 
+  def self.list_query
+    %Q(
+      SELECT DISTINCT #{columns.join(", ")}
+      FROM #{table_name}
+      WHERE intname IS NOT NULL
+      ORDER BY #{order_column}
+    )
+  end
+
   def self.where_query field, value
     %Q(
       SELECT DISTINCT #{columns.join(", ")}
@@ -20,12 +29,11 @@ class Site < Carto
     )
   end
 
-  def self.list_query
+  def self.find_query id
     %Q(
-      SELECT DISTINCT #{columns.join(", ")}
+      SELECT #{columns.join(", ")}
       FROM #{table_name}
-      WHERE intname IS NOT NULL
-      ORDER BY #{order_column}
+      WHERE sitrecid = #{id}
     )
   end
 

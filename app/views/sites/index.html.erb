@@ -19,7 +19,7 @@
         <td><%= link_to site.intname, site.hyperlink, target: "_blank" %></td>
         <td><%= site.country %></td>
         <td><%= site.sitrecid %></td>
-        <td><%= link_to "view details", "#" %></td>
+        <td><%= link_to "view details", site_path(site.sitrecid) %></td>
       </tr>
     <% end %>
 </table>

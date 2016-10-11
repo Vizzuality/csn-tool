@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   scope "(/:locale)", locale: /en|fr/ do
     get "/countries", to: "countries#index"
-    get "/sites", to: "sites#index"
+    resources :sites, only: [:index, :show]
     resources :species, only: [:index, :show]
   end
 
