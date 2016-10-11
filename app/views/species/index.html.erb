@@ -1,6 +1,6 @@
 <h1>Species</h1>
 
-<%= form_tag species_path, method: :get do %>
+<%= form_tag species_index_path, method: :get do %>
   <%= text_field_tag :query, params[:query] %>
   <%= submit_tag "Search" %>
 <% end %>
@@ -21,7 +21,7 @@
         <td><%= spc.commonname %></td>
         <td><%= spc.red_list_status %></td>
         <td><%= spc.ssid %></td>
-        <td><%= link_to "view details", "#" %></td>
+        <td><%= link_to "view details", species_path(spc.ssid) %></td>
       </tr>
     <% end %>
 </table>

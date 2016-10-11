@@ -28,6 +28,11 @@ class Carto
       parse(results)
     end
 
+    def find id
+      results = send_query(find_query(id))
+      parse(results).first
+    end
+
     private
 
     def list_query
@@ -35,6 +40,14 @@ class Carto
       SELECT #{columns.join(", ")} FROM #{table_name}
       ORDER BY #{order_column}
       )
+    end
+
+    def where_query field, value
+      raise "Needs to be implemented"
+    end
+
+    def find_query id
+      raise "Needs to be implemented"
     end
 
     def filtered_query filters
