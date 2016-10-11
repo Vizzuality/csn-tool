@@ -1,7 +1,6 @@
 GIT
   remote: http://github.com/tiagojsag/cartowrap.git
-  revision: 850bb7452d1509326e0bc37def41b55705c59925
-  branch: feature/update-carto-url
+  revision: 6ea678895e238ee561889e9c8a76864fc92bb045
   specs:
     cartowrap (0.1.1)
       faraday

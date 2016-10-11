@@ -46,4 +46,4 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem 'cartowrap', git: 'http://github.com/tiagojsag/cartowrap.git', branch: 'feature/update-carto-url'
+gem 'cartowrap', git: 'http://github.com/tiagojsag/cartowrap.git'
