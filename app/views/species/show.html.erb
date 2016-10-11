@@ -2,3 +2,25 @@
 
 <div id="map"></div>
 
+<script type="text/javascript">
+  $(function() {
+    var map = L.map('map',
+        {scrollWheelZoom: false,
+          center: [43, 0],
+          zoom: 3});
+
+    L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://cartodb.com/attributions">CartoDB</a>',
+        maxZoom: 18
+        }).addTo(map);
+
+    $.get('http://csntool-v2.carto.com/api/v2/sql?format=GeoJSON&q=SELECT * FROM species_and_flywaygroups WHERE ssid=<%= @species.ssid %>',
+      function(data) {
+        if(data !== undefined) {
+          L.geoJson(data).addTo(map);
+        }
+    });
+  });
+</script>
+
+
