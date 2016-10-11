@@ -1,6 +1,7 @@
 <h1><%= @site.intname %></h1>
 
-<div id="map"></map>
+<div class="content" style="width:100%;display:flex;flex-wrap:wrap;">
+  <div class="map" id="map" style="width:100%;height:300px;position:relative;"></map>
 
 
 <script type="text/javascript">
@@ -24,27 +25,28 @@
   });
 </script>
 
-<div>
-  <h3>Species</h3>
-  <table>
-    <thead>
-      <tr>
-        <th>Scientific name</th>
-        <th>Common name</th>
-        <th>Red List Status</th>
-        <th>SSID</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @species.each do |spc| %>
+  <div  class="table" style="width:100%">
+    <h3>Species</h3>
+    <table>
+      <thead>
         <tr>
-          <td><%= spc.scientificname %></td>
-          <td><%= spc.commonname %></td>
-          <td><%= spc.red_list_status %></td>
-          <td><%= spc.ssid %></td>
-          <td><%= link_to "view details", species_path(spc.ssid) %></td>
+          <th>Scientific name</th>
+          <th>Common name</th>
+          <th>Red List Status</th>
+          <th>SSID</th>
+          <th>Actions</th>
         </tr>
-      <% end %>
-  </table>
+      </thead>
+      <tbody>
+        <% @species.each do |spc| %>
+          <tr>
+            <td><%= spc.scientificname %></td>
+            <td><%= spc.commonname %></td>
+            <td><%= spc.red_list_status %></td>
+            <td><%= spc.ssid %></td>
+            <td><%= link_to "view details", species_path(spc.ssid) %></td>
+          </tr>
+        <% end %>
+    </table>
+  </div>
 </div>

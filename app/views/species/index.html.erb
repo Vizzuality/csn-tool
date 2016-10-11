@@ -1,17 +1,17 @@
-<h1>Species</h1>
+<h1><%= t("views.species.index.title") %></h1>
 
 <%= form_tag species_index_path, method: :get do %>
   <%= text_field_tag :query, params[:query] %>
-  <%= submit_tag "Search" %>
+  <%= submit_tag t("views.species.index.search") %>
 <% end %>
 <table>
   <thead>
     <tr>
-      <th>Scientific name</th>
-      <th>Common name</th>
-      <th>Red List Status</th>
+      <th><%= t("views.species.index.scientific_name") %></th>
+      <th><%= t("views.species.index.common_name") %></th>
+      <th><%= t("views.species.index.red_list_status") %></th>
       <th>SSID</th>
-      <th>Actions</th>
+      <th><%= t("views.species.index.actions") %></th>
     </tr>
   </thead>
   <tbody>

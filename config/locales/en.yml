@@ -29,3 +29,17 @@ en:
         species: "Species"
         guidelines: "Guidelines"
         about: "About"
+    countries:
+      index:
+        title: "Countries"
+        search: "Search"
+        country: "Country"
+        actions: "Actions"
+    species:
+      index:
+        title: "Species"
+        search: "Search"
+        scientific_name: "Scientific name"
+        common_name: "Common name"
+        red_list_status: "Red list status"
+        actions: "Actions"
