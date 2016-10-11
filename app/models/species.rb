@@ -9,7 +9,20 @@ class Species < Carto
     end
   end
 
+  def self.for_site site
+    parse(send_query(query_for_site_intersection(site)))
+  end
+
   private
+
+  def self.query_for_site_intersection site
+    %Q(
+      SELECT #{columns.join(", ")}
+      FROM #{table_name} as species, #{Site.table_name} as sites
+      WHERE sites.site_id = #{site.site_id}
+      AND ST_INTERSECTS(species.the_geom_webmercator, sites.the_geom_webmercator)
+    )
+  end
 
   def self.list_query
     %Q(

@@ -24,4 +24,27 @@
   });
 </script>
 
-
+<div>
+  <h3>Species</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Scientific name</th>
+        <th>Common name</th>
+        <th>Red List Status</th>
+        <th>SSID</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @species.each do |spc| %>
+        <tr>
+          <td><%= spc.scientificname %></td>
+          <td><%= spc.commonname %></td>
+          <td><%= spc.red_list_status %></td>
+          <td><%= spc.ssid %></td>
+          <td><%= link_to "view details", species_path(spc.ssid) %></td>
+        </tr>
+      <% end %>
+  </table>
+</div>
