@@ -10,6 +10,7 @@ class SpeciesController < ApplicationController
   end
 
   def show
+    @sites = Site.for_species(@species)
   end
 
   private
