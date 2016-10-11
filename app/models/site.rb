@@ -1,5 +1,5 @@
 class Site < Carto
-  COLUMNS = [:intname, :country, :hyperlink, :sitrecid]
+  COLUMNS = [:intname, :country, :hyperlink, :sitrecid, :site_id]
 
   attr_reader *COLUMNS
 
