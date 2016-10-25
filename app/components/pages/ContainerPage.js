@@ -1,6 +1,9 @@
 import React from 'react';
-import Header from 'components/common/Header';
-import Footer from 'components/common/Footer';
+import I18n from 'redux-i18n';
+import Header from 'containers/common/Header';
+import Footer from 'containers/common/Footer';
+
+import { translations } from 'locales/translations';
 
 class ContainerPage extends React.Component {
 
@@ -10,15 +13,22 @@ class ContainerPage extends React.Component {
     return { location };
   }
 
+  componentWillMount() {
+    const lang = this.props.params.lang || 'en';
+    this.props.updateLang(lang);
+  }
+
   render() {
     return (
-      <div>
-        <Header />
-        <div className="l-main">
-          {this.props.children}
+      <I18n translations={translations}>
+        <div>
+          <Header />
+          <div className="l-main">
+            {this.props.children}
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
+      </I18n>
     );
   }
 }
@@ -32,6 +42,10 @@ ContainerPage.propTypes = {
   * Define required content for page
   **/
   children: React.PropTypes.element.isRequired,
+  /**
+  * Define function to update the language
+  **/
+  updateLang: React.PropTypes.func.isRequired,
   /**
   * Finds the router params
   **/

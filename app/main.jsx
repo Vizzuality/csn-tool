@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
 import thunk from 'redux-thunk';
 import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
+import { i18nState } from "redux-i18n"
 
 import * as reducers from 'reducers';
 import Routes from './Routes';
@@ -24,7 +25,8 @@ import { getCountriesList } from 'actions/countries';
  */
 const reducer = combineReducers({
   ...reducers,
-  routing: routerReducer
+  routing: routerReducer,
+  i18nState
 });
 
 /**

@@ -93,7 +93,7 @@ const Routes = ({ history }) => (
     render={applyRouterMiddleware(useScroll(shouldUpdateScroll))}
     onUpdate={trackPageView}
   >
-    <Route path="/" component={ContainerPage}>
+    <Route path="/(:lang)" component={ContainerPage}>
       <IndexRoute component={HomePage} />
       <Route path="countries" component={CountriesPage} />
     </Route>
