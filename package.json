@@ -7,7 +7,9 @@
     "build": "webpack --config ./config/webpack.config.js --progress --profile --colors",
     "postinstall": "npm run build",
     "lint": "./node_modules/.bin/eslint .",
-    "prepush": "npm run lint"
+    "prepush": "npm run lint",
+    "extract": "i18n_extract --source=./app --locales=./app/locales",
+    "import": "i18n_import --locales=./app/locales --translations=./app/locales"
   },
   "repository": {
     "type": "git",
@@ -47,6 +49,7 @@
     "react-router-redux": "^4.0.5",
     "react-router-scroll": "^0.3.2",
     "redux": "^3.5.2",
+    "redux-i18n": "^1.0.8",
     "redux-thunk": "^2.1.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",

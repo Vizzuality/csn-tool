@@ -1,7 +1,32 @@
 .c-header {
   height: 100%;
 
-  a {
-    color: $font-main-inv;
+  .main-menu {
+    display: flex;
+    flex-direction: row;
+
+    > li {
+      list-style: none;
+      padding: 0 1rem;
+
+      &:first-of-type {
+        padding-left: 0;
+      }
+
+      &:last-of-type {
+        padding-right: 0;
+      }
+
+      > a {
+        font-family: $font-heading;
+        font-weight: 700;
+        font-size: $font-size-xs;
+        color: $font-main-inv;
+        letter-spacing: 1px;
+        text-decoration: none;
+        text-transform: uppercase;
+        line-height: 1;
+      }
+    }
   }
 }

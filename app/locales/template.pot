@@ -1,0 +1,35 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8"
+"Content-Transfer-Encoding: 8bit"
+
+#: ./app/components/common/Footer.js
+#: ./app/components/common/Header.js
+msgid "home"
+msgstr ""
+
+#: ./app/components/common/Footer.js
+#: ./app/components/common/Header.js
+msgid "countries"
+msgstr ""
+
+#: ./app/components/common/Header.js
+msgid "species"
+msgstr ""
+
+#: ./app/components/common/Header.js
+msgid "guidelines"
+msgstr ""
+
+#: ./app/components/common/Header.js
+msgid "about"
+msgstr ""
+
+#: ./app/components/common/Header.js
+msgid "english"
+msgstr ""
+
+#: ./app/components/common/Header.js
+msgid "spanish"
+msgstr ""
+
