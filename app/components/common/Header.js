@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 import Select from 'react-select';
 import { translations } from 'locales/translations';
 
+import MainNav from 'containers/common/MainNav';
+
 
 class Header extends React.Component {
   constructor() {
@@ -21,29 +23,14 @@ class Header extends React.Component {
     return (
       <header className="l-header">
         <div className="row align-middle c-header">
-          <nav className="column small-12 medium-10">
-            <ul className="main-menu">
-              <li>
-                <Link activeClassName="-current" to={`/${this.props.lang}`}>
-                  <svg className="icon-logo-small">
-                    <use xlinkHref="#logo-small"></use>
-                  </svg>
-                </Link>
-              </li>
-              <li>
-                <Link activeClassName="-current" to={`/${this.props.lang}/countries`}>{this.context.t('countries')}</Link>
-              </li>
-              <li>
-                <Link activeClassName="-current" to={`/${this.props.lang}/countries`}>{this.context.t('species')}</Link>
-              </li>
-              <li>
-                <Link className="-disabled" activeClassName="-current" to={`/${this.props.lang}/countries`}>{this.context.t('guidelines')}</Link>
-              </li>
-              <li>
-                <Link className="-disabled" activeClassName="-current" to={`/${this.props.lang}/countries`}>{this.context.t('about')}</Link>
-              </li>
-            </ul>
-          </nav>
+          <div className="column small-12 medium-10 main-menu">
+            <Link className="logo" to={`/${this.props.lang}`}>
+              <svg className="icon-logo-small">
+                <use xlinkHref="#logo-small"></use>
+              </svg>
+            </Link>
+            <MainNav />
+          </div>
           <div className="column small-12 medium-2">
             <Select
               name="language-switch"

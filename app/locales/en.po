@@ -12,36 +12,38 @@ msgstr ""
 "X-Generator: Poedit 1.8.11\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: app/components/common/Footer.js app/components/common/Header.js
-msgid "home"
-msgstr "Home"
-
-#: app/components/common/Footer.js app/components/common/Header.js
+#: app/components/common/MainNav.js
 msgid "countries"
 msgstr "Countries"
 
-#: app/components/common/Header.js
+#: app/components/common/MainNav.js
+msgid "sites"
+msgstr "Sites"
+
+#: app/components/common/MainNav.js
 msgid "species"
 msgstr "Species"
 
-#: app/components/common/Header.js
+#: app/components/common/MainNav.js
 msgid "guidelines"
 msgstr "Guidelines"
 
-#: app/components/common/Header.js
+#: app/components/common/MainNav.js
 msgid "about"
 msgstr "About"
 
-#: app/components/common/Header.js
-msgid "english"
-msgstr "English"
+#: app/components/common/StayUpdate.js
+msgid "stay-update"
+msgstr "Stay update"
 
-#: app/components/common/Header.js
-msgid "spanish"
-msgstr "Spanish"
+#~ msgid "home"
+#~ msgstr "Home"
 
-#~ msgid "sites"
-#~ msgstr "Sites"
+#~ msgid "english"
+#~ msgstr "English"
+
+#~ msgid "spanish"
+#~ msgstr "Spanish"
 
 #~ msgid "country"
 #~ msgstr "Country"
