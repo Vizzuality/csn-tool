@@ -8,6 +8,8 @@
     > li {
       list-style: none;
       padding: 0 1rem;
+      display:flex;
+      align-items: center;
 
       &:first-of-type {
         padding-left: 0;
@@ -26,6 +28,10 @@
         text-decoration: none;
         text-transform: uppercase;
         line-height: 1;
+
+        &.-disabled {
+          color: rgba($font-main-inv, 0.5);
+        }
       }
     }
   }

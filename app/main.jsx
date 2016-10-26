@@ -14,6 +14,7 @@ import Routes from './Routes';
 import ReactGA from 'react-ga';
 
 import './styles/lib/custom-foundation.css';
+import 'react-select/dist/react-select.css';
 import './styles/main.pcss';
 
 import { getCountriesList } from 'actions/countries';
