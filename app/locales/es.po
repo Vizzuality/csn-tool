@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-10-25 16:04+0200\n"
+"PO-Revision-Date: 2016-10-26 16:40+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -13,36 +13,38 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: app/components/common/Footer.js app/components/common/Header.js
-msgid "home"
-msgstr "Inicio"
-
-#: app/components/common/Footer.js app/components/common/Header.js
+#: app/components/common/MainNav.js
 msgid "countries"
 msgstr "Paises"
 
-#: app/components/common/Header.js
+#: app/components/common/MainNav.js
+msgid "sites"
+msgstr "Sitios"
+
+#: app/components/common/MainNav.js
 msgid "species"
 msgstr "Especies"
 
-#: app/components/common/Header.js
+#: app/components/common/MainNav.js
 msgid "guidelines"
 msgstr "Guías"
 
-#: app/components/common/Header.js
+#: app/components/common/MainNav.js
 msgid "about"
 msgstr "Acerca"
 
-#: app/components/common/Header.js
-msgid "english"
-msgstr "Inglés"
+#: app/components/common/StayUpdate.js
+msgid "stay-update"
+msgstr "Manténgase actualizado"
 
-#: app/components/common/Header.js
-msgid "spanish"
-msgstr "Español"
+#~ msgid "home"
+#~ msgstr "Inicio"
 
-#~ msgid "sites"
-#~ msgstr "Sitios"
+#~ msgid "english"
+#~ msgstr "Inglés"
+
+#~ msgid "spanish"
+#~ msgstr "Español"
 
 #~ msgid "country"
 #~ msgstr "Pais"

@@ -3,33 +3,27 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8"
 "Content-Transfer-Encoding: 8bit"
 
-#: ./app/components/common/Footer.js
-#: ./app/components/common/Header.js
-msgid "home"
-msgstr ""
-
-#: ./app/components/common/Footer.js
-#: ./app/components/common/Header.js
+#: ./app/components/common/MainNav.js
 msgid "countries"
 msgstr ""
 
-#: ./app/components/common/Header.js
+#: ./app/components/common/MainNav.js
+msgid "sites"
+msgstr ""
+
+#: ./app/components/common/MainNav.js
 msgid "species"
 msgstr ""
 
-#: ./app/components/common/Header.js
+#: ./app/components/common/MainNav.js
 msgid "guidelines"
 msgstr ""
 
-#: ./app/components/common/Header.js
+#: ./app/components/common/MainNav.js
 msgid "about"
 msgstr ""
 
-#: ./app/components/common/Header.js
-msgid "english"
-msgstr ""
-
-#: ./app/components/common/Header.js
-msgid "spanish"
+#: ./app/components/common/StayUpdate.js
+msgid "stay-update"
 msgstr ""
 

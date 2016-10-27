@@ -1,44 +1,46 @@
 import React from 'react';
 import { Link } from 'react-router';
+import Select from 'react-select';
+import { translations } from 'locales/translations';
+
+import MainNav from 'containers/common/MainNav';
+
 
 class Header extends React.Component {
   constructor() {
     super();
+    this.languages = Object.keys(translations).map((lang) => (
+      { value: lang, label: lang.toUpperCase() }
+    ));
     this.onSelectChange = this.onSelectChange.bind(this);
   }
 
-  onSelectChange(e) {
-    this.props.updateLang(e.target.value);
+  onSelectChange(lang) {
+    this.props.updateLang(lang.value);
   }
 
   render() {
     return (
       <header className="l-header">
         <div className="row align-middle c-header">
-          <nav className="column small-10">
-            <ul className="main-menu">
-              <li>
-                <Link activeClassName="-current" to={`/${this.props.lang}`}>{this.context.t('home')}</Link>
-              </li>
-              <li>
-                <Link activeClassName="-current" to={`/${this.props.lang}/countries`}>{this.context.t('countries')}</Link>
-              </li>
-              <li>
-                <Link activeClassName="-current" to={`/${this.props.lang}/countries`}>{this.context.t('species')}</Link>
-              </li>
-              <li>
-                <Link className="-disabled" activeClassName="-current" to={`/${this.props.lang}/countries`}>{this.context.t('guidelines')}</Link>
-              </li>
-              <li>
-                <Link className="-disabled" activeClassName="-current" to={`/${this.props.lang}/countries`}>{this.context.t('about')}</Link>
-              </li>
-            </ul>
-          </nav>
-          <div className="column small-2">
-            <select value={this.props.lang} onChange={this.onSelectChange}>
-              <option value="en">{this.context.t('english')}</option>
-              <option value="es">{this.context.t('spanish')}</option>
-            </select>
+          <div className="column small-12 medium-10 main-menu">
+            <Link className="logo" to={`/${this.props.lang}`}>
+              <svg className="icon-logo-small">
+                <use xlinkHref="#logo-small"></use>
+              </svg>
+            </Link>
+            <MainNav />
+          </div>
+          <div className="column small-12 medium-2">
+            <Select
+              name="language-switch"
+              className="c-select -right -short"
+              clearable={false}
+              searchable={false}
+              value={this.props.lang}
+              options={this.languages}
+              onChange={this.onSelectChange}
+            />
           </div>
         </div>
       </header>

@@ -1,32 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router';
+import StayUpdate from 'containers/common/StayUpdate';
+import MainNav from 'containers/common/MainNav';
 
-function Footer(props, context) {
+function Footer(props) {
   return (
     <footer className="l-footer">
-      <div className="row c-footer">
-        <div className="column align-self-middle">
-
+      <div className="row align-middle c-footer">
+        <div className="column small-12 medium-6">
+          <StayUpdate />
         </div>
-        <div className="column align-self-middle">
-          <ul>
-            <li>
-              <Link to={`/${props.lang}`}>{context.t('home')}</Link>
-            </li>
-            <li>
-              <Link to={`/${props.lang}/countries`}>{context.t('countries')}</Link>
-            </li>
-          </ul>
+        <div className="column small-12 medium-6 secondary-menu">
+          <MainNav />
+          <Link className="logo" to={`/${props.lang}`}>
+            <svg className="icon-logo-small">
+              <use xlinkHref="#logo-small"></use>
+            </svg>
+          </Link>
         </div>
       </div>
     </footer>
   );
 }
-
-Footer.contextTypes = {
-  // Define function to get the translations
-  t: React.PropTypes.func.isRequired
-};
 
 Footer.propTypes = {
   // Define the language selected

@@ -1,20 +1,18 @@
 export const translations = {
   en: {
-    'home': 'Home',
     'countries': 'Countries',
+    'sites': 'Sites',
     'species': 'Species',
     'guidelines': 'Guidelines',
     'about': 'About',
-    'english': 'English',
-    'spanish': 'Spanish',
+    'stay-update': 'Stay update',
   },
   es: {
-    'home': 'Inicio',
     'countries': 'Paises',
+    'sites': 'Sitios',
     'species': 'Especies',
     'guidelines': 'Guías',
     'about': 'Acerca',
-    'english': 'Inglés',
-    'spanish': 'Español',
+    'stay-update': 'Manténgase actualizado',
   },
 }
