@@ -27,6 +27,10 @@ const webpackConfig = {
     publicPath: '/'
   },
 
+  externals: {
+    leaflet: 'L'
+  },
+
   plugins: [
     new HtmlWebpackPlugin({
       template: 'app/index.html',
