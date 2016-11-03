@@ -1,8 +1,12 @@
 const Express = require('express');
-const Countries = require('./controllers/countries');
+const CountriesCtrl = require('./controllers/countries');
+const SitesCtrl = require('./controllers/sites');
+const SpeciesCtrl = require('./controllers/species');
 
 const router = Express.Router();
 
-router.route('/countries').get(Countries.getCountries);
+router.route('/countries').get(CountriesCtrl.getCountries);
+router.route('/sites').get(SitesCtrl.getSites);
+router.route('/species').get(SpeciesCtrl.getSpecies);
 
 module.exports = router;
