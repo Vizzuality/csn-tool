@@ -27,7 +27,7 @@ class SpeciesPage extends React.Component {
               <tbody>
                 {this.props.species.map((species, index) => (
                   <tr key={index}>
-                    <td>{species.scientific_name }</td>
+                    <td>{species.scientific_name}</td>
                     <td>{species.english_name}</td>
                     <td><a href={species.hyperlink} target="_blank">View more</a></td>
                   </tr>

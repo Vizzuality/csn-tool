@@ -9,12 +9,12 @@ function getCountries(req, res) {
         res.json(result.rows);
       } else {
         res.status(404);
-        res.json({ error:'No countries' });
+        res.json({ error: 'No countries' });
       }
     })
     .catch((err) => {
       res.status(err.statusCode || 500);
-      res.json({ error:err.message });
+      res.json({ error: err.message });
     });
 }
 
