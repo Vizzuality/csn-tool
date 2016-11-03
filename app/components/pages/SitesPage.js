@@ -1,4 +1,5 @@
 import React from 'react';
+import SitesMap from 'components/maps/SitesMap';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 
 class SitesPage extends React.Component {
@@ -8,14 +9,13 @@ class SitesPage extends React.Component {
     }
   }
 
-  render() {
+  getContent() {
     return (
-      <div className="row">
-        <div className="column">
-          <h2>{this.context.t('sites')}</h2>
-          {!this.props.sites.length
-            ? <LoadingSpinner transparent />
-            : <table>
+      <div>
+        <SitesMap sites={this.props.sites} />
+        <div className="row">
+          <div className="column">
+            <table>
               <thead>
                 <tr>
                   <th>Name</th>
@@ -31,6 +31,23 @@ class SitesPage extends React.Component {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  render() {
+    return (
+      <div className="l-page">
+        <div className="row">
+          <div className="column">
+            <h2>{this.context.t('sites')}</h2>
+          </div>
+        </div>
+        <div className="l-page-content">
+          {!this.props.sites.length
+            ? <LoadingSpinner transparent />
+            : this.getContent()
           }
         </div>
       </div>
