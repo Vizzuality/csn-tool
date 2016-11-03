@@ -7,6 +7,8 @@ import ReactGA from 'react-ga';
 import ContainerPage from 'containers/pages/ContainerPage';
 import HomePage from 'components/pages/HomePage';
 import CountriesPage from 'containers/pages/CountriesPage';
+import SitesPage from 'containers/pages/SitesPage';
+import SpeciesPage from 'containers/pages/SpeciesPage';
 
 function shouldUpdateScroll(prevRouterProps, { location }) {
   /**
@@ -96,6 +98,8 @@ const Routes = ({ history }) => (
     <Route path="/(:lang)" component={ContainerPage}>
       <IndexRoute component={HomePage} />
       <Route path="countries" component={CountriesPage} />
+      <Route path="sites" component={SitesPage} />
+      <Route path="species" component={SpeciesPage} />
     </Route>
   </Router>
 );

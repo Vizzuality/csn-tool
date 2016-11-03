@@ -1,13 +1,13 @@
-import { GET_COUNTRIES_LIST } from 'constants';
+import { GET_SITES_LIST } from 'constants';
 
-export function getCountriesList() {
-  const url = `${config.apiHost}/countries`;
+export function getSitesList() {
+  const url = `${config.apiHost}/sites`;
   return dispatch => {
     fetch(url)
       .then(response => response.json())
       .then(data => {
         dispatch({
-          type: GET_COUNTRIES_LIST,
+          type: GET_SITES_LIST,
           payload: data
         });
       });

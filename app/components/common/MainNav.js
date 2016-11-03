@@ -24,10 +24,10 @@ class Header extends React.Component {
             <Link activeClassName="-current" to={`/${this.props.lang}/countries`}>{this.context.t('countries')}</Link>
           </li>
           <li>
-            <Link activeClassName="-current" to="">{this.context.t('sites')}</Link>
+            <Link activeClassName="-current" to={`/${this.props.lang}/sites`}>{this.context.t('sites')}</Link>
           </li>
           <li>
-            <Link activeClassName="-current" to="">{this.context.t('species')}</Link>
+            <Link activeClassName="-current" to={`/${this.props.lang}/species`}>{this.context.t('species')}</Link>
           </li>
           <li>
             <Link className="-disabled" activeClassName="-current" to="">{this.context.t('guidelines')}</Link>
