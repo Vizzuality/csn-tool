@@ -7,6 +7,10 @@ const bodyParser = require('body-parser');
 const rootPath = path.join(process.cwd());
 
 const app = express();
+const APIRoutes = require('../api/routes');
+
+// Load api routes
+app.use('/api', APIRoutes);
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
