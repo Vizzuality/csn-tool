@@ -39,8 +39,7 @@ const webpackConfig = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       config: {
-        cartoKey: JSON.stringify(process.env.CARTODB_KEY),
-        cartoAccount: JSON.stringify(process.env.CARTODB_ACCOUNT),
+        apiHost: JSON.stringify(process.env.API_HOST),
         googleAnalytics: JSON.stringify(process.env.GOOGLE_ANALYTICS)
       }
     }),

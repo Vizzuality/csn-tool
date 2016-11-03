@@ -1,10 +1,10 @@
 import React from 'react';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 
-class CountriesPage extends React.Component {
+class SitesPage extends React.Component {
   componentWillMount() {
-    if (!this.props.countries.length) {
-      this.props.getCountriesList();
+    if (!this.props.sites.length) {
+      this.props.getSitesList();
     }
   }
 
@@ -12,22 +12,21 @@ class CountriesPage extends React.Component {
     return (
       <div className="row">
         <div className="column">
-          <h2>{this.context.t('countries')}</h2>
-
-          {!this.props.countries.length
+          <h2>{this.context.t('sites')}</h2>
+          {!this.props.sites.length
             ? <LoadingSpinner transparent />
             : <table>
               <thead>
                 <tr>
-                  <th>Country</th>
-                  <th>ISO</th>
+                  <th>Name</th>
+                  <th>Details</th>
                 </tr>
               </thead>
               <tbody>
-                {this.props.countries.map((country, index) => (
+                {this.props.sites.map((site, index) => (
                   <tr key={index}>
-                    <td>{country.country}</td>
-                    <td>{country.iso3}</td>
+                    <td>{site.site_name}</td>
+                    <td><a href={site.hyperlink} target="_blank">View more</a></td>
                   </tr>
                 ))}
               </tbody>
@@ -39,13 +38,13 @@ class CountriesPage extends React.Component {
   }
 }
 
-CountriesPage.contextTypes = {
+SitesPage.contextTypes = {
   t: React.PropTypes.func.isRequired
 };
 
-CountriesPage.propTypes = {
-  getCountriesList: React.PropTypes.func.isRequired,
-  countries: React.PropTypes.array
+SitesPage.propTypes = {
+  getSitesList: React.PropTypes.func.isRequired,
+  sites: React.PropTypes.array
 };
 
-export default CountriesPage;
+export default SitesPage;
