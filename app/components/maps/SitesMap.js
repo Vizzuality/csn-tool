@@ -1,5 +1,5 @@
 import React from 'react';
-import L from 'leaflet'; // eslint-disable-line no-unresolved
+import L from 'leaflet'; // eslint-disable-line import/no-unresolved
 
 class Map extends React.Component {
 
@@ -25,8 +25,13 @@ class Map extends React.Component {
 
   setMarkers() {
     this.markers = [];
+    const sitesIcon = L.divIcon({
+      className: 'map-marker',
+      iconSize: null,
+      html: '<span class="icon -secondary"</span>'
+    });
     this.props.sites.forEach((site) => {
-      const marker = L.marker([site.lat, site.lon]).addTo(this.map);
+      const marker = L.marker([site.lat, site.lon], { icon: sitesIcon }).addTo(this.map);
       marker.bindPopup(site.site_name);
       marker.on('mouseover', function () {
         this.openPopup();
