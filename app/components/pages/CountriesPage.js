@@ -1,5 +1,6 @@
 import React from 'react';
 import LoadingSpinner from 'components/common/LoadingSpinner';
+import TableList from 'components/common/TableList';
 
 class CountriesPage extends React.Component {
   componentWillMount() {
@@ -16,22 +17,10 @@ class CountriesPage extends React.Component {
 
           {!this.props.countries.length
             ? <LoadingSpinner transparent />
-            : <table>
-              <thead>
-                <tr>
-                  <th>Country</th>
-                  <th>ISO</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.props.countries.map((country, index) => (
-                  <tr key={index}>
-                    <td>{country.country}</td>
-                    <td>{country.iso3}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            : <TableList
+              data={this.props.countries}
+              columns={['country', 'iso3']}
+            />
           }
         </div>
       </div>

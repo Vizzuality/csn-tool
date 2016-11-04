@@ -1,5 +1,6 @@
 import React from 'react';
 import LoadingSpinner from 'components/common/LoadingSpinner';
+import TableList from 'components/common/TableList';
 
 class SpeciesPage extends React.Component {
   componentWillMount() {
@@ -16,24 +17,10 @@ class SpeciesPage extends React.Component {
 
           {!this.props.species.length
             ? <LoadingSpinner transparent />
-            : <table>
-              <thead>
-                <tr>
-                  <th>Species</th>
-                  <th>Common Name</th>
-                  <th>Details</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.props.species.map((species, index) => (
-                  <tr key={index}>
-                    <td>{species.scientific_name}</td>
-                    <td>{species.english_name}</td>
-                    <td><a href={species.hyperlink} target="_blank">View more</a></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            : <TableList
+              data={this.props.species}
+              columns={['scientific_name', 'english_name']}
+            />
           }
         </div>
       </div>
