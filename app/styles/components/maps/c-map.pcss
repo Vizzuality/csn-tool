@@ -1,0 +1,23 @@
+.c-map {
+  height: 500px;
+
+  .map-marker {
+    position: relative;
+
+    .icon {
+      display: block;
+      position: absolute;
+      top: -7px;
+      left: -7px;
+      width: 14px;
+      height: 14px;
+      background-color: $main-color;
+      border-radius: 120px;
+      border: solid 2px $font-main-inv;
+
+      &.-secondary {
+        background-color: $secondary-color;
+      }
+    }
+  }
+}
