@@ -1,6 +1,7 @@
 import React from 'react';
 import SitesMap from 'components/maps/SitesMap';
 import LoadingSpinner from 'components/common/LoadingSpinner';
+import TableList from 'components/common/TableList';
 
 class SitesPage extends React.Component {
   componentWillMount() {
@@ -15,22 +16,10 @@ class SitesPage extends React.Component {
         <SitesMap sites={this.props.sites} />
         <div className="row">
           <div className="column">
-            <table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Details</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.props.sites.map((site, index) => (
-                  <tr key={index}>
-                    <td>{site.site_name}</td>
-                    <td><a href={site.hyperlink} target="_blank">View more</a></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <TableList
+              data={this.props.sites}
+              columns={['site_name', 'iso3']}
+            />
           </div>
         </div>
       </div>
