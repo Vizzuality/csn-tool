@@ -1,0 +1,78 @@
+.c-select {
+  &.-right {
+    display: flex;
+    justify-content: flex-end;
+
+    .Select-value {
+      padding-right: 0;
+    }
+
+    .Select-arrow-zone {
+      padding-right: 0;
+    }
+  }
+
+  &.-inv > .Select-control {
+    background: $bg-main-color;
+  }
+
+  &.-short {
+    > .Select-menu-outer,
+    > .Select-control {
+      width: auto;
+      min-width: 50px;
+    }
+  }
+
+  &.Select--single,
+  &.has-value.Select--single {
+    outline: none;
+
+    > .Select-control {
+      background: $bg-dark-color;
+      border: none;
+
+      .Select-value {
+        > .Select-value-label {
+          font-family: $font-heading;
+          font-weight: 700;
+          font-size: $font-size-xs;
+          color: $font-main-inv;
+          letter-spacing: 1px;
+          line-height: 1;
+        }
+      }
+    }
+  }
+
+  .Select-menu-outer {
+    background: $bg-dark-color;
+    border: none;
+
+    > .Select-menu {
+      > .Select-option {
+        font-family: $font-heading;
+        font-weight: 700;
+        font-size: $font-size-xs;
+        color: rgba($font-main-inv, 0.75);
+        letter-spacing: 1px;
+        line-height: 1;
+        background: $bg-dark-color;
+
+        &.is-focused {
+          color: $font-main-inv;
+        }
+
+        &.is-selected {
+          color: $font-main-inv;
+        }
+      }
+    }
+  }
+
+  .Select-arrow-zone {
+    > .Select-arrow {
+      border-top-color: $font-main-secondary;
+    }
+  }
+}

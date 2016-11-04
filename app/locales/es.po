@@ -1,0 +1,50 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2016-10-26 16:40+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: app/components/common/MainNav.js
+msgid "countries"
+msgstr "Paises"
+
+#: app/components/common/MainNav.js
+msgid "sites"
+msgstr "Sitios"
+
+#: app/components/common/MainNav.js
+msgid "species"
+msgstr "Especies"
+
+#: app/components/common/MainNav.js
+msgid "guidelines"
+msgstr "Guías"
+
+#: app/components/common/MainNav.js
+msgid "about"
+msgstr "Acerca"
+
+#: app/components/common/StayUpdate.js
+msgid "stay-update"
+msgstr "Manténgase actualizado"
+
+#~ msgid "home"
+#~ msgstr "Inicio"
+
+#~ msgid "english"
+#~ msgstr "Inglés"
+
+#~ msgid "spanish"
+#~ msgstr "Español"
+
+#~ msgid "country"
+#~ msgstr "Pais"
