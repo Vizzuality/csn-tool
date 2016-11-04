@@ -8,7 +8,9 @@ export const translations = {
     'stay-update': 'Stay update',
     'site_name': 'Site name',
     'scientific_name': 'Scientific name',
-    'english_name': 'English name'
+    'english_name': 'English name',
+    'family': 'Family',
+    'genus': 'Genus'
   },
   es: {
     'countries': 'Paises',
@@ -19,6 +21,8 @@ export const translations = {
     'stay-update': 'Manténgase actualizado',
     'site_name': 'Nombre del sitio',
     'scientific_name': 'Nombre científico',
-    'english_name': 'Nombre en inglés'
+    'english_name': 'Nombre en inglés',
+    'family': 'Familia',
+    'genus': 'Género'
   },
 }

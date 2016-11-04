@@ -10,6 +10,7 @@ class SpeciesPage extends React.Component {
   }
 
   render() {
+    const columns = ['scientific_name', 'english_name', 'family', 'genus'];
     return (
       <div className="row">
         <div className="column">
@@ -19,7 +20,7 @@ class SpeciesPage extends React.Component {
             ? <LoadingSpinner transparent />
             : <TableList
               data={this.props.species}
-              columns={['scientific_name', 'english_name']}
+              columns={columns}
             />
           }
         </div>
