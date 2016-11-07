@@ -7,6 +7,7 @@ const router = Express.Router(); // eslint-disable-line new-cap
 
 router.route('/countries').get(CountriesCtrl.getCountries);
 router.route('/sites').get(SitesCtrl.getSites);
-router.route('/species').get(SpeciesCtrl.getSpecies);
+router.route('/species').get(SpeciesCtrl.getSpeciesList);
+router.route('/species/:slug').get(SpeciesCtrl.getSpecies);
 
 module.exports = router;
