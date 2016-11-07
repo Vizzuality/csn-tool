@@ -1,6 +1,6 @@
 import React from 'react';
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import TableList from 'components/common/TableList';
+import TableList from 'containers/tables/TableList';
 
 class CountriesPage extends React.Component {
   componentWillMount() {

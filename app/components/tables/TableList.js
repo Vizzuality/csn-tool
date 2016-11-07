@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 function TableList(props, context) {
   return (
@@ -10,6 +11,11 @@ function TableList(props, context) {
               {context.t(column)}
             </div>
           ))}
+          {props.detailLink &&
+            <div>
+              ...
+            </div>
+          }
         </li>
         {props.data.map((item, index) => (
           <li key={index}>
@@ -18,6 +24,11 @@ function TableList(props, context) {
                 {item[column]}
               </div>
             ))}
+            {props.detailLink &&
+              <div className="link">
+                <Link to={`/${props.lang}/${props.detailLink}/${item.slug}`} > Detail </Link>
+              </div>
+            }
           </li>
         ))}
         <li></li>
@@ -32,6 +43,8 @@ TableList.contextTypes = {
 };
 
 TableList.propTypes = {
+  lang: React.PropTypes.string.isRequired,
+  detailLink: React.PropTypes.string,
   columns: React.PropTypes.array.isRequired,
   data: React.PropTypes.array.isRequired
 };
