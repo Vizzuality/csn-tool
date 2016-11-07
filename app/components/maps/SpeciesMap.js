@@ -45,8 +45,8 @@ class Map extends React.Component {
   }
 
   fitBounds() {
-    const MarkersGroup = new L.featureGroup(this.markers);
-    this.map.fitBounds(MarkersGroup.getBounds());
+    const markersGroup = new L.featureGroup(this.markers); // eslint-disable-line new-cap
+    this.map.fitBounds(markersGroup.getBounds());
   }
 
   render() {
