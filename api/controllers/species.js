@@ -2,11 +2,17 @@ const rp = require('request-promise');
 const CARTO_SQL = require('../constants').CARTO_SQL;
 
 function getSpecies(req, res) {
-  rp(`${CARTO_SQL}q=SELECT * FROM species`)
+  const query = 'SELECT s.*, ss.iba_criteria, ss.maximum as max, ss.minimum as min, ss.season FROM species s INNER JOIN species_sites ss ON s.species_id = ss.species_id LIMIT 50';
+  rp(CARTO_SQL + query)
     .then((data) => {
-      const result = JSON.parse(data);
-      if (result.rows && result.rows.length > 0) {
-        res.json(result.rows);
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        results.map((item) => {
+          const species = item;
+          species.avg = (item.max + item.min) / 2;
+          return species;
+        });
+        res.json(results);
       } else {
         res.status(404);
         res.json({ error: 'No species' });
