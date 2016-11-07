@@ -1,7 +1,7 @@
 import React from 'react';
 import SitesMap from 'components/maps/SitesMap';
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import TableList from 'components/common/TableList';
+import TableList from 'containers/tables/TableList';
 
 class SitesPage extends React.Component {
   componentWillMount() {

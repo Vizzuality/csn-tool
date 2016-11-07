@@ -2,7 +2,8 @@ const rp = require('request-promise');
 const CARTO_SQL = require('../constants').CARTO_SQL;
 
 function getSites(req, res) {
-  rp(`${CARTO_SQL}q=SELECT * FROM sites LIMIT 50`)
+  const query = 'SELECT * FROM sites LIMIT 50';
+  rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);
       if (result.rows && result.rows.length > 0) {

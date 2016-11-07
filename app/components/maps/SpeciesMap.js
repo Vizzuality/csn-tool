@@ -26,14 +26,14 @@ class Map extends React.Component {
 
   setMarkers() {
     this.markers = [];
-    const sitesIcon = L.divIcon({
+    const speciesIcon = L.divIcon({
       className: 'map-marker',
       iconSize: null,
-      html: '<span class="icon -secondary"</span>'
+      html: '<span class="icon"</span>'
     });
-    this.props.sites.forEach((site) => {
-      const marker = L.marker([site.lat, site.lon], { icon: sitesIcon }).addTo(this.map);
-      marker.bindPopup(site.site_name);
+    this.props.species.forEach((item) => {
+      const marker = L.marker([item.lat, item.lon], { icon: speciesIcon }).addTo(this.map);
+      marker.bindPopup(`<p> Season:${item.season}</p> <p>Site:${item.site_name}</p>`);
       marker.on('mouseover', function () {
         this.openPopup();
       });
@@ -58,8 +58,14 @@ class Map extends React.Component {
   }
 }
 
+Map.contextTypes = {
+  // Define function to get the translations
+  t: React.PropTypes.func.isRequired
+};
+
+
 Map.propTypes = {
-  sites: React.PropTypes.array.isRequired
+  species: React.PropTypes.array.isRequired
 };
 
 export default Map;

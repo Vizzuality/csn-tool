@@ -2,7 +2,8 @@ const rp = require('request-promise');
 const CARTO_SQL = require('../constants').CARTO_SQL;
 
 function getCountries(req, res) {
-  rp(`${CARTO_SQL}q=SELECT * FROM countries`)
+  const query = 'SELECT * FROM countries';
+  rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);
       if (result.rows && result.rows.length > 0) {
