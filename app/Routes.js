@@ -9,6 +9,7 @@ import HomePage from 'components/pages/HomePage';
 import CountriesPage from 'containers/pages/CountriesPage';
 import SitesPage from 'containers/pages/SitesPage';
 import SpeciesPage from 'containers/pages/SpeciesPage';
+import SpeciesDetailPage from 'containers/pages/SpeciesDetailPage';
 
 function shouldUpdateScroll(prevRouterProps, { location }) {
   /**
@@ -99,7 +100,10 @@ const Routes = ({ history }) => (
       <IndexRoute component={HomePage} />
       <Route path="countries" component={CountriesPage} />
       <Route path="sites" component={SitesPage} />
-      <Route path="species" component={SpeciesPage} />
+      <Route path="species">
+        <IndexRoute component={SpeciesPage} />
+        <Route path=":slug" component={SpeciesDetailPage} />
+      </Route>
     </Route>
   </Router>
 );

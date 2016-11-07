@@ -2,8 +2,9 @@ import React from 'react';
 import { Link } from 'react-router';
 
 function TableList(props, context) {
-  return (
-    <div className="c-table-list">
+  return !props.data.length
+    ? <div className="c-table-list"><p> No data </p></div>
+    : <div className="c-table-list">
       <ul>
         <li className="header">
           {props.columns.map((column, index) => (
@@ -33,8 +34,7 @@ function TableList(props, context) {
         ))}
         <li></li>
       </ul>
-    </div>
-  );
+    </div>;
 }
 
 TableList.contextTypes = {

@@ -6,3 +6,4 @@ export const GET_SITES_LIST = 'GET_SITES_LIST';
 
 // SPECIES
 export const GET_SPECIES_LIST = 'GET_SPECIES_LIST';
+export const GET_SPECIES_DATA = 'GET_SPECIES_DATA';
