@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 import ContainerPage from 'components/pages/ContainerPage';
-import { updateLang } from 'actions/locales';
+import { setLanguage } from 'redux-i18n';
 
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = (dispatch) => ({
-  updateLang: lang => dispatch(updateLang(lang))
+  setLanguage: lang => dispatch(setLanguage(lang))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContainerPage);
