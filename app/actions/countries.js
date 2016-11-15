@@ -1,4 +1,4 @@
-import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEO } from 'constants';
+import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEO, GET_COUNTRIES_DETAIL } from 'constants';
 import { push } from 'react-router-redux';
 
 export function goCountryDetail(iso) {
@@ -17,6 +17,20 @@ export function getCountriesList() {
         dispatch({
           type: GET_COUNTRIES_LIST,
           payload: data
+        });
+      });
+  };
+}
+
+export function getCountryData(iso) {
+  const url = `${config.apiHost}/countries/${iso}`;
+  return dispatch => {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        dispatch({
+          type: GET_COUNTRIES_DETAIL,
+          payload: { iso, data }
         });
       });
   };

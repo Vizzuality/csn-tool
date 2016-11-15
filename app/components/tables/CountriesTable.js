@@ -1,23 +1,38 @@
 import React from 'react';
-
+import TableList from 'components/tables/TableList';
 
 class CountriesTable extends React.Component {
   componentWillMount() {
-    if (!this.props.data) {
-      console.info('TODO: request data');
-      // this.props.getCountryData(this.props.country);
+    if (!this.props.data[this.props.country]) {
+      this.props.getCountryData(this.props.country);
+    }
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (this.props.country !== newProps.country) {
+      if (!this.props.data[newProps.country]) {
+        this.props.getCountryData(newProps.country);
+      }
     }
   }
 
   render() {
+    const data = this.props.data[this.props.country];
+    if (!data || !data.length) return null;
+
     return (
-      <p>{this.props.data}</p>
+      <TableList
+        data={data}
+        columns={['site_name', 'iso3', 'protection_status']}
+      />
     );
   }
 }
 
 CountriesTable.propTypes = {
-  data: React.PropTypes.array
+  getCountryData: React.PropTypes.func.isRequired,
+  country: React.PropTypes.string,
+  data: React.PropTypes.object
 };
 
 export default CountriesTable;

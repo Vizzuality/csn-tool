@@ -1,7 +1,7 @@
 import React from 'react';
 import L from 'leaflet'; // eslint-disable-line import/no-unresolved
 
-class Map extends React.Component {
+class CountriesMap extends React.Component {
 
   constructor() {
     super();
@@ -9,6 +9,7 @@ class Map extends React.Component {
       hide: { color: 'transparent', weight: 0, opacity: 0 },
       highlight: { color: '#ffc500', weight: 2, opacity: 0.2 }
     };
+    this.markers = [];
   }
 
   componentWillMount() {
@@ -29,10 +30,22 @@ class Map extends React.Component {
     this.tileLayer = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png').addTo(this.map).setZIndex(0);
 
     this.drawGeo(this.props.countriesGeo);
+
+    if (this.props.countryDetail.length) {
+      this.drawMarkers(this.props.countryDetail);
+      this.fitBounds();
+    }
   }
 
   componentWillReceiveProps(newProps) {
     this.drawGeo(newProps.countriesGeo);
+    if (newProps.countryDetail && newProps.countryDetail.length) {
+      this.clearMarkers();
+      this.drawMarkers(newProps.countryDetail);
+      this.fitBounds();
+    } else {
+      this.clearMarkers();
+    }
   }
 
   componentWillUnmount() {
@@ -50,12 +63,17 @@ class Map extends React.Component {
           const popup = `<p>${feature.properties.name}</p><p>Click to see it page</p>`;
           layer.bindPopup(popup);
           layer.on('mouseover', () => {
-            layer.openPopup();
-            layer.setStyle(this.styles.highlight);
+            if (!this.props.country) {
+              layer.openPopup();
+              layer.setStyle(this.styles.highlight);
+              this.currentLayer = layer;
+            }
           });
           layer.on('mouseout', () => {
-            layer.closePopup();
-            layer.setStyle(this.styles.hide);
+            if (!this.props.country) {
+              layer.closePopup();
+              layer.setStyle(this.styles.hide);
+            }
           });
           layer.on('click', () => {
             this.goCountryDetail(feature.id);
@@ -67,6 +85,36 @@ class Map extends React.Component {
         onEachFeature,
         style: this.styles.hide
       }).addTo(this.map);
+    }
+  }
+
+  drawMarkers(countryData) {
+    if (!countryData.length) return;
+    const sitesIcon = L.divIcon({
+      className: 'map-marker',
+      iconSize: null,
+      html: '<span class="icon -secondary"</span>'
+    });
+
+    countryData.forEach((site) => {
+      const marker = L.marker([site.lat, site.lon], { icon: sitesIcon }).addTo(this.map);
+      marker.bindPopup(site.site_name);
+      marker.on('mouseover', () => {
+        marker.openPopup();
+      });
+      marker.on('mouseout', () => {
+        marker.closePopup();
+      });
+      this.markers.push(marker);
+    });
+  }
+
+  clearMarkers() {
+    if (this.markers.length) {
+      this.markers.forEach((item) => {
+        this.map.removeLayer(item);
+      });
+      this.markers = [];
     }
   }
 
@@ -85,10 +133,12 @@ class Map extends React.Component {
 }
 
 
-Map.propTypes = {
+CountriesMap.propTypes = {
   goCountryDetail: React.PropTypes.func.isRequired,
   getCountriesGeo: React.PropTypes.func.isRequired,
-  countriesGeo: React.PropTypes.object
+  countryDetail: React.PropTypes.array,
+  countriesGeo: React.PropTypes.object,
+  country: React.PropTypes.string
 };
 
-export default Map;
+export default CountriesMap;

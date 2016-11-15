@@ -3,9 +3,7 @@ import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEO, GET_COUNTRIES_DETAIL } from 'con
 const initialState = {
   countriesList: [],
   countriesGeo: {},
-  countriesDetail: {
-    ESP: 'detail esp data'
-  }
+  countriesDetail: {}
 };
 
 export default function (state = initialState, action) {
@@ -16,7 +14,7 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { countriesGeo: action.payload });
     case GET_COUNTRIES_DETAIL: {
       const countriesDetail = Object.assign({}, state.countriesDetail, {});
-      countriesDetail[action.payload.iso] = action.payload;
+      countriesDetail[action.payload.iso] = action.payload.data;
       return Object.assign({}, state, { countriesDetail });
     }
     default:
