@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 function NavLink(props, context) {
   return (
-    <Link to={`/${props.lang}${props.to}`}>
+    <Link className={props.button ? 'btn' : ''} to={`/${props.lang}${props.to}`}>
       {props.i18nText
         ? context.t(props.i18nText)
         : props.text
@@ -18,6 +18,8 @@ NavLink.contextTypes = {
 };
 
 NavLink.propTypes = {
+  // Define if the link should look like a button
+  button: React.PropTypes.bool,
   // Define the language selected
   lang: React.PropTypes.string.isRequired,
   // Define the link to go

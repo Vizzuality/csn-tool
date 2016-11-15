@@ -12,7 +12,7 @@ function Banner() {
           of 294 species of waterbirds and the important sites upon which they depend
           in Africa and Western Eurasia.
         </h3>
-        <NavLink to="/sites" i18nText="getStarted" />
+        <NavLink to="/sites" i18nText="getStarted" button />
       </div>
     </div>
   );

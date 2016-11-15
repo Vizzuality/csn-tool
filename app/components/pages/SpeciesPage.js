@@ -11,10 +11,8 @@ class SpeciesPage extends React.Component {
 
   render() {
     return (
-      <div className="row">
+      <div className="l-page row">
         <div className="column">
-          <h2>{this.context.t('species')}</h2>
-
           {!this.props.species.length
             ? <LoadingSpinner transparent />
             : <SpeciesTable data={this.props.species} />

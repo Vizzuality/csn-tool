@@ -30,17 +30,10 @@ class SpeciesDetailPage extends React.Component {
     if (this.props.data.error) return <p>There was an error getting data</p>;
     return (
       <div className="l-page">
-        <div className="row">
-          <div className="column">
-            <h2>{this.context.t('speciesDetail')}</h2>
-          </div>
-        </div>
-        <div className="l-page-content">
-          {!this.props.data.length
-            ? <LoadingSpinner transparent />
-            : this.getContent()
-          }
-        </div>
+        {!this.props.data.length
+          ? <LoadingSpinner transparent />
+          : this.getContent()
+        }
       </div>
     );
   }
