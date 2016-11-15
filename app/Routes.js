@@ -98,7 +98,7 @@ const Routes = ({ history }) => (
   >
     <Route path=":lang" component={ContainerPage}>
       <IndexRoute component={HomePage} />
-      <Route path="countries" component={CountriesPage} />
+      <Route path="countries(/:iso)" component={CountriesPage} />
       <Route path="sites" component={SitesPage} />
       <Route path="species">
         <IndexRoute component={SpeciesPage} />
