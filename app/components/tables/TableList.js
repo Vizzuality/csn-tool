@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import NavLink from 'containers/common/NavLink';
 
 function TableList(props, context) {
   return !props.data.length
@@ -27,7 +27,7 @@ function TableList(props, context) {
             ))}
             {props.detailLink &&
               <div className="link">
-                <Link to={`/${props.lang}/${props.detailLink}/${item.slug}`} > Detail </Link>
+                <NavLink to={`/${props.detailLink}/${item.slug}`} i18nText="detail" />
               </div>
             }
           </li>
@@ -43,7 +43,6 @@ TableList.contextTypes = {
 };
 
 TableList.propTypes = {
-  lang: React.PropTypes.string.isRequired,
   detailLink: React.PropTypes.string,
   columns: React.PropTypes.array.isRequired,
   data: React.PropTypes.array.isRequired

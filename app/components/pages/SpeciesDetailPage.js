@@ -1,7 +1,7 @@
 import React from 'react';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import SpeciesMap from 'components/maps/SpeciesMap';
-import TableList from 'containers/tables/TableList';
+import TableList from 'components/tables/TableList';
 
 class SpeciesDetailPage extends React.Component {
   componentWillMount() {

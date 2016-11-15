@@ -1,5 +1,5 @@
 import React from 'react';
-import TableList from 'containers/tables/TableList';
+import TableList from 'components/tables/TableList';
 
 function SpeciesTable(props) {
   const columns = ['scientific_name', 'english_name', 'iba_criteria', 'season', 'max', 'min', 'avg'];
