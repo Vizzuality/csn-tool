@@ -10,7 +10,8 @@ export const translations = {
     'scientific_name': 'Scientific name',
     'english_name': 'English name',
     'family': 'Family',
-    'genus': 'Genus'
+    'genus': 'Genus',
+    'getStarted': 'Get started'
   },
   es: {
     'countries': 'Paises',
@@ -23,6 +24,7 @@ export const translations = {
     'scientific_name': 'Nombre científico',
     'english_name': 'Nombre en inglés',
     'family': 'Familia',
-    'genus': 'Género'
+    'genus': 'Género',
+    'getStarted': 'Comenzar'
   },
 }

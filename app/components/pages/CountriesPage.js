@@ -11,10 +11,8 @@ class CountriesPage extends React.Component {
 
   render() {
     return (
-      <div className="row">
+      <div className="l-page row">
         <div className="column">
-          <h2>{this.context.t('countries')}</h2>
-
           {!this.props.countries.length
             ? <LoadingSpinner transparent />
             : <TableList

@@ -1,5 +1,6 @@
 .c-map {
-  height: 500px;
+  min-height: 500px;
+  height: 100%;
 
   .map-marker {
     position: relative;
@@ -19,5 +20,9 @@
         background-color: $secondary-color;
       }
     }
+  }
+
+  .leaflet-pane {
+    z-index: 0;
   }
 }

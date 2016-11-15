@@ -14,7 +14,7 @@ class SitesPage extends React.Component {
     return (
       <div>
         <SitesMap sites={this.props.sites} />
-        <div className="row">
+        <div className="l-content row">
           <div className="column">
             <TableList
               data={this.props.sites}
@@ -28,17 +28,10 @@ class SitesPage extends React.Component {
   render() {
     return (
       <div className="l-page">
-        <div className="row">
-          <div className="column">
-            <h2>{this.context.t('sites')}</h2>
-          </div>
-        </div>
-        <div className="l-page-content">
-          {!this.props.sites.length
-            ? <LoadingSpinner transparent />
-            : this.getContent()
-          }
-        </div>
+        {!this.props.sites.length
+          ? <LoadingSpinner transparent />
+          : this.getContent()
+        }
       </div>
     );
   }
