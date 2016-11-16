@@ -72,6 +72,7 @@ class CountriesMap extends React.Component {
     if (!newProps.country && this.props.country !== newProps.country) {
       if (this.currentLayer) this.currentLayer.setStyle(this.styles.hide);
       this.outBounds();
+      this.map.invalidateSize();
     }
   }
 
@@ -151,7 +152,7 @@ class CountriesMap extends React.Component {
 
   fitBounds() {
     const markersGroup = new L.featureGroup(this.markers); // eslint-disable-line new-cap
-    this.map.fitBounds(markersGroup.getBounds());
+    this.map.fitBounds(markersGroup.getBounds(), { padding: [10, 10] });
   }
 
   outBounds() {

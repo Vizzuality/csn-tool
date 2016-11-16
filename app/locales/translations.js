@@ -11,7 +11,8 @@ export const translations = {
     'english_name': 'English name',
     'family': 'Family',
     'genus': 'Genus',
-    'getStarted': 'Get started'
+    'getStarted': 'Get started',
+    'backToCountries': 'Back to countries'
   },
   es: {
     'countries': 'Paises',
@@ -25,6 +26,7 @@ export const translations = {
     'english_name': 'Nombre en inglés',
     'family': 'Familia',
     'genus': 'Género',
-    'getStarted': 'Comenzar'
+    'getStarted': 'Comenzar',
+    'backToCountries': 'Volver a países'
   },
 }

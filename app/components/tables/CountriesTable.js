@@ -1,5 +1,6 @@
 import React from 'react';
 import TableList from 'components/tables/TableList';
+import LoadingSpinner from 'components/common/LoadingSpinner';
 
 class CountriesTable extends React.Component {
   componentWillMount() {
@@ -18,7 +19,7 @@ class CountriesTable extends React.Component {
 
   render() {
     const data = this.props.data[this.props.country];
-    if (!data || !data.length) return null;
+    if (!data || !data.length) return <div className="blank"><LoadingSpinner inner transparent /></div>;
 
     return (
       <TableList
