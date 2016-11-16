@@ -1,5 +1,4 @@
 import React from 'react';
-import L from 'leaflet'; // eslint-disable-line import/no-unresolved
 
 class CountriesMap extends React.Component {
 
@@ -7,44 +6,72 @@ class CountriesMap extends React.Component {
     super();
     this.styles = {
       hide: { color: 'transparent', weight: 0, opacity: 0 },
-      highlight: { color: '#ffc500', weight: 2, opacity: 0.2 }
+      highlight: { color: '#ffc500', weight: 2, opacity: 0.5 }
     };
     this.markers = [];
+    this.initialMap = {
+      zoom: 3,
+      center: [52, 7]
+    };
   }
 
   componentWillMount() {
-    this.props.getCountriesGeo();
+    this.props.getCountriesGeom();
   }
 
   componentDidMount() {
     this.map = L.map('countries-map', {
       minZoom: 2,
-      zoom: 3,
-      center: [52, 7],
+      zoom: this.initialMap.zoom,
+      center: this.initialMap.center,
       detectRetina: true
     });
 
-    this.map.attributionControl.addAttribution('&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>');
+    this.map.attributionControl.addAttribution('Imagery from <a href="http://giscience.uni-hd.de/">GIScience Research Group @ University of Heidelberg</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>');
     this.map.zoomControl.setPosition('topright');
     this.map.scrollWheelZoom.disable();
-    this.tileLayer = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png').addTo(this.map).setZIndex(0);
+    this.tileLayer = L.tileLayer('http://korona.geog.uni-heidelberg.de/tiles/roadsg/x={x}&y={y}&z={z}').addTo(this.map).setZIndex(0);
 
-    this.drawGeo(this.props.countriesGeo);
+    // Adds suppport to topojson
+    L.TopoJSON = L.GeoJSON.extend({
+      addData(jsonData) {
+        if (jsonData.type === 'Topology') {
+          Object.keys(jsonData.objects).forEach((key) => {
+            const geojson = topojson.feature(jsonData, jsonData.objects[key]);
+            L.GeoJSON.prototype.addData.call(this, geojson);
+          });
+        } else {
+          L.GeoJSON.prototype.addData.call(this, jsonData);
+        }
+      }
+    });
 
-    if (this.props.countryDetail.length) {
+    if (this.props.countriesGeom) {
+      this.drawGeo(this.props.countriesGeom);
+    }
+
+    if (this.props.countryDetail && this.props.countryDetail.length) {
       this.drawMarkers(this.props.countryDetail);
       this.fitBounds();
     }
   }
 
   componentWillReceiveProps(newProps) {
-    this.drawGeo(newProps.countriesGeo);
+    if (newProps.countriesGeom && this.props.countriesGeom !== newProps.countriesGeom) {
+      this.drawGeo(newProps.countriesGeom);
+    }
+
     if (newProps.countryDetail && newProps.countryDetail.length) {
       this.clearMarkers();
       this.drawMarkers(newProps.countryDetail);
       this.fitBounds();
     } else {
       this.clearMarkers();
+    }
+
+    if (!newProps.country && this.props.country !== newProps.country) {
+      if (this.currentLayer) this.currentLayer.setStyle(this.styles.hide);
+      this.outBounds();
     }
   }
 
@@ -57,35 +84,39 @@ class CountriesMap extends React.Component {
   }
 
   drawGeo(geo) {
-    if (Object.keys(geo).length) {
-      const onEachFeature = (feature, layer) => {
-        if (feature.properties && feature.properties.name) {
-          const popup = `<p>${feature.properties.name}</p><p>Click to see it page</p>`;
-          layer.bindPopup(popup);
-          layer.on('mouseover', () => {
-            if (!this.props.country) {
-              layer.openPopup();
-              layer.setStyle(this.styles.highlight);
-              this.currentLayer = layer;
-            }
-          });
-          layer.on('mouseout', () => {
-            if (!this.props.country) {
-              layer.closePopup();
-              layer.setStyle(this.styles.hide);
-            }
-          });
-          layer.on('click', () => {
-            this.goCountryDetail(feature.id);
-          });
-        }
-      };
+    const onEachFeature = (layer) => {
+      const properties = layer.feature.properties;
+      layer.setStyle(this.styles.hide);
+      if (properties && properties.name) {
+        const popup = `<p>${properties.name}</p><p>Click to see it page</p>`;
+        layer.bindPopup(popup);
+        layer.on('mouseover', () => {
+          if (!this.props.country) {
+            layer.openPopup();
+            layer.setStyle(this.styles.highlight);
+            this.currentLayer = layer;
+          }
+        });
+        layer.on('mouseout', () => {
+          if (!this.props.country) {
+            layer.closePopup();
+            layer.setStyle(this.styles.hide);
+          }
+        });
+        layer.on('click', () => {
+          if (!this.props.country) {
+            this.goCountryDetail(properties.iso3);
+          } else {
+            layer.closePopup();
+          }
+        });
+      }
+    };
 
-      L.geoJSON(geo, {
-        onEachFeature,
-        style: this.styles.hide
-      }).addTo(this.map);
-    }
+    const topoLayer = new L.TopoJSON();
+    topoLayer.addData(geo);
+    topoLayer.addTo(this.map);
+    topoLayer.eachLayer(onEachFeature);
   }
 
   drawMarkers(countryData) {
@@ -123,11 +154,13 @@ class CountriesMap extends React.Component {
     this.map.fitBounds(markersGroup.getBounds());
   }
 
+  outBounds() {
+    this.map.setView(this.initialMap.center, this.initialMap.zoom);
+  }
+
   render() {
     return (
-      <div className="l-maps-container">
-        <div id={'countries-map'} className="c-map"></div>
-      </div>
+      <div id={'countries-map'} className="c-map"></div>
     );
   }
 }
@@ -135,9 +168,9 @@ class CountriesMap extends React.Component {
 
 CountriesMap.propTypes = {
   goCountryDetail: React.PropTypes.func.isRequired,
-  getCountriesGeo: React.PropTypes.func.isRequired,
+  getCountriesGeom: React.PropTypes.func.isRequired,
   countryDetail: React.PropTypes.array,
-  countriesGeo: React.PropTypes.object,
+  countriesGeom: React.PropTypes.any,
   country: React.PropTypes.string
 };
 

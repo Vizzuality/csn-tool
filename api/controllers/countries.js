@@ -20,9 +20,10 @@ function getCountries(req, res) {
 }
 
 function getCountry(req, res) {
-  const query = `SELECT c.country, c.iso3, s.hyperlink, s.protection_status, s.site_name, s.lat, s.lon, s.site_id FROM countries c
-    INNER JOIN sites si ON s.country_id = c.country_id
-    WHERE c.iso3 = '${req.params.iso}'`;
+  const query = `SELECT c.country, c.iso3, si.hyperlink, si.protection_status, si.site_name, si.lat, si.lon, si.site_id
+    FROM countries c
+    INNER JOIN sites si ON si.country_id = c.country_id
+    WHERE c.iso3='${req.params.iso}'`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);

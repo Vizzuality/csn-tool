@@ -1,4 +1,4 @@
-import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEO, GET_COUNTRIES_DETAIL } from 'constants';
+import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_DETAIL } from 'constants';
 import { push } from 'react-router-redux';
 
 export function goCountryDetail(iso) {
@@ -36,14 +36,14 @@ export function getCountryData(iso) {
   };
 }
 
-export function getCountriesGeo() {
-  const url = '/countries.geo.json';
+export function getCountriesGeom() {
+  const url = '/geoms.topojson';
   return dispatch => {
     fetch(url)
       .then(response => response.json())
       .then(data => {
         dispatch({
-          type: GET_COUNTRIES_GEO,
+          type: GET_COUNTRIES_GEOM,
           payload: data
         });
       });
