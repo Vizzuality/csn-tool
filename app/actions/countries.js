@@ -1,4 +1,5 @@
-import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_DETAIL } from 'constants';
+import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_SITES,
+        GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS } from 'constants';
 import { push } from 'react-router-redux';
 
 export function goCountryDetail(iso) {
@@ -22,14 +23,42 @@ export function getCountriesList() {
   };
 }
 
-export function getCountryData(iso) {
-  const url = `${config.apiHost}/countries/${iso}`;
+export function getCountrySites(iso) {
+  const url = `${config.apiHost}/countries/${iso}/sites`;
   return dispatch => {
     fetch(url)
       .then(response => response.json())
       .then(data => {
         dispatch({
-          type: GET_COUNTRIES_DETAIL,
+          type: GET_COUNTRIES_SITES,
+          payload: { iso, data }
+        });
+      });
+  };
+}
+
+export function getCountrySpecies(iso) {
+  const url = `${config.apiHost}/countries/${iso}/species`;
+  return dispatch => {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        dispatch({
+          type: GET_COUNTRIES_SPECIES,
+          payload: { iso, data }
+        });
+      });
+  };
+}
+
+export function getCountryPopulations(iso) {
+  const url = `${config.apiHost}/countries/${iso}/populations`;
+  return dispatch => {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        dispatch({
+          type: GET_COUNTRIES_POPULATIONS,
           payload: { iso, data }
         });
       });
