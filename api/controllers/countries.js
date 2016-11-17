@@ -62,14 +62,13 @@ function getCountrySites(req, res) {
 }
 
 function getCountrySpecies(req, res) {
-  const query = `SELECT c.country, c.iso3, sp.english_name as species, sp.genus, sp.family, ps.populations
-    FROM countries c
-    INNER JOIN sites s ON s.country_id = c.country_id
-    INNER JOIN species_country sc ON sc.country_id = s.country_id
-	  INNER JOIN species sp ON sp.species_id = sc.species_id
-    INNER JOIN populations_species_no_geo ps ON ps.sisrecid = sc.species_id
-    WHERE c.iso3='${req.params.iso}'
-    GROUP BY c.country, c.iso3, sp.english_name, sp.genus, sp.family, ps.populations`;
+  const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family,
+      string_agg(p.populations, ', ') as population
+    FROM species s
+    INNER JOIN species_country sc on sc.species_id = s.species_id
+    INNER JOIN countries c on c.country_id = sc.country_id AND c.iso3 = '${req.params.iso}'
+    INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
+    GROUP BY s.scientific_name, s.english_name, s.genus, s.family, 1`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);
@@ -87,7 +86,25 @@ function getCountrySpecies(req, res) {
 }
 
 function getCountryPopulations(req, res) {
-  res.json({ msg: 'Comming soon' });
+  const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family, p.populations
+    FROM species s
+    INNER JOIN species_country sc on sc.species_id = s.species_id
+    INNER JOIN countries c on c.country_id = sc.country_id AND c.iso3 = '${req.params.iso}'
+    INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id `;
+  rp(CARTO_SQL + query)
+    .then((data) => {
+      const result = JSON.parse(data);
+      if (result.rows && result.rows.length > 0) {
+        res.json(result.rows);
+      } else {
+        res.status(404);
+        res.json({ error: 'No species found' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
 }
 
 module.exports = {
