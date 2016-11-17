@@ -1,5 +1,4 @@
 import React from 'react';
-import L from 'leaflet'; // eslint-disable-line import/no-unresolved
 
 class Map extends React.Component {
 
