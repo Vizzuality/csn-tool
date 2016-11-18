@@ -1,5 +1,6 @@
 import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_SITES,
-        GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS } from 'constants';
+        GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS,
+        SET_COUNTRY_SELECTED, SET_COUNTRY_CAT_SELECTED } from 'constants';
 import { push } from 'react-router-redux';
 
 export function goCountryDetail(iso) {
@@ -76,5 +77,19 @@ export function getCountriesGeom() {
           payload: data
         });
       });
+  };
+}
+
+export function setCountry(country) {
+  return {
+    type: SET_COUNTRY_SELECTED,
+    payload: country
+  };
+}
+
+export function setCountryCategory(country) {
+  return {
+    type: SET_COUNTRY_CAT_SELECTED,
+    payload: country
   };
 }

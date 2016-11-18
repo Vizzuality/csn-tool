@@ -9,7 +9,7 @@ import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-rou
 import { i18nState } from "redux-i18n"
 
 import * as reducers from 'reducers';
-import Routes from './Routes';
+import Routes from './routes/Routes';
 
 import ReactGA from 'react-ga';
 
@@ -64,3 +64,7 @@ render(
   </Provider>,
   document.getElementById('app')
 );
+
+export default function dispatch(action) {
+  store.dispatch(action)
+}

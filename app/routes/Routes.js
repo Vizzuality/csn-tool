@@ -2,9 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useScroll } from 'react-router-scroll';
 import { IndexRoute, Router, Route, applyRouterMiddleware, Redirect } from 'react-router';
+import { updateLanguage, updateCountriesPage } from './RoutesActions';
 import ReactGA from 'react-ga';
 
-import ContainerPage from 'containers/pages/ContainerPage';
+import ContainerPage from 'components/pages/ContainerPage';
 import HomePage from 'components/pages/HomePage';
 import CountriesPage from 'containers/pages/CountriesPage';
 import SitesPage from 'containers/pages/SitesPage';
@@ -96,9 +97,9 @@ const Routes = ({ history }) => (
     render={applyRouterMiddleware(useScroll(shouldUpdateScroll))}
     onUpdate={trackPageView}
   >
-    <Route path=":lang" component={ContainerPage}>
+    <Route path=":lang" component={ContainerPage} onEnter={updateLanguage} >
       <IndexRoute component={HomePage} />
-      <Route path="countries(/:iso)" component={CountriesPage} />
+      <Route path="countries(/:iso)(/:cat)" component={CountriesPage} onEnter={updateCountriesPage} />
       <Route path="sites" component={SitesPage} />
       <Route path="species">
         <IndexRoute component={SpeciesPage} />
