@@ -16,7 +16,7 @@ class Header extends React.Component {
   }
 
   onSelectChange(lang) {
-    this.props.updateLang(lang.value);
+    this.props.setLangURL(lang.value);
   }
 
   render() {
@@ -57,7 +57,7 @@ Header.propTypes = {
   // Define the language selected
   lang: React.PropTypes.string.isRequired,
   // Define the function to upadate the url after language change
-  updateLang: React.PropTypes.func.isRequired
+  setLangURL: React.PropTypes.func.isRequired
 };
 
 export default Header;

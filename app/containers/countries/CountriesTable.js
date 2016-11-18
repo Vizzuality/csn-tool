@@ -1,13 +1,10 @@
 import { connect } from 'react-redux';
 import CountriesTable from 'components/countries/CountriesTable';
-import { getCountrySites } from 'actions/countries';
 
 const mapStateToProps = (state) => ({
-  data: state.countries.countriesDetail
+  category: state.countries.selectedCountryCategory
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  getCountrySites: (iso) => dispatch(getCountrySites(iso))
-});
+const mapDispatchToProps = () => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(CountriesTable);

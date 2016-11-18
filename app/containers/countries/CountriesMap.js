@@ -4,7 +4,7 @@ import CountriesMap from 'components/countries/CountriesMap';
 
 const mapStateToProps = (state, own) => ({
   countriesGeom: state.countries.countriesGeom,
-  countryDetail: state.countries.countriesDetail[own.country] || []
+  countryDetail: state.countries.countrySites[own.country] || []
 });
 
 const mapDispatchToProps = (dispatch) => ({

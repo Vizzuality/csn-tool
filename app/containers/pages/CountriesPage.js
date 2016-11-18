@@ -3,6 +3,7 @@ import CountriesPage from 'components/pages/CountriesPage';
 
 const mapStateToProps = (state, { params }) => ({
   country: params.iso,
+  category: params.cat,
   countriesLength: state.countries.countriesGeom ? Object.keys(state.countries.countriesGeom.objects).length : 0
 });
 

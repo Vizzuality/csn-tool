@@ -4,12 +4,21 @@ import CountriesMap from 'containers/countries/CountriesMap';
 import CountriesTable from 'containers/countries/CountriesTable';
 
 class CountriesPage extends React.Component {
-  constructor() {
-    super()
+
+  componentWillMount() {
+    console.log('TODO: fetch logic depends on country and cat');
+    // if (!this.props.data[this.props.country]) {
+    //   this.props.getCountryData(this.props.country);
+    // }
   }
 
-  componentDidMount() {
-    console.log(this.props);
+  componentWillReceiveProps(newProps) {
+    console.log('TODO: fetch logic depends on country and cat');
+    // if (this.props.country !== newProps.country) {
+    //   if (!this.props.data[newProps.country]) {
+    //     this.props.getCountryData(newProps.country);
+    //   }
+    // }
   }
 
   render() {
@@ -23,7 +32,7 @@ class CountriesPage extends React.Component {
                   <NavLink className="breadcrumb" to="/countries" i18nText="backToCountries" />
                   <h2>{this.props.country}</h2>
                 </div>
-                : <h2>{context.t('countries')} <span>({this.props.countriesLength || ''})</span></h2>
+                : <h2>{this.context.t('countries')} <span>({this.props.countriesLength || ''})</span></h2>
               }
             </div>
           </div>
@@ -35,7 +44,7 @@ class CountriesPage extends React.Component {
           <div className="row">
             <div className="column">
               {this.props.country &&
-                <CountriesTable country={this.props.country} />
+                <CountriesTable />
               }
             </div>
           </div>
