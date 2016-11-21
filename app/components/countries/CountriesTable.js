@@ -2,7 +2,6 @@ import React from 'react';
 import CountriesFilters from 'components/countries/CountriesFilters';
 import TableList from 'components/tables/TableList';
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import NavLink from 'containers/common/NavLink';
 
 function CountriesTable(props) {
   let columns = [];
