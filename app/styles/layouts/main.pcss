@@ -1,9 +1,43 @@
+.l-header {
+  background-color: $bg-dark-color;
+
+  @media (--medium-viewport) {
+    height: $header-height;
+  }
+}
+
+.l-navigation {
+  position: absolute;
+  top: $header-height;
+  right: 0;
+  left: 0;
+  background-color: rgba($bg-dark-color, 0.7);
+  z-index: 2;
+}
+
 .l-main {
   background-color: $bg-main-color;
-  min-height: calc(100vh - $footer-height);
+  min-height: calc(100vh - $header-height - $footer-height);
+}
+
+.l-map {
+  height: calc(100vh - $header-height);
+  transition: height 0.5s ease;
+
+  &.-short {
+    height: 500px;
+  }
 }
 
 .l-content {
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+
+.l-footer {
+  background-color: $bg-dark-color;
+
+  @media (--medium-viewport) {
+    height: $footer-height;
+  }
 }

@@ -1,13 +1,34 @@
 import { connect } from 'react-redux';
 import CountriesPage from 'components/pages/CountriesPage';
-import { getCountriesList } from 'actions/countries';
+import { getCountrySites, getCountrySpecies, getCountryPopulations } from 'actions/countries';
+
+function getCountryData(countries) {
+  return countries[countries.selectedCategory] && countries[countries.selectedCategory][countries.selected]
+    ? countries[countries.selectedCategory][countries.selected]
+    : false;
+}
 
 const mapStateToProps = (state) => ({
-  countries: state.countries.countriesList
+  country: state.countries.selected,
+  category: state.countries.selectedCategory,
+  countryData: getCountryData(state.countries),
+  countriesLength: state.countries.geoms ? Object.keys(state.countries.geoms.objects).length : 0
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getCountriesList: () => dispatch(getCountriesList())
+  getCountryData: (country, category) => {
+    switch (category) {
+      case 'species':
+        dispatch(getCountrySpecies(country));
+        break;
+      case 'populations':
+        dispatch(getCountryPopulations(country));
+        break;
+      default:
+        dispatch(getCountrySites(country));
+        break;
+    }
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CountriesPage);
