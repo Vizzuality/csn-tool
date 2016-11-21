@@ -52,13 +52,17 @@ h4 {
   line-height: 1;
 }
 
-.text,
-p {
+p,
+.text {
   font-family: $font-body;
   font-size: $font-size;
   line-height: 1.6;
   color: $font-main;
   margin: 1rem 0;
+
+  &.-intro {
+    opacity: 0.6;
+  }
 
   &.-dark {
     color: $font-main;
