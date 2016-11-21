@@ -13,7 +13,7 @@ function SpeciesTable(props) {
 }
 
 SpeciesTable.propTypes = {
-  data: React.PropTypes.array.isRequired
+  data: React.PropTypes.any.isRequired
 };
 
 export default SpeciesTable;

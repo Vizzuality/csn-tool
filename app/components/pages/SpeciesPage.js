@@ -1,6 +1,6 @@
 import React from 'react';
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import SpeciesTable from 'components/tables/SpeciesTable';
+import SpeciesTable from 'components/species/SpeciesTable';
 
 class SpeciesPage extends React.Component {
   componentWillMount() {
