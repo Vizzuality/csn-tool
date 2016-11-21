@@ -16,7 +16,7 @@ class CountriesMap extends React.Component {
   }
 
   componentWillMount() {
-    this.props.getCountriesGeom();
+    this.props.getGeoms();
   }
 
   componentDidMount() {
@@ -46,24 +46,24 @@ class CountriesMap extends React.Component {
       }
     });
 
-    if (this.props.countriesGeom) {
-      this.drawGeo(this.props.countriesGeom);
+    if (this.props.geoms) {
+      this.drawGeo(this.props.geoms);
     }
 
-    if (this.props.countryDetail && this.props.countryDetail.length) {
-      this.drawMarkers(this.props.countryDetail);
+    if (this.props.data && this.props.data.length) {
+      this.drawMarkers(this.props.data);
       this.fitBounds();
     }
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.countriesGeom && this.props.countriesGeom !== newProps.countriesGeom) {
-      this.drawGeo(newProps.countriesGeom);
+    if (newProps.geoms && this.props.geoms !== newProps.geoms) {
+      this.drawGeo(newProps.geoms);
     }
 
-    if (newProps.countryDetail && newProps.countryDetail.length) {
+    if (newProps.data && newProps.data.length) {
       this.clearMarkers();
-      this.drawMarkers(newProps.countryDetail);
+      this.drawMarkers(newProps.data);
       this.fitBounds();
     } else {
       this.clearMarkers();
@@ -80,8 +80,8 @@ class CountriesMap extends React.Component {
     this.map.remove();
   }
 
-  goCountryDetail(iso) {
-    this.props.goCountryDetail(iso);
+  goToDetail(iso) {
+    this.props.goToDetail(iso);
   }
 
   drawGeo(geo) {
@@ -106,7 +106,7 @@ class CountriesMap extends React.Component {
         });
         layer.on('click', () => {
           if (!this.props.country) {
-            this.goCountryDetail(properties.iso3);
+            this.goToDetail(properties.iso3);
           } else {
             layer.closePopup();
           }
@@ -168,10 +168,10 @@ class CountriesMap extends React.Component {
 
 
 CountriesMap.propTypes = {
-  goCountryDetail: React.PropTypes.func.isRequired,
-  getCountriesGeom: React.PropTypes.func.isRequired,
-  countryDetail: React.PropTypes.array,
-  countriesGeom: React.PropTypes.any,
+  goToDetail: React.PropTypes.func.isRequired,
+  getGeoms: React.PropTypes.func.isRequired,
+  data: React.PropTypes.array,
+  geoms: React.PropTypes.any,
   country: React.PropTypes.string
 };
 
