@@ -1,10 +1,10 @@
 import React from 'react';
+import CountriesFilters from 'components/countries/CountriesFilters';
 import TableList from 'components/tables/TableList';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import NavLink from 'containers/common/NavLink';
 
 function CountriesTable(props) {
-  if (!props.data || !props.data.length) return <div className="blank"><LoadingSpinner inner transparent /></div>;
   let columns = [];
   switch (props.category) {
     case 'species':
@@ -16,29 +16,17 @@ function CountriesTable(props) {
     default:
       columns = ['site_name', 'iso3', 'protection_status', 'iba', 'csn'];
   }
+
   return (
-    <div className="row">
-      <div className="row">
-        <div className="column small-12 medium-5">
-          <NavLink to={`/countries/${props.country}/sites`} i18nText="sites" />
-          <NavLink to={`/countries/${props.country}/species`} i18nText="species" />
-          <NavLink to={`/countries/${props.country}/populations`} i18nText="population" />
-        </div>
-        <div className="column small-12 offset-medium-1 medium-2">
-          <div>
-            filters
-          </div>
-        </div>
-        <div className="column small-12 medium-4">
-          <div>
-            search
-          </div>
-        </div>
-      </div>
-      <TableList
-        data={props.data}
-        columns={columns}
-      />
+    <div className="">
+      <CountriesFilters country={props.country} />
+      {!props.data || !props.data.length
+        ? <div className="blank"><LoadingSpinner inner transparent /></div>
+        : <TableList
+          data={props.data}
+          columns={columns}
+        />
+      }
     </div>
   );
 }
