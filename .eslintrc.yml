@@ -7,6 +7,7 @@ env:
   mocha: true
 globals:
   L: true,
+  topojson: true,
   config: true
 parserOptions:
   ecmaVersion: 7

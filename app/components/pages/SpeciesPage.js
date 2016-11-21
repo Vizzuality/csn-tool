@@ -1,6 +1,6 @@
 import React from 'react';
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import TableList from 'components/common/TableList';
+import SpeciesTable from 'components/tables/SpeciesTable';
 
 class SpeciesPage extends React.Component {
   componentWillMount() {
@@ -10,18 +10,12 @@ class SpeciesPage extends React.Component {
   }
 
   render() {
-    const columns = ['scientific_name', 'english_name', 'family', 'genus'];
     return (
-      <div className="row">
+      <div className="l-page row">
         <div className="column">
-          <h2>{this.context.t('species')}</h2>
-
           {!this.props.species.length
             ? <LoadingSpinner transparent />
-            : <TableList
-              data={this.props.species}
-              columns={columns}
-            />
+            : <SpeciesTable data={this.props.species} />
           }
         </div>
       </div>

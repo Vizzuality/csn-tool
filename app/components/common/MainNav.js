@@ -9,11 +9,6 @@ class Header extends React.Component {
     this.languages = Object.keys(translations).map((lang) => (
       { value: lang, label: lang.toUpperCase() }
     ));
-    this.onSelectChange = this.onSelectChange.bind(this);
-  }
-
-  onSelectChange(lang) {
-    this.props.updateLang(lang.value);
   }
 
   render() {
@@ -48,9 +43,7 @@ Header.contextTypes = {
 
 Header.propTypes = {
   // Define the language selected
-  lang: React.PropTypes.string.isRequired,
-  // Define the function to upadate the url after language change
-  updateLang: React.PropTypes.func.isRequired
+  lang: React.PropTypes.string.isRequired
 };
 
 export default Header;

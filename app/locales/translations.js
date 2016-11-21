@@ -3,6 +3,7 @@ export const translations = {
     'countries': 'Countries',
     'sites': 'Sites',
     'species': 'Species',
+    'populations': 'Populations',
     'guidelines': 'Guidelines',
     'about': 'About',
     'stay-update': 'Stay update',
@@ -10,12 +11,15 @@ export const translations = {
     'scientific_name': 'Scientific name',
     'english_name': 'English name',
     'family': 'Family',
-    'genus': 'Genus'
+    'genus': 'Genus',
+    'getStarted': 'Get started',
+    'backToCountries': 'Back to countries'
   },
   es: {
     'countries': 'Paises',
     'sites': 'Sitios',
     'species': 'Especies',
+    'populations': 'Poblaciones',
     'guidelines': 'Guías',
     'about': 'Acerca',
     'stay-update': 'Manténgase actualizado',
@@ -23,6 +27,8 @@ export const translations = {
     'scientific_name': 'Nombre científico',
     'english_name': 'Nombre en inglés',
     'family': 'Familia',
-    'genus': 'Género'
+    'genus': 'Género',
+    'getStarted': 'Comenzar',
+    'backToCountries': 'Volver a países'
   },
 }

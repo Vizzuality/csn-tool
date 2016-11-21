@@ -1,0 +1,39 @@
+.c-navigation {
+  height: 70px;
+  display: flex;
+  align-items: center;
+
+  h2 {
+    font-size: $font-size-xl;
+    color: $font-main-inv;
+    line-height: 1;
+
+    > span {
+      font-family: $font-body;
+      font-size: $font-size;
+      opacity: 0.6;
+    }
+  }
+
+  a {
+    font-size: $font-size-xs;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.7px;
+    opacity: 0.6;
+    text-decoration: none;
+    color: $font-main-inv;
+
+    &.breadcrumb {
+      position: relative;
+      display: flex;
+
+      &::after {
+        content: "<";
+        position: absolute;
+        top: 0;
+        left: -8px;
+      }
+    }
+  }
+}
