@@ -1,7 +1,6 @@
 import React from 'react';
 import CountriesFilters from 'components/countries/CountriesFilters';
 import TableList from 'components/tables/TableList';
-import LoadingSpinner from 'components/common/LoadingSpinner';
 
 function CountriesTable(props) {
   let columns = [];
@@ -19,13 +18,10 @@ function CountriesTable(props) {
   return (
     <div className="">
       <CountriesFilters country={props.country} />
-      {!props.data || !props.data.length
-        ? <div className="blank"><LoadingSpinner inner transparent /></div>
-        : <TableList
-          data={props.data}
-          columns={columns}
-        />
-      }
+      <TableList
+        data={props.data}
+        columns={columns}
+      />
     </div>
   );
 }
