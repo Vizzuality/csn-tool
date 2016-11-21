@@ -11,6 +11,7 @@ router.route('/countries/:iso/sites').get(CountriesCtrl.getCountrySites);
 router.route('/countries/:iso/species').get(CountriesCtrl.getCountrySpecies);
 router.route('/countries/:iso/populations').get(CountriesCtrl.getCountryPopulations);
 router.route('/sites').get(SitesCtrl.getSites);
+router.route('/sites/:slug').get(SitesCtrl.getSitesDetail);
 router.route('/species').get(SpeciesCtrl.getSpeciesList);
 router.route('/species/:slug').get(SpeciesCtrl.getSpecies);
 

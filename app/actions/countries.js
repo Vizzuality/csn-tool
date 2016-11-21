@@ -27,42 +27,63 @@ export function getCountriesList() {
 export function getCountrySites(iso) {
   const url = `${config.apiHost}/countries/${iso}/sites`;
   return dispatch => {
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        dispatch({
-          type: GET_COUNTRIES_SITES,
-          payload: { iso, data }
+    try {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          dispatch({
+            type: GET_COUNTRIES_SITES,
+            payload: { iso, data }
+          });
         });
+    } catch (err) {
+      dispatch({
+        type: GET_COUNTRIES_SITES,
+        payload: { iso, data: [] }
       });
+    }
   };
 }
 
 export function getCountrySpecies(iso) {
   const url = `${config.apiHost}/countries/${iso}/species`;
   return dispatch => {
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        dispatch({
-          type: GET_COUNTRIES_SPECIES,
-          payload: { iso, data }
+    try {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          dispatch({
+            type: GET_COUNTRIES_SPECIES,
+            payload: { iso, data }
+          });
         });
+    } catch (err) {
+      dispatch({
+        type: GET_COUNTRIES_SPECIES,
+        payload: { iso, data: [] }
       });
+    }
   };
 }
 
 export function getCountryPopulations(iso) {
   const url = `${config.apiHost}/countries/${iso}/populations`;
   return dispatch => {
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        dispatch({
-          type: GET_COUNTRIES_POPULATIONS,
-          payload: { iso, data }
+    try {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          dispatch({
+            type: GET_COUNTRIES_POPULATIONS,
+            payload: { iso, data }
+          });
         });
+    } catch (err) {
+      dispatch({
+        type: GET_COUNTRIES_POPULATIONS,
+        payload: { iso, data: [] }
       });
+    }
   };
 }
 
