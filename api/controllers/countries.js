@@ -63,7 +63,7 @@ function getCountrySites(req, res) {
 
 function getCountrySpecies(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family,
-      string_agg(p.populations, ', ') as population
+      string_agg(p.populations, ', ')
     FROM species s
     INNER JOIN species_country sc on sc.species_id = s.species_id
     INNER JOIN countries c on c.country_id = sc.country_id AND c.iso3 = '${req.params.iso}'

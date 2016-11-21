@@ -5,21 +5,6 @@ function TableList(props, context) {
   return !props.data.length
     ? <div className="c-table-list"><p> No data </p></div>
     : <div className="c-table-list">
-      <div className="row">
-        <div className="column small-12 medium-5">
-          tags
-        </div>
-        <div className="column small-12 offset-medium-1 medium-2">
-          <div>
-            filters
-          </div>
-        </div>
-        <div className="column small-12 medium-4">
-          <div>
-            search
-          </div>
-        </div>
-      </div>
       <ul>
         <li className="header">
           {props.columns.map((column, index) => (

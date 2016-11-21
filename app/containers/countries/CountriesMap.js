@@ -2,9 +2,9 @@ import { connect } from 'react-redux';
 import { getCountriesGeom, goCountryDetail } from 'actions/countries';
 import CountriesMap from 'components/countries/CountriesMap';
 
-const mapStateToProps = (state, own) => ({
-  countriesGeom: state.countries.countriesGeom,
-  countryDetail: state.countries.countrySites[own.country] || []
+const mapStateToProps = (state) => ({
+  countriesGeom: state.countries.geoms,
+  countryDetail: []
 });
 
 const mapDispatchToProps = (dispatch) => ({

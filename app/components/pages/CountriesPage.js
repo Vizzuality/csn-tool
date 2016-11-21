@@ -6,19 +6,20 @@ import CountriesTable from 'containers/countries/CountriesTable';
 class CountriesPage extends React.Component {
 
   componentWillMount() {
-    console.log('TODO: fetch logic depends on country and cat');
-    // if (!this.props.data[this.props.country]) {
-    //   this.props.getCountryData(this.props.country);
-    // }
+    if (this.props.country && !this.props.countryData) {
+      this.props.getCountryData(this.props.country, this.props.category);
+    }
   }
 
   componentWillReceiveProps(newProps) {
-    console.log('TODO: fetch logic depends on country and cat');
-    // if (this.props.country !== newProps.country) {
-    //   if (!this.props.data[newProps.country]) {
-    //     this.props.getCountryData(newProps.country);
-    //   }
-    // }
+    if (this.hasNewParams(newProps) && !newProps.countryData) {
+      this.props.getCountryData(newProps.country, newProps.category);
+    }
+  }
+
+  hasNewParams(newProps) {
+    return this.props.country !== newProps.country
+      || this.props.category !== newProps.category;
   }
 
   render() {
@@ -60,6 +61,9 @@ CountriesPage.contextTypes = {
 
 CountriesPage.propTypes = {
   country: React.PropTypes.string,
+  category: React.PropTypes.string,
+  countryData: React.PropTypes.any,
+  getCountryData: React.PropTypes.func.isRequired,
   countriesLength: React.PropTypes.number
 };
 

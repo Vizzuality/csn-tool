@@ -1,6 +1,6 @@
 import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_SITES,
         GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS,
-        SET_COUNTRY_SELECTED, SET_COUNTRY_CAT_SELECTED } from 'constants';
+        SET_COUNTRY_PARAMS } from 'constants';
 import { push } from 'react-router-redux';
 
 export function goCountryDetail(iso) {
@@ -80,16 +80,9 @@ export function getCountriesGeom() {
   };
 }
 
-export function setCountry(country) {
+export function setCountryParams(country, category) {
   return {
-    type: SET_COUNTRY_SELECTED,
-    payload: country
-  };
-}
-
-export function setCountryCategory(country) {
-  return {
-    type: SET_COUNTRY_CAT_SELECTED,
-    payload: country
+    type: SET_COUNTRY_PARAMS,
+    payload: { country, category }
   };
 }
