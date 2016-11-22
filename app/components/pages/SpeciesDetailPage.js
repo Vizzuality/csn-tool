@@ -5,7 +5,7 @@ import TableList from 'components/tables/TableList';
 
 class SpeciesDetailPage extends React.Component {
   componentWillMount() {
-    if (!this.props.data.length) {
+    if (!this.props.data) {
       this.props.getSpecies(this.props.slug);
     }
   }
@@ -30,7 +30,7 @@ class SpeciesDetailPage extends React.Component {
     if (this.props.data.error) return <p>There was an error getting data</p>;
     return (
       <div className="l-page">
-        {!this.props.data.length
+        {!this.props.data
           ? <LoadingSpinner transparent />
           : this.getContent()
         }

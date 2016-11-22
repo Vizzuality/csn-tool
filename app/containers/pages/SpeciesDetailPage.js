@@ -4,7 +4,7 @@ import { getSpecies } from 'actions/species';
 
 const mapStateToProps = (state, { params }) => ({
   slug: params.slug,
-  data: state.species.speciesData[params.slug] || []
+  data: state.species.data[params.slug] || false
 });
 
 const mapDispatchToProps = (dispatch) => ({
