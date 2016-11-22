@@ -7,6 +7,9 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const cssnext = require('postcss-cssnext');
+const cssmixns = require('postcss-mixins');
+const cssextend = require('postcss-extend');
+const postcssFunctions = require('postcss-functions');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const postcssImporter = require('postcss-import');
 const postcssSimpleVars = require('postcss-simple-vars');
@@ -80,11 +83,17 @@ const webpackConfig = {
   postcss: (webpackPCss) => [
     postcssImporter({ addDependencyTo: webpackPCss }),
     cssnext,
+    cssmixns,
+    cssextend,
     postcssSimpleVars,
     postcssNested,
-    postcssHexRgba
+    postcssHexRgba,
+    postcssFunctions({
+      functions: {
+        rem: (px) => (px / 16) + 'rem'
+      }
+    })
   ]
-
 };
 
 // Environment configuration
