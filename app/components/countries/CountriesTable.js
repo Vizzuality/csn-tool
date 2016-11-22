@@ -4,6 +4,7 @@ import TableList from 'components/tables/TableList';
 
 function CountriesTable(props) {
   let columns = [];
+  const detailLink = props.category === 'populations' ? '' : props.category;
   switch (props.category) {
     case 'species':
       columns = ['scientific_name', 'english_name', 'family', 'genus', 'populations'];
@@ -21,6 +22,7 @@ function CountriesTable(props) {
       <TableList
         data={props.data}
         columns={columns}
+        detailLink={detailLink}
       />
     </div>
   );
