@@ -26,6 +26,8 @@ NavLink.propTypes = {
   text: React.PropTypes.string,
   // Define the text to show translated
   i18nText: React.PropTypes.string
+  //Define the icon used for the link
+  icon: REact.PropTypes.string
 };
 
 export default NavLink;
