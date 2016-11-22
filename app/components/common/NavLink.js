@@ -4,10 +4,8 @@ import { Link } from 'react-router';
 function NavLink(props, context) {
   return (
     <Link className={props.className} to={`/${props.lang}${props.to}`}>
-      {props.i18nText
-        ? context.t(props.i18nText)
-        : props.text
-      }
+      {props.i18nText ? context.t(props.i18nText) : props.text}
+      {props.icon && <svg><use xlinkHref={`#${props.icon}`}></use></svg>}
     </Link>
   );
 }

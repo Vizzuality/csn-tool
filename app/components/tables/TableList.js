@@ -10,7 +10,7 @@ function TableList(props, context) {
       <ul>
         <li className="header">
           {props.columns.map((column, index) => (
-            <div key={index}>
+            <div key={index} className="text -title">
               {context.t(column)}
             </div>
           ))}
@@ -21,15 +21,15 @@ function TableList(props, context) {
           }
         </li>
         {props.data.map((item, index) => (
-          <li key={index}>
+          <li key={index} className="table-row">
             {props.columns.map((column, index2) => (
-              <div key={index2}>
+              <div key={index2} className={`text ${column}`}>
                 {item[column]}
               </div>
             ))}
             {props.detailLink &&
               <div className="link">
-                <NavLink to={`/${props.detailLink}/${item.slug}`} i18nText="detail" />
+                <NavLink to={`/${props.detailLink}/${item.slug}`} icon="icon-table_arrow_right" />
               </div>
             }
           </li>
