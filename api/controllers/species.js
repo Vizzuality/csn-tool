@@ -28,11 +28,12 @@ function getSpeciesList(req, res) {
 }
 
 function getSpecies(req, res) {
-  const query = `SELECT s.*, ss.iba_criteria, ss.maximum as max, ss.minimum as min, ss.season, si.lat, si.lon, si.site_name
+  const query = `SELECT s.*, ss.iba_criteria, ss.maximum as max, ss.minimum as min, ss.season, si.lat, si.lon, si.site_name as site_name
     FROM species s
     INNER JOIN species_sites ss ON s.species_id = ss.species_id
     INNER JOIN sites si ON ss.site_id = si.site_id
-    WHERE s.slug = '${req.params.slug}'`;
+    WHERE s.slug = '${req.params.slug}'
+    ORDER BY si.site_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
