@@ -90,7 +90,7 @@ const webpackConfig = {
     postcssHexRgba,
     postcssFunctions({
       functions: {
-        rem: (px) => (px / 16) + 'rem'
+        rem: (px) => `${px / 16}rem`
       }
     })
   ]
