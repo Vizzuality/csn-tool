@@ -1,6 +1,7 @@
 import dispatch from '../main';
 import { setLanguage } from 'redux-i18n';
 import { setCountryParams } from 'actions/countries';
+import { setSiteParams } from 'actions/sites';
 
 export function updateLanguage(actualState, replace, done) {
   dispatch(setLanguage(actualState.params.lang));
@@ -11,5 +12,11 @@ export function updateCountriesPage(actualState, replace, done) {
   const iso = actualState.params.iso || '';
   const cat = actualState.params.cat || 'sites'; // defult value
   dispatch(setCountryParams(iso, cat));
+  done();
+}
+
+export function updateSitesPage(actualState, replace, done) {
+  const site = actualState.params.site || '';
+  dispatch(setSiteParams(site));
   done();
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import SpeciesMap from 'components/maps/SpeciesMap';
+import SpeciesMap from 'components/species/SpeciesMap';
 import TableList from 'components/tables/TableList';
 
 class SpeciesDetailPage extends React.Component {

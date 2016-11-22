@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Map extends React.Component {
+class SitesMap extends React.Component {
 
   componentDidMount() {
     this.map = L.map('map-base', {
@@ -9,28 +9,40 @@ class Map extends React.Component {
       center: [52, 7],
       detectRetina: true
     });
+    this.markers = [];
 
     this.map.attributionControl.addAttribution('&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>');
     this.map.zoomControl.setPosition('topright');
     this.map.scrollWheelZoom.disable();
     this.tileLayer = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png').addTo(this.map).setZIndex(0);
 
-    this.setMarkers();
-    this.fitBounds();
+    if (this.props.data && this.props.data.length) {
+      this.drawMarkers(this.props.data);
+      this.fitBounds();
+    }
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.data && newProps.data.length) {
+      this.clearMarkers();
+      this.drawMarkers(newProps.data);
+      this.fitBounds();
+    } else {
+      this.clearMarkers();
+    }
   }
 
   componentWillUnmount() {
     this.map.remove();
   }
 
-  setMarkers() {
-    this.markers = [];
+  drawMarkers(data) {
     const sitesIcon = L.divIcon({
       className: 'map-marker',
       iconSize: null,
       html: '<span class="icon -secondary"</span>'
     });
-    this.props.sites.forEach((site) => {
+    data.forEach((site) => {
       const marker = L.marker([site.lat, site.lon], { icon: sitesIcon }).addTo(this.map);
       marker.bindPopup(site.site_name);
       marker.on('mouseover', function () {
@@ -39,13 +51,29 @@ class Map extends React.Component {
       marker.on('mouseout', function () {
         this.closePopup();
       });
+      marker.on('click', () => {
+        if (!this.props.selected) {
+          this.props.goToDetail(site.slug);
+        } else {
+          marker.closePopup();
+        }
+      });
       this.markers.push(marker);
     });
   }
 
+  clearMarkers() {
+    if (this.markers.length) {
+      this.markers.forEach((item) => {
+        this.map.removeLayer(item);
+      });
+      this.markers = [];
+    }
+  }
+
   fitBounds() {
     const markersGroup = new L.featureGroup(this.markers); // eslint-disable-line new-cap
-    this.map.fitBounds(markersGroup.getBounds());
+    this.map.fitBounds(markersGroup.getBounds(), { maxZoom: 8 });
   }
 
   render() {
@@ -57,8 +85,10 @@ class Map extends React.Component {
   }
 }
 
-Map.propTypes = {
-  sites: React.PropTypes.array.isRequired
+SitesMap.propTypes = {
+  selected: React.PropTypes.string,
+  goToDetail: React.PropTypes.func.isRequired,
+  data: React.PropTypes.any
 };
 
-export default Map;
+export default SitesMap;

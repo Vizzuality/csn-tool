@@ -152,7 +152,7 @@ class CountriesMap extends React.Component {
 
   fitBounds() {
     const markersGroup = new L.featureGroup(this.markers); // eslint-disable-line new-cap
-    this.map.fitBounds(markersGroup.getBounds(), { padding: [10, 10] });
+    this.map.fitBounds(markersGroup.getBounds(), { padding: [10, 10], maxZoom: 8 });
   }
 
   outBounds() {

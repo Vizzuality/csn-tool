@@ -7,7 +7,10 @@ function Banner() {
     <div className="c-banner">
       <BasicMap />
       <div className="content">
-        <h3>
+        <svg>
+          <use xlinkHref="#logo-big"></use>
+        </svg>
+        <h3 className="text -light">
           The Critical Site Network (CSN) Tool is an online resource for the conservation
           of 294 species of waterbirds and the important sites upon which they depend
           in Africa and Western Eurasia.

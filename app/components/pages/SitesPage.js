@@ -1,49 +1,44 @@
 import React from 'react';
-import SitesMap from 'components/maps/SitesMap';
-import LoadingSpinner from 'components/common/LoadingSpinner';
-import TableList from 'components/tables/TableList';
+import SitesMap from 'containers/sites/SitesMap';
+import SitesTable from 'containers/sites/SitesTable';
 
 class SitesPage extends React.Component {
   componentWillMount() {
-    if (!this.props.sites.length) {
-      this.props.getSitesList();
+    this.getData(this.props);
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.getData(newProps);
+  }
+
+  getData(props) {
+    if (!props.data) {
+      if (props.selected) {
+        props.getSitesDetail(props.selected);
+      } else {
+        props.getSitesList();
+      }
     }
   }
 
-  getContent() {
+  render() {
     return (
-      <div>
-        <SitesMap sites={this.props.sites} />
+      <div className="l-page">
+        <SitesMap />
         <div className="l-content row">
           <div className="column">
-            <TableList
-              data={this.props.sites}
-              columns={['site_name', 'iso3']}
-            />
+            <SitesTable />
           </div>
         </div>
       </div>
     );
   }
-  render() {
-    return (
-      <div className="l-page">
-        {!this.props.sites.length
-          ? <LoadingSpinner transparent />
-          : this.getContent()
-        }
-      </div>
-    );
-  }
 }
-
-SitesPage.contextTypes = {
-  t: React.PropTypes.func.isRequired
-};
 
 SitesPage.propTypes = {
   getSitesList: React.PropTypes.func.isRequired,
-  sites: React.PropTypes.array
+  getSitesDetail: React.PropTypes.func.isRequired,
+  data: React.PropTypes.any
 };
 
 export default SitesPage;
