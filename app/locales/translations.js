@@ -1,5 +1,6 @@
 export const translations = {
   en: {
+    'country': 'Country',
     'countries': 'Countries',
     'sites': 'Sites',
     'sitesList': 'Sites list',
@@ -12,12 +13,19 @@ export const translations = {
     'site_name': 'Site name',
     'scientific_name': 'Scientific name',
     'english_name': 'English name',
+    'protection_status': 'Protection status',
     'family': 'Family',
     'genus': 'Genus',
     'getStarted': 'Get started',
-    'backToCountries': 'Back to countries'
+    'backToCountries': 'Back to countries',
+    'iba_criteria': 'IBA criteria',
+    'season': 'season',
+    'csn': 'CSN',
+    'iba': 'IBA',
+    'iso3': 'ISO'
   },
   es: {
+    'country': 'Pais',
     'countries': 'Paises',
     'sites': 'Sitios',
     'sitesList': 'Lista de sitios',
@@ -30,9 +38,15 @@ export const translations = {
     'site_name': 'Nombre del sitio',
     'scientific_name': 'Nombre científico',
     'english_name': 'Nombre en inglés',
+    'protection_status': 'Estado de la protección',
     'family': 'Familia',
     'genus': 'Género',
     'getStarted': 'Comenzar',
-    'backToCountries': 'Volver a países'
+    'backToCountries': 'Volver a países',
+    'iba_criteria': 'Criterio IBA',
+    'season': 'estación',
+    'csn': 'CSN',
+    'iba': 'IBA',
+    'iso3': 'ISO'
   },
 }
