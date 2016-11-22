@@ -3,7 +3,7 @@ import SpeciesPage from 'components/pages/SpeciesPage';
 import { getSpeciesList } from 'actions/species';
 
 const mapStateToProps = (state) => ({
-  species: state.species.speciesList
+  species: state.species.list
 });
 
 const mapDispatchToProps = (dispatch) => ({
