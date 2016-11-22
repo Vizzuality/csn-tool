@@ -2,6 +2,10 @@
   position: relative;
   height: 590px;
 
+  svg {
+    margin-bottom: 45px;
+  }
+
   > .content {
     position: absolute;
     top: 0;
@@ -13,14 +17,11 @@
     justify-content: center;
     flex-direction: column;
     z-index: 1;
-    background-color: rgba($black, 0.3);
+    background-color: rgba($black, 0.5);
 
-    > h3 {
+    > .text {
       max-width: 650px;
-      color: $font-main-inv;
-      font-family: $font-body;
-      font-size: $font-size;
-      line-height: 1.6;
+      margin-bottom: 40px;
       text-align: center;
     }
   }

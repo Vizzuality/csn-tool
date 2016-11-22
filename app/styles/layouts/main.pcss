@@ -1,4 +1,6 @@
 .l-header {
+  position: relative;
+  z-index: 1;
   background-color: $bg-dark-color;
 
   @media (--medium-viewport) {
@@ -30,8 +32,12 @@
 }
 
 .l-content {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+  padding-top: 70px;
+  padding-bottom: 50px;
+
+  .intro-text {
+    opacity: 0.6;
+  }
 }
 
 .l-footer {
