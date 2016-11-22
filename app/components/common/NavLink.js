@@ -4,10 +4,8 @@ import { Link } from 'react-router';
 function NavLink(props, context) {
   return (
     <Link activeClassName="-current" className={props.className} to={`/${props.lang}${props.to}`}>
-      {props.i18nText
-        ? context.t(props.i18nText)
-        : props.text
-      }
+      {props.i18nText ? context.t(props.i18nText) : props.text}
+      {props.icon && <svg><use xlinkHref={`#${props.icon}`}></use></svg>}
     </Link>
   );
 }
@@ -27,7 +25,9 @@ NavLink.propTypes = {
   // Define the text to show
   text: React.PropTypes.string,
   // Define the text to show translated
-  i18nText: React.PropTypes.string
+  i18nText: React.PropTypes.string,
+  // Define the icon used for the link
+  icon: React.PropTypes.string
 };
 
 export default NavLink;
