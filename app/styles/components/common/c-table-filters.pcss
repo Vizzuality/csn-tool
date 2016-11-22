@@ -1,7 +1,22 @@
 .c-table-filters {
+
   .tags {
-    > a {
-      margin-right: 1rem;
+    display: flex;
+    justify-content: space-between;
+    background-color: $white;
+    border-radius: 100px;
+
+    a {
+      display: inline-block;
+      height: rem(40);
+      padding: rem(10) rem(40);
+      border-radius: 100px;
+      line-height: rem(20);
+      color: $font-main;
+
+      &.is-active {
+        background-color: $main-color;
+      }
     }
   }
 }
