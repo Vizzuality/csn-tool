@@ -15,7 +15,7 @@ function TableList(props, context) {
             </div>
           ))}
           {props.detailLink &&
-            <div>
+            <div className="text -title">
               ...
             </div>
           }
