@@ -18,7 +18,7 @@ class SpeciesDetailPage extends React.Component {
           <div className="column">
             <TableList
               data={this.props.data}
-              columns={['iba_criteria', 'season', 'max', 'min', 'avg']}
+              columns={['site_name', 'iba_criteria', 'season', 'max', 'min', 'avg']}
             />;
           </div>
         </div>

@@ -98,8 +98,14 @@ const Routes = ({ history }) => (
   >
     <Route path=":lang" component={ContainerPage} onEnter={updateLanguage} >
       <IndexRoute component={HomePage} />
-      <Route path="countries(/:iso)(/:cat)" component={CountriesPage} onEnter={updateCountriesPage} />
-      <Route path="sites(/:site)" component={SitesPage} onEnter={updateSitesPage} />
+      <Route path="countries">
+        <IndexRoute component={CountriesPage} onEnter={updateCountriesPage} />
+        <Route path=":iso(/:cat)" component={CountriesPage} onEnter={updateCountriesPage} />
+      </Route>
+      <Route path="sites">
+        <IndexRoute component={SitesPage} onEnter={updateSitesPage} />
+        <Route path=":site" component={SitesPage} onEnter={updateSitesPage} />
+      </Route>
       <Route path="species">
         <IndexRoute component={SpeciesPage} />
         <Route path=":slug" component={SpeciesDetailPage} />
