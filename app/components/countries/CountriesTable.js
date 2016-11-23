@@ -18,7 +18,7 @@ function CountriesTable(props) {
 
   return (
     <div className="">
-      <CountriesFilters country={props.country} />
+      <CountriesFilters country={props.country} category={props.category} />
       <TableList
         data={props.data}
         columns={columns}
