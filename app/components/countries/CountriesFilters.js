@@ -1,7 +1,8 @@
 import React from 'react';
 import NavLink from 'containers/common/NavLink';
+import CountriesSearch from 'containers/countries/CountriesSearch';
 
-function TableFilters(props, context) {
+function TableFilters(props) {
   return (
     <div className="row c-table-filters">
       <div className="column small-12 medium-5">
@@ -11,15 +12,8 @@ function TableFilters(props, context) {
           <NavLink to={`/countries/${props.country}/populations`} i18nText="populations" className={props.category && props.category === 'populations' ? 'is-active' : ''} />
         </div>
       </div>
-      <div className="column small-12 offset-medium-1 medium-2 filters">
-        <div>
-          {context.t('filters')}
-        </div>
-      </div>
       <div className="column small-12 medium-4 search">
-        <div>
-          {context.t('search')}
-        </div>
+        <CountriesSearch />
       </div>
     </div>
   );
