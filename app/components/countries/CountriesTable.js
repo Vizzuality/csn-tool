@@ -3,25 +3,13 @@ import CountriesFilters from 'components/countries/CountriesFilters';
 import TableList from 'components/tables/TableList';
 
 function CountriesTable(props) {
-  let columns = [];
   const detailLink = props.category === 'populations' ? '' : props.category;
-  switch (props.category) {
-    case 'species':
-      columns = ['scientific_name', 'english_name', 'family', 'genus', 'populations'];
-      break;
-    case 'populations':
-      columns = ['populations', 'scientific_name', 'english_name', 'family', 'genus'];
-      break;
-    default:
-      columns = ['site_name', 'iso3', 'protection_status', 'iba', 'csn'];
-  }
-
   return (
-    <div className="">
+    <div>
       <CountriesFilters country={props.country} category={props.category} />
       <TableList
         data={props.data}
-        columns={columns}
+        columns={props.columns}
         detailLink={detailLink}
       />
     </div>
@@ -31,6 +19,7 @@ function CountriesTable(props) {
 CountriesTable.propTypes = {
   country: React.PropTypes.string.isRequired,
   category: React.PropTypes.string.isRequired,
+  columns: React.PropTypes.array.isRequired,
   data: React.PropTypes.any
 };
 
