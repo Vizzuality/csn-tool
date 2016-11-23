@@ -2,19 +2,15 @@ const rp = require('request-promise');
 const CARTO_SQL = require('../constants').CARTO_SQL;
 
 function getSpeciesList(req, res) {
-  const query = `SELECT s.*, ss.iba_criteria, ss.maximum as max, ss.minimum as min, ss.season
+  const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family, s.slug,
+      string_agg(p.populations, ', ') as population
     FROM species s
-    INNER JOIN species_sites ss ON s.species_id = ss.species_id
-    LIMIT 50`;
+    INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
+    GROUP BY s.scientific_name, s.english_name, s.genus, s.family, s.slug, 1`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
-        results.map((item) => {
-          const species = item;
-          species.avg = (item.max + item.min) / 2;
-          return species;
-        });
         res.json(results);
       } else {
         res.status(404);
@@ -28,11 +24,15 @@ function getSpeciesList(req, res) {
 }
 
 function getSpecies(req, res) {
-  const query = `SELECT s.*, ss.iba_criteria, ss.maximum as max, ss.minimum as min, ss.season, si.lat, si.lon, si.site_name as site_name
+  const query = `SELECT s.slug, ss.csn_criteria as csn, ss.iba_criteria as iba, ss.maximum as max, ss.minimum as min, ss.season,
+      si.country, si.site_name, si.lat, si.lon,
+      string_agg(p.populations, ', ') as population
     FROM species s
     INNER JOIN species_sites ss ON s.species_id = ss.species_id
+    INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
     INNER JOIN sites si ON ss.site_id = si.site_id
     WHERE s.slug = '${req.params.slug}'
+    GROUP BY ss.csn_criteria, ss.iba_criteria, ss.maximum, ss.minimum, ss.season, si.country, si.site_name, si.lat, si.lon, 1
     ORDER BY si.site_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
@@ -40,7 +40,7 @@ function getSpecies(req, res) {
       if (results && results.length > 0) {
         results.map((item) => {
           const species = item;
-          species.avg = (item.max + item.min) / 2;
+          species.avg = Math.floor((item.max + item.min) / 2);
           return species;
         });
         res.json(results);
