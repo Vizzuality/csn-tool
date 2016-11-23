@@ -44,7 +44,8 @@ function getCountrySites(req, res) {
       stc.csn, stc.iba
     FROM sites s
   	INNER JOIN countries c ON s.country_id = c.country_id and c.iso3 = '${req.params.iso}'
-  	INNER JOIN stc ON stc.site_id = s.site_id`;
+  	INNER JOIN stc ON stc.site_id = s.site_id
+    ORDER BY s.site_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);
@@ -68,7 +69,8 @@ function getCountrySpecies(req, res) {
     INNER JOIN species_country sc on sc.species_id = s.species_id
     INNER JOIN countries c on c.country_id = sc.country_id AND c.iso3 = '${req.params.iso}'
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
-    GROUP BY s.scientific_name, s.english_name, s.genus, s.family, s.slug, 1`;
+    GROUP BY s.scientific_name, s.english_name, s.genus, s.family, s.slug, 1
+    ORDER BY s.english_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);
@@ -90,7 +92,8 @@ function getCountryPopulations(req, res) {
     FROM species s
     INNER JOIN species_country sc on sc.species_id = s.species_id
     INNER JOIN countries c on c.country_id = sc.country_id AND c.iso3 = '${req.params.iso}'
-    INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id `;
+    INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
+    ORDER BY s.english_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);

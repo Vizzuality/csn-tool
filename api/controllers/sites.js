@@ -8,7 +8,7 @@ function getSites(req, res) {
     FROM sites s
     INNER JOIN stc ON stc.site_id = s.site_id
     WHERE s.site_id in (SELECT * from p)
-    ORDER BY s.site_name
+    ORDER BY s.country
     LIMIT 400`;
   rp(CARTO_SQL + query)
     .then((data) => {
@@ -33,7 +33,8 @@ function getSitesDetail(req, res) {
     INNER JOIN species_sites ss ON ss.species_id = s.species_id
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
     INNER JOIN sites si ON si.site_id = ss.site_id AND si.slug = '${req.params.slug}'
-    GROUP BY s.scientific_name, s.english_name, ss.csn_criteria, ss.iba_criteria, ss.season, si.lat, si.lon, si.site_name, 1`;
+    GROUP BY s.scientific_name, s.english_name, ss.csn_criteria, ss.iba_criteria, ss.season, si.lat, si.lon, si.site_name, 1
+    ORDER BY s.english_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);
