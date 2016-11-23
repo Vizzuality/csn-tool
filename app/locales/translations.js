@@ -24,7 +24,8 @@ export const translations = {
     'iba': 'IBA',
     'iso3': 'ISO',
     'maximum': 'maximum',
-    'minimum': 'minimum'
+    'minimum': 'minimum',
+    'avg': 'geographic mean'
   },
   es: {
     'country': 'Pais',
@@ -51,6 +52,7 @@ export const translations = {
     'iba': 'IBA',
     'iso3': 'ISO',
     'maximum': 'máximo',
-    'minimum': 'minimo'
+    'minimum': 'minimo',
+    'avg': 'media geográfica'
   },
 }
