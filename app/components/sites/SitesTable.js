@@ -6,9 +6,9 @@ function SitesTable(props, context) {
   const title = props.selected ? context.t('triggerSpeciesList') : context.t('sitesList');
   const detailLink = props.selected ? 'species' : 'sites';
   if (props.selected) {
-    columns = ['scientific_name', 'english_name', 'family', 'genus', 'season'];
+    columns = ['scientific_name', 'english_name', 'population', 'season', 'csn_criteria', 'iba_criteria'];
   } else {
-    columns = ['country', 'site_name', 'protection_status'];
+    columns = ['country', 'site_name', 'protection_status', 'csn', 'iba'];
   }
 
   return (
