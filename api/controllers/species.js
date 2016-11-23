@@ -24,7 +24,7 @@ function getSpeciesList(req, res) {
 }
 
 function getSpecies(req, res) {
-  const query = `SELECT s.slug, ss.csn_criteria as csn, ss.iba_criteria as iba, ss.maximum as max, ss.minimum as min, ss.season,
+  const query = `SELECT s.slug, ss.csn_criteria as csn, ss.iba_criteria as iba, ss.maximum, ss.minimum, ss.season,
       si.country, si.site_name, si.lat, si.lon,
       string_agg(p.populations, ', ') as population
     FROM species s
@@ -40,7 +40,7 @@ function getSpecies(req, res) {
       if (results && results.length > 0) {
         results.map((item) => {
           const species = item;
-          species.avg = Math.floor((item.max + item.min) / 2);
+          species.avg = Math.floor((item.maximum + item.minimum) / 2);
           return species;
         });
         res.json(results);

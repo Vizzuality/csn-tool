@@ -2,7 +2,7 @@ import React from 'react';
 import TableList from 'components/tables/TableList';
 
 function SpeciesDetailTable(props, context) {
-  const columns = ['country', 'site_name', 'population', 'csn', 'iba', 'min', 'max', 'avg'];
+  const columns = ['country', 'site_name', 'population', 'csn', 'iba', 'minimum', 'maximum', 'avg'];
   return (
     <div>
       <h2>{context.t('sitesList')}</h2>

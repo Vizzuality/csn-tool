@@ -22,7 +22,9 @@ export const translations = {
     'season': 'season',
     'csn': 'CSN',
     'iba': 'IBA',
-    'iso3': 'ISO'
+    'iso3': 'ISO',
+    'maximum': 'maximum',
+    'minimum': 'minimum'
   },
   es: {
     'country': 'Pais',
@@ -47,6 +49,8 @@ export const translations = {
     'season': 'estación',
     'csn': 'CSN',
     'iba': 'IBA',
-    'iso3': 'ISO'
+    'iso3': 'ISO',
+    'maximum': 'máximo',
+    'minimum': 'minimo'
   },
 }
