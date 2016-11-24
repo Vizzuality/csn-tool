@@ -89,8 +89,8 @@ class CountriesMap extends React.Component {
       const properties = layer.feature.properties;
       layer.setStyle(this.styles.hide);
       if (properties && properties.name) {
-        const popUp = L.popup()
-          .setContent(`<p>${properties.name}</p><p>Click to see it page</p>`)
+        const popUp = L.popup({ closeButton: false })
+          .setContent(`<h3 class="header -map-title -highlighted">${properties.name}</h3><p class="text -light">Click to see it page</p>`)
 
         layer.on('mouseover', (e) => {
           if (!this.props.country) {
