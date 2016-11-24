@@ -23,9 +23,7 @@ function TableList(props, context) {
         {props.data.map((item, index) => (
           <li key={index} className="table-row">
             {props.columns.map((column, index2) => (
-              <div key={index2} className={`text ${column}`}>
-                {item[column]}
-              </div>
+              <div key={index2} className={`text ${column}`} dangerouslySetInnerHTML={{__html: item[column]}}></div>
             ))}
             {props.detailLink &&
               <div className="link">

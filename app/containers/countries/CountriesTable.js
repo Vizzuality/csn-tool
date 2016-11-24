@@ -19,17 +19,23 @@ function getCountryData(countries, columns) {
 
   if (!data || !countries.searchFilter) return data;
 
-  return data.filter((item) => {
+  const newData = data.map((a) => Object.assign({}, a));
+
+  const filteredData = newData.filter((item) => {
     let match = false;
+    const searchFilter = countries.searchFilter.toLowerCase();
+
     for (let i = 0, cLength = columns.length; i < cLength; i++) {
-      if (typeof item[columns[i]] === 'string'
-          && item[columns[i]].toUpperCase().indexOf(`${countries.searchFilter.toUpperCase()}`) >= 0) {
+      if (typeof item[columns[i]] === 'string' && item[columns[i]].toLowerCase().indexOf(searchFilter) >= 0) {
+        item[columns[i]] = item[columns[i]].toLowerCase().replace(searchFilter, `<span>${searchFilter}</span>`);
         match = true;
         break;
       }
     }
     return match;
   });
+
+  return filteredData;
 }
 
 const mapStateToProps = (state) => {
