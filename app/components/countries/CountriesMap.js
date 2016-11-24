@@ -6,7 +6,7 @@ class CountriesMap extends React.Component {
     super();
     this.styles = {
       hide: { color: 'transparent', weight: 0, opacity: 0 },
-      highlight: { color: '#ffc500', weight: 2, opacity: 0.5 }
+      highlight: { color: '#ffc500', weight: 2, opacity: 0}
     };
     this.markers = [];
     this.initialMap = {
