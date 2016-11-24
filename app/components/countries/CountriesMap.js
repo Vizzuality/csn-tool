@@ -85,6 +85,7 @@ class CountriesMap extends React.Component {
   }
 
   drawGeo(geo) {
+
     const onEachFeature = (layer) => {
       const properties = layer.feature.properties;
       layer.setStyle(this.styles.hide);

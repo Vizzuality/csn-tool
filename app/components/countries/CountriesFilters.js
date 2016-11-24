@@ -12,7 +12,7 @@ function TableFilters(props) {
           <NavLink to={`/countries/${props.country}/populations`} i18nText="populations" className={props.category && props.category === 'populations' ? 'is-active' : ''} />
         </div>
       </div>
-      <div className="column small-12 medium-4 search">
+      <div className="column small-12 medium-4 medium-offset-3">
         <CountriesSearch />
       </div>
     </div>
