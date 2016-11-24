@@ -44,7 +44,7 @@ class SitesMap extends React.Component {
     });
     data.forEach((site) => {
       const marker = L.marker([site.lat, site.lon], { icon: sitesIcon }).addTo(this.map);
-      marker.bindPopup(site.site_name);
+      marker.bindPopup(`<p class="text -light">${site.site_name}</p>`);
       marker.on('mouseover', function () {
         this.openPopup();
       });

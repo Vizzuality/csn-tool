@@ -135,9 +135,10 @@ class CountriesMap extends React.Component {
 
     countryData.forEach((site) => {
       const marker = L.marker([site.lat, site.lon], { icon: sitesIcon }).addTo(this.map);
-      marker.bindPopup(site.site_name);
+      marker.bindPopup(`<p class="text -light">${site.site_name}</p>`);
       marker.on('mouseover', () => {
         marker.openPopup();
+        // debugger
       });
       marker.on('mouseout', () => {
         marker.closePopup();
