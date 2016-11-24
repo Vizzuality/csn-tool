@@ -7,13 +7,13 @@ function CountriesTable(props) {
   const detailLink = props.category === 'populations' ? '' : props.category;
   switch (props.category) {
     case 'species':
-      columns = ['scientific_name', 'english_name', 'family', 'genus', 'populations'];
+      columns = ['scientific_name', 'english_name', 'populations', 'genus', 'family'];
       break;
     case 'populations':
-      columns = ['populations', 'scientific_name', 'english_name', 'family', 'genus'];
+      columns = ['scientific_name', 'english_name', 'populations', 'genus', 'family'];
       break;
     default:
-      columns = ['site_name', 'iso3', 'protection_status', 'iba', 'csn'];
+      columns = ['country', 'site_name', 'protection_status', 'iba', 'csn'];
   }
 
   return (
