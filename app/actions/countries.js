@@ -1,6 +1,6 @@
 import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_SITES,
         GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS,
-        SET_COUNTRY_PARAMS } from 'constants';
+        SET_COUNTRY_PARAMS, SET_COUNTRY_SEARCH } from 'constants';
 import { push } from 'react-router-redux';
 
 export function goCountryDetail(iso) {
@@ -105,5 +105,12 @@ export function setCountryParams(country, category) {
   return {
     type: SET_COUNTRY_PARAMS,
     payload: { country, category }
+  };
+}
+
+export function setSearchFilter(search) {
+  return {
+    type: SET_COUNTRY_SEARCH,
+    payload: search
   };
 }

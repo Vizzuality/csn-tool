@@ -1,10 +1,11 @@
 import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_SITES,
          GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS,
-         SET_COUNTRY_PARAMS } from 'constants';
+         SET_COUNTRY_PARAMS, SET_COUNTRY_SEARCH } from 'constants';
 
 const initialState = {
   selected: '',
   selectedCategory: 'sites',
+  searchFilter: '',
   geoms: false,
   countries: [],
   sites: {},
@@ -21,6 +22,8 @@ export default function (state = initialState, action) {
       };
       return Object.assign({}, state, params);
     }
+    case SET_COUNTRY_SEARCH:
+      return Object.assign({}, state, { searchFilter: action.payload });
     case GET_COUNTRIES_LIST:
       return Object.assign({}, state, { countries: action.payload });
     case GET_COUNTRIES_GEOM:
