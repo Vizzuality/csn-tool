@@ -3,7 +3,7 @@ import React from 'react';
 class Map extends React.Component {
 
   componentDidMount() {
-    this.map = L.map('mapid', {
+    this.map = L.map('map-basic', {
       minZoom: 2,
       zoom: 3,
       center: [52, 7],
