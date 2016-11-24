@@ -6,7 +6,7 @@ class CountriesMap extends React.Component {
     super();
     this.styles = {
       hide: { color: 'transparent', weight: 0, opacity: 0 },
-      highlight: { color: '#ffc500', weight: 2, opacity: 0.5 }
+      highlight: { color: '#ffc500', weight: 2, opacity: 0 }
     };
     this.markers = [];
     this.initialMap = {
@@ -30,7 +30,7 @@ class CountriesMap extends React.Component {
     this.map.attributionControl.addAttribution('Imagery from <a href="http://giscience.uni-hd.de/">GIScience Research Group @ University of Heidelberg</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>');
     this.map.zoomControl.setPosition('topright');
     this.map.scrollWheelZoom.disable();
-    this.tileLayer = L.tileLayer('http://korona.geog.uni-heidelberg.de/tiles/roadsg/x={x}&y={y}&z={z}').addTo(this.map).setZIndex(0);
+    this.tileLayer = L.tileLayer('https://api.mapbox.com/styles/v1/csn/civtok4xx004d2kpo3acytide/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiY3NuIiwiYSI6ImNpdnRvam1qeDAwMXgyenRlZjZiZWc1a2wifQ.Gr5pLJzG-1tucwY4h-rGdA').addTo(this.map).setZIndex(0);
 
     // Adds suppport to topojson
     L.TopoJSON = L.GeoJSON.extend({
@@ -89,11 +89,16 @@ class CountriesMap extends React.Component {
       const properties = layer.feature.properties;
       layer.setStyle(this.styles.hide);
       if (properties && properties.name) {
-        const popup = `<p>${properties.name}</p><p>Click to see it page</p>`;
-        layer.bindPopup(popup);
-        layer.on('mouseover', () => {
+        const popUp = L.popup({ closeButton: false })
+          .setContent(`<h3 class="header -map-title -highlighted">${properties.name}</h3><p class="text -light">Click to see it page</p>`);
+
+        layer.on('mouseover', (e) => {
           if (!this.props.country) {
-            layer.openPopup();
+            const latLng = new L.LatLng(e.latlng.lat, e.latlng.lng);
+
+            popUp
+              .setLatLng(latLng)
+              .openOn(this.map);
             layer.setStyle(this.styles.highlight);
             this.currentLayer = layer;
           }
@@ -130,9 +135,10 @@ class CountriesMap extends React.Component {
 
     countryData.forEach((site) => {
       const marker = L.marker([site.lat, site.lon], { icon: sitesIcon }).addTo(this.map);
-      marker.bindPopup(site.site_name);
+      marker.bindPopup(`<p class="text -light">${site.site_name}</p>`);
       marker.on('mouseover', () => {
         marker.openPopup();
+        // debugger
       });
       marker.on('mouseout', () => {
         marker.closePopup();

@@ -21,8 +21,13 @@ export const translations = {
     'iba_criteria': 'IBA criteria',
     'season': 'season',
     'csn': 'CSN',
+    'csn_criteria': 'CSN criteria',
     'iba': 'IBA',
-    'iso3': 'ISO'
+    'iba_criteria': 'IBA criteria',
+    'iso3': 'ISO',
+    'maximum': 'maximum',
+    'minimum': 'minimum',
+    'avg': 'geographic mean'
   },
   es: {
     'country': 'Pais',
@@ -46,7 +51,12 @@ export const translations = {
     'iba_criteria': 'Criterio IBA',
     'season': 'estación',
     'csn': 'CSN',
+    'csn_criteria': 'Criterio CSN',
     'iba': 'IBA',
-    'iso3': 'ISO'
+    'iba_criteria': 'Criterio IBA',
+    'iso3': 'ISO',
+    'maximum': 'máximo',
+    'minimum': 'minimo',
+    'avg': 'media geográfica'
   },
 }

@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import Select from 'react-select';
 import { translations } from 'locales/translations';
 
-import MainNav from 'containers/common/MainNav';
+import MainNav from 'components/common/MainNav';
 
 
 class Header extends React.Component {
