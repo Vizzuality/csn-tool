@@ -90,11 +90,12 @@ class CountriesMap extends React.Component {
       layer.setStyle(this.styles.hide);
       if (properties && properties.name) {
         const popUp = L.popup({ closeButton: false })
-          .setContent(`<h3 class="header -map-title -highlighted">${properties.name}</h3><p class="text -light">Click to see it page</p>`)
+          .setContent(`<h3 class="header -map-title -highlighted">${properties.name}</h3><p class="text -light">Click to see it page</p>`);
 
         layer.on('mouseover', (e) => {
           if (!this.props.country) {
-            const latLng = new L.LatLng(e.latlng.lat, e.latlng.lng)
+            const latLng = new L.LatLng(e.latlng.lat, e.latlng.lng);
+
             popUp
               .setLatLng(latLng)
               .openOn(this.map);
