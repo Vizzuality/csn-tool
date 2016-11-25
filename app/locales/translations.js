@@ -29,7 +29,18 @@ export const translations = {
     'iso3': 'ISO',
     'maximum': 'maximum',
     'minimum': 'minimum',
-    'avg': 'geographic mean'
+    'avg': 'geographic mean',
+    'population': 'Population',
+    'a': 'Column A',
+    'b': 'Column B',
+    'c': 'Column C',
+    'table_1_status': 'Table 1 Status',
+    'threats': 'Threats',
+    'threat_level_1': 'Threat level 1',
+    'threat_level_2': 'Threat level 2',
+    'habitats': 'Habitats',
+    'habitat_level_1': 'Habitat level 1',
+    'habitat_level_2': 'Habitat level 2'
   },
   es: {
     'country': 'Pais',
@@ -61,6 +72,17 @@ export const translations = {
     'iso3': 'ISO',
     'maximum': 'máximo',
     'minimum': 'minimo',
-    'avg': 'media geográfica'
+    'avg': 'media geográfica',
+    'population': 'Población',
+    'a': 'Columna A',
+    'b': 'Columna B',
+    'c': 'Columna C',
+    'table_1_status': 'Status tabla 1',
+    'threats': 'Amenazas',
+    'threat_level_1': 'Nivel de amenaza 1',
+    'threat_level_2': 'Nivel de amenaza 2',
+    'habitats': 'Hábitats',
+    'habitat_level_1': 'Nivel de hábitat 1',
+    'habitat_level_2': 'Nivel de hábitat 2'
   },
 }
