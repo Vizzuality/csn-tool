@@ -4,7 +4,7 @@ import TableList from 'components/tables/TableList';
 
 function CountriesTable(props) {
   const detailLink = props.category === 'populations' ? '' : props.category;
-
+  // console.log(props)
   return (
     <div>
       <CountriesFilters country={props.country} category={props.category} />
