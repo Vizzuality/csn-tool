@@ -51,7 +51,30 @@ function getSitesDetail(req, res) {
     });
 }
 
+function getSiteThreats(req, res) {
+  const query = `SELECT p.threat_name
+    FROM sites s
+    INNER JOIN sites_threats p on p.site_id = s.site_id
+    WHERE s.slug = '${req.params.slug}'`;
+
+  rp(CARTO_SQL + query)
+    .then((data) => {
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        res.json(results);
+      } else {
+        res.status(404);
+        res.json({ error: 'There are no threats for this Site' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
 module.exports = {
   getSites,
-  getSitesDetail
+  getSitesDetail,
+  getSiteThreats
 };
