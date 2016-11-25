@@ -2,7 +2,10 @@ import { GET_SPECIES_LIST, GET_SPECIES_DATA } from 'constants';
 
 const initialState = {
   list: false,
-  data: {}
+  sites: {},
+  population: {},
+  threats: {},
+  habitats: {}
 };
 
 export default function (state = initialState, action) {
@@ -10,9 +13,9 @@ export default function (state = initialState, action) {
     case GET_SPECIES_LIST:
       return Object.assign({}, state, { list: action.payload });
     case GET_SPECIES_DATA: {
-      const data = Object.assign({}, state.data, {});
+      const data = Object.assign({}, state.sites, {});
       data[action.payload.slug] = action.payload.data;
-      return Object.assign({}, state, { data });
+      return Object.assign({}, state, { sites: data });
     }
     default:
       return state;

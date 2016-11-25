@@ -4,20 +4,20 @@ import SpeciesDetailTable from 'components/species/SpeciesDetailTable';
 
 class SpeciesDetailPage extends React.Component {
   componentWillMount() {
-    if (!this.props.data) {
+    if (!this.props.sites) {
       this.props.getSpecies(this.props.slug);
     }
   }
 
   render() {
-    if (this.props.data.error) return <p>There was an error getting data</p>;
+    if (this.props.sites.error) return <p>There was an error getting data</p>;
     return (
       <div className="l-page">
-        <SpeciesMap data={this.props.data} />
+        <SpeciesMap data={this.props.sites} />
         <div className="l-content">
           <div className="row">
             <div className="column">
-              <SpeciesDetailTable data={this.props.data} />
+              <SpeciesDetailTable data={this.props.sites} />
             </div>
           </div>
         </div>
@@ -34,7 +34,7 @@ SpeciesDetailPage.contextTypes = {
 SpeciesDetailPage.propTypes = {
   slug: React.PropTypes.string.isRequired,
   getSpecies: React.PropTypes.func.isRequired,
-  data: React.PropTypes.any
+  sites: React.PropTypes.any
 };
 
 export default SpeciesDetailPage;
