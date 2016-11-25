@@ -3,7 +3,7 @@ const CARTO_SQL = require('../constants').CARTO_SQL;
 
 function getSpeciesList(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family, s.slug,
-      string_agg(p.populations, ', ') as population
+      string_agg(p.populations, ', ') as population, s.hyperlink
     FROM species s
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
     GROUP BY s.scientific_name, s.english_name, s.genus, s.family, s.slug, 1

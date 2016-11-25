@@ -108,7 +108,7 @@ const Routes = ({ history }) => (
       </Route>
       <Route path="species">
         <IndexRoute component={SpeciesPage} />
-        <Route path=":slug(/:cat)" component={SpeciesDetailPage} onEnter={updateSpeciesDetailPage}/>
+        <Route path=":slug(/:cat)" component={SpeciesDetailPage} onEnter={updateSpeciesDetailPage} />
       </Route>
     </Route>
     <Redirect from="*" to="en" />

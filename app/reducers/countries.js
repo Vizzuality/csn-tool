@@ -1,4 +1,5 @@
 import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_SITES,
+         GET_COUNTRIES_SITES_OLD,
          GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS,
          SET_COUNTRY_PARAMS, SET_COUNTRY_SEARCH } from 'constants';
 
@@ -9,6 +10,7 @@ const initialState = {
   geoms: false,
   countries: [],
   sites: {},
+  sitesOld: {},
   species: {},
   populations: {}
 };
@@ -32,6 +34,11 @@ export default function (state = initialState, action) {
       const sites = Object.assign({}, state.sites, {});
       sites[action.payload.iso] = action.payload.data;
       return Object.assign({}, state, { sites });
+    }
+    case GET_COUNTRIES_SITES_OLD: {
+      const sitesOld = Object.assign({}, state.sitesOld, {});
+      sitesOld[action.payload.iso] = action.payload.data;
+      return Object.assign({}, state, { sitesOld });
     }
     case GET_COUNTRIES_SPECIES: {
       const species = Object.assign({}, state.species, {});
