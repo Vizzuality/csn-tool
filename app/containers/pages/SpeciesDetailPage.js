@@ -4,6 +4,7 @@ import { getSpeciesSites, getSpeciesPopulation, getSpeciesThreats, getSpeciesHab
 
 const mapStateToProps = (state, { params }) => ({
   slug: params.slug,
+  category: state.species.selectedCategory,
   sites: state.species.sites[params.slug] || false,
   population: state.species.population[params.slug] || false,
   threats: state.species.threats[params.slug] || false,

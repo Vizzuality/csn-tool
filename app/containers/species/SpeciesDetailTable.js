@@ -4,11 +4,11 @@ import SpeciesDetailTable from 'components/species/SpeciesDetailTable';
 function getSpeciesDetailColums(category) {
   switch (category) {
     case 'habitats':
-      return ['scientific_name', 'english_name', 'populations', 'genus', 'family'];
-    case 'populations':
-      return ['scientific_name', 'english_name', 'populations', 'genus', 'family'];
+      return ['habitat_level_1', 'habitat_level_2'];
+    case 'population':
+      return ['populations', 'a', 'b', 'c', 'table_1_status'];
     case 'threats':
-      return ['scientific_name', 'english_name', 'populations', 'genus', 'family'];
+      return ['threat_level_1', 'threat_level_2'];
     default:
       return ['site_name', 'protection_status', 'iba', 'csn'];
   }
@@ -18,9 +18,6 @@ function getSpeciesDetailData(species, columns) {
   const data = species[species.selectedCategory] && species[species.selectedCategory][species.selected]
     ? species[species.selectedCategory][species.selected]
     : false;
-
-  console.log("It's here!!!", species);
-  console.log("It's here!!!", data);
 
   if (!data || !species.searchFilter) return data;
 

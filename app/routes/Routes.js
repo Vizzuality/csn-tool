@@ -67,7 +67,7 @@ function shouldUpdateScroll(prevRouterProps, { location }) {
    * both the old path and the new one match (i.e. if the global regex and the
    * regex params match the two paths) */
   const regexes = [
-    /\/countries\/((?:[A-z]|[1-9]|-)+)(?:\/(?:.*))?/
+    /\/(countries|species)\/((?:[A-z]|[1-9]|-)+)(?:\/(?:.*))?/
   ];
 
   for (let i = 0, j = regexes.length; i < j; i++) {
