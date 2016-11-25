@@ -2,6 +2,7 @@ import React from 'react';
 import NavLink from 'containers/common/NavLink';
 import SpeciesMap from 'components/species/SpeciesMap';
 import SpeciesDetailTable from 'containers/species/SpeciesDetailTable';
+import { unslug } from 'helpers/string';
 
 class SpeciesDetailPage extends React.Component {
   componentWillMount() {
@@ -31,7 +32,7 @@ class SpeciesDetailPage extends React.Component {
               {this.props.slug
                 ? <div>
                   <NavLink className="breadcrumb" to="/species" i18nText="backToSpecies" />
-                  <h2>{this.props.slug}</h2>
+                  <h2>{unslug(this.props.slug)}</h2>
                 </div>
                 : ''
               }
