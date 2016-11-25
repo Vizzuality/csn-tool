@@ -53,8 +53,9 @@ class SitesPage extends React.Component {
 SitesPage.propTypes = {
   getSitesList: React.PropTypes.func.isRequired,
   getSitesData: React.PropTypes.func.isRequired,
-  data: React.PropTypes.any,
-  selected: React.PropTypes.string
+  list: React.PropTypes.any,
+  selected: React.PropTypes.string,
+  category: React.PropTypes.string
 };
 
 export default SitesPage;
