@@ -4,7 +4,7 @@ import SitesMap from 'components/sites/SitesMap';
 
 function getData(sites) {
   if (!sites.selected) return sites.list;
-  return sites.details[sites.selected] || [];
+  return sites.species[sites.selected] || [];
 }
 
 const mapStateToProps = (state) => ({

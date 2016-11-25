@@ -25,6 +25,7 @@ export function updateSpeciesDetailPage(actualState, replace, done) {
 
 export function updateSitesPage(actualState, replace, done) {
   const site = actualState.params.site || '';
-  dispatch(setSiteParams(site));
+  const cat = actualState.params.cat || 'species'; // defult value
+  dispatch(setSiteParams(site, cat));
   done();
 }

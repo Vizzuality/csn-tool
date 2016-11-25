@@ -67,7 +67,7 @@ function shouldUpdateScroll(prevRouterProps, { location }) {
    * both the old path and the new one match (i.e. if the global regex and the
    * regex params match the two paths) */
   const regexes = [
-    /\/(countries|species)\/((?:[A-z]|[1-9]|-)+)(?:\/(?:.*))?/
+    /\/(countries|species|sites)\/((?:[A-z]|[1-9]|-)+)(?:\/(?:.*))?/
   ];
 
   for (let i = 0, j = regexes.length; i < j; i++) {
@@ -104,7 +104,7 @@ const Routes = ({ history }) => (
       </Route>
       <Route path="sites">
         <IndexRoute component={SitesPage} onEnter={updateSitesPage} />
-        <Route path=":site" component={SitesPage} onEnter={updateSitesPage} />
+        <Route path=":site(/:cat)" component={SitesPage} onEnter={updateSitesPage} />
       </Route>
       <Route path="species">
         <IndexRoute component={SpeciesPage} />

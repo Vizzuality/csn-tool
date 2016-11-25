@@ -13,12 +13,10 @@ class SitesPage extends React.Component {
   }
 
   getData(props) {
-    if (!props.data) {
-      if (props.selected) {
-        props.getSitesDetail(props.selected);
-      } else {
-        props.getSitesList();
-      }
+    if (props.selected) {
+      props.getSitesData(props.selected, props.category);
+    } else if (!props.list) {
+      props.getSitesList();
     }
   }
 
@@ -43,7 +41,7 @@ class SitesPage extends React.Component {
         </div>
         <div className="l-content row">
           <div className="column">
-            <SitesTable />
+            <SitesTable data={this.props.list} slug={this.props.selected} category={this.props.category} />
           </div>
         </div>
       </div>
@@ -53,7 +51,7 @@ class SitesPage extends React.Component {
 
 SitesPage.propTypes = {
   getSitesList: React.PropTypes.func.isRequired,
-  getSitesDetail: React.PropTypes.func.isRequired,
+  getSitesData: React.PropTypes.func.isRequired,
   data: React.PropTypes.any,
   selected: React.PropTypes.string
 };
