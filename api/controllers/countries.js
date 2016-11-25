@@ -96,7 +96,7 @@ function getCountrySitesOld(req, res) {
 
 function getCountrySpecies(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family,
-    s.slug, string_agg(p.populations, ', ') as populations
+    s.slug, string_agg(p.populations, ', ') as populations, s.hyperlink
     FROM species s
     INNER JOIN species_country sc on sc.species_id = s.species_id
     INNER JOIN countries c on c.country_id = sc.country_id AND

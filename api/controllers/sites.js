@@ -33,7 +33,7 @@ function getSitesDetail(req, res) {
   const query = `SELECT s.scientific_name, s.english_name,
     string_agg(p.populations, ', ') as population,
     ss.csn_criteria, ss.iba_criteria, ss.season, si.lat, si.lon, si.site_name,
-    s.slug
+    s.slug, s.hyperlink
     FROM species s
     INNER JOIN species_sites ss ON ss.species_id = s.species_id
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
