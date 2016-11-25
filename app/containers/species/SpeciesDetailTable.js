@@ -19,8 +19,6 @@ function getSpeciesDetailData(species, columns) {
     ? species[species.selectedCategory][species.selected]
     : false;
 
-    debugger
-
   if (!data || !species.searchFilter) return data;
 
   const newData = data.map((a) => Object.assign({}, a));
