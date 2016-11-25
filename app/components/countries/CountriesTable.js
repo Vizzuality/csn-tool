@@ -3,7 +3,7 @@ import CountriesFilters from 'components/countries/CountriesFilters';
 import TableList from 'components/tables/TableList';
 
 function CountriesTable(props) {
-  const detailLink = props.category === 'populations' ? '' : props.category;
+  const detailLink = ['populations', 'sitesOld'].indexOf(props.category) > 0 ? '' : props.category;
 
   return (
     <div>

@@ -7,6 +7,9 @@ function getCountryColums(category) {
       return ['scientific_name', 'english_name', 'populations', 'genus', 'family'];
     case 'populations':
       return ['scientific_name', 'english_name', 'populations', 'genus', 'family'];
+    case 'sitesOld':
+      return ['site_name', 'protection_status', 'iba', 'csn', 'iba_species',
+        'csn_species', 'total_percentage'];
     default:
       return ['site_name', 'protection_status', 'iba', 'csn'];
   }

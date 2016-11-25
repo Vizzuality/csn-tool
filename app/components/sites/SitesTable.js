@@ -1,22 +1,25 @@
 import React from 'react';
+import SitesFilters from 'components/sites/SitesFilters';
 import TableList from 'components/tables/TableList';
 
 function SitesTable(props, context) {
-  let columns = [];
   const title = props.selected ? context.t('triggerSpeciesList') : context.t('sitesList');
-  const detailLink = props.selected ? 'species' : 'sites';
-  if (props.selected) {
-    columns = ['scientific_name', 'english_name', 'population', 'season', 'csn_criteria', 'iba_criteria'];
-  } else {
-    columns = ['country', 'site_name', 'protection_status', 'csn', 'iba'];
+  let detailLink = props.selected ? 'species' : 'sites';
+
+  if (props.category === 'threats') {
+    detailLink = '';
   }
 
   return (
     <div className="">
       <h2>{title}</h2>
+      {props.selected
+        ? <SitesFilters slug={props.selected} category={props.category} />
+        : ''
+      }
       <TableList
         data={props.data}
-        columns={columns}
+        columns={props.columns}
         detailLink={detailLink}
       />
     </div>
@@ -29,7 +32,9 @@ SitesTable.contextTypes = {
 
 SitesTable.propTypes = {
   selected: React.PropTypes.string,
-  data: React.PropTypes.any
+  data: React.PropTypes.any,
+  category: React.PropTypes.string,
+  columns: React.PropTypes.array.isRequired
 };
 
 export default SitesTable;

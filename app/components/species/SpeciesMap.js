@@ -1,5 +1,7 @@
 import React from 'react';
-import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
+import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, BASEMAP_ATTRIBUTION_CARTO,
+  MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
+import { createLayer } from 'helpers/map';
 
 class SpeciesMap extends React.Component {
 
@@ -21,10 +23,12 @@ class SpeciesMap extends React.Component {
       this.drawMarkers(this.props.data);
       this.fitBounds();
     }
+
+    this.addLayer();
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.data && newProps.data.length) {
+    if (!this.markers) {
       this.drawMarkers(newProps.data);
       this.fitBounds();
     }
@@ -32,6 +36,36 @@ class SpeciesMap extends React.Component {
 
   componentWillUnmount() {
     this.map.remove();
+  }
+
+  addLayer() {
+    const query = `SELECT f.the_geom_webmercator FROM species s
+      INNER JOIN species_and_flywaygroups f on f.ssid = s.species_id
+      WHERE s.slug = '${this.props.slug}'`;
+
+    const cartoCSS = `#species_and_flywaygroups{
+      polygon-fill: #ffc500;
+      polygon-opacity: 0.3;
+      line-width: 0;
+    }`;
+
+    createLayer({
+      sql: query,
+      cartocss: cartoCSS
+    }, this.addTile.bind(this));
+  }
+
+  addTile(url) {
+    if (this.layer) {
+      this.layer.setUrl(url);
+    } else {
+      this.layer = L.tileLayer(url, {
+        noWrap: true,
+        attribution: BASEMAP_ATTRIBUTION_CARTO
+      }).setZIndex(2);
+      this.layer.addTo(this.map);
+      this.layer.getContainer().classList.add('-layer-blending');
+    }
   }
 
   drawMarkers(speciesData) {
@@ -42,8 +76,10 @@ class SpeciesMap extends React.Component {
       html: '<span class="icon"</span>'
     });
     speciesData.forEach((item) => {
-      const marker = L.marker([item.lat, item.lon], { icon: speciesIcon }).addTo(this.map);
-      marker.bindPopup(`<p> Season:${item.season}</p> <p>Site:${item.site_name}</p>`);
+      const marker = L.marker([item.lat, item.lon],
+                              { icon: speciesIcon }).addTo(this.map);
+      marker.
+        bindPopup(`<p>Season:${item.season}</p> <p>Site:${item.site_name}</p>`);
       marker.on('mouseover', function () {
         this.openPopup();
       });
@@ -84,6 +120,7 @@ SpeciesMap.contextTypes = {
 
 
 SpeciesMap.propTypes = {
+  slug: React.PropTypes.string.isRequired,
   data: React.PropTypes.any.isRequired
 };
 

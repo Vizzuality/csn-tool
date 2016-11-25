@@ -1,5 +1,5 @@
 export const MAP_MIN_ZOOM = 3;
-export const MAP_CENTER = [12.586395, -30.300238];
+export const MAP_CENTER = [23.738492, 27.113969];
 export const MAP_MAX_BOUNDS = [
   [82.685014, -171.843425],
   [-65.990152, 176.027656]
@@ -11,3 +11,7 @@ export const BASEMAP_TILE = 'https://api.mapbox.com/styles/v1/csn/civtok4xx004d2
 // Attributions
 export const BASEMAP_ATTRIBUTION_MAPBOX = '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a>';
 export const BASEMAP_ATTRIBUTION_CARTO = 'CARTO <a href="https://carto.com/attributions" target="_blank">attribution</a>';
+
+// Map's endpoints
+export const ENDPOINT_TILES = `https://${process.env.CARTODB_ACCOUNT}.carto.com/api/v1/map/`;
+export const ENDPOINT_SQL = `https://${process.env.CARTODB_ACCOUNT}.carto.com/api/v2/sql`;
