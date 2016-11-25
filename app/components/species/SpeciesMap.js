@@ -27,7 +27,7 @@ class SpeciesMap extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.data && newProps.data.length) {
+    if (!this.markers) {
       this.drawMarkers(newProps.data);
       this.fitBounds();
     }
