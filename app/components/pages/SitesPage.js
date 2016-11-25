@@ -2,6 +2,7 @@ import React from 'react';
 import NavLink from 'containers/common/NavLink';
 import SitesMap from 'containers/sites/SitesMap';
 import SitesTable from 'containers/sites/SitesTable';
+import { unslug } from 'helpers/string';
 
 class SitesPage extends React.Component {
   componentWillMount() {
@@ -31,7 +32,7 @@ class SitesPage extends React.Component {
               <div className="column c-navigation">
                 <div>
                   <NavLink className="breadcrumb" to="/sites" i18nText="backToSites" />
-                  <h2>{this.props.selected}</h2>
+                  <h2>{unslug(this.props.selected)}</h2>
                 </div>
               </div>
             </div>
