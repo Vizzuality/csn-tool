@@ -12,7 +12,6 @@ class SpeciesDetailPage extends React.Component {
 
   componentWillReceiveProps(newProps) {
     if (this.hasNewParams(newProps)) {
-      console.log('get new data');
       this.props.getSpeciesData(newProps.slug, newProps.category);
     }
   }

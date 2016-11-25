@@ -28,12 +28,12 @@ function getSites(req, res) {
 
 function getSitesDetail(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, string_agg(p.populations, ', ') as population,
-      ss.csn_criteria, ss.iba_criteria, ss.season, si.lat, si.lon, si.site_name
+      ss.csn_criteria, ss.iba_criteria, ss.season, si.lat, si.lon, si.site_name, s.slug
     FROM species s
     INNER JOIN species_sites ss ON ss.species_id = s.species_id
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
     INNER JOIN sites si ON si.site_id = ss.site_id AND si.slug = '${req.params.slug}'
-    GROUP BY s.scientific_name, s.english_name, ss.csn_criteria, ss.iba_criteria, ss.season, si.lat, si.lon, si.site_name, 1
+    GROUP BY s.scientific_name, s.english_name, ss.csn_criteria, ss.iba_criteria, ss.season, si.lat, si.lon, si.site_name, 1, s.slug
     ORDER BY s.english_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
