@@ -66,7 +66,7 @@ export const translations = {
     'backToSpecies': 'Volver a especies',
     'backToSites': 'Volver a sitios',
     'iba_criteria': 'Criterio IBA',
-    'season': 'estación',
+    'season': 'Estación',
     'csn': 'CSN',
     'csn_criteria': 'Criterio CSN',
     'iba': 'IBA',
