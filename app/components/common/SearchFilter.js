@@ -21,7 +21,13 @@ class SearchFilter extends React.Component {
 
   render() {
     return (
-      <input type="text" value={this.state.search} placeholder={this.context.t('search')} onChange={this.debouncedChange} />
+      <div className="c-table-search">
+        <label className="text -input-label" htmlFor="tableSearch">search by</label>
+        <input id="tableSearch" type="text" value={this.state.search} placeholder={this.context.t('search')} onChange={this.debouncedChange} />
+        <svg className="icon icon-search">
+          <use xlinkHref="#icon-search"></use>
+        </svg>
+      </div>
     );
   }
 }

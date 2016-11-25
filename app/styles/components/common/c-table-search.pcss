@@ -1,4 +1,40 @@
 .c-table-search {
-  padding: rem(5);
-  border: 0;
+  position: relative;
+
+  input {
+    width: 100%;
+    padding: rem(5);
+    border: 0;
+    font-size: rem(12);
+    line-height: rem(20);
+
+    &::-webkit-input-placeholder {
+      font-size: rem(12);
+      line-height: rem(20);
+    }
+
+    &:-moz-placeholder {
+      font-size: rem(12);
+      line-height: rem(20);
+    }
+
+    &::-moz-placeholder {
+      font-size: rem(12);
+      line-height: rem(20);
+    }
+
+    &:-ms-input-placeholder {
+      font-size: rem(12);
+      line-height: rem(20);
+    }
+  }
+
+  .icon {
+    position: absolute;
+    bottom: rem(5);
+    right: rem(5);
+    width: rem(18);
+    height: rem(18);
+    opacity: 0.6;
+  }
 }
