@@ -1,7 +1,7 @@
 import React from 'react';
 import NavLink from 'containers/common/NavLink';
 import SpeciesMap from 'components/species/SpeciesMap';
-import SpeciesDetailTable from 'components/species/SpeciesDetailTable';
+import SpeciesDetailTable from 'containers/species/SpeciesDetailTable';
 
 class SpeciesDetailPage extends React.Component {
   componentWillMount() {
