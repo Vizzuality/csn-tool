@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useScroll } from 'react-router-scroll';
 import { IndexRoute, Router, Route, applyRouterMiddleware, Redirect } from 'react-router';
-import { updateLanguage, updateCountriesPage, updateSitesPage } from './RoutesActions';
+import { updateLanguage, updateCountriesPage, updateSitesPage, updateSpeciesDetailPage } from './RoutesActions';
 import ReactGA from 'react-ga';
 
 import ContainerPage from 'components/pages/ContainerPage';
@@ -108,7 +108,7 @@ const Routes = ({ history }) => (
       </Route>
       <Route path="species">
         <IndexRoute component={SpeciesPage} />
-        <Route path=":slug(/:cat)" component={SpeciesDetailPage} />
+        <Route path=":slug(/:cat)" component={SpeciesDetailPage} onEnter={updateSpeciesDetailPage}/>
       </Route>
     </Route>
     <Redirect from="*" to="en" />

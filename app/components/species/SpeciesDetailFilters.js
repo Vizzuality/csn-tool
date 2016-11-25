@@ -7,10 +7,10 @@ function SpeciesDetailFilters(props) {
     <div className="row c-table-filters">
       <div className="column small-12 medium-8">
         <div className="tags">
-          <NavLink to={`/species/${props.specie}/sites`} i18nText="sites" className={props.category && props.category === 'sites' ? 'is-active' : ''} />
-          <NavLink to={`/species/${props.specie}/populations`} i18nText="populations" className={props.category && props.category === 'populations' ? 'is-active' : ''} />
-          <NavLink to={`/species/${props.specie}/threats`} i18nText="threats" className={props.category && props.category === 'threats' ? 'is-active' : ''} />
-          <NavLink to={`/species/${props.specie}/habitats`} i18nText="habitats" className={props.category && props.category === 'habitats' ? 'is-active' : ''} />
+          <NavLink to={`/species/${props.slug}/sites`} i18nText="sites" className={props.category && props.category === 'sites' ? 'is-active' : ''} />
+          <NavLink to={`/species/${props.slug}/populations`} i18nText="populations" className={props.category && props.category === 'populations' ? 'is-active' : ''} />
+          <NavLink to={`/species/${props.slug}/threats`} i18nText="threats" className={props.category && props.category === 'threats' ? 'is-active' : ''} />
+          <NavLink to={`/species/${props.slug}/habitats`} i18nText="habitats" className={props.category && props.category === 'habitats' ? 'is-active' : ''} />
         </div>
       </div>
       <div className="column small-12 medium-4">
@@ -26,7 +26,7 @@ SpeciesDetailFilters.contextTypes = {
 };
 
 SpeciesDetailFilters.propTypes = {
-  specie: React.PropTypes.specie,
+  slug: React.PropTypes.string,
   category: React.PropTypes.string
 };
 

@@ -1,4 +1,4 @@
-import { GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION, GET_SPECIES_THREATS, GET_SPECIES_HABITATS } from 'constants';
+import { GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION, GET_SPECIES_THREATS, GET_SPECIES_HABITATS, SET_SPECIES_DETAIL_PARAMS } from 'constants';
 
 export function getSpeciesList() {
   const url = `${config.apiHost}/species`;
@@ -77,5 +77,12 @@ export function getSpeciesHabitats(slug) {
           }
         });
       });
+  };
+}
+
+export function setSpeciesDetailParams(slug, category) {
+  return {
+    type: SET_SPECIES_DETAIL_PARAMS,
+    payload: { slug, category }
   };
 }

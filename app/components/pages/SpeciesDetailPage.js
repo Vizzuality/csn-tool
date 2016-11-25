@@ -33,7 +33,7 @@ class SpeciesDetailPage extends React.Component {
         <div className="l-content">
           <div className="row">
             <div className="column">
-              <SpeciesDetailTable data={this.props.sites} />
+              <SpeciesDetailTable data={this.props.sites} slug={this.props.slug} category={this.props.routeParams.cat} />
             </div>
           </div>
         </div>
