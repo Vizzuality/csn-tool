@@ -57,11 +57,10 @@ function getSpeciesSites(req, res) {
 }
 
 function getSpeciesPopulation(req, res) {
-  const query = `SELECT p.populations, p.a, p.b, p.c, table_1_status, p.species
+  const query = `SELECT p.populations, p.a, p.b, p.c, table_1_status,
+    p.species, p.wpepopid
     FROM species s
-    INNER JOIN species_sites ss ON s.species_id = ss.species_id
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
-    INNER JOIN sites si ON ss.site_id = si.site_id
     WHERE s.slug = '${req.params.slug}'`;
 
   rp(CARTO_SQL + query)
@@ -83,9 +82,7 @@ function getSpeciesPopulation(req, res) {
 function getSpeciesThreats(req, res) {
   const query = `SELECT p.threat_level_1, p.threat_level_2
     FROM species s
-    INNER JOIN species_sites ss ON s.species_id = ss.species_id
     INNER JOIN species_threats p on p.species_id = s.species_id
-    INNER JOIN sites si ON ss.site_id = si.site_id
     WHERE s.slug = '${req.params.slug}'`;
 
   rp(CARTO_SQL + query)
@@ -107,9 +104,7 @@ function getSpeciesThreats(req, res) {
 function getSpeciesHabitats(req, res) {
   const query = `SELECT p.habitat_level_1, p.habitat_level_2
     FROM species s
-    INNER JOIN species_sites ss ON s.species_id = ss.species_id
     INNER JOIN species_habitat p on p.species_id = s.species_id
-    INNER JOIN sites si ON ss.site_id = si.site_id
     WHERE s.slug = '${req.params.slug}'`;
 
   rp(CARTO_SQL + query)
