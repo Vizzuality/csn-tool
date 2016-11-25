@@ -24,7 +24,7 @@ function getSpeciesList(req, res) {
     });
 }
 
-function getSpecies(req, res) {
+function getSpeciesSites(req, res) {
   const query = `SELECT s.slug, ss.csn_criteria as csn, ss.iba_criteria as iba, ss.maximum, ss.minimum, ss.season,
       si.country, si.site_name, si.lat, si.lon,
       string_agg(p.populations, ', ') as population
@@ -56,7 +56,37 @@ function getSpecies(req, res) {
     });
 }
 
+function getSpeciesPopulation(req, res) {
+  const query = `SELECT p.populations, p.a, p.b, p.c, table_1_status, p.species
+    FROM species s
+    INNER JOIN species_sites ss ON s.species_id = ss.species_id
+    INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
+    INNER JOIN sites si ON ss.site_id = si.site_id
+    WHERE s.slug = '${req.params.slug}'`;
+
+  rp(CARTO_SQL + query)
+    .then((data) => {
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        results.map((item) => {
+          const species = item;
+          species.avg = Math.floor((item.maximum + item.minimum) / 2);
+          return species;
+        });
+        res.json(results);
+      } else {
+        res.status(404);
+        res.json({ error: 'No species' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
 module.exports = {
   getSpeciesList,
-  getSpecies
+  getSpeciesSites,
+  getSpeciesPopulation
 };
