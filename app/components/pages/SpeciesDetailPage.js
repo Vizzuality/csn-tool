@@ -1,4 +1,5 @@
 import React from 'react';
+import NavLink from 'containers/common/NavLink';
 import SpeciesMap from 'components/species/SpeciesMap';
 import SpeciesDetailTable from 'components/species/SpeciesDetailTable';
 
@@ -13,7 +14,22 @@ class SpeciesDetailPage extends React.Component {
     if (this.props.sites.error) return <p>There was an error getting data</p>;
     return (
       <div className="l-page">
-        <SpeciesMap data={this.props.sites} />
+        <div className="l-navigation">
+          <div className="row">
+            <div className="column c-navigation">
+              {this.props.slug
+                ? <div>
+                  <NavLink className="breadcrumb" to="/species" i18nText="backToSpecies" />
+                  <h2>{this.props.slug}</h2>
+                </div>
+                : ""
+              }
+            </div>
+          </div>
+        </div>
+        <div className="l-map -species-detail">
+          <SpeciesMap data={this.props.sites} />
+        </div>
         <div className="l-content">
           <div className="row">
             <div className="column">
