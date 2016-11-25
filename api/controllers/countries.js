@@ -62,6 +62,33 @@ function getCountrySites(req, res) {
     });
 }
 
+function getCountrySitesOld(req, res) {
+  const query = `SELECT c.country, c.iso3,
+      s.protected as protection_status, s.site_name, s.iba,
+      CASE
+        WHEN s.csn_species >= 0 THEN 'x'
+        ELSE null
+      END AS csn,
+      s.csn_species, s.iba_species, s.total_percentage
+    FROM sites_from_csn_old s
+  	INNER JOIN countries c ON s.country_id = c.country_id and c.iso3 = '${req.params.iso}'
+    ORDER BY s.site_name`;
+  rp(CARTO_SQL + query)
+    .then((data) => {
+      const result = JSON.parse(data);
+      if (result.rows && result.rows.length > 0) {
+        res.json(result.rows);
+      } else {
+        res.status(404);
+        res.json({ error: 'No sites found' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
 function getCountrySpecies(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family, s.slug,
       string_agg(p.populations, ', ') as populations
@@ -114,6 +141,7 @@ module.exports = {
   getCountries,
   getCountry,
   getCountrySites,
+  getCountrySitesOld,
   getCountrySpecies,
   getCountryPopulations
 };

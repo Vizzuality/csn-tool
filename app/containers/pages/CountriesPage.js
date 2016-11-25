@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import CountriesPage from 'components/pages/CountriesPage';
-import { getCountrySites, getCountrySpecies, getCountryPopulations } from 'actions/countries';
+import { getCountrySites, getCountrySitesOld, getCountrySpecies,
+  getCountryPopulations } from 'actions/countries';
 
 function getCountryData(countries) {
   return countries[countries.selectedCategory] && countries[countries.selectedCategory][countries.selected]
@@ -23,6 +24,9 @@ const mapDispatchToProps = (dispatch) => ({
         break;
       case 'populations':
         dispatch(getCountryPopulations(country));
+        break;
+      case 'sitesOld':
+        dispatch(getCountrySitesOld(country));
         break;
       default:
         dispatch(getCountrySites(country));
