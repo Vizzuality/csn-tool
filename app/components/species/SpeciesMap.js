@@ -1,5 +1,6 @@
 import React from 'react';
-import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, BASEMAP_ATTRIBUTION_CARTO, MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
+import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, BASEMAP_ATTRIBUTION_CARTO,
+  MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
 import { createLayer } from 'helpers/map';
 
 class SpeciesMap extends React.Component {
@@ -75,8 +76,10 @@ class SpeciesMap extends React.Component {
       html: '<span class="icon"</span>'
     });
     speciesData.forEach((item) => {
-      const marker = L.marker([item.lat, item.lon], { icon: speciesIcon }).addTo(this.map);
-      marker.bindPopup(`<p> Season:${item.season}</p> <p>Site:${item.site_name}</p>`);
+      const marker = L.marker([item.lat, item.lon],
+                              { icon: speciesIcon }).addTo(this.map);
+      marker.
+        bindPopup(`<p>Season:${item.season}</p> <p>Site:${item.site_name}</p>`);
       marker.on('mouseover', function () {
         this.openPopup();
       });
