@@ -26,14 +26,22 @@
   height: calc(100vh - $header-height);
   transition: height 0.5s ease;
 
-  &.-short {
+  &.-short,
+  &.-species-detail {
     height: 500px;
   }
 }
 
 .l-content {
-  padding-top: 70px;
-  padding-bottom: 50px;
+  padding: rem(50);
+
+  &.-home {
+    padding-top: rem(70);
+  }
+
+  &.-no-padding {
+    padding: 0;
+  }
 
   .intro-text {
     opacity: 0.6;

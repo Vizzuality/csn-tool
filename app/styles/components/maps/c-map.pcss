@@ -1,6 +1,7 @@
 .c-map {
   min-height: 500px;
   height: 100%;
+  background-color: $ashy-green;
 
   .map-marker {
     position: relative;
@@ -22,6 +23,10 @@
     }
   }
 
+  .-layer-blending {
+    mix-blend-mode: multiply;
+  }
+
   .leaflet-pane {
     z-index: 0;
   }
@@ -34,4 +39,3 @@
     }
   }
 }
-

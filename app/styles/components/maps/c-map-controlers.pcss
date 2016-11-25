@@ -8,8 +8,9 @@
   right: rem(40);
   z-index: 1;
 
-  #countries-map & {
-    top: rem(90)
+  #countries-map &,
+  .-species-detail & {
+    top: rem(90);
   }
 }
 
@@ -37,6 +38,11 @@
       border: 0;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
+    }
+
+    &.leaflet-disabled {
+      background-color: rgba($bg-dark-color, 0.6);
+      color: rgba($white, 0.4);
     }
   }
 

@@ -3,7 +3,7 @@ const CARTO_SQL = require('../constants').CARTO_SQL;
 
 function getSpeciesList(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family, s.slug,
-      string_agg(p.populations, ', ') as population
+      string_agg(p.populations, ', ') as population, s.hyperlink
     FROM species s
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
     GROUP BY s.scientific_name, s.english_name, s.genus, s.family, s.slug, 1
@@ -24,7 +24,7 @@ function getSpeciesList(req, res) {
     });
 }
 
-function getSpecies(req, res) {
+function getSpeciesSites(req, res) {
   const query = `SELECT s.slug, ss.csn_criteria as csn, ss.iba_criteria as iba, ss.maximum, ss.minimum, ss.season,
       si.country, si.site_name, si.lat, si.lon,
       string_agg(p.populations, ', ') as population
@@ -56,7 +56,77 @@ function getSpecies(req, res) {
     });
 }
 
+function getSpeciesPopulation(req, res) {
+  const query = `SELECT p.populations, p.a, p.b, p.c, table_1_status,
+    p.species, p.wpepopid
+    FROM species s
+    INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
+    WHERE s.slug = '${req.params.slug}'`;
+
+  rp(CARTO_SQL + query)
+    .then((data) => {
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        res.json(results);
+      } else {
+        res.status(404);
+        res.json({ error: 'There are no populations for this Species' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
+function getSpeciesThreats(req, res) {
+  const query = `SELECT p.threat_level_1, p.threat_level_2
+    FROM species s
+    INNER JOIN species_threats p on p.species_id = s.species_id
+    WHERE s.slug = '${req.params.slug}'`;
+
+  rp(CARTO_SQL + query)
+    .then((data) => {
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        res.json(results);
+      } else {
+        res.status(404);
+        res.json({ error: 'There are no threats for this Species' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
+function getSpeciesHabitats(req, res) {
+  const query = `SELECT p.habitat_level_1, p.habitat_level_2
+    FROM species s
+    INNER JOIN species_habitat p on p.species_id = s.species_id
+    WHERE s.slug = '${req.params.slug}'`;
+
+  rp(CARTO_SQL + query)
+    .then((data) => {
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        res.json(results);
+      } else {
+        res.status(404);
+        res.json({ error: 'There are no habitats for this Species' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
 module.exports = {
   getSpeciesList,
-  getSpecies
+  getSpeciesSites,
+  getSpeciesPopulation,
+  getSpeciesThreats,
+  getSpeciesHabitats
 };

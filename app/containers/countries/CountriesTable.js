@@ -7,6 +7,9 @@ function getCountryColums(category) {
       return ['scientific_name', 'english_name', 'populations', 'genus', 'family'];
     case 'populations':
       return ['scientific_name', 'english_name', 'populations', 'genus', 'family'];
+    case 'sitesOld':
+      return ['site_name', 'protection_status', 'iba', 'csn', 'iba_species',
+        'csn_species', 'total_percentage'];
     default:
       return ['site_name', 'protection_status', 'iba', 'csn'];
   }
@@ -19,17 +22,24 @@ function getCountryData(countries, columns) {
 
   if (!data || !countries.searchFilter) return data;
 
-  return data.filter((item) => {
+  const newData = data.map((a) => Object.assign({}, a));
+
+  const filteredData = newData.filter((item) => {
     let match = false;
+    const modItem = item;
+    const searchFilter = countries.searchFilter.toLowerCase();
+
     for (let i = 0, cLength = columns.length; i < cLength; i++) {
-      if (typeof item[columns[i]] === 'string'
-          && item[columns[i]].toUpperCase().indexOf(`${countries.searchFilter.toUpperCase()}`) >= 0) {
+      if (typeof modItem[columns[i]] === 'string' && modItem[columns[i]].toLowerCase().indexOf(searchFilter) >= 0) {
+        modItem[columns[i]] = modItem[columns[i]].toLowerCase().replace(searchFilter, `<span>${searchFilter}</span>`);
         match = true;
         break;
       }
     }
     return match;
   });
+
+  return filteredData;
 }
 
 const mapStateToProps = (state) => {

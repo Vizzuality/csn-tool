@@ -5,7 +5,7 @@ function HomePage() {
   return (
     <div className="l-page">
       <Banner />
-      <div className="l-content row">
+      <div className="l-content -home row">
         <div className="column small-12 medium-10 medium-offset-1">
           <h2 className="header -main -center">What can I use this tool for?</h2>
         </div>
