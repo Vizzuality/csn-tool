@@ -22,7 +22,7 @@ class SpeciesDetailPage extends React.Component {
                   <NavLink className="breadcrumb" to="/species" i18nText="backToSpecies" />
                   <h2>{this.props.slug}</h2>
                 </div>
-                : ""
+                : ''
               }
             </div>
           </div>
