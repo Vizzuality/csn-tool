@@ -58,26 +58,8 @@ class CountriesMap extends React.Component {
     this.map.remove();
   }
 
-  initMap() {
-    this.map = L.map('countries-map', {
-      minZoom: MAP_MIN_ZOOM,
-      maxBounds: MAP_MAX_BOUNDS,
-      zoom: MAP_MIN_ZOOM,
-      center: MAP_CENTER,
-      detectRetina: true
-    });
-
-    this.map.attributionControl.addAttribution(BASEMAP_ATTRIBUTION_MAPBOX);
-    this.map.zoomControl.setPosition('topright');
-    this.map.scrollWheelZoom.disable();
-    this.tileLayer = L.tileLayer(BASEMAP_TILE).addTo(this.map).setZIndex(0);
-  }
-
-  initPopup() {
-    this.popup = L.popup({
-      closeButton: false,
-      offset: L.point(0, -6)
-    }).setContent('');
+  setPopupPosition(latLng) {
+    this.popup.setLatLng(latLng);
   }
 
   showPopup(latlng, properties) {
@@ -92,8 +74,26 @@ class CountriesMap extends React.Component {
     this.map.closePopup();
   }
 
-  setPopupPosition(latLng) {
-    this.popup.setLatLng(latLng);
+  initPopup() {
+    this.popup = L.popup({
+      closeButton: false,
+      offset: L.point(0, -6)
+    }).setContent('');
+  }
+
+  initMap() {
+    this.map = L.map('countries-map', {
+      minZoom: MAP_MIN_ZOOM,
+      maxBounds: MAP_MAX_BOUNDS,
+      zoom: MAP_MIN_ZOOM,
+      center: MAP_CENTER,
+      detectRetina: true
+    });
+
+    this.map.attributionControl.addAttribution(BASEMAP_ATTRIBUTION_MAPBOX);
+    this.map.zoomControl.setPosition('topright');
+    this.map.scrollWheelZoom.disable();
+    this.tileLayer = L.tileLayer(BASEMAP_TILE).addTo(this.map).setZIndex(0);
   }
 
   addTopoJSONLayer() {
@@ -166,7 +166,6 @@ class CountriesMap extends React.Component {
       marker.bindPopup(`<p class="text -light">${site.site_name}</p>`);
       marker.on('mouseover', () => {
         marker.openPopup();
-        // debugger
       });
       marker.on('mouseout', () => {
         marker.closePopup();
