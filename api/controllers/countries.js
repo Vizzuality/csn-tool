@@ -102,7 +102,8 @@ function getCountrySpecies(req, res) {
     INNER JOIN countries c on c.country_id = sc.country_id AND
       c.iso3 = '${req.params.iso}'
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
-    GROUP BY s.scientific_name, s.english_name, s.genus, s.family, s.slug, 1
+    GROUP BY s.scientific_name, s.english_name, s.genus, s.family, s.slug, 1,
+    s.hyperlink
     ORDER BY s.english_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
