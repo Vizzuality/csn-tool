@@ -11,3 +11,7 @@ export const BASEMAP_TILE = 'https://api.mapbox.com/styles/v1/csn/civtok4xx004d2
 // Attributions
 export const BASEMAP_ATTRIBUTION_MAPBOX = '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a>';
 export const BASEMAP_ATTRIBUTION_CARTO = 'CARTO <a href="https://carto.com/attributions" target="_blank">attribution</a>';
+
+// Map's endpoints
+export const ENDPOINT_TILES = `https://${process.env.CARTODB_ACCOUNT}.carto.com/api/v1/map/`;
+export const ENDPOINT_SQL = `https://${process.env.CARTODB_ACCOUNT}.carto.com/api/v2/sql`;
