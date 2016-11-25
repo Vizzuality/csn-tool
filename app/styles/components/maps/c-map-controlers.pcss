@@ -1,0 +1,56 @@
+.leaflet-right .leaflet-control {
+  margin: 0;
+}
+
+.leaflet-control-zoom {
+  position: absolute;
+  top: rem(20);
+  right: rem(40);
+  z-index: 1;
+
+  #countries-map & {
+    top: rem(90);
+  }
+}
+
+.leaflet-bar {
+  box-shadow: none;
+  border-radius: 0;
+
+  a,
+  a:hover {
+    width: rem(40);
+    height: rem(40);
+    padding: rem(6);
+    font-size: rem(24);
+    color: $white;
+    background-color: rgba($bg-dark-color, 0.6);
+
+    &:first-child {
+      border: 0;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      border-bottom: rem(1) solid $border-color;
+    }
+
+    &:last-child {
+      border: 0;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &.leaflet-disabled {
+      background-color: rgba($bg-dark-color, 0.6);
+      color: rgba($white, 0.4);
+    }
+  }
+
+  a:hover {
+    background-color: rgba($bg-dark-color, 0.8);
+  }
+}
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  /* border: 1px solid $border-color; */
+}

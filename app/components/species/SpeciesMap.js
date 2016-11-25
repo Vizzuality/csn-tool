@@ -1,19 +1,21 @@
 import React from 'react';
+import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
 
 class SpeciesMap extends React.Component {
 
   componentDidMount() {
     this.map = L.map('map-base', {
-      minZoom: 2,
-      zoom: 3,
-      center: [52, 7],
+      minZoom: MAP_MIN_ZOOM,
+      maxBounds: MAP_MAX_BOUNDS,
+      zoom: MAP_MIN_ZOOM,
+      center: MAP_CENTER,
       detectRetina: true
     });
 
-    this.map.attributionControl.addAttribution('&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>');
+    this.map.attributionControl.addAttribution(BASEMAP_ATTRIBUTION_MAPBOX);
     this.map.zoomControl.setPosition('topright');
     this.map.scrollWheelZoom.disable();
-    this.tileLayer = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png').addTo(this.map).setZIndex(0);
+    this.tileLayer = L.tileLayer(BASEMAP_TILE).addTo(this.map).setZIndex(0);
 
     if (this.props.data && this.props.data.length) {
       this.drawMarkers(this.props.data);
