@@ -5,7 +5,7 @@ import SpeciesDetailTable from 'components/species/SpeciesDetailTable';
 class SpeciesDetailPage extends React.Component {
   componentWillMount() {
     if (!this.props.sites) {
-      this.props.getSpecies(this.props.slug);
+      this.props.getSpeciesData(this.props.slug);
     }
   }
 
@@ -33,7 +33,7 @@ SpeciesDetailPage.contextTypes = {
 
 SpeciesDetailPage.propTypes = {
   slug: React.PropTypes.string.isRequired,
-  getSpecies: React.PropTypes.func.isRequired,
+  getSpeciesData: React.PropTypes.func.isRequired,
   sites: React.PropTypes.any
 };
 

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import SpeciesDetailPage from 'components/pages/SpeciesDetailPage';
-import { getSpeciesSites } from 'actions/species';
+import { getSpeciesSites, getSpeciesPopulation, getSpeciesThreats, getSpeciesHabitats } from 'actions/species';
 
 const mapStateToProps = (state, { params }) => ({
   slug: params.slug,
@@ -11,7 +11,7 @@ const mapStateToProps = (state, { params }) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getSpeciesData: category => {
+  getSpeciesData: (slug, category) => {
     switch (category) {
       case 'population':
         dispatch(getSpeciesPopulation(slug));
@@ -23,7 +23,7 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(getSpeciesHabitats(slug));
         break;
       default:
-        dispatch(getSpeciesSites(slug))
+        dispatch(getSpeciesSites(slug));
         break;
     }
   }
