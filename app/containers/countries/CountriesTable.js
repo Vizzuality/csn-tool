@@ -23,11 +23,12 @@ function getCountryData(countries, columns) {
 
   const filteredData = newData.filter((item) => {
     let match = false;
+    const modItem = item;
     const searchFilter = countries.searchFilter.toLowerCase();
 
     for (let i = 0, cLength = columns.length; i < cLength; i++) {
-      if (typeof item[columns[i]] === 'string' && item[columns[i]].toLowerCase().indexOf(searchFilter) >= 0) {
-        item[columns[i]] = item[columns[i]].toLowerCase().replace(searchFilter, `<span>${searchFilter}</span>`);
+      if (typeof modItem[columns[i]] === 'string' && modItem[columns[i]].toLowerCase().indexOf(searchFilter) >= 0) {
+        modItem[columns[i]] = modItem[columns[i]].toLowerCase().replace(searchFilter, `<span>${searchFilter}</span>`);
         match = true;
         break;
       }
