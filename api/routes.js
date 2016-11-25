@@ -21,6 +21,6 @@ router.route('/species').get(SpeciesCtrl.getSpeciesList);
 router.route('/species/:slug').get(SpeciesCtrl.getSpeciesSites);
 router.route('/species/:slug/population').get(SpeciesCtrl.getSpeciesPopulation);
 router.route('/species/:slug/threats').get(SpeciesCtrl.getSpeciesThreats);
-router.route('/species/:slug/habitats').get(SpeciesCtrl.getSpeciesSites);
+router.route('/species/:slug/habitats').get(SpeciesCtrl.getSpeciesHabitats);
 
 module.exports = router;
