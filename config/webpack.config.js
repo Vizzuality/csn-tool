@@ -43,6 +43,7 @@ const webpackConfig = {
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.CARTODB_ACCOUNT': JSON.stringify(process.env.CARTODB_ACCOUNT),
       config: {
         apiHost: JSON.stringify(process.env.API_HOST),
         googleAnalytics: JSON.stringify(process.env.GOOGLE_ANALYTICS)
@@ -75,7 +76,8 @@ const webpackConfig = {
       components: 'app/components',
       containers: 'app/containers',
       constants: 'app/constants',
-      locales: 'app/locales'
+      locales: 'app/locales',
+      helpers: 'app/helpers'
     },
     extensions: ['', '.js', '.jsx']
   },
