@@ -68,15 +68,34 @@ function getSpeciesPopulation(req, res) {
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
-        results.map((item) => {
-          const species = item;
-          species.avg = Math.floor((item.maximum + item.minimum) / 2);
-          return species;
-        });
         res.json(results);
       } else {
         res.status(404);
-        res.json({ error: 'No species' });
+        res.json({ error: 'There are no populations for this Species' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
+function getSpeciesThreats(req, res) {
+  const query = `SELECT p.threat_level_1, p.threat_level_2
+    FROM species s
+    INNER JOIN species_sites ss ON s.species_id = ss.species_id
+    INNER JOIN species_threats p on p.species_id = s.species_id
+    INNER JOIN sites si ON ss.site_id = si.site_id
+    WHERE s.slug = '${req.params.slug}'`;
+
+  rp(CARTO_SQL + query)
+    .then((data) => {
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        res.json(results);
+      } else {
+        res.status(404);
+        res.json({ error: 'There are no populations for this Species' });
       }
     })
     .catch((err) => {
@@ -88,5 +107,6 @@ function getSpeciesPopulation(req, res) {
 module.exports = {
   getSpeciesList,
   getSpeciesSites,
-  getSpeciesPopulation
+  getSpeciesPopulation,
+  getSpeciesThreats
 };
