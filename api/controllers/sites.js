@@ -40,7 +40,8 @@ function getSitesDetail(req, res) {
     INNER JOIN sites si ON si.site_id = ss.site_id AND
       si.slug = '${req.params.slug}'
     GROUP BY s.scientific_name, s.english_name, ss.csn_criteria,
-    ss.iba_criteria, ss.season, si.lat, si.lon, si.site_name, 1, s.slug
+    ss.iba_criteria, ss.season, si.lat, si.lon, si.site_name, 1, s.slug,
+    s.hyperlink
     ORDER BY s.english_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
