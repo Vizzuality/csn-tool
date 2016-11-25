@@ -1,4 +1,5 @@
 import React from 'react';
+import NavLink from 'containers/common/NavLink';
 import SitesMap from 'containers/sites/SitesMap';
 import SitesTable from 'containers/sites/SitesTable';
 
@@ -24,7 +25,22 @@ class SitesPage extends React.Component {
   render() {
     return (
       <div className="l-page">
-        <SitesMap />
+        {this.props.selected
+          ? <div className="l-navigation">
+            <div className="row">
+              <div className="column c-navigation">
+                <div>
+                  <NavLink className="breadcrumb" to="/sites" i18nText="backToSites" />
+                  <h2>{this.props.selected}</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+          : ''
+        }
+        <div className="l-map -species-detail">
+          <SitesMap slug={this.props.selected} />
+        </div>
         <div className="l-content row">
           <div className="column">
             <SitesTable />
@@ -38,7 +54,8 @@ class SitesPage extends React.Component {
 SitesPage.propTypes = {
   getSitesList: React.PropTypes.func.isRequired,
   getSitesDetail: React.PropTypes.func.isRequired,
-  data: React.PropTypes.any
+  data: React.PropTypes.any,
+  selected: React.PropTypes.string
 };
 
 export default SitesPage;
