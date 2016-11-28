@@ -20,7 +20,6 @@ class SearchFilter extends React.Component {
   }
 
   render() {
-
     return (
       <div className="c-table-search">
         <label className="text -input-label" htmlFor="tableSearch">search by</label>
@@ -39,7 +38,8 @@ SearchFilter.contextTypes = {
 };
 
 SearchFilter.propTypes = {
-  setSearchFilter: React.PropTypes.func.isRequired
+  setSearchFilter: React.PropTypes.func.isRequired,
+  searchFilter: React.PropTypes.string
 };
 
 export default SearchFilter;
