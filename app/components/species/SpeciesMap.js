@@ -1,7 +1,7 @@
 import React from 'react';
 import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, BASEMAP_ATTRIBUTION_CARTO,
   MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
-import { createLayer } from 'helpers/map';
+import { createLayer, getSqlQuery } from 'helpers/map';
 
 class SpeciesMap extends React.Component {
 
@@ -21,10 +21,9 @@ class SpeciesMap extends React.Component {
 
     if (this.props.data && this.props.data.length) {
       this.drawMarkers(this.props.data);
-      this.fitBounds();
     }
 
-    this.addLayer();
+    this.getBounds();
   }
 
   componentWillReceiveProps(newProps) {
@@ -36,6 +35,33 @@ class SpeciesMap extends React.Component {
 
   componentWillUnmount() {
     this.map.remove();
+  }
+
+  getBounds() {
+    const query = `SELECT ST_AsGeoJSON(ST_Envelope(st_union(f.the_geom)))
+      as bbox FROM species s
+      INNER JOIN species_and_flywaygroups f on f.ssid = s.species_id
+      WHERE s.slug = '${this.props.slug}'`;
+
+    getSqlQuery(query, this.setBounds.bind(this));
+  }
+
+  setBounds(res) {
+    const bounds = JSON.parse(res[0].bbox);
+
+    if (bounds) {
+      const coords = bounds.coordinates[0];
+
+      if (coords) {
+        this.map.fitBounds([
+          [coords[2][1], coords[2][0]],
+          [coords[4][1], coords[4][0]]
+
+        ]);
+      }
+    }
+
+    this.addLayer();
   }
 
   addLayer() {
@@ -99,7 +125,7 @@ class SpeciesMap extends React.Component {
     }
   }
 
-  fitBounds() {
+  fitMarkersBounds() {
     const markersGroup = new L.featureGroup(this.markers); // eslint-disable-line new-cap
     this.map.fitBounds(markersGroup.getBounds());
   }
