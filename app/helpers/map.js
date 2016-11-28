@@ -1,4 +1,4 @@
-import { ENDPOINT_TILES } from 'constants/map';
+import { ENDPOINT_TILES, ENDPOINT_SQL } from 'constants/map';
 
 // Layer spec
 const MAP_LAYER_SPEC = {
@@ -35,5 +35,12 @@ export function createLayer(layerData, callback) {
   }).then(response => response.json())
   .then(res => {
     callback(`${ENDPOINT_TILES}${res.layergroupid}/{z}/{x}/{y}@2x.png32`);
+  });
+}
+
+export function getSqlQuery(query, callback) {
+  return fetch(ENDPOINT_SQL + query).then(response => response.json())
+  .then(res => {
+    callback(res.rows);
   });
 }
