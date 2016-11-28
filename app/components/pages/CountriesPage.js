@@ -44,7 +44,7 @@ class CountriesPage extends React.Component {
         <div className={`l-content ${!this.props.country ? '-no-padding' : ''}`}>
           <div className="row">
             <div className="column">
-              {this.props.country && <CountriesTable /> }
+              {this.props.country && <CountriesTable />}
             </div>
           </div>
         </div>
