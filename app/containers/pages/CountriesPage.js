@@ -7,14 +7,17 @@ function getCountryData(countries) {
   return countries[countries.selectedCategory] && countries[countries.selectedCategory][countries.selected]
     ? countries[countries.selectedCategory][countries.selected]
     : false;
-}
+};
 
-const mapStateToProps = (state) => ({
-  country: state.countries.selected,
-  category: state.countries.selectedCategory,
-  countryData: getCountryData(state.countries),
-  countriesLength: state.countries.geoms ? Object.keys(state.countries.geoms.objects).length : 0
-});
+const mapStateToProps = (state) => {
+  return {
+    country: state.countries.selected,
+    category: state.countries.selectedCategory,
+    countryData: getCountryData(state.countries),
+    countriesLength: state.countries.geoms ? Object.keys(state.countries.geoms.objects).length : 0,
+    searchFilter: state.countries.searchFilter
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   getCountryData: (country, category) => {

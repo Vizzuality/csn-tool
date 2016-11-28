@@ -19,7 +19,6 @@ SpeciesDetailTable.contextTypes = {
   t: React.PropTypes.func.isRequired
 };
 
-
 SpeciesDetailTable.propTypes = {
   slug: React.PropTypes.string.isRequired,
   category: React.PropTypes.string.isRequired,

@@ -4,7 +4,7 @@ class SearchFilter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      search: ''
+      search: this.props.searchFilter || ''
     };
     this.debouncedChange = this.handleChange.bind(this);
     this.timeout = null;
@@ -20,6 +20,7 @@ class SearchFilter extends React.Component {
   }
 
   render() {
+
     return (
       <div className="c-table-search">
         <label className="text -input-label" htmlFor="tableSearch">search by</label>
