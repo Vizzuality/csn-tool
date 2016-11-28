@@ -114,7 +114,7 @@ class CountriesMap extends React.Component {
   }
 
   addLayer() {
-    const query = `SELECT * FROM mask`;
+    const query = 'SELECT * FROM mask';
 
     const cartoCSS = `#mask{
       polygon-fill: #000000;
