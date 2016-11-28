@@ -23,29 +23,32 @@ function TableList(props, context) {
         </li>
         {props.data.map((item, index) => (
           <li key={index} className="table-row">
-            {props.columns.map((column, index2) => ((column === 'english_name' && item.hyperlink)
-              ? <div key={index2}><div className={`text ${column}`} dangerouslySetInnerHTML={{ __html: item[column] }} >
-              </div>
-                <a className="external-link" target="_blank" href={item.hyperlink}>
-                  <svg className="icon -small -grey">
-                    <use xlinkHref="#icon-open_in_new"></use>
-                  </svg>
-                </a>
-                <button className="map-link">
-                  <svg className="icon -small -grey">
-                    <use xlinkHref="#icon-map"></use>
-                  </svg>
-                </button>
-              </div>
-              : (column === 'site_name') ? <div key={index2}><div className={`text ${column}`} dangerouslySetInnerHTML={{ __html: item[column] }} >
-              </div>
-                <button className="map-link">
-                  <svg className="icon -small -grey">
-                    <use xlinkHref="#icon-map"></use>
-                  </svg>
-                </button></div>
-              : <div key={index2} className={`text ${column}`} dangerouslySetInnerHTML={{ __html: item[column] }}></div>
-            ))}
+            {props.columns.map((column, index2) => {
+              if (column === 'english_name' && item.hyperlink) {
+                return (<div key={index2}><div className={`text ${column}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
+                  <a className="external-link" target="_blank" href={item.hyperlink}>
+                    <svg className="icon -small -grey">
+                      <use xlinkHref="#icon-open_in_new"></use>
+                    </svg>
+                  </a>
+                  <button className="map-link">
+                    <svg className="icon -small -grey">
+                      <use xlinkHref="#icon-map"></use>
+                    </svg>
+                  </button>
+                </div>);
+              } else if (column === 'site_name') {
+                return (<div key={index2}>
+                  <div className={`text ${column}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
+                  <button className="map-link">
+                    <svg className="icon -small -grey">
+                      <use xlinkHref="#icon-map"></use>
+                    </svg>
+                  </button>
+                </div>);
+              }
+              return (<div key={index2} className={`text ${column}`} dangerouslySetInnerHTML={{ __html: item[column] }}></div>);
+            })}
 
             {props.detailLink &&
               <div className="link">
