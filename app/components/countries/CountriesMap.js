@@ -1,5 +1,6 @@
 import React from 'react';
-import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
+import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, BASEMAP_ATTRIBUTION_CARTO, MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
+import { createLayer } from 'helpers/map';
 
 class CountriesMap extends React.Component {
 
@@ -43,6 +44,7 @@ class CountriesMap extends React.Component {
       this.clearMarkers();
       this.drawMarkers(newProps.data);
       this.fitBounds();
+      this.addLayer();
     } else {
       this.clearMarkers();
     }
@@ -111,6 +113,46 @@ class CountriesMap extends React.Component {
     });
   }
 
+  addLayer() {
+    const query = `SELECT * FROM mask`;
+
+    const cartoCSS = `#mask{
+      polygon-fill: #000000;
+      polygon-opacity: 1;
+      line-color: #000000;
+      line-width: 1;
+      line-opacity: 1;
+    }
+
+    #mask[iso_a3='${this.props.country}']{
+      polygon-fill: #000000;
+      polygon-opacity: 0;
+      line-color: #000000;
+      line-width: 0;
+      line-opacity: 0;
+    }`;
+
+    createLayer({
+      sql: query,
+      cartocss: cartoCSS
+    }, this.addTile.bind(this));
+  }
+
+  addTile(url) {
+    if (this.layer) {
+      this.layer.setUrl(url);
+    } else {
+      this.layer = L.tileLayer(url, {
+        noWrap: true,
+        attribution: BASEMAP_ATTRIBUTION_CARTO
+      }).setZIndex(2);
+      this.layer.addTo(this.map);
+      this.layer.getContainer().classList.add('-layer-blending');
+    }
+
+    this.layer.setOpacity(0.7);
+  }
+
   goToDetail(iso) {
     this.props.goToDetail(iso);
   }
@@ -140,6 +182,7 @@ class CountriesMap extends React.Component {
         layer.on('click', () => {
           if (!this.props.country) {
             this.goToDetail(properties.iso3);
+            layer.setStyle(this.styles.hide);
           } else {
             this.hidePopup();
           }
@@ -189,7 +232,8 @@ class CountriesMap extends React.Component {
   }
 
   outBounds() {
-    this.map.setView(this.initialMap.center, this.initialMap.zoom);
+    this.layer.setOpacity(0);
+    this.map.setView(MAP_CENTER, MAP_MIN_ZOOM);
   }
 
   render() {
