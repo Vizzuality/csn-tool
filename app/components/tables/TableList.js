@@ -30,7 +30,20 @@ function TableList(props, context) {
                   <svg className="icon -small -grey">
                     <use xlinkHref="#icon-open_in_new"></use>
                   </svg>
-                </a></div>
+                </a>
+                <button className="map-link">
+                  <svg className="icon -small -grey">
+                    <use xlinkHref="#icon-map"></use>
+                  </svg>
+                </button>
+              </div>
+              : (column === 'site_name') ? <div key={index2}><div className={`text ${column}`} dangerouslySetInnerHTML={{ __html: item[column] }} >
+              </div>
+                <button className="map-link">
+                  <svg className="icon -small -grey">
+                    <use xlinkHref="#icon-map"></use>
+                  </svg>
+                </button></div>
               : <div key={index2} className={`text ${column}`} dangerouslySetInnerHTML={{ __html: item[column] }}></div>
             ))}
 
@@ -54,7 +67,8 @@ TableList.contextTypes = {
 TableList.propTypes = {
   detailLink: React.PropTypes.string,
   columns: React.PropTypes.array.isRequired,
-  data: React.PropTypes.any.isRequired
+  data: React.PropTypes.any.isRequired,
+  fitBounds: React.PropTypes.func
 };
 
 export default TableList;
