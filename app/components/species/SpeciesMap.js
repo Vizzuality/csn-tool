@@ -102,17 +102,19 @@ class SpeciesMap extends React.Component {
       html: '<span class="icon"</span>'
     });
     speciesData.forEach((item) => {
-      const marker = L.marker([item.lat, item.lon],
-                              { icon: speciesIcon }).addTo(this.map);
-      marker.
-        bindPopup(`<p>Season:${item.season}</p> <p>Site:${item.site_name}</p>`);
-      marker.on('mouseover', function () {
-        this.openPopup();
-      });
-      marker.on('mouseout', function () {
-        this.closePopup();
-      });
-      this.markers.push(marker);
+      if (item.lat && item.lon) {
+        const marker = L.marker([item.lat, item.lon],
+                                { icon: speciesIcon }).addTo(this.map);
+        marker.
+          bindPopup(`<p>Season:${item.season}</p> <p>Site:${item.site_name}</p>`);
+        marker.on('mouseover', function () {
+          this.openPopup();
+        });
+        marker.on('mouseout', function () {
+          this.closePopup();
+        });
+        this.markers.push(marker);
+      }
     });
   }
 
@@ -126,8 +128,10 @@ class SpeciesMap extends React.Component {
   }
 
   fitMarkersBounds() {
-    const markersGroup = new L.featureGroup(this.markers); // eslint-disable-line new-cap
-    this.map.fitBounds(markersGroup.getBounds());
+    if (this.markers.length) {
+      const markersGroup = new L.featureGroup(this.markers); // eslint-disable-line new-cap
+      this.map.fitBounds(markersGroup.getBounds());
+    }
   }
 
   render() {
