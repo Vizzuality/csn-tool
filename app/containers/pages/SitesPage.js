@@ -2,12 +2,17 @@ import { connect } from 'react-redux';
 import SitesPage from 'components/pages/SitesPage';
 import { getSitesList, getSitesSpecies, getSitesThreats } from 'actions/sites';
 
-const mapStateToProps = (state, { params }) => ({
+function getSitesData(sites) {
+  return sites[sites.selectedCategory] && sites[sites.selectedCategory][sites.selected]
+    ? sites[sites.selectedCategory][sites.selected]
+    : false;
+}
+
+const mapStateToProps = (state) => ({
   selected: state.sites.selected,
   category: state.sites.selectedCategory,
   list: state.sites.list,
-  details: state.sites.species[params.selected] || false,
-  threats: state.sites.threats[params.selected] || false
+  data: getSitesData(state.sites)
 });
 
 const mapDispatchToProps = (dispatch) => ({
