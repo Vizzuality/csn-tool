@@ -41,15 +41,27 @@
             height: 100%;
           }
         }
+      }
+
+      .filtered {
+        font-weight: 700 !important;
+        text-decoration: underline;
+      }
+
+      .text {
+        display: inline-block;
 
         &.english_name {
           font-weight: 700;
         }
+      }
 
-        span {
-          font-weight: 700 !important;
-          text-decoration: underline;
-        }
+      .external-link,
+      .map-link {
+        display: inline-block;
+        position: relative;
+        top: 2px;
+        margin-left: rem(5);
       }
     }
   }
