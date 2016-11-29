@@ -43,6 +43,11 @@
     float: left;
     width: 50%;
     height: calc(100vh - $header-height);
+    overflow-y: auto;
+  }
+
+  .l-table {
+    padding-top: calc($header-height + 20px);
   }
 }
 
@@ -50,10 +55,13 @@
   height: calc(100vh - $header-height);
   transition: height 0.5s ease;
 
-  &.-short,
-  &.-species-detail {
+  &.-short {
     height: 500px;
   }
+}
+
+.l-maps-container {
+  height: 100%;
 }
 
 .l-content {
