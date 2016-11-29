@@ -1,13 +1,14 @@
 import { connect } from 'react-redux';
 import SitesPage from 'components/pages/SitesPage';
-import { getSitesList, getSitesSpecies, getSitesThreats } from 'actions/sites';
+import { getSitesList, getSitesSpecies, getSitesThreats, setViewMode } from 'actions/sites';
 
 const mapStateToProps = (state, { params }) => ({
   selected: state.sites.selected,
   category: state.sites.selectedCategory,
   list: state.sites.list,
   details: state.sites.species[params.selected] || false,
-  threats: state.sites.threats[params.selected] || false
+  threats: state.sites.threats[params.selected] || false,
+  viewMode: state.sites.viewMode
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -24,7 +25,8 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(getSitesSpecies(slug));
         break;
     }
-  }
+  },
+  setViewMode: () => dispatch(setViewMode()),
 });
 
 

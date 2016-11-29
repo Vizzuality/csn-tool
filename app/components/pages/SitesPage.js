@@ -1,5 +1,6 @@
 import React from 'react';
 import NavLink from 'containers/common/NavLink';
+import ViewToggler from 'components/common/ViewToggler';
 import SitesMap from 'containers/sites/SitesMap';
 import SitesTable from 'containers/sites/SitesTable';
 import { unslug } from 'helpers/string';
@@ -23,20 +24,24 @@ class SitesPage extends React.Component {
 
   render() {
     return (
-      <div className="l-page">
-        {this.props.selected
-          ? <div className="l-navigation">
-            <div className="row">
-              <div className="column c-navigation">
-                <div>
-                  <NavLink className="breadcrumb" to="/sites" i18nText="backToSites" />
-                  <h2>{unslug(this.props.selected)}</h2>
-                </div>
+      <div className={'l-page ' + this.props.viewMode }>
+        <div className="l-navigation">
+          <div className="row">
+            <div className="column">
+              <div className="navigation-wrapper">
+                {this.props.selected
+                ? <div className="c-navigation">
+                    <NavLink className="breadcrumb" to="/sites" i18nText="backToSites" />
+                    <h2>{unslug(this.props.selected)}</h2>
+                  </div>
+                }
+                <ViewToggler
+                  setViewMode={this.props.setViewMode}
+                />
               </div>
             </div>
           </div>
-          : ''
-        }
+        </div>
         <div className="l-map -species-detail">
           <SitesMap slug={this.props.selected} />
         </div>
@@ -53,6 +58,7 @@ class SitesPage extends React.Component {
 SitesPage.propTypes = {
   getSitesList: React.PropTypes.func.isRequired,
   getSitesData: React.PropTypes.func.isRequired,
+  setViewMode: React.PropTypes.func.isRequired,
   list: React.PropTypes.any,
   selected: React.PropTypes.string,
   category: React.PropTypes.string

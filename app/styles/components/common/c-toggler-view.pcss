@@ -1,0 +1,19 @@
+.c-view-toggler {
+  display: inline-block;
+  border-radius: 100px;
+  background-color: rgba($black, 0.7);
+
+  .toggler {
+    display: inline-block;
+    height: rem(40);
+    padding: rem(10) rem(40);
+    border-radius: 100px;
+    line-height: rem(20);
+    color: $font-main-inv;
+
+    &.is-active {
+      color: $font-main;
+      background-color: $main-color;
+    }
+  }
+}
