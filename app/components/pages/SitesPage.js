@@ -36,14 +36,14 @@ class SitesPage extends React.Component {
                   </div>
                 </div>
               : <div className="navigation-wrapper">
-                  <div className="c-navigation">
-                    <h2>Sites</h2>
-                  </div>
-                  <ViewToggler
-                    viewMode={this.props.viewMode}
-                    setViewMode={this.props.setViewMode}
-                  />
+                <div className="c-navigation">
+                  <h2>Sites</h2>
                 </div>
+                <ViewToggler
+                  viewMode={this.props.viewMode}
+                  setViewMode={this.props.setViewMode}
+                />
+              </div>
               }
             </div>
           </div>
@@ -63,18 +63,18 @@ class SitesPage extends React.Component {
             </div>
           </div>
         : <div className={`l-mask ${this.props.viewMode}`}>
-            <div className="l-map -header">
-              <SitesMap slug={this.props.selected} />
-            </div>
+          <div className="l-map -header">
+            <SitesMap slug={this.props.selected} />
+          </div>
 
-            <div className="l-table">
-              <div className="row">
-                <div className="column">
-                  <SitesTable data={this.props.list} slug={this.props.selected} category={this.props.category} />
-                </div>
+          <div className="l-table">
+            <div className="row">
+              <div className="column">
+                <SitesTable data={this.props.list} slug={this.props.selected} category={this.props.category} />
               </div>
             </div>
           </div>
+        </div>
         }
       </div>
     );

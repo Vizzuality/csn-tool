@@ -9,8 +9,8 @@ class ViewToggler extends React.Component {
   render() {
     return (
       <ul className="c-view-toggler">
-        <li className={this.props.viewMode === 'map' ? 'is-active toggler' : 'toggler'} onClick={ () => this.props.setViewMode('map') } >Map</li>
-        <li className={this.props.viewMode === 'list' ? 'is-active toggler' : 'toggler'} onClick={ () => this.props.setViewMode('list')} >Table</li>
+        <li className={this.props.viewMode === 'map' ? 'is-active toggler' : 'toggler'} onClick={() => this.props.setViewMode('map')} >Map</li>
+        <li className={this.props.viewMode === 'list' ? 'is-active toggler' : 'toggler'} onClick={() => this.props.setViewMode('list')} >Table</li>
       </ul>
     );
   }
