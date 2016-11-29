@@ -30,19 +30,20 @@ function getSites(req, res) {
 }
 
 function getSitesDetail(req, res) {
-  const query = `SELECT s.scientific_name, s.english_name,
-    string_agg(p.populations, ', ') as population,
-    ss.csn_criteria, ss.iba_criteria, ss.season, si.lat, si.lon, si.site_name,
-    s.slug, s.hyperlink
+  const query = `WITH my_sites AS (
+      SELECT DISTINCT the_geom_webmercator, site_id, lat, lon, site_name
+      FROM sites
+      WHERE slug = '${req.params.slug}'
+    )
+    SELECT s.scientific_name, s.english_name, s.slug, string_agg(flyway.populationname, ', ') as population,
+      ss.season, ss.csn_criteria, ss.iba_criteria, my_sites.lat, my_sites.lon, my_sites.site_name
     FROM species s
-    INNER JOIN species_sites ss ON ss.species_id = s.species_id
-    INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
-    INNER JOIN sites si ON si.site_id = ss.site_id AND
-      si.slug = '${req.params.slug}'
-    GROUP BY s.scientific_name, s.english_name, ss.csn_criteria,
-    ss.iba_criteria, ss.season, si.lat, si.lon, si.site_name, 1, s.slug,
-    s.hyperlink
-    ORDER BY s.english_name`;
+    INNER JOIN species_and_flywaygroups AS flyway
+    ON flyway.ssid = s.species_id
+    INNER JOIN species_sites AS ss ON ss.species_id = s.species_id AND ss.site_id IN (SELECT site_id FROM my_sites)
+    INNER JOIN my_sites ON ST_CONTAINS(flyway.the_geom_webmercator, my_sites.the_geom_webmercator)
+    GROUP BY s.scientific_name, s.english_name, s.slug, ss.season, ss.csn_criteria, ss.iba_criteria, my_sites.lat, my_sites.lon, my_sites.site_name
+    ORDER BY s.scientific_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);
