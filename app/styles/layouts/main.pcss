@@ -13,6 +13,7 @@
   top: $header-height;
   right: 0;
   left: 0;
+  padding: rem(20) 0;
   background-color: rgba($bg-dark-color, 0.7);
   z-index: 2;
 
@@ -26,6 +27,23 @@
 .l-main {
   background-color: rgba($bg-main-color, 0.3);
   min-height: calc(100vh - $header-height - $footer-height);
+}
+
+.l-mask {
+  width: 200%;
+  height: calc(100vh - $header-height);
+  transition: .2s ease;
+
+  &.list {
+    margin-left: -100%;
+  }
+
+  .l-map,
+  .l-table {
+    float: left;
+    width: 50%;
+    height: calc(100vh - $header-height);
+  }
 }
 
 .l-map {

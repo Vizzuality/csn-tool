@@ -26,7 +26,7 @@ const mapDispatchToProps = (dispatch) => ({
         break;
     }
   },
-  setViewMode: () => dispatch(setViewMode()),
+  setViewMode: (viewMode) => dispatch(setViewMode(viewMode))
 });
 
 

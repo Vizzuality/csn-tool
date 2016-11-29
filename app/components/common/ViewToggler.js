@@ -1,12 +1,19 @@
 import React from 'react';
 
-function ViewToggler(props, context) {
-  return (
-    <ul className="c-view-toggler">
-      <li className={this.state.modeView === 'map' ? 'is-active toggler' : 'togler'} onclick={this.props.setViewMode('map')} >Map</li>
-      <li className={this.state.modeView === 'list' ? 'is-active toggler' : 'togler'} onclick={this.props.setViewMode('list')} >Table</li>
-    </ul>
-  );
+class ViewToggler extends React.Component {
+  constructor(props) {
+    super(props);
+    this.props = props;
+  }
+
+  render() {
+    return (
+      <ul className="c-view-toggler">
+        <li className={this.props.viewMode === 'map' ? 'is-active toggler' : 'toggler'} onClick={ () => this.props.setViewMode('map') } >Map</li>
+        <li className={this.props.viewMode === 'list' ? 'is-active toggler' : 'toggler'} onClick={ () => this.props.setViewMode('list')} >Table</li>
+      </ul>
+    );
+  }
 }
 
 ViewToggler.contextTypes = {
@@ -15,7 +22,8 @@ ViewToggler.contextTypes = {
 };
 
 ViewToggler.propTypes = {
-  setViewMode: React.PropTypes.func.isRequired
+  viewMode: React.PropTypes.string,
+  setViewMode: React.PropTypes.func
 };
 
 export default ViewToggler;
