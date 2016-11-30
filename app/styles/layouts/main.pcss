@@ -13,8 +13,15 @@
   top: $header-height;
   right: 0;
   left: 0;
+  padding: rem(20) 0;
   background-color: rgba($bg-dark-color, 0.7);
   z-index: 2;
+
+  .navigation-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
 
 .l-main {
@@ -22,14 +29,53 @@
   min-height: calc(100vh - $header-height - $footer-height);
 }
 
+.l-mask {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - $header-height);
+
+  .l-map,
+  .l-table {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .l-map {
+    transform: translateX(0);
+  }
+
+  .l-table {
+    left: 100%;
+    width: 100%;
+    padding-top: calc($header-height + 20px);
+    transform: translateX(0%);
+    overflow-y: auto;
+  }
+
+  &.list {
+    .l-map {
+      transform: translateX(-100%);
+    }
+    .l-table {
+      transform: translateX(-100%);
+    }
+  }
+}
+
 .l-map {
   height: calc(100vh - $header-height);
-  transition: height 0.5s ease;
 
-  &.-short,
-  &.-species-detail {
+  &.-short {
     height: 500px;
   }
+}
+
+.l-maps-container {
+  height: 100%;
 }
 
 .l-content {

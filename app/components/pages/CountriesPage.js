@@ -38,7 +38,7 @@ class CountriesPage extends React.Component {
             </div>
           </div>
         </div>
-        <div className={`l-map ${this.props.country ? '-short' : ''}`}>
+        <div className={`l-map ${this.props.country ? '-short -header' : '-header'}`}>
           <CountriesMap />
         </div>
         <div className={`l-content ${!this.props.country ? '-no-padding' : ''}`}>

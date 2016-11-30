@@ -1,4 +1,4 @@
-import { SET_SITES_PARAMS, GET_SITES_LIST, GET_SITES_SPECIES, GET_SITES_THREATS, SET_SITES_SEARCH } from 'constants';
+import { SET_SITES_PARAMS, GET_SITES_LIST, GET_SITES_SPECIES, GET_SITES_THREATS, SET_SITES_SEARCH, SET_VIEW_MODE } from 'constants';
 
 const initialState = {
   selected: '',
@@ -6,7 +6,8 @@ const initialState = {
   list: false,
   species: {},
   threats: {},
-  searchFilter: ''
+  searchFilter: '',
+  viewMode: 'map'
 };
 
 export default function (state = initialState, action) {
@@ -20,6 +21,8 @@ export default function (state = initialState, action) {
     }
     case SET_SITES_SEARCH:
       return Object.assign({}, state, { searchFilter: action.payload });
+    case SET_VIEW_MODE:
+      return Object.assign({}, state, { viewMode: action.payload });
     case GET_SITES_LIST:
       return Object.assign({}, state, { list: action.payload });
     case GET_SITES_SPECIES: {

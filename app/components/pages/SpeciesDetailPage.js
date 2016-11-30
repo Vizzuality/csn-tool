@@ -39,7 +39,7 @@ class SpeciesDetailPage extends React.Component {
             </div>
           </div>
         </div>
-        <div className="l-map -species-detail">
+        <div className="l-map -short -header">
           <SpeciesMap slug={this.props.slug} data={this.props.sites} />
         </div>
         <div className="l-content">

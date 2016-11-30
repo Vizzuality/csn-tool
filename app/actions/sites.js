@@ -1,4 +1,4 @@
-import { GET_SITES_LIST, GET_SITES_SPECIES, GET_SITES_THREATS, SET_SITES_PARAMS, SET_SITES_SEARCH } from 'constants';
+import { GET_SITES_LIST, GET_SITES_SPECIES, GET_SITES_THREATS, SET_SITES_PARAMS, SET_SITES_SEARCH, SET_VIEW_MODE } from 'constants';
 import { push } from 'react-router-redux';
 
 export function setSiteParams(site, category) {
@@ -75,5 +75,12 @@ export function setSearchFilter(search) {
   return {
     type: SET_SITES_SEARCH,
     payload: search
+  };
+}
+
+export function setViewMode(viewMode) {
+  return {
+    type: SET_VIEW_MODE,
+    payload: viewMode
   };
 }
