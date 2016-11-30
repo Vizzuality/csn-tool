@@ -205,15 +205,17 @@ class CountriesMap extends React.Component {
     });
 
     countryData.forEach((site) => {
-      const marker = L.marker([site.lat, site.lon], { icon: sitesIcon }).addTo(this.map);
-      marker.bindPopup(`<p class="text -light">${site.site_name}</p>`);
-      marker.on('mouseover', () => {
-        marker.openPopup();
-      });
-      marker.on('mouseout', () => {
-        marker.closePopup();
-      });
-      this.markers.push(marker);
+      if (site.lat && site.lon) {
+        const marker = L.marker([site.lat, site.lon], { icon: sitesIcon }).addTo(this.map);
+        marker.bindPopup(`<p class="text -light">${site.site_name}</p>`);
+        marker.on('mouseover', () => {
+          marker.openPopup();
+        });
+        marker.on('mouseout', () => {
+          marker.closePopup();
+        });
+        this.markers.push(marker);
+      }
     });
   }
 
@@ -227,8 +229,10 @@ class CountriesMap extends React.Component {
   }
 
   fitBounds() {
-    const markersGroup = new L.featureGroup(this.markers); // eslint-disable-line new-cap
-    this.map.fitBounds(markersGroup.getBounds(), { padding: [10, 10], maxZoom: 8 });
+    if (this.markers.length) {
+      const markersGroup = new L.featureGroup(this.markers); // eslint-disable-line new-cap
+      this.map.fitBounds(markersGroup.getBounds(), { padding: [10, 10], maxZoom: 8 });
+    }
   }
 
   outBounds() {

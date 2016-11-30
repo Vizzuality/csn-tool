@@ -43,22 +43,24 @@ class SitesMap extends React.Component {
       html: '<span class="icon -secondary"</span>'
     });
     data.forEach((site) => {
-      const marker = L.marker([site.lat, site.lon], { icon: sitesIcon }).addTo(this.map);
-      marker.bindPopup(`<p class="text -light">${site.site_name}</p>`);
-      marker.on('mouseover', function () {
-        this.openPopup();
-      });
-      marker.on('mouseout', function () {
-        this.closePopup();
-      });
-      marker.on('click', () => {
-        if (!this.props.selected) {
-          this.props.goToDetail(site.slug);
-        } else {
-          marker.closePopup();
-        }
-      });
-      this.markers.push(marker);
+      if (site.lat && site.lon) {
+        const marker = L.marker([site.lat, site.lon], { icon: sitesIcon }).addTo(this.map);
+        marker.bindPopup(`<p class="text -light">${site.site_name}</p>`);
+        marker.on('mouseover', function () {
+          this.openPopup();
+        });
+        marker.on('mouseout', function () {
+          this.closePopup();
+        });
+        marker.on('click', () => {
+          if (!this.props.selected) {
+            this.props.goToDetail(site.slug);
+          } else {
+            marker.closePopup();
+          }
+        });
+        this.markers.push(marker);
+      }
     });
   }
 
@@ -72,8 +74,10 @@ class SitesMap extends React.Component {
   }
 
   fitBounds() {
-    const markersGroup = new L.featureGroup(this.markers); // eslint-disable-line new-cap
-    this.map.fitBounds(markersGroup.getBounds(), { maxZoom: 8 });
+    if (this.markers.length) {
+      const markersGroup = new L.featureGroup(this.markers); // eslint-disable-line new-cap
+      this.map.fitBounds(markersGroup.getBounds(), { maxZoom: 8 });
+    }
   }
 
   render() {
