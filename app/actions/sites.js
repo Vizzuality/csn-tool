@@ -1,4 +1,5 @@
-import { GET_SITES_LIST, GET_SITES_SPECIES, GET_SITES_THREATS, SET_SITES_PARAMS,
+import { GET_SITES_LIST, GET_SITES_SPECIES, GET_SITES_POPULATIONS,
+         GET_SITES_THREATS, SET_SITES_PARAMS,
          SET_SITES_SEARCH, SET_VIEW_MODE, GET_SITES_LOCATIONS } from 'constants';
 import { push } from 'react-router-redux';
 
@@ -59,6 +60,27 @@ export function getSitesSpecies(id) {
     } catch (err) {
       dispatch({
         type: GET_SITES_SPECIES,
+        payload: { id, data: [] }
+      });
+    }
+  };
+}
+
+export function getSitePopulations(id) {
+  const url = `${config.apiHost}/sites/${id}/populations`;
+  return dispatch => {
+    try {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          dispatch({
+            type: GET_SITES_POPULATIONS,
+            payload: { id, data }
+          });
+        });
+    } catch (err) {
+      dispatch({
+        type: GET_SITES_POPULATIONS,
         payload: { id, data: [] }
       });
     }

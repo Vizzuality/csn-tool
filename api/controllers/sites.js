@@ -85,6 +85,43 @@ function getSitesSpecies(req, res) {
     });
 }
 
+function getSitePopulations(req, res) {
+  const query = `WITH my_sites AS (
+      SELECT DISTINCT the_geom_webmercator, site_id, lat, lon, site_name
+      FROM sites
+      WHERE site_id = ${req.params.id}
+    )
+    SELECT s.scientific_name, s.english_name, s.species_id as id, flyway.populationname as population,
+      ss.season, ss.csn_criteria, ss.iba_criteria, my_sites.lat, my_sites.lon, my_sites.site_name
+    FROM species s
+    INNER JOIN species_and_flywaygroups AS flyway
+    ON flyway.ssid = s.species_id
+    INNER JOIN species_sites AS ss ON ss.species_id = s.species_id AND ss.site_id IN (SELECT site_id FROM my_sites)
+    INNER JOIN my_sites ON ST_CONTAINS(flyway.the_geom_webmercator, my_sites.the_geom_webmercator)
+    ORDER BY s.scientific_name`;
+  rp(CARTO_SQL + query)
+    .then((data) => {
+      const result = JSON.parse(data);
+      if (result.rows && result.rows.length > 0) {
+        res.json({
+          site: [{
+            lat: result.rows[0].lat,
+            lon: result.rows[0].lon,
+            site_name: result.rows[0].site_name
+          }],
+          data: result.rows
+        });
+      } else {
+        res.status(404);
+        res.json({ site: [], data: [], error: 'No populations for site' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
 function getSiteThreats(req, res) {
   const query = `SELECT s.lat, s.lon, s.site_name, p.threat_name
     FROM sites s
@@ -118,5 +155,6 @@ module.exports = {
   getSites,
   getSitesLocations,
   getSitesSpecies,
+  getSitePopulations,
   getSiteThreats
 };

@@ -1,4 +1,5 @@
-import { SET_SITES_PARAMS, GET_SITES_LIST, GET_SITES_SPECIES, GET_SITES_THREATS,
+import { SET_SITES_PARAMS, GET_SITES_LIST, GET_SITES_SPECIES,
+         GET_SITES_POPULATIONS, GET_SITES_THREATS,
          SET_SITES_SEARCH, SET_VIEW_MODE, GET_SITES_LOCATIONS } from 'constants';
 
 const initialState = {
@@ -7,6 +8,7 @@ const initialState = {
   locations: false,
   list: false,
   species: {},
+  populations: {},
   threats: {},
   searchFilter: '',
   viewMode: 'map'
@@ -33,6 +35,11 @@ export default function (state = initialState, action) {
       const data = Object.assign({}, state.species, {});
       data[action.payload.id] = action.payload.data;
       return Object.assign({}, state, { species: data });
+    }
+    case GET_SITES_POPULATIONS: {
+      const data = Object.assign({}, state.populations, {});
+      data[action.payload.id] = action.payload.data;
+      return Object.assign({}, state, { populations: data });
     }
     case GET_SITES_THREATS: {
       const data = Object.assign({}, state.threats, {});
