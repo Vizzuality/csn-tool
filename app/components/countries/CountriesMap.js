@@ -89,7 +89,8 @@ class CountriesMap extends React.Component {
       maxBounds: MAP_MAX_BOUNDS,
       zoom: MAP_MIN_ZOOM,
       center: MAP_CENTER,
-      detectRetina: true
+      detectRetina: true,
+      zoomAnimation: false
     });
 
     this.map.attributionControl.addAttribution(BASEMAP_ATTRIBUTION_MAPBOX);
