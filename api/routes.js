@@ -16,14 +16,14 @@ router.route('/countries/:iso/populations').get(CountriesCtrl.getCountryPopulati
 // Sites
 router.route('/sites').get(SitesCtrl.getSites);
 router.route('/sites/locations').get(SitesCtrl.getSitesLocations);
-router.route('/sites/:slug').get(SitesCtrl.getSitesDetail);
-router.route('/sites/:slug/threats').get(SitesCtrl.getSiteThreats);
+router.route('/sites/:id').get(SitesCtrl.getSitesSpecies);
+router.route('/sites/:id/threats').get(SitesCtrl.getSiteThreats);
 
 // Species
 router.route('/species').get(SpeciesCtrl.getSpeciesList);
-router.route('/species/:slug').get(SpeciesCtrl.getSpeciesSites);
-router.route('/species/:slug/population').get(SpeciesCtrl.getSpeciesPopulation);
-router.route('/species/:slug/threats').get(SpeciesCtrl.getSpeciesThreats);
-router.route('/species/:slug/habitats').get(SpeciesCtrl.getSpeciesHabitats);
+router.route('/species/:id').get(SpeciesCtrl.getSpeciesSites);
+router.route('/species/:id/population').get(SpeciesCtrl.getSpeciesPopulation);
+router.route('/species/:id/threats').get(SpeciesCtrl.getSpeciesThreats);
+router.route('/species/:id/habitats').get(SpeciesCtrl.getSpeciesHabitats);
 
 module.exports = router;

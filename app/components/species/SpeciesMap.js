@@ -23,13 +23,13 @@ class SpeciesMap extends React.Component {
       this.drawMarkers(this.props.data);
     }
 
-    this.getBounds();
+    this.getBounds(this.props.id);
   }
 
   componentWillReceiveProps(newProps) {
     if (!this.markers) {
       this.drawMarkers(newProps.data);
-      this.fitBounds();
+      this.fitMarkersBounds();
     }
   }
 
@@ -37,11 +37,11 @@ class SpeciesMap extends React.Component {
     this.map.remove();
   }
 
-  getBounds() {
+  getBounds(id) {
     const query = `SELECT ST_AsGeoJSON(ST_Envelope(st_union(f.the_geom)))
       as bbox FROM species s
       INNER JOIN species_and_flywaygroups f on f.ssid = s.species_id
-      WHERE s.slug = '${this.props.slug}'`;
+      WHERE s.species_id = ${id}`;
 
     getSqlQuery(query, this.setBounds.bind(this));
   }
@@ -61,13 +61,13 @@ class SpeciesMap extends React.Component {
       }
     }
 
-    this.addLayer();
+    this.addLayer(this.props.id);
   }
 
-  addLayer() {
+  addLayer(id) {
     const query = `SELECT f.the_geom_webmercator FROM species s
       INNER JOIN species_and_flywaygroups f on f.ssid = s.species_id
-      WHERE s.slug = '${this.props.slug}'`;
+      WHERE s.species_id = ${id}`;
 
     const cartoCSS = `#species_and_flywaygroups{
       polygon-fill: #ffc500;
@@ -130,7 +130,7 @@ class SpeciesMap extends React.Component {
   fitMarkersBounds() {
     if (this.markers.length) {
       const markersGroup = new L.featureGroup(this.markers); // eslint-disable-line new-cap
-      this.map.fitBounds(markersGroup.getBounds());
+      this.map.fitBounds(markersGroup.getBounds(this.props.id), { maxZoom: 6 });
     }
   }
 
@@ -150,7 +150,7 @@ SpeciesMap.contextTypes = {
 
 
 SpeciesMap.propTypes = {
-  slug: React.PropTypes.string.isRequired,
+  id: React.PropTypes.string.isRequired,
   data: React.PropTypes.any.isRequired
 };
 

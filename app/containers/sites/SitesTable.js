@@ -19,7 +19,7 @@ function getSitesData(sites, columns) {
     data = sites.list;
   } else {
     data = sites[sites.selectedCategory] && sites[sites.selectedCategory][sites.selected]
-      ? sites[sites.selectedCategory][sites.selected]
+      ? sites[sites.selectedCategory][sites.selected].data
       : false;
   }
 

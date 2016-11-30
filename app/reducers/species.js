@@ -16,7 +16,7 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case SET_SPECIES_DETAIL_PARAMS: {
       const params = {
-        selected: action.payload.slug,
+        selected: action.payload.id,
         selectedCategory: action.payload.category
       };
       return Object.assign({}, state, params);
@@ -27,22 +27,22 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { list: action.payload });
     case GET_SPECIES_SITES: {
       const data = Object.assign({}, state.sites, {});
-      data[action.payload.slug] = action.payload.data;
+      data[action.payload.id] = action.payload.data;
       return Object.assign({}, state, { sites: data });
     }
     case GET_SPECIES_POPULATION: {
       const data = Object.assign({}, state.population, {});
-      data[action.payload.slug] = action.payload.data;
+      data[action.payload.id] = action.payload.data;
       return Object.assign({}, state, { population: data });
     }
     case GET_SPECIES_THREATS: {
       const data = Object.assign({}, state.threats, {});
-      data[action.payload.slug] = action.payload.data;
+      data[action.payload.id] = action.payload.data;
       return Object.assign({}, state, { threats: data });
     }
     case GET_SPECIES_HABITATS: {
       const data = Object.assign({}, state.habitats, {});
-      data[action.payload.slug] = action.payload.data;
+      data[action.payload.id] = action.payload.data;
       return Object.assign({}, state, { habitats: data });
     }
     default:

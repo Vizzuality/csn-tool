@@ -31,12 +31,12 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { list: action.payload });
     case GET_SITES_SPECIES: {
       const data = Object.assign({}, state.species, {});
-      data[action.payload.slug] = action.payload.data;
+      data[action.payload.id] = action.payload.data;
       return Object.assign({}, state, { species: data });
     }
     case GET_SITES_THREATS: {
       const data = Object.assign({}, state.threats, {});
-      data[action.payload.slug] = action.payload.data;
+      data[action.payload.id] = action.payload.data;
       return Object.assign({}, state, { threats: data });
     }
     default:

@@ -20,16 +20,16 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getSitesList: () => dispatch(getSitesList()),
   getSitesLocations: () => dispatch(getSitesLocations()),
-  getSitesData: (slug, category) => {
+  getSitesData: (id, category) => {
     switch (category) {
       case 'threats':
-        dispatch(getSitesThreats(slug));
+        dispatch(getSitesThreats(id));
         break;
       case 'species':
-        dispatch(getSitesSpecies(slug));
+        dispatch(getSitesSpecies(id));
         break;
       default:
-        dispatch(getSitesSpecies(slug));
+        dispatch(getSitesSpecies(id));
         break;
     }
   },
