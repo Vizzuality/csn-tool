@@ -48,25 +48,10 @@ class SitesPage extends React.Component {
             </div>
           </div>
         </div>
-        {this.props.selected ?
-          <div className="l-page">
-            <div className="l-map -header -short">
-              <SitesMap slug={this.props.selected} />
-            </div>
-
-            <div className="l-table">
-              <div className="row">
-                <div className="column">
-                  <SitesTable data={this.props.list} slug={this.props.selected} category={this.props.category} />
-                </div>
-              </div>
-            </div>
-          </div>
-        : <div className={`l-mask ${this.props.viewMode}`}>
-          <div className="l-map -header">
+        <div className={`${this.props.selected ? 'l-page' : `l-mask ${this.props.viewMode}`}`}>
+          <div className={`l-map -header ${this.props.selected ? '-short' : ''}`}>
             <SitesMap slug={this.props.selected} />
           </div>
-
           <div className="l-table">
             <div className="row">
               <div className="column">
@@ -75,7 +60,6 @@ class SitesPage extends React.Component {
             </div>
           </div>
         </div>
-        }
       </div>
     );
   }

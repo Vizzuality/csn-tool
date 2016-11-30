@@ -30,30 +30,44 @@
 }
 
 .l-mask {
-  width: 200%;
+  position: relative;
+  width: 100%;
   height: calc(100vh - $header-height);
-  transition: 0.2s ease;
-
-  &.list {
-    margin-left: -100%;
-  }
 
   .l-map,
   .l-table {
-    float: left;
-    width: 50%;
-    height: calc(100vh - $header-height);
-    overflow-y: auto;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .l-map {
+    transform: translateX(0);
   }
 
   .l-table {
+    left: 100%;
+    width: 100%;
     padding-top: calc($header-height + 20px);
+    transform: translateX(0%);
+    overflow-y: auto;
+  }
+
+  &.list {
+    .l-map {
+      transform: translateX(-100%);
+    }
+    .l-table {
+      transform: translateX(-100%);
+    }
   }
 }
 
 .l-map {
   height: calc(100vh - $header-height);
-  transition: height 0.5s ease;
 
   &.-short {
     height: 500px;
