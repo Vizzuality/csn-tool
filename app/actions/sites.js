@@ -1,4 +1,5 @@
-import { GET_SITES_LIST, GET_SITES_SPECIES, GET_SITES_THREATS, SET_SITES_PARAMS, SET_SITES_SEARCH, SET_VIEW_MODE } from 'constants';
+import { GET_SITES_LIST, GET_SITES_SPECIES, GET_SITES_THREATS, SET_SITES_PARAMS,
+         SET_SITES_SEARCH, SET_VIEW_MODE, GET_SITES_LOCATIONS } from 'constants';
 import { push } from 'react-router-redux';
 
 export function setSiteParams(site, category) {
@@ -23,6 +24,20 @@ export function getSitesList() {
       .then(data => {
         dispatch({
           type: GET_SITES_LIST,
+          payload: data
+        });
+      });
+  };
+}
+
+export function getSitesLocations() {
+  const url = `${config.apiHost}/sites/locations`;
+  return dispatch => {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        dispatch({
+          type: GET_SITES_LOCATIONS,
           payload: data
         });
       });
