@@ -12,7 +12,7 @@ class CountriesPage extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (this.hasNewParams(newProps) && !newProps.countryData) {
+    if (newProps.country && this.hasNewParams(newProps) && !newProps.countryData) {
       this.props.getCountryData(newProps.country, newProps.category);
     }
   }
