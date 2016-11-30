@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import SitesPage from 'components/pages/SitesPage';
-import { getSitesList, getSitesSpecies, getSitesThreats } from 'actions/sites';
+import { getSitesList, getSitesSpecies, getSitesThreats, setViewMode } from 'actions/sites';
 
 function getSitesData(sites) {
   return sites[sites.selectedCategory] && sites[sites.selectedCategory][sites.selected]
@@ -12,7 +12,8 @@ const mapStateToProps = (state) => ({
   selected: state.sites.selected,
   category: state.sites.selectedCategory,
   list: state.sites.list,
-  data: getSitesData(state.sites)
+  data: getSitesData(state.sites),
+  viewMode: state.sites.viewMode
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -29,7 +30,8 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(getSitesSpecies(slug));
         break;
     }
-  }
+  },
+  setViewMode: (viewMode) => dispatch(setViewMode(viewMode))
 });
 
 
