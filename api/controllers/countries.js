@@ -44,7 +44,7 @@ function getCountrySites(req, res) {
         from species_sites group by site_id)
     SELECT c.country, c.iso3,
       s.protection_status, s.site_name, s.lat, s.lon, s.site_id as id,
-      stc.csn, stc.iba
+      stc.csn, stc.iba, s.hyperlink
     FROM sites s
   	INNER JOIN countries c ON s.country_id = c.country_id AND
     c.iso3 = '${req.params.iso}'

@@ -26,15 +26,19 @@ function getSpeciesList(req, res) {
 }
 
 function getSpeciesSites(req, res) {
-  const query = `SELECT s.species_id as id, ss.csn_criteria as csn, ss.iba_criteria as iba, ss.maximum, ss.minimum, ss.season,
+  const query = `SELECT s.species_id as id, ss.csn_criteria as csn,
+      ss.iba_criteria as iba, ss.maximum, ss.minimum, ss.season,
       si.country, si.site_name, si.lat, si.lon,
-      string_agg(p.populations, ', ') as population
+      string_agg(p.populations, ', ') as population,
+      si.hyperlink
     FROM species s
     INNER JOIN species_sites ss ON s.species_id = ss.species_id
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
     INNER JOIN sites si ON ss.site_id = si.site_id
     WHERE s.species_id = '${req.params.id}'
-    GROUP BY ss.csn_criteria, ss.iba_criteria, ss.maximum, ss.minimum, ss.season, si.country, si.site_name, si.lat, si.lon, 1
+    GROUP BY ss.csn_criteria, ss.iba_criteria, ss.maximum, ss.minimum,
+    ss.season, si.country, si.site_name, si.lat, si.lon,
+    si.hyperlink, 1
     ORDER BY si.site_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
