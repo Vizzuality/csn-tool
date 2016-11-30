@@ -3,28 +3,28 @@ import SpeciesDetailPage from 'components/pages/SpeciesDetailPage';
 import { getSpeciesSites, getSpeciesPopulation, getSpeciesThreats, getSpeciesHabitats } from 'actions/species';
 
 const mapStateToProps = (state, { params }) => ({
-  slug: params.slug,
+  id: params.id,
   category: state.species.selectedCategory,
-  sites: state.species.sites[params.slug] || false,
-  population: state.species.population[params.slug] || false,
-  threats: state.species.threats[params.slug] || false,
-  habitats: state.species.habitats[params.slug] || false
+  sites: state.species.sites[params.id] || false,
+  population: state.species.population[params.id] || false,
+  threats: state.species.threats[params.id] || false,
+  habitats: state.species.habitats[params.id] || false
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getSpeciesData: (slug, category) => {
+  getSpeciesData: (id, category) => {
     switch (category) {
       case 'population':
-        dispatch(getSpeciesPopulation(slug));
+        dispatch(getSpeciesPopulation(id));
         break;
       case 'threats':
-        dispatch(getSpeciesThreats(slug));
+        dispatch(getSpeciesThreats(id));
         break;
       case 'habitats':
-        dispatch(getSpeciesHabitats(slug));
+        dispatch(getSpeciesHabitats(id));
         break;
       default:
-        dispatch(getSpeciesSites(slug));
+        dispatch(getSpeciesSites(id));
         break;
     }
   }

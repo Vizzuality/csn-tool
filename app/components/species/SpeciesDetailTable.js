@@ -6,7 +6,7 @@ function SpeciesDetailTable(props, context) {
   return (
     <div>
       <h2>{context.t('sitesList')}</h2>
-      <SpeciesDetailFilters slug={props.slug} category={props.category} />
+      <SpeciesDetailFilters id={props.id} category={props.category} />
       <TableList
         data={props.data}
         columns={props.columns}
@@ -21,7 +21,7 @@ SpeciesDetailTable.contextTypes = {
 
 
 SpeciesDetailTable.propTypes = {
-  slug: React.PropTypes.string.isRequired,
+  id: React.PropTypes.string.isRequired,
   category: React.PropTypes.string.isRequired,
   data: React.PropTypes.any.isRequired,
   columns: React.PropTypes.array.isRequired

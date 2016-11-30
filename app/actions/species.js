@@ -16,8 +16,8 @@ export function getSpeciesList() {
   };
 }
 
-export function getSpeciesSites(slug) {
-  const url = `${config.apiHost}/species/${slug}`;
+export function getSpeciesSites(id) {
+  const url = `${config.apiHost}/species/${id}`;
   return dispatch => {
     fetch(url)
       .then(response => response.json())
@@ -25,7 +25,7 @@ export function getSpeciesSites(slug) {
         dispatch({
           type: GET_SPECIES_SITES,
           payload: {
-            slug,
+            id,
             data
           }
         });
@@ -33,8 +33,8 @@ export function getSpeciesSites(slug) {
   };
 }
 
-export function getSpeciesPopulation(slug) {
-  const url = `${config.apiHost}/species/${slug}/population`;
+export function getSpeciesPopulation(id) {
+  const url = `${config.apiHost}/species/${id}/population`;
   return dispatch => {
     fetch(url)
       .then(response => response.json())
@@ -42,15 +42,15 @@ export function getSpeciesPopulation(slug) {
         dispatch({
           type: GET_SPECIES_POPULATION,
           payload: {
-            slug,
+            id,
             data
           }
         });
       });
   };
 }
-export function getSpeciesThreats(slug) {
-  const url = `${config.apiHost}/species/${slug}/threats`;
+export function getSpeciesThreats(id) {
+  const url = `${config.apiHost}/species/${id}/threats`;
   return dispatch => {
     fetch(url)
       .then(response => response.json())
@@ -58,15 +58,15 @@ export function getSpeciesThreats(slug) {
         dispatch({
           type: GET_SPECIES_THREATS,
           payload: {
-            slug,
+            id,
             data
           }
         });
       });
   };
 }
-export function getSpeciesHabitats(slug) {
-  const url = `${config.apiHost}/species/${slug}/habitats`;
+export function getSpeciesHabitats(id) {
+  const url = `${config.apiHost}/species/${id}/habitats`;
   return dispatch => {
     fetch(url)
       .then(response => response.json())
@@ -74,7 +74,7 @@ export function getSpeciesHabitats(slug) {
         dispatch({
           type: GET_SPECIES_HABITATS,
           payload: {
-            slug,
+            id,
             data
           }
         });
@@ -82,10 +82,10 @@ export function getSpeciesHabitats(slug) {
   };
 }
 
-export function setSpeciesDetailParams(slug, category) {
+export function setSpeciesDetailParams(id, category) {
   return {
     type: SET_SPECIES_DETAIL_PARAMS,
-    payload: { slug, category }
+    payload: { id, category }
   };
 }
 

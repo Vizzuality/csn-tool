@@ -21,9 +21,9 @@ router.route('/sites/:id/threats').get(SitesCtrl.getSiteThreats);
 
 // Species
 router.route('/species').get(SpeciesCtrl.getSpeciesList);
-router.route('/species/:slug').get(SpeciesCtrl.getSpeciesSites);
-router.route('/species/:slug/population').get(SpeciesCtrl.getSpeciesPopulation);
-router.route('/species/:slug/threats').get(SpeciesCtrl.getSpeciesThreats);
-router.route('/species/:slug/habitats').get(SpeciesCtrl.getSpeciesHabitats);
+router.route('/species/:id').get(SpeciesCtrl.getSpeciesSites);
+router.route('/species/:id/population').get(SpeciesCtrl.getSpeciesPopulation);
+router.route('/species/:id/threats').get(SpeciesCtrl.getSpeciesThreats);
+router.route('/species/:id/habitats').get(SpeciesCtrl.getSpeciesHabitats);
 
 module.exports = router;
