@@ -4,7 +4,7 @@ import CountriesTable from 'components/countries/CountriesTable';
 function getCountryColums(category) {
   switch (category) {
     case 'species':
-      return ['scientific_name', 'english_name', 'populations', 'genus', 'family'];
+      return ['scientific_name', 'english_name', 'populations', 'country_status'];
     case 'populations':
       return ['scientific_name', 'english_name', 'populations', 'genus', 'family'];
     case 'sitesOld':
