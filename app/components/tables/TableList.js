@@ -24,7 +24,7 @@ function TableList(props, context) {
         {props.data.map((item, index) => (
           <li key={index} className="table-row">
             {props.columns.map((column, index2) => {
-              if (column === 'english_name' && item.hyperlink) {
+              if (['english_name', 'site_name'].indexOf(column) >= 0 && item.hyperlink) {
                 return (<div key={index2}><div className={`text ${column}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
                   <a className="external-link" target="_blank" href={item.hyperlink}>
                     <svg className="icon -small -grey">
