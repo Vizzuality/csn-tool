@@ -96,14 +96,15 @@ function getCountrySitesOld(req, res) {
 
 function getCountrySpecies(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family,
-    s.species_id as id, string_agg(p.populations, ', ') as populations, s.hyperlink
+    s.species_id as id, string_agg(p.populations, ', ') as populations, s.hyperlink,
+    sc.country_status
     FROM species s
     INNER JOIN species_country sc on sc.species_id = s.species_id
     INNER JOIN countries c on c.country_id = sc.country_id AND
       c.iso3 = '${req.params.iso}'
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
     GROUP BY s.scientific_name, s.english_name, s.genus, s.family, s.species_id, 1,
-    s.hyperlink
+    s.hyperlink, sc.country_status
     ORDER BY s.english_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
@@ -122,14 +123,17 @@ function getCountrySpecies(req, res) {
 }
 
 function getCountryPopulations(req, res) {
-  const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family,
-    p.populations
-    FROM species s
-    INNER JOIN species_country sc on sc.species_id = s.species_id
-    INNER JOIN countries c on c.country_id = sc.country_id AND
-      c.iso3 = '${req.params.iso}'
-    INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
-    ORDER BY s.english_name`;
+  const query = `with r as (
+    SELECT ssis, wpepopid, wpesppid FROM
+    populationflyways_idcodesonly_dissolved
+    WHERE ST_Intersects(the_geom,
+     (SELECT the_geom FROM world_borders WHERE iso3 = '${req.params.iso}'))),
+  f AS (SELECT ssis,  wpepopid, wpesppid AS wpesppid FROM r ),
+  d AS (select * from species s INNER JOIN f ON species_id=ssis)
+  SELECT scientific_name, d.english_name, d.wpepopid pop_id, dd.* from d
+  INNER JOIN populations_species_no_geo dd on d.wpepopid=dd.wpepopid
+  ORDER BY d.scientific_name
+  `;
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);

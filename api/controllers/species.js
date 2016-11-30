@@ -8,7 +8,7 @@ function getSpeciesList(req, res) {
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
     GROUP BY s.scientific_name, s.english_name, s.genus, s.family, s.species_id, 1,
     s.hyperlink
-    ORDER BY s.english_name`;
+    ORDER BY s.scientific_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
