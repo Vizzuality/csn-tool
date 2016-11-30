@@ -12,7 +12,7 @@ function SitesFilters(props) {
         </div>
       </div>
       <div className="column small-12 medium-4">
-        <SitesSearch />
+        <SitesSearch placeholder="sitesFilter" />
       </div>
     </div>
   );

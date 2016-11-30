@@ -14,7 +14,7 @@ function SpeciesDetailFilters(props) {
         </div>
       </div>
       <div className="column small-12 medium-4">
-        <SpeciesDetailSearch />
+        <SpeciesDetailSearch placeholder="speciesFilter" />
       </div>
     </div>
   );
