@@ -61,7 +61,7 @@ class SitesMap extends React.Component {
     data.forEach((site) => {
       if (site.lat && site.lon) {
         const marker = L.marker([site.lat, site.lon], { icon: sitesIcon });
-        marker.bindPopup(`<p class="text -light">${this.props.slug ? site.scientific_name : site.site_name}</p>`);
+        marker.bindPopup(`<p class="text -light">${site.site_name}</p>`);
         marker.on('mouseover', function () {
           this.openPopup();
         });
@@ -70,7 +70,7 @@ class SitesMap extends React.Component {
         });
         marker.on('click', () => {
           if (!this.props.selected) {
-            this.props.goToDetail(site.slug);
+            this.props.goToDetail(site.id);
           } else {
             marker.closePopup();
           }
@@ -106,7 +106,7 @@ class SitesMap extends React.Component {
 SitesMap.propTypes = {
   selected: React.PropTypes.string,
   goToDetail: React.PropTypes.func.isRequired,
-  slug: React.PropTypes.string,
+  id: React.PropTypes.string,
   data: React.PropTypes.any
 };
 

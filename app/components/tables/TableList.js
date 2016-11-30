@@ -52,7 +52,7 @@ function TableList(props, context) {
 
             {props.detailLink &&
               <div className="link">
-                <NavLink to={`/${props.detailLink}/${item.slug}`} icon="icon-table_arrow_right" />
+                <NavLink to={`/${props.detailLink}/${item.id}`} icon="icon-table_arrow_right" />
               </div>
             }
           </li>

@@ -9,10 +9,10 @@ export function setSiteParams(site, category) {
   };
 }
 
-export function goSiteDetail(slug) {
+export function goSiteDetail(id) {
   return (dispatch, state) => {
     const lang = state().i18nState.lang;
-    dispatch(push(`/${lang}/sites/${slug}`));
+    dispatch(push(`/${lang}/sites/${id}`));
   };
 }
 
@@ -44,8 +44,8 @@ export function getSitesLocations() {
   };
 }
 
-export function getSitesSpecies(slug) {
-  const url = `${config.apiHost}/sites/${slug}`;
+export function getSitesSpecies(id) {
+  const url = `${config.apiHost}/sites/${id}`;
   return dispatch => {
     try {
       fetch(url)
@@ -53,20 +53,20 @@ export function getSitesSpecies(slug) {
         .then(data => {
           dispatch({
             type: GET_SITES_SPECIES,
-            payload: { slug, data }
+            payload: { id, data }
           });
         });
     } catch (err) {
       dispatch({
         type: GET_SITES_SPECIES,
-        payload: { slug, data: [] }
+        payload: { id, data: [] }
       });
     }
   };
 }
 
-export function getSitesThreats(slug) {
-  const url = `${config.apiHost}/sites/${slug}/threats`;
+export function getSitesThreats(id) {
+  const url = `${config.apiHost}/sites/${id}/threats`;
   return dispatch => {
     try {
       fetch(url)
@@ -74,13 +74,13 @@ export function getSitesThreats(slug) {
         .then(data => {
           dispatch({
             type: GET_SITES_THREATS,
-            payload: { slug, data }
+            payload: { id, data }
           });
         });
     } catch (err) {
       dispatch({
         type: GET_SITES_THREATS,
-        payload: { slug, data: [] }
+        payload: { id, data: [] }
       });
     }
   };

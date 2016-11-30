@@ -4,7 +4,9 @@ import SitesMap from 'components/sites/SitesMap';
 
 function getData(sites) {
   if (!sites.selected) return sites.locations;
-  return sites.species[sites.selected] || [];
+  return sites[sites.selectedCategory] && sites[sites.selectedCategory][sites.selected]
+    ? sites[sites.selectedCategory][sites.selected].site
+    : [];
 }
 
 const mapStateToProps = (state) => ({
@@ -13,7 +15,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  goToDetail: (slug) => dispatch(goSiteDetail(slug))
+  goToDetail: (id) => dispatch(goSiteDetail(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SitesMap);

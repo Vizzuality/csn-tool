@@ -14,7 +14,7 @@ function SitesTable(props, context) {
     <div className="">
       <h2>{title}</h2>
       {props.selected
-        ? <SitesFilters slug={props.selected} category={props.category} />
+        ? <SitesFilters id={props.selected} category={props.category} />
         : ''
       }
       <TableList
