@@ -15,6 +15,7 @@ router.route('/countries/:iso/populations').get(CountriesCtrl.getCountryPopulati
 
 // Sites
 router.route('/sites').get(SitesCtrl.getSites);
+router.route('/sites/locations').get(SitesCtrl.getSitesLocations);
 router.route('/sites/:slug').get(SitesCtrl.getSitesDetail);
 router.route('/sites/:slug/threats').get(SitesCtrl.getSiteThreats);
 

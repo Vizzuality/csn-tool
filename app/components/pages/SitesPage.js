@@ -17,8 +17,13 @@ class SitesPage extends React.Component {
   getData(props) {
     if (props.selected && !props.data) {
       props.getSitesData(props.selected, props.category);
-    } else if (!props.selected && !props.list) {
-      props.getSitesList();
+    } else if (!props.selected) {
+      if (props.viewMode === 'list' && !props.list) {
+        props.getSitesList();
+      }
+      if (props.viewMode === 'map' && !props.locations) {
+        props.getSitesLocations();
+      }
     }
   }
 
@@ -66,6 +71,7 @@ class SitesPage extends React.Component {
 }
 
 SitesPage.propTypes = {
+  getSitesLocations: React.PropTypes.func.isRequired,
   getSitesList: React.PropTypes.func.isRequired,
   getSitesData: React.PropTypes.func.isRequired,
   setViewMode: React.PropTypes.func.isRequired,

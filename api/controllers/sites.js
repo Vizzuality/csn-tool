@@ -29,6 +29,24 @@ function getSites(req, res) {
     });
 }
 
+function getSitesLocations(req, res) {
+  const query = 'SELECT s.site_name, s.slug, s.lat, s.lon FROM sites s';
+  rp(CARTO_SQL + query)
+    .then((data) => {
+      const result = JSON.parse(data);
+      if (result.rows && result.rows.length > 0) {
+        res.json(result.rows);
+      } else {
+        res.status(404);
+        res.json({ error: 'No sites' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
 function getSitesDetail(req, res) {
   const query = `WITH my_sites AS (
       SELECT DISTINCT the_geom_webmercator, site_id, lat, lon, site_name
@@ -84,6 +102,7 @@ function getSiteThreats(req, res) {
 
 module.exports = {
   getSites,
+  getSitesLocations,
   getSitesDetail,
   getSiteThreats
 };

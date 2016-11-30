@@ -3,7 +3,7 @@ import { goSiteDetail } from 'actions/sites';
 import SitesMap from 'components/sites/SitesMap';
 
 function getData(sites) {
-  if (!sites.selected) return sites.list;
+  if (!sites.selected) return sites.locations;
   return sites.species[sites.selected] || [];
 }
 
