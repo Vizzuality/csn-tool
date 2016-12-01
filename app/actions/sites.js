@@ -160,6 +160,13 @@ export function setSearchFilter(search) {
   };
 }
 
+export function resetSearchFilter() {
+  return {
+    type: SET_SITES_SEARCH,
+    payload: ''
+  };
+}
+
 export function setViewMode(viewMode) {
   return {
     type: SET_VIEW_MODE,

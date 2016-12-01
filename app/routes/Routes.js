@@ -9,6 +9,7 @@ import ContainerPage from 'components/pages/ContainerPage';
 import HomePage from 'components/pages/HomePage';
 import CountriesPage from 'containers/pages/CountriesPage';
 import SitesPage from 'containers/pages/SitesPage';
+import SitesDetailPage from 'containers/pages/SitesDetailPage';
 import SpeciesPage from 'containers/pages/SpeciesPage';
 import SpeciesDetailPage from 'containers/pages/SpeciesDetailPage';
 
@@ -104,7 +105,7 @@ const Routes = ({ history }) => (
       </Route>
       <Route path="sites">
         <IndexRoute component={SitesPage} onEnter={updateSitesPage} />
-        <Route path=":site(/:cat)" component={SitesPage} onEnter={updateSitesPage} />
+        <Route path=":site(/:cat)" component={SitesDetailPage} onEnter={updateSitesPage} />
       </Route>
       <Route path="species">
         <IndexRoute component={SpeciesPage} />
