@@ -26,8 +26,8 @@ function getSpeciesList(req, res) {
 }
 
 function getSpeciesDetails(req, res) {
-  const query = `SELECT s.scientific_name, s.english_name, s.family, s.species_id as id,
-      s.iucn_category, s.hyperlink
+  const query = `SELECT s.scientific_name, s.english_name, s.family,
+    s.species_id as id, s.iucn_category, s.hyperlink
     FROM species s
     WHERE s.species_id = ${req.params.id}
     `;
