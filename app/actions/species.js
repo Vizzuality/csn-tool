@@ -1,6 +1,20 @@
-import { GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION,
+import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION,
   GET_SPECIES_THREATS, GET_SPECIES_HABITATS, SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_DETAIL_SEARCH } from 'constants';
+
+export function getSpeciesStats(id) {
+  const url = `${config.apiHost}/species/${id}/details`;
+  return dispatch => {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        dispatch({
+          type: GET_SPECIES_STATS,
+          payload: data
+        });
+      });
+  };
+}
 
 export function getSpeciesList() {
   const url = `${config.apiHost}/species`;

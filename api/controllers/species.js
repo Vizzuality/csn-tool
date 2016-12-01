@@ -25,6 +25,38 @@ function getSpeciesList(req, res) {
     });
 }
 
+function getSpeciesDetails(req, res) {
+  const query = `SELECT s.scientific_name, s.english_name, s.family,
+    s.species_id as id, s.iucn_category, s.hyperlink
+    FROM species s
+    WHERE s.species_id = ${req.params.id}
+    `;
+  rp(CARTO_SQL + query)
+    .then((data) => {
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        const row = results[0];
+        res.json({
+          species: [{
+            scientific_name: row.scientific_name,
+            english_name: row.english_name,
+            family: row.family,
+            id: row.id,
+            iucn_category: row.iucn_category,
+            hyperlink: row.hyperlink
+          }]
+        });
+      } else {
+        res.status(404);
+        res.json({ error: 'Species details not available.' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
 function getSpeciesSites(req, res) {
   const query = `SELECT s.species_id as id, ss.csn_criteria as csn,
       ss.iba_criteria as iba, ss.maximum, ss.minimum, ss.season,
@@ -131,6 +163,7 @@ function getSpeciesHabitats(req, res) {
 
 module.exports = {
   getSpeciesList,
+  getSpeciesDetails,
   getSpeciesSites,
   getSpeciesPopulation,
   getSpeciesThreats,

@@ -32,6 +32,41 @@ function getSites(req, res) {
     });
 }
 
+function getSitesDetails(req, res) {
+  const query = `SELECT site_id AS id, protection_status,
+    iso3 as country, site_name, lat, lon,
+    hyperlink, csn, iba
+    FROM sites
+    WHERE site_id = ${req.params.id}`;
+  rp(CARTO_SQL + query)
+    .then((data) => {
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        const row = results[0];
+        res.json({
+          site: [{
+            name: row.site_name,
+            id: row.id,
+            country: row.country,
+            protection_status: row.protection_status,
+            lat: row.lat,
+            lon: row.lon,
+            hyperlink: row.hyperlink,
+            csn: row.csn,
+            iba: row.iba
+          }]
+        });
+      } else {
+        res.status(404);
+        res.json({ error: 'No sites' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
 function getSitesLocations(req, res) {
   const query = 'SELECT s.site_name, s.site_id as id, s.lat, s.lon FROM sites s';
   rp(CARTO_SQL + query)
@@ -186,6 +221,7 @@ function getSitesThreats(req, res) {
 
 module.exports = {
   getSites,
+  getSitesDetails,
   getSitesLocations,
   getSitesSpecies,
   getSitesPopulations,

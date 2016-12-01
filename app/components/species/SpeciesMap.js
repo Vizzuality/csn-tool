@@ -27,7 +27,7 @@ class SpeciesMap extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (!this.markers) {
+    if (!this.markers && newProps.data && newProps.data.length) {
       this.drawMarkers(newProps.data);
       this.fitMarkersBounds();
     }
@@ -65,15 +65,49 @@ class SpeciesMap extends React.Component {
   }
 
   addLayer(id) {
-    const query = `SELECT f.the_geom_webmercator FROM species s
+    const query = `SELECT f.the_geom_webmercator, f.colour_index FROM species s
       INNER JOIN species_and_flywaygroups f on f.ssid = s.species_id
       WHERE s.species_id = ${id}`;
 
     const cartoCSS = `#species_and_flywaygroups{
-      polygon-fill: #ffc500;
-      polygon-opacity: 0.3;
-      line-width: 0;
+      polygon-opacity: 0;
+      line-width: 2;
+      line-opacity: 1;
+    }
+    #species_and_flywaygroups[colour_index=1]{
+    line-color: #a6cee3;
+    }
+    #species_and_flywaygroups[colour_index=2]{
+    line-color: #1f78b4;
+    }
+    #species_and_flywaygroups[colour_index=3]{
+    line-color: #b2df8a;
+    }
+    #species_and_flywaygroups[colour_index=4]{
+    line-color: #33a02c;
+    }
+    #species_and_flywaygroups[colour_index=5]{
+      line-color: #fb9a99;
+    }
+    #species_and_flywaygroups[colour_index=6]{
+    line-color: #e31a1c;
+    }
+    #species_and_flywaygroups[colour_index=7]{
+      line-color: #fdbf6f;
+    }
+    #species_and_flywaygroups[colour_index=8]{
+      line-color: #ff7f00;
+    }
+    #species_and_flywaygroups[colour_index=9]{
+      line-color: #cab2d6;
+    }
+    #species_and_flywaygroups[colour_index=10]{
+      line-color: #6a3d9a;
+    }
+    #species_and_flywaygroups[colour_index=11]{
+      line-color: #ffff99;
     }`;
+
 
     createLayer({
       sql: query,
@@ -101,12 +135,13 @@ class SpeciesMap extends React.Component {
       iconSize: null,
       html: '<span class="icon"</span>'
     });
+
     speciesData.forEach((item) => {
       if (item.lat && item.lon) {
         const marker = L.marker([item.lat, item.lon],
                                 { icon: speciesIcon }).addTo(this.map);
         marker.
-          bindPopup(`<p class="text -light">Season: ${item.season}</p> <p class="text -light">Site: ${item.site_name}</p>`);
+          bindPopup(`<p class="text -light" >Season: ${item.season}</p> <p class="text -light">Site: ${item.site_name}</p>`);
         marker.on('mouseover', function () {
           this.openPopup();
         });

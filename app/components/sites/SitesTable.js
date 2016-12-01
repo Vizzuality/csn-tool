@@ -45,7 +45,7 @@ class SitesTable extends React.Component {
   }
 
   render() {
-    const title = this.props.selected ? this.context.t('triggerSpeciesList') : this.context.t('sitesList');
+    const title = this.props.selected ? this.context.t('triggerSpeciesList') : '';
     let detailLink = this.props.selected ? 'species' : 'sites';
 
     if (['threats', 'habitats'].indexOf(this.props.category) >= 0) {
