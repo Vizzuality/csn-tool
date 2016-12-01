@@ -27,7 +27,7 @@ class SpeciesMap extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (!this.markers) {
+    if (!this.markers && newProps.data && newProps.data.length) {
       this.drawMarkers(newProps.data);
       this.fitMarkersBounds();
     }
@@ -135,12 +135,13 @@ class SpeciesMap extends React.Component {
       iconSize: null,
       html: '<span class="icon"</span>'
     });
+
     speciesData.forEach((item) => {
       if (item.lat && item.lon) {
         const marker = L.marker([item.lat, item.lon],
                                 { icon: speciesIcon }).addTo(this.map);
         marker.
-          bindPopup(`<p>Season:${item.season}</p> <p>Site:${item.site_name}</p>`);
+          bindPopup(`<p class="text -light" >Season: ${item.season}</p> <p class="text -light">Site: ${item.site_name}</p>`);
         marker.on('mouseover', function () {
           this.openPopup();
         });
