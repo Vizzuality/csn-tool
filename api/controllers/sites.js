@@ -123,7 +123,36 @@ function getSitesPopulations(req, res) {
     });
 }
 
-function getSiteThreats(req, res) {
+function getSitesHabitats(req, res) {
+  const query = `SELECT s.lat, s.lon, s.site_name, p.habitat_name
+    FROM sites s
+    INNER JOIN sites_habitats p on p.site_id = s.site_id
+    WHERE s.site_id = ${req.params.id}`;
+
+  rp(CARTO_SQL + query)
+    .then((data) => {
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        res.json({
+          site: [{
+            lat: results[0].lat,
+            lon: results[0].lon,
+            site_name: results[0].site_name
+          }],
+          data: results.map((item) => ({ habitat_name: item.habitat_name }))
+        });
+      } else {
+        res.status(404);
+        res.json({ site: [], data: [], error: 'There are no habitats for this site' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
+function getSitesThreats(req, res) {
   const query = `SELECT s.lat, s.lon, s.site_name, p.threat_name
     FROM sites s
     INNER JOIN sites_threats p on p.site_id = s.site_id
@@ -157,5 +186,6 @@ module.exports = {
   getSitesLocations,
   getSitesSpecies,
   getSitesPopulations,
-  getSiteThreats
+  getSitesHabitats,
+  getSitesThreats
 };
