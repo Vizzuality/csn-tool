@@ -4,9 +4,10 @@ import CountriesTable from 'components/countries/CountriesTable';
 function getCountryColums(category) {
   switch (category) {
     case 'species':
-      return ['scientific_name', 'english_name', 'populations', 'genus', 'family'];
+      return ['scientific_name', 'english_name', 'country_status'];
     case 'populations':
-      return ['scientific_name', 'english_name', 'populations', 'genus', 'family'];
+      return ['scientific_name', 'english_name', 'populations', 'a', 'b', 'c',
+        'table_1_status'];
     case 'sitesOld':
       return ['site_name', 'protection_status', 'iba', 'csn', 'iba_species',
         'csn_species', 'total_percentage'];
@@ -31,7 +32,7 @@ function getCountryData(countries, columns) {
 
     for (let i = 0, cLength = columns.length; i < cLength; i++) {
       if (typeof modItem[columns[i]] === 'string' && modItem[columns[i]].toLowerCase().indexOf(searchFilter) >= 0) {
-        modItem[columns[i]] = modItem[columns[i]].toLowerCase().replace(searchFilter, `<span>${searchFilter}</span>`);
+        modItem[columns[i]] = modItem[columns[i]].toLowerCase().replace(searchFilter, `<span class="filtered">${searchFilter}</span>`);
         match = true;
         break;
       }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, BASEMAP_ATTRIBUTION_CARTO,
   MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
-import { createLayer } from 'helpers/map';
+import { createLayer, getSqlQuery } from 'helpers/map';
 
 class SpeciesMap extends React.Component {
 
@@ -21,16 +21,15 @@ class SpeciesMap extends React.Component {
 
     if (this.props.data && this.props.data.length) {
       this.drawMarkers(this.props.data);
-      this.fitBounds();
     }
 
-    this.addLayer();
+    this.getBounds(this.props.id);
   }
 
   componentWillReceiveProps(newProps) {
-    if (!this.markers) {
+    if (!this.markers && newProps.data && newProps.data.length) {
       this.drawMarkers(newProps.data);
-      this.fitBounds();
+      this.fitMarkersBounds();
     }
   }
 
@@ -38,16 +37,77 @@ class SpeciesMap extends React.Component {
     this.map.remove();
   }
 
-  addLayer() {
-    const query = `SELECT f.the_geom_webmercator FROM species s
+  getBounds(id) {
+    const query = `SELECT ST_AsGeoJSON(ST_Envelope(st_union(f.the_geom)))
+      as bbox FROM species s
       INNER JOIN species_and_flywaygroups f on f.ssid = s.species_id
-      WHERE s.slug = '${this.props.slug}'`;
+      WHERE s.species_id = ${id}`;
+
+    getSqlQuery(query, this.setBounds.bind(this));
+  }
+
+  setBounds(res) {
+    const bounds = JSON.parse(res[0].bbox);
+
+    if (bounds) {
+      const coords = bounds.coordinates[0];
+
+      if (coords) {
+        this.map.fitBounds([
+          [coords[2][1], coords[2][0]],
+          [coords[4][1], coords[4][0]]
+
+        ]);
+      }
+    }
+
+    this.addLayer(this.props.id);
+  }
+
+  addLayer(id) {
+    const query = `SELECT f.the_geom_webmercator, f.colour_index FROM species s
+      INNER JOIN species_and_flywaygroups f on f.ssid = s.species_id
+      WHERE s.species_id = ${id}`;
 
     const cartoCSS = `#species_and_flywaygroups{
-      polygon-fill: #ffc500;
-      polygon-opacity: 0.3;
-      line-width: 0;
+      polygon-opacity: 0;
+      line-width: 2;
+      line-opacity: 1;
+    }
+    #species_and_flywaygroups[colour_index=1]{
+    line-color: #a6cee3;
+    }
+    #species_and_flywaygroups[colour_index=2]{
+    line-color: #1f78b4;
+    }
+    #species_and_flywaygroups[colour_index=3]{
+    line-color: #b2df8a;
+    }
+    #species_and_flywaygroups[colour_index=4]{
+    line-color: #33a02c;
+    }
+    #species_and_flywaygroups[colour_index=5]{
+      line-color: #fb9a99;
+    }
+    #species_and_flywaygroups[colour_index=6]{
+    line-color: #e31a1c;
+    }
+    #species_and_flywaygroups[colour_index=7]{
+      line-color: #fdbf6f;
+    }
+    #species_and_flywaygroups[colour_index=8]{
+      line-color: #ff7f00;
+    }
+    #species_and_flywaygroups[colour_index=9]{
+      line-color: #cab2d6;
+    }
+    #species_and_flywaygroups[colour_index=10]{
+      line-color: #6a3d9a;
+    }
+    #species_and_flywaygroups[colour_index=11]{
+      line-color: #ffff99;
     }`;
+
 
     createLayer({
       sql: query,
@@ -75,18 +135,21 @@ class SpeciesMap extends React.Component {
       iconSize: null,
       html: '<span class="icon"</span>'
     });
+
     speciesData.forEach((item) => {
-      const marker = L.marker([item.lat, item.lon],
-                              { icon: speciesIcon }).addTo(this.map);
-      marker.
-        bindPopup(`<p>Season:${item.season}</p> <p>Site:${item.site_name}</p>`);
-      marker.on('mouseover', function () {
-        this.openPopup();
-      });
-      marker.on('mouseout', function () {
-        this.closePopup();
-      });
-      this.markers.push(marker);
+      if (item.lat && item.lon) {
+        const marker = L.marker([item.lat, item.lon],
+                                { icon: speciesIcon }).addTo(this.map);
+        marker.
+          bindPopup(`<p class="text -light" >Season: ${item.season}</p> <p class="text -light">Site: ${item.site_name}</p>`);
+        marker.on('mouseover', function () {
+          this.openPopup();
+        });
+        marker.on('mouseout', function () {
+          this.closePopup();
+        });
+        this.markers.push(marker);
+      }
     });
   }
 
@@ -99,9 +162,11 @@ class SpeciesMap extends React.Component {
     }
   }
 
-  fitBounds() {
-    const markersGroup = new L.featureGroup(this.markers); // eslint-disable-line new-cap
-    this.map.fitBounds(markersGroup.getBounds());
+  fitMarkersBounds() {
+    if (this.markers.length) {
+      const markersGroup = new L.featureGroup(this.markers); // eslint-disable-line new-cap
+      this.map.fitBounds(markersGroup.getBounds(this.props.id), { maxZoom: 6 });
+    }
   }
 
   render() {
@@ -120,7 +185,7 @@ SpeciesMap.contextTypes = {
 
 
 SpeciesMap.propTypes = {
-  slug: React.PropTypes.string.isRequired,
+  id: React.PropTypes.string.isRequired,
   data: React.PropTypes.any.isRequired
 };
 

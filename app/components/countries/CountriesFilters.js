@@ -14,7 +14,7 @@ function TableFilters(props) {
         </div>
       </div>
       <div className="column small-12 medium-4">
-        <CountriesSearch />
+        <CountriesSearch placeholder="countriesFilter" />
       </div>
     </div>
   );

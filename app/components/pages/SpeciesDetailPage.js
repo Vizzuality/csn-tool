@@ -2,23 +2,26 @@ import React from 'react';
 import NavLink from 'containers/common/NavLink';
 import SpeciesMap from 'components/species/SpeciesMap';
 import SpeciesDetailTable from 'containers/species/SpeciesDetailTable';
-import { unslug } from 'helpers/string';
 
 class SpeciesDetailPage extends React.Component {
+
   componentWillMount() {
+    this.props.getSpeciesStats(this.props.id);
+
     if (!this.props.sites) {
-      this.props.getSpeciesData(this.props.slug, this.props.category);
+      this.props.getSpeciesData(this.props.id, this.props.category);
     }
   }
 
   componentWillReceiveProps(newProps) {
     if (this.hasNewParams(newProps)) {
-      this.props.getSpeciesData(newProps.slug, newProps.category);
+      this.props.getSpeciesStats(newProps.id);
+      this.props.getSpeciesData(newProps.id, newProps.category);
     }
   }
 
   hasNewParams(newProps) {
-    return this.props.slug !== newProps.slug
+    return this.props.id !== newProps.id
       || this.props.category !== newProps.category;
   }
 
@@ -29,23 +32,50 @@ class SpeciesDetailPage extends React.Component {
         <div className="l-navigation">
           <div className="row">
             <div className="column c-navigation">
-              {this.props.slug
-                ? <div>
-                  <NavLink className="breadcrumb" to="/species" i18nText="backToSpecies" />
-                  <h2>{unslug(this.props.slug)}</h2>
+              {this.props.stats.species
+                ? <div className="content">
+                  <div className="title">
+                    <NavLink className="breadcrumb" to="/species" i18nText="backToSpecies" />
+                    <div className="name">
+                      <h2>{this.props.stats.species[0].scientific_name}</h2>
+                      <div className={`iucn-icon -${this.props.stats.species[0].iucn_category}`}>
+                        {this.props.stats.species[0].iucn_category}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="stats">
+                    <div className="list">
+                      <div className="item">
+                        <div className="label">
+                          English name
+                        </div>
+                        <div className="value">
+                          {this.props.stats.species[0].english_name}
+                        </div>
+                      </div>
+                      <div className="item">
+                        <div className="label">
+                          Family
+                        </div>
+                        <div className="value">
+                          {this.props.stats.species[0].family}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 : ''
               }
             </div>
           </div>
         </div>
-        <div className="l-map -species-detail">
-          <SpeciesMap slug={this.props.slug} data={this.props.sites} />
+        <div className="l-map -short -header">
+          <SpeciesMap id={this.props.id} data={this.props.sites} />
         </div>
         <div className="l-content">
           <div className="row">
             <div className="column">
-              <SpeciesDetailTable data={this.props.sites} slug={this.props.slug} category={this.props.category} />
+              <SpeciesDetailTable data={this.props.sites} id={this.props.id} category={this.props.category} />
             </div>
           </div>
         </div>
@@ -60,9 +90,11 @@ SpeciesDetailPage.contextTypes = {
 
 
 SpeciesDetailPage.propTypes = {
-  slug: React.PropTypes.string.isRequired,
+  id: React.PropTypes.string.isRequired,
   category: React.PropTypes.string.isRequired,
+  getSpeciesStats: React.PropTypes.func.isRequired,
   getSpeciesData: React.PropTypes.func.isRequired,
+  stats: React.PropTypes.any.isRequired,
   sites: React.PropTypes.any
 };
 

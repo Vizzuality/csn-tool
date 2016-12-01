@@ -3,10 +3,17 @@ import SitesTable from 'components/sites/SitesTable';
 
 function getSitesColums(category) {
   switch (category) {
+    case 'populations':
+      return ['scientific_name', 'english_name', 'populations', 'a', 'b', 'c',
+        'table_1_status'];
+    case 'habitats':
+      return ['habitat_name'];
     case 'threats':
       return ['threat_name'];
     case 'species':
-      return ['scientific_name', 'english_name', 'population', 'season', 'csn_criteria', 'iba_criteria'];
+      return ['scientific_name', 'english_name', 'iucn_category',
+     'start', 'end', 'minimum', 'maximum', 'units', 'csn_criteria',
+     'iba_criteria'];
     default:
       return ['country', 'site_name', 'protection_status', 'csn', 'iba'];
   }
@@ -19,7 +26,7 @@ function getSitesData(sites, columns) {
     data = sites.list;
   } else {
     data = sites[sites.selectedCategory] && sites[sites.selectedCategory][sites.selected]
-      ? sites[sites.selectedCategory][sites.selected]
+      ? sites[sites.selectedCategory][sites.selected].data
       : false;
   }
 
@@ -34,7 +41,7 @@ function getSitesData(sites, columns) {
 
     for (let i = 0, cLength = columns.length; i < cLength; i++) {
       if (typeof modItem[columns[i]] === 'string' && modItem[columns[i]].toLowerCase().indexOf(searchFilter) >= 0) {
-        modItem[columns[i]] = modItem[columns[i]].toLowerCase().replace(searchFilter, `<span>${searchFilter}</span>`);
+        modItem[columns[i]] = modItem[columns[i]].toLowerCase().replace(searchFilter, `<span class="filtered">${searchFilter}</span>`);
         match = true;
         break;
       }

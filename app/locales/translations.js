@@ -18,6 +18,7 @@ export const translations = {
     'protection_status': 'Protection status',
     'family': 'Family',
     'genus': 'Genus',
+    'country_status': 'Status',
     'getStarted': 'Get started',
     'backToCountries': 'Back to countries',
     'backToSpecies': 'Back to species',
@@ -42,8 +43,12 @@ export const translations = {
     'threat_level_1': 'Threat level 1',
     'threat_level_2': 'Threat level 2',
     'habitats': 'Habitats',
+    'habitat_name': 'Habitat name',
     'habitat_level_1': 'Habitat level 1',
-    'habitat_level_2': 'Habitat level 2'
+    'habitat_level_2': 'Habitat level 2',
+    'countriesFilter': 'Site name, level of protection or land use',
+    'sitesFilter': 'Name, population or season',
+    'speciesFilter': 'Site name, level of protection or IBA/CSN criteria',
   },
   es: {
     'country': 'Pais',
@@ -64,6 +69,7 @@ export const translations = {
     'protection_status': 'Estado de la protección',
     'family': 'Familia',
     'genus': 'Género',
+    'country_status': 'Estado',
     'getStarted': 'Comenzar',
     'backToCountries': 'Volver a países',
     'backToSpecies': 'Volver a especies',
@@ -88,7 +94,11 @@ export const translations = {
     'threat_level_1': 'Nivel de amenaza 1',
     'threat_level_2': 'Nivel de amenaza 2',
     'habitats': 'Hábitats',
+    'habitat_name': 'Nombre del habitat',
     'habitat_level_1': 'Nivel de hábitat 1',
-    'habitat_level_2': 'Nivel de hábitat 2'
+    'habitat_level_2': 'Nivel de hábitat 2',
+    'countriesFilter': 'Nombre del sitio, nivel del protección o uso del espacio',
+    'sitesFilter': 'Nombre, población o estación',
+    'speciesFilter': 'Nombre del sitio, nivel de protección o criterio IBA/CSN',
   },
 }

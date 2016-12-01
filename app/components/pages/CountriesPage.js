@@ -12,7 +12,7 @@ class CountriesPage extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (this.hasNewParams(newProps) && !newProps.countryData) {
+    if (newProps.country && this.hasNewParams(newProps) && !newProps.countryData) {
       this.props.getCountryData(newProps.country, newProps.category);
     }
   }
@@ -30,23 +30,29 @@ class CountriesPage extends React.Component {
             <div className="column c-navigation">
               {this.props.country
                 ? <div>
-                  <NavLink className="breadcrumb" to="/countries" i18nText="backToCountries" />
-                  <h2>{this.props.country}</h2>
+                  <div className="content">
+                    <div className="title">
+                      <NavLink className="breadcrumb" to="/countries" i18nText="backToCountries" />
+                      <h2>{this.props.country}</h2>
+                    </div>
+                  </div>
                 </div>
-                : <h2>{this.context.t('countries')} <span>({this.props.countriesLength || ''})</span></h2>
+                : <div className="content">
+                  <div className="title">
+                    <h2>{this.context.t('countries')} <span>({this.props.countriesLength || ''})</span></h2>
+                  </div>
+                </div>
               }
             </div>
           </div>
         </div>
-        <div className={`l-map ${this.props.country ? '-short' : ''}`}>
+        <div className={`l-map ${this.props.country ? '-short -header' : '-header'}`}>
           <CountriesMap />
         </div>
         <div className={`l-content ${!this.props.country ? '-no-padding' : ''}`}>
           <div className="row">
             <div className="column">
-              {this.props.country &&
-                <CountriesTable />
-              }
+              {this.props.country && <CountriesTable />}
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import React from 'react';
-import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
+import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, BASEMAP_ATTRIBUTION_CARTO, MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
+import { createLayer } from 'helpers/map';
 
 class CountriesMap extends React.Component {
 
@@ -43,6 +44,7 @@ class CountriesMap extends React.Component {
       this.clearMarkers();
       this.drawMarkers(newProps.data);
       this.fitBounds();
+      this.addLayer();
     } else {
       this.clearMarkers();
     }
@@ -87,7 +89,8 @@ class CountriesMap extends React.Component {
       maxBounds: MAP_MAX_BOUNDS,
       zoom: MAP_MIN_ZOOM,
       center: MAP_CENTER,
-      detectRetina: true
+      detectRetina: true,
+      zoomAnimation: false
     });
 
     this.map.attributionControl.addAttribution(BASEMAP_ATTRIBUTION_MAPBOX);
@@ -109,6 +112,46 @@ class CountriesMap extends React.Component {
         }
       }
     });
+  }
+
+  addLayer() {
+    const query = 'SELECT * FROM mask';
+
+    const cartoCSS = `#mask{
+      polygon-fill: #000000;
+      polygon-opacity: 1;
+      line-color: #000000;
+      line-width: 1;
+      line-opacity: 1;
+    }
+
+    #mask[iso_a3='${this.props.country}']{
+      polygon-fill: #000000;
+      polygon-opacity: 0;
+      line-color: #000000;
+      line-width: 0;
+      line-opacity: 0;
+    }`;
+
+    createLayer({
+      sql: query,
+      cartocss: cartoCSS
+    }, this.addTile.bind(this));
+  }
+
+  addTile(url) {
+    if (this.layer) {
+      this.layer.setUrl(url);
+    } else {
+      this.layer = L.tileLayer(url, {
+        noWrap: true,
+        attribution: BASEMAP_ATTRIBUTION_CARTO
+      }).setZIndex(2);
+      this.layer.addTo(this.map);
+      this.layer.getContainer().classList.add('-layer-blending');
+    }
+
+    this.layer.setOpacity(0.7);
   }
 
   goToDetail(iso) {
@@ -140,6 +183,7 @@ class CountriesMap extends React.Component {
         layer.on('click', () => {
           if (!this.props.country) {
             this.goToDetail(properties.iso3);
+            layer.setStyle(this.styles.hide);
           } else {
             this.hidePopup();
           }
@@ -162,15 +206,17 @@ class CountriesMap extends React.Component {
     });
 
     countryData.forEach((site) => {
-      const marker = L.marker([site.lat, site.lon], { icon: sitesIcon }).addTo(this.map);
-      marker.bindPopup(`<p class="text -light">${site.site_name}</p>`);
-      marker.on('mouseover', () => {
-        marker.openPopup();
-      });
-      marker.on('mouseout', () => {
-        marker.closePopup();
-      });
-      this.markers.push(marker);
+      if (site.lat && site.lon) {
+        const marker = L.marker([site.lat, site.lon], { icon: sitesIcon }).addTo(this.map);
+        marker.bindPopup(`<p class="text -light">${site.site_name}</p>`);
+        marker.on('mouseover', () => {
+          marker.openPopup();
+        });
+        marker.on('mouseout', () => {
+          marker.closePopup();
+        });
+        this.markers.push(marker);
+      }
     });
   }
 
@@ -184,12 +230,15 @@ class CountriesMap extends React.Component {
   }
 
   fitBounds() {
-    const markersGroup = new L.featureGroup(this.markers); // eslint-disable-line new-cap
-    this.map.fitBounds(markersGroup.getBounds(), { padding: [10, 10], maxZoom: 8 });
+    if (this.markers.length) {
+      const markersGroup = new L.featureGroup(this.markers); // eslint-disable-line new-cap
+      this.map.fitBounds(markersGroup.getBounds(), { padding: [10, 10], maxZoom: 8 });
+    }
   }
 
   outBounds() {
-    this.map.setView(this.initialMap.center, this.initialMap.zoom);
+    this.layer.setOpacity(0);
+    this.map.setView(MAP_CENTER, MAP_MIN_ZOOM);
   }
 
   render() {

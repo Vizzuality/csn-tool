@@ -1,30 +1,47 @@
 import { connect } from 'react-redux';
 import SitesPage from 'components/pages/SitesPage';
-import { getSitesList, getSitesSpecies, getSitesThreats } from 'actions/sites';
+import { getSitesList, getSitesLocations, getSitesSpecies, getSitesHabitats,
+  getSitesPopulations, getSitesThreats, setViewMode, clearSites } from 'actions/sites';
 
-const mapStateToProps = (state, { params }) => ({
+function getSitesData(sites) {
+  return sites[sites.selectedCategory] && sites[sites.selectedCategory][sites.selected]
+    ? sites[sites.selectedCategory][sites.selected]
+    : false;
+}
+
+const mapStateToProps = (state) => ({
   selected: state.sites.selected,
   category: state.sites.selectedCategory,
-  list: state.sites.list,
-  details: state.sites.species[params.selected] || false,
-  threats: state.sites.threats[params.selected] || false
+  list: state.sites.list.length >= 0,
+  locations: state.sites.locations.length >= 0,
+  data: getSitesData(state.sites),
+  viewMode: state.sites.viewMode
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getSitesList: () => dispatch(getSitesList()),
-  getSitesData: (slug, category) => {
+  getSitesList: (page) => dispatch(getSitesList(page)),
+  getSitesLocations: () => dispatch(getSitesLocations()),
+  getSitesData: (id, category) => {
     switch (category) {
+      case 'populations':
+        dispatch(getSitesPopulations(id));
+        break;
+      case 'habitats':
+        dispatch(getSitesHabitats(id));
+        break;
       case 'threats':
-        dispatch(getSitesThreats(slug));
+        dispatch(getSitesThreats(id));
         break;
       case 'species':
-        dispatch(getSitesSpecies(slug));
+        dispatch(getSitesSpecies(id));
         break;
       default:
-        dispatch(getSitesSpecies(slug));
+        dispatch(getSitesSpecies(id));
         break;
     }
-  }
+  },
+  setViewMode: (viewMode) => dispatch(setViewMode(viewMode)),
+  clearSites: () => dispatch(clearSites())
 });
 
 

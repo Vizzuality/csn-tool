@@ -30,7 +30,7 @@ function getSpeciesDetailData(species, columns) {
 
     for (let i = 0, cLength = columns.length; i < cLength; i++) {
       if (typeof modItem[columns[i]] === 'string' && modItem[columns[i]].toLowerCase().indexOf(searchFilter) >= 0) {
-        modItem[columns[i]] = modItem[columns[i]].toLowerCase().replace(searchFilter, `<span>${searchFilter}</span>`);
+        modItem[columns[i]] = modItem[columns[i]].toLowerCase().replace(searchFilter, `<span class="filtered">${searchFilter}</span>`);
         match = true;
         break;
       }
