@@ -106,7 +106,7 @@ class SpeciesMap extends React.Component {
         const marker = L.marker([item.lat, item.lon],
                                 { icon: speciesIcon }).addTo(this.map);
         marker.
-          bindPopup(`<p>Season:${item.season}</p> <p>Site:${item.site_name}</p>`);
+          bindPopup(`<p class="text -light">Season: ${item.season}</p> <p class="text -light">Site: ${item.site_name}</p>`);
         marker.on('mouseover', function () {
           this.openPopup();
         });
