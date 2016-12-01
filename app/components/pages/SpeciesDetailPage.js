@@ -1,5 +1,5 @@
 import React from 'react';
-import NavLink from 'containers/common/NavLink';
+import GoBackLink from 'containers/common/GoBackLink';
 import SpeciesMap from 'components/species/SpeciesMap';
 import SpeciesDetailTable from 'containers/species/SpeciesDetailTable';
 
@@ -35,7 +35,7 @@ class SpeciesDetailPage extends React.Component {
               {this.props.stats.species
                 ? <div className="content">
                   <div className="title">
-                    <NavLink className="breadcrumb" to="/species" i18nText="backToSpecies" />
+                    <GoBackLink className="breadcrumb" i18nText="back" />
                     <div className="name">
                       <h2>{this.props.stats.species[0].scientific_name}</h2>
                       <div className={`iucn-icon -${this.props.stats.species[0].iucn_category}`}>

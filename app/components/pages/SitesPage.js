@@ -1,5 +1,5 @@
 import React from 'react';
-import NavLink from 'containers/common/NavLink';
+import GoBackLink from 'containers/common/GoBackLink';
 import ViewToggler from 'components/common/ViewToggler';
 import SitesMap from 'containers/sites/SitesMap';
 import SitesTable from 'containers/sites/SitesTable';
@@ -49,6 +49,7 @@ class SitesPage extends React.Component {
   }
 
   render() {
+    const showTable = this.props.viewMode === 'list' || this.props.selected;
     return (
       <div className="l-page">
         <div className="l-navigation">
@@ -59,7 +60,7 @@ class SitesPage extends React.Component {
                   <div className="c-navigation">
                     <div className="content">
                       <div className="title">
-                        <NavLink className="breadcrumb" to="/sites" i18nText="backToSites" />
+                        <GoBackLink className="breadcrumb" i18nText="back" />
                         <h2>{this.props.stats.site[0].name}</h2>
                       </div>
                       <div className="stats">
@@ -109,13 +110,15 @@ class SitesPage extends React.Component {
           <div className="l-table">
             <div className="row">
               <div className="column">
-                <SitesTable
-                  data={this.props.list}
-                  slug={this.props.selected}
-                  category={this.props.category}
-                  endReached={this.onEndReached}
-                  clearSites={this.clearSites}
-                />
+                {showTable &&
+                  <SitesTable
+                    data={this.props.list}
+                    slug={this.props.selected}
+                    category={this.props.category}
+                    endReached={this.onEndReached}
+                    clearSites={this.clearSites}
+                  />
+                }
               </div>
             </div>
           </div>
