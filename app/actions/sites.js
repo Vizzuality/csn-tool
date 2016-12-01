@@ -66,7 +66,7 @@ export function getSitesSpecies(id) {
   };
 }
 
-export function getSitePopulations(id) {
+export function getSitesPopulations(id) {
   const url = `${config.apiHost}/sites/${id}/populations`;
   return dispatch => {
     try {

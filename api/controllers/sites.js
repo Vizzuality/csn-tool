@@ -81,7 +81,7 @@ function getSitesSpecies(req, res) {
     });
 }
 
-function getSitePopulations(req, res) {
+function getSitesPopulations(req, res) {
   const query = `WITH my_sites AS (
       SELECT DISTINCT the_geom_webmercator, site_id, lat, lon, site_name
       FROM sites
@@ -156,6 +156,6 @@ module.exports = {
   getSites,
   getSitesLocations,
   getSitesSpecies,
-  getSitePopulations,
+  getSitesPopulations,
   getSiteThreats
 };
