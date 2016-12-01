@@ -2,10 +2,9 @@ import React from 'react';
 import SpeciesDetailFilters from 'components/species/SpeciesDetailFilters';
 import TableList from 'components/tables/TableList';
 
-function SpeciesDetailTable(props, context) {
+function SpeciesDetailTable(props) {
   return (
     <div>
-      <h2>{context.t('sitesList')}</h2>
       <SpeciesDetailFilters id={props.id} category={props.category} />
       <TableList
         data={props.data}
@@ -14,11 +13,6 @@ function SpeciesDetailTable(props, context) {
     </div>
   );
 }
-
-SpeciesDetailTable.contextTypes = {
-  t: React.PropTypes.func.isRequired
-};
-
 
 SpeciesDetailTable.propTypes = {
   id: React.PropTypes.string.isRequired,
