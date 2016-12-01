@@ -49,6 +49,7 @@ class SitesPage extends React.Component {
   }
 
   render() {
+    const showTable = this.props.viewMode === 'list' || this.props.selected;
     return (
       <div className="l-page">
         <div className="l-navigation">
@@ -109,13 +110,15 @@ class SitesPage extends React.Component {
           <div className="l-table">
             <div className="row">
               <div className="column">
-                <SitesTable
-                  data={this.props.list}
-                  slug={this.props.selected}
-                  category={this.props.category}
-                  endReached={this.onEndReached}
-                  clearSites={this.clearSites}
-                />
+                {showTable &&
+                  <SitesTable
+                    data={this.props.list}
+                    slug={this.props.selected}
+                    category={this.props.category}
+                    endReached={this.onEndReached}
+                    clearSites={this.clearSites}
+                  />
+                }
               </div>
             </div>
           </div>
