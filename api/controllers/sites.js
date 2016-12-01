@@ -6,7 +6,7 @@ function getSites(req, res) {
     then 0 else 1 end) as csn, SUM(case when iba_criteria = '' then 0 else 1
       end) as iba  from species_sites group by site_id),
       p as (SELECT DISTINCT site_id FROM species_sites)
-    SELECT s.country, s.site_name, s.protection_status, s.site_id as id, s.lat, s.lon,
+    SELECT s.country, s.iso3, s.iso2, s.site_name, s.protection_status, s.site_id as id, s.lat, s.lon,
     stc.csn, stc.iba, s.hyperlink
     FROM sites s
     INNER JOIN stc ON stc.site_id = s.site_id
