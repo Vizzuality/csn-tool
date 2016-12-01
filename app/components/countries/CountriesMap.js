@@ -66,7 +66,7 @@ class CountriesMap extends React.Component {
   }
 
   showPopup(latlng, properties) {
-    const html = `<h3 class="header -map-title -highlighted">${properties.name}</h3><p class="text -light">Click to see it page</p>`;
+    const html = `<h3 class="header -map-title -highlighted">${properties.name}</h3><p class="text -light">Click to see its page</p>`;
 
     this.popup.setLatLng(latlng)
       .setContent(html)
