@@ -85,15 +85,13 @@ class SitesPage extends React.Component {
           <div className="l-table">
             <div className="row">
               <div className="column">
-                {this.props.viewMode === 'list' &&
-                  <SitesTable
-                    data={this.props.list}
-                    slug={this.props.selected}
-                    category={this.props.category}
-                    endReached={this.onEndReached}
-                    clearSites={this.clearSites}
-                  />
-                }
+                <SitesTable
+                  data={this.props.list}
+                  slug={this.props.selected}
+                  category={this.props.category}
+                  endReached={this.onEndReached}
+                  clearSites={this.clearSites}
+                />
               </div>
             </div>
           </div>
