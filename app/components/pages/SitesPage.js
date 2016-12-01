@@ -46,7 +46,11 @@ class SitesPage extends React.Component {
                 </div>
               : <div className="navigation-wrapper">
                 <div className="c-navigation">
-                  <h2>Sites</h2>
+                  <div className="content">
+                    <div className="title">
+                      <h2>Sites</h2>
+                    </div>
+                  </div>
                 </div>
                 <ViewToggler
                   viewMode={this.props.viewMode}

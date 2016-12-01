@@ -3,7 +3,7 @@ import SitesFilters from 'components/sites/SitesFilters';
 import TableList from 'components/tables/TableList';
 
 function SitesTable(props, context) {
-  const title = props.selected ? context.t('triggerSpeciesList') : context.t('sitesList');
+  const title = props.selected ? context.t('triggerSpeciesList') : '';
   let detailLink = props.selected ? 'species' : 'sites';
 
   if (['threats', 'habitats'].indexOf(props.category) >= 0) {

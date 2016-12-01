@@ -30,10 +30,18 @@ class CountriesPage extends React.Component {
             <div className="column c-navigation">
               {this.props.country
                 ? <div>
-                  <NavLink className="breadcrumb" to="/countries" i18nText="backToCountries" />
-                  <h2>{this.props.country}</h2>
+                  <div className="content">
+                    <div className="title">
+                      <NavLink className="breadcrumb" to="/countries" i18nText="backToCountries" />
+                      <h2>{this.props.country}</h2>
+                    </div>
+                  </div>
                 </div>
-                : <h2>{this.context.t('countries')} <span>({this.props.countriesLength || ''})</span></h2>
+                : <div className="content">
+                  <div className="title">
+                    <h2>{this.context.t('countries')} <span>({this.props.countriesLength || ''})</span></h2>
+                  </div>
+                </div>
               }
             </div>
           </div>
