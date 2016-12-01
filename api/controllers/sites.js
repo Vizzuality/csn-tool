@@ -1,19 +1,22 @@
 const rp = require('request-promise');
 const CARTO_SQL = require('../constants').CARTO_SQL;
 
+const NUM_RESULTS_PER_PAGE = 200;
+
 function getSites(req, res) {
-  const query = `with stc as (select site_id, SUM(case when csn_criteria = ''
-    then 0 else 1 end) as csn, SUM(case when iba_criteria = '' then 0 else 1
-      end) as iba  from species_sites group by site_id),
+  const query = `with stc as (
+        select site_id, SUM(case when csn_criteria = ''
+        then 0 else 1 end) as csn, SUM(case when iba_criteria = '' then 0 else 1
+        end) as iba  from species_sites group by site_id
+      ),
       p as (SELECT DISTINCT site_id FROM species_sites)
-    SELECT s.country, s.site_name, s.protection_status, s.site_id as id, s.lat, s.lon,
+    SELECT s.country, s.iso3, s.iso2, s.site_name, s.protection_status, s.site_id as id, s.lat, s.lon,
     stc.csn, stc.iba, s.hyperlink
     FROM sites s
     INNER JOIN stc ON stc.site_id = s.site_id
     WHERE s.site_id in (SELECT * from p)
-    ORDER BY s.country
-    LIMIT 400`;
-  rp(CARTO_SQL + query)
+    ORDER BY s.country`;
+  rp(`${CARTO_SQL}${query}&rows_per_page=${NUM_RESULTS_PER_PAGE}&page=${req.query.page}`)
     .then((data) => {
       const result = JSON.parse(data);
       if (result.rows && result.rows.length > 0) {
@@ -91,8 +94,7 @@ function getSitesSpecies(req, res) {
     INNER JOIN species_sites AS ss ON ss.species_id = s.species_id
     INNER JOIN sites AS si ON si.site_id = ss.site_id
     WHERE si.site_id = ${req.params.id}
-    ORDER BY s.scientific_name
-  `;
+    ORDER BY s.scientific_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);
@@ -125,7 +127,8 @@ function getSitesPopulations(req, res) {
     SELECT s.scientific_name, s.english_name, s.species_id AS id,
     my_sites.lat, my_sites.lon, my_sites.site_name, s.hyperlink,
     dd.a, dd.b, dd.c, dd.table_1_status,
-    dd.populations
+    dd.populations,
+    'http://wpe.wetlands.org/view/' || dd.wpepopid AS pop_hyperlink
     FROM species AS s
     INNER JOIN species_and_flywaygroups AS flyway
     ON flyway.ssid = s.species_id

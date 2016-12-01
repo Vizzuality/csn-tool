@@ -22,7 +22,7 @@ function TableList(props, context) {
           }
         </li>
         {props.data.map((item, index) => (
-          <li key={index} className="table-row">
+          <li key={index} className="table-row f32">
             {props.columns.map((column, index2) => {
               if (['scientific_name', 'site_name'].indexOf(column) >= 0 && item.hyperlink) {
                 return (<div key={index2}><div className={`text ${column}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
@@ -37,6 +37,14 @@ function TableList(props, context) {
                     </svg>
                   </button>
                 </div>);
+              } else if (column === 'populations' && item.pop_hyperlink) {
+                return (<div key={index2}><div className={`text ${column}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
+                  <a className="external-link" target="_blank" href={item.pop_hyperlink} title="View on WPE">
+                    <svg className="icon -small -grey">
+                      <use xlinkHref="#icon-open_in_new"></use>
+                    </svg>
+                  </a>
+                </div>);
               } else if (column === 'site_name') {
                 return (<div key={index2}>
                   <div className={`text ${column}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
@@ -46,7 +54,13 @@ function TableList(props, context) {
                     </svg>
                   </button>
                 </div>);
+              } else if (column === 'country') {
+                return (<div className="country-column" key={index2}>
+                  <span className={`flag ${(item.iso2).toLowerCase()}`}></span>
+                  <div className={`text ${column}`}> {item[column]} </div>
+                </div>);
               }
+
               return (<div key={index2} className={`text ${column}`} dangerouslySetInnerHTML={{ __html: item[column] }}></div>);
             })}
 

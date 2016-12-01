@@ -130,7 +130,9 @@ function getCountryPopulations(req, res) {
      (SELECT the_geom FROM world_borders WHERE iso3 = '${req.params.iso}'))),
   f AS (SELECT ssis,  wpepopid, wpesppid AS wpesppid FROM r ),
   d AS (select * from species s INNER JOIN f ON species_id=ssis)
-  SELECT scientific_name, d.english_name, d.wpepopid pop_id, dd.* from d
+  SELECT scientific_name, d.english_name, d.wpepopid pop_id, dd.*,
+  'http://wpe.wetlands.org/view/' || d.wpepopid AS pop_hyperlink
+  FROM d
   INNER JOIN populations_species_no_geo dd on d.wpepopid=dd.wpepopid
   ORDER BY d.scientific_name
   `;
