@@ -1,4 +1,4 @@
-import { CLEAR_SITES_LIST, SET_SITES_PARAMS, GET_SITES_LIST, GET_SITES_SPECIES,
+import { CLEAR_SITES_LIST, SET_SITES_PARAMS, GET_SITES_STATS, GET_SITES_LIST, GET_SITES_SPECIES,
          GET_SITES_POPULATIONS, GET_SITES_HABITATS, GET_SITES_THREATS,
          SET_SITES_SEARCH, SET_VIEW_MODE, GET_SITES_LOCATIONS } from 'constants';
 
@@ -7,6 +7,7 @@ const initialState = {
   selectedCategory: 'species',
   locations: false,
   list: false,
+  stats: {},
   species: {},
   populations: {},
   habitats: {},
@@ -30,6 +31,8 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { viewMode: action.payload });
     case GET_SITES_LOCATIONS:
       return Object.assign({}, state, { locations: action.payload });
+    case GET_SITES_STATS:
+      return Object.assign({}, state, { stats: action.payload });
     case CLEAR_SITES_LIST:
       return Object.assign({}, state, { list: false });
     case GET_SITES_LIST: {

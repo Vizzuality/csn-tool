@@ -1,14 +1,14 @@
 import React from 'react';
 import TableList from 'components/tables/TableList';
+import SpeciesFilters from 'components/species/SpeciesFilters';
 
-function SpeciesTable(props, context) {
-  const columns = ['scientific_name', 'english_name', 'population', 'genus', 'family'];
+function SpeciesTable(props) {
   return (
     <div>
-      <h2>{context.t('speciesList')}</h2>
+      <SpeciesFilters />
       <TableList
         data={props.data}
-        columns={columns}
+        columns={props.columns}
         detailLink="species"
       />
     </div>
@@ -20,7 +20,8 @@ SpeciesTable.contextTypes = {
 };
 
 SpeciesTable.propTypes = {
-  data: React.PropTypes.any.isRequired
+  data: React.PropTypes.any.isRequired,
+  columns: React.PropTypes.array.isRequired
 };
 
 export default SpeciesTable;

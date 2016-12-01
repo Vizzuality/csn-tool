@@ -10,6 +10,12 @@ class SearchFilter extends React.Component {
     this.timeout = null;
   }
 
+  componentWillUnmount() {
+    if (this.props.resetSearchFilter) {
+      this.props.resetSearchFilter();
+    }
+  }
+
   handleChange(event) {
     const filter = event.target.value;
     this.setState({ search: filter });
@@ -45,7 +51,8 @@ SearchFilter.contextTypes = {
 
 SearchFilter.propTypes = {
   placeholder: React.PropTypes.string,
-  setSearchFilter: React.PropTypes.func.isRequired
+  setSearchFilter: React.PropTypes.func.isRequired,
+  resetSearchFilter: React.PropTypes.func
 };
 
 export default SearchFilter;

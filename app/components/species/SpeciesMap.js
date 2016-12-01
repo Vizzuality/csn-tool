@@ -71,8 +71,10 @@ class SpeciesMap extends React.Component {
 
     const cartoCSS = `#species_and_flywaygroups{
       polygon-opacity: 0;
-      line-width: 2;
       line-opacity: 1;
+      line-width: 3;
+      line-dasharray: 1, 7;
+      line-cap: round;
     }
     #species_and_flywaygroups[colour_index=1]{
     line-color: #a6cee3;
