@@ -32,6 +32,8 @@ class SitesPage extends React.Component {
   }
 
   getData(props) {
+    this.props.getSitesStats(props.selected);
+
     if (props.selected && !props.data) {
       props.getSitesData(props.selected, props.category);
     } else if (!props.selected) {
@@ -50,13 +52,33 @@ class SitesPage extends React.Component {
         <div className="l-navigation">
           <div className="row">
             <div className="column">
-              {this.props.selected ?
+              {this.props.stats.sites ?
                 <div className="navigation-wrapper">
                   <div className="c-navigation">
                     <div className="content">
                       <div className="title">
                         <NavLink className="breadcrumb" to="/sites" i18nText="backToSites" />
-                        <h2>{unslug(this.props.selected)}</h2>
+                        <h2>{this.props.stats.species[0].name}</h2>
+                      </div>
+                      <div className="stats">
+                        <div className="list">
+                          <div className="item">
+                            <div className="label">
+                              Country
+                            </div>
+                            <div className="value">
+                              {this.props.stats.sites[0].country}
+                            </div>
+                          </div>
+                          <div className="item">
+                            <div className="label">
+                              Protection status
+                            </div>
+                            <div className="value">
+                              {this.props.stats.sites[0].protection_status}
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -105,10 +127,12 @@ class SitesPage extends React.Component {
 
 SitesPage.propTypes = {
   clearSites: React.PropTypes.func.isRequired,
+  getSitesStats: React.PropTypes.func.isRequired,
   getSitesLocations: React.PropTypes.func.isRequired,
   getSitesList: React.PropTypes.func.isRequired,
   getSitesData: React.PropTypes.func.isRequired,
   setViewMode: React.PropTypes.func.isRequired,
+  stats: React.PropTypes.any,
   list: React.PropTypes.any,
   selected: React.PropTypes.string,
   category: React.PropTypes.string,
