@@ -1,36 +1,80 @@
 .c-navigation {
 
-  h2 {
-    font-size: $font-size-xl;
-    color: $font-main-inv;
-    line-height: 1;
+  .content {
+    width: 100%;
+    display: flex;
 
-    > span {
-      font-family: $font-body;
-      font-size: $font-size;
-      opacity: 0.6;
+    .title {
+      max-width: 400px;
+      h2 {
+        font-size: $font-size-xl;
+        color: $font-main-inv;
+        line-height: 1;
+
+        > span {
+          font-family: $font-body;
+          font-size: $font-size;
+          opacity: 0.6;
+        }
+      }
+
+      a {
+        font-size: $font-size-xs;
+        font-weight: 600;
+        line-height: 1;
+        letter-spacing: 0.7px;
+        opacity: 0.6;
+        text-decoration: none;
+        color: $font-main-inv;
+
+        &.breadcrumb {
+          position: relative;
+          display: flex;
+
+          &::after {
+            content: "<";
+            position: absolute;
+            top: 0;
+            left: -8px;
+          }
+        }
+      }
     }
-  }
 
-  a {
-    font-size: $font-size-xs;
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: 0.7px;
-    opacity: 0.6;
-    text-decoration: none;
-    color: $font-main-inv;
-
-    &.breadcrumb {
-      position: relative;
+    .stats {
+      width: 100%;
       display: flex;
 
-      &::after {
-        content: "<";
-        position: absolute;
-        top: 0;
-        left: -8px;
+      .list {
+        width: 100%;
+        display: flex;
+        padding: 0 0 0 50px;
+
+        .item {
+          margin-right: 40px;
+
+          &:last-child {
+            margin-right: 0;
+          }
+
+          .label {
+            color: rgba($font-main-inv, 0.7);
+            text-transform: uppercase;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.7px;
+            line-height: 10px;
+          }
+
+          .value {
+            color: $font-main-inv;
+            font-size: 20px;
+            line-height: 17px;
+            font-family: $font-heading;
+          }
+        }
       }
     }
   }
+
 }

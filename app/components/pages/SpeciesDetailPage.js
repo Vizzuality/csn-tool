@@ -29,9 +29,32 @@ class SpeciesDetailPage extends React.Component {
           <div className="row">
             <div className="column c-navigation">
               {this.props.id
-                ? <div>
-                  <NavLink className="breadcrumb" to="/species" i18nText="backToSpecies" />
-                  <h2>{this.props.id}</h2>
+                ? <div className="content">
+                  <div className="title">
+                    <NavLink className="breadcrumb" to="/species" i18nText="backToSpecies" />
+
+                    <h2>{this.props.id}</h2>
+                  </div>
+                  <div className="stats">
+                    <div className="list">
+                      <div className="item">
+                        <div className="label">
+                          English name
+                        </div>
+                        <div className="value">
+                          Value
+                        </div>
+                      </div>
+                      <div className="item">
+                        <div className="label">
+                          Family
+                        </div>
+                        <div className="value">
+                          Value
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 : ''
               }
