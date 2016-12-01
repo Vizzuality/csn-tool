@@ -1,5 +1,6 @@
 import React from 'react';
-import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, BASEMAP_ATTRIBUTION_CARTO, MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
+import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, BASEMAP_ATTRIBUTION_CARTO,
+         MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
 import { createLayer } from 'helpers/map';
 
 class CountriesMap extends React.Component {
@@ -215,6 +216,9 @@ class CountriesMap extends React.Component {
         marker.on('mouseout', () => {
           marker.closePopup();
         });
+        marker.on('click', () => {
+          this.props.goToSite(site.id);
+        });
         this.markers.push(marker);
       }
     });
@@ -250,6 +254,7 @@ class CountriesMap extends React.Component {
 
 
 CountriesMap.propTypes = {
+  goToSite: React.PropTypes.func.isRequired,
   goToDetail: React.PropTypes.func.isRequired,
   getGeoms: React.PropTypes.func.isRequired,
   data: React.PropTypes.array,
