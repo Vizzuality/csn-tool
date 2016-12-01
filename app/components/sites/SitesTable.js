@@ -65,7 +65,7 @@ class SitesTable extends React.Component {
           detailLink={detailLink}
         />
         <div className="loading -relative" ref={(loading) => { this.loading = loading; }}>
-          {this.state.loading &&
+          {!this.props.selected && this.state.loading &&
             <LoadingSpinner inner />
           }
         </div>
