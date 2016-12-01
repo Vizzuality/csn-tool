@@ -5,7 +5,7 @@ function SpeciesFilters(props, context) {
   return (
     <div className="row c-table-filters">
       <div className="column small-12 medium-8">
-        <h2>{context.t('speciesList')}</h2>
+        <h2>{context.t('species')}</h2>
       </div>
       <div className="column small-12 medium-4">
         <SpeciesSearch placeholder="speciesFilter" />

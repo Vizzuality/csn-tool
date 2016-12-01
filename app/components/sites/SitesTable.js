@@ -45,7 +45,6 @@ class SitesTable extends React.Component {
   }
 
   render() {
-    const title = this.props.selected ? this.context.t('triggerSpeciesList') : '';
     let detailLink = this.props.selected ? 'species' : 'sites';
 
     if (['threats', 'habitats'].indexOf(this.props.category) >= 0) {
@@ -54,7 +53,6 @@ class SitesTable extends React.Component {
 
     return (
       <div className="c-paginated-table">
-        <h2>{title}</h2>
         {this.props.selected
           ? <SitesFilters id={this.props.selected} category={this.props.category} />
           : ''
