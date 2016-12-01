@@ -65,7 +65,7 @@ class SpeciesMap extends React.Component {
   }
 
   addLayer(id) {
-    const query = `SELECT f.the_geom_webmercator FROM species s
+    const query = `SELECT f.the_geom_webmercator, f.colour_index FROM species s
       INNER JOIN species_and_flywaygroups f on f.ssid = s.species_id
       WHERE s.species_id = ${id}`;
 

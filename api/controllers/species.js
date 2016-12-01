@@ -35,7 +35,7 @@ function getSpeciesDetails(req, res) {
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
-        const row = results.rows[0];
+        const row = results[0];
         res.json({
           species: [{
             scientific_name: row.scientific_name,

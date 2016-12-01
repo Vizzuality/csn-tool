@@ -1,4 +1,4 @@
-import { GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION,
+import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION,
   GET_SPECIES_THREATS, GET_SPECIES_HABITATS, SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_DETAIL_SEARCH } from 'constants';
 
@@ -6,6 +6,7 @@ const initialState = {
   list: false,
   selectedCategory: 'sites',
   searchFilter: '',
+  stats: {},
   sites: {},
   population: {},
   threats: {},
@@ -23,6 +24,8 @@ export default function (state = initialState, action) {
     }
     case SET_SPECIES_DETAIL_SEARCH:
       return Object.assign({}, state, { searchFilter: action.payload });
+    case GET_SPECIES_STATS:
+      return Object.assign({}, state, { stats: action.payload });
     case GET_SPECIES_LIST:
       return Object.assign({}, state, { list: action.payload });
     case GET_SPECIES_SITES: {

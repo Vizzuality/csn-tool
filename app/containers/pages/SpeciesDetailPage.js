@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 import SpeciesDetailPage from 'components/pages/SpeciesDetailPage';
-import { getSpeciesSites, getSpeciesPopulation, getSpeciesThreats, getSpeciesHabitats } from 'actions/species';
+import { getSpeciesStats, getSpeciesSites, getSpeciesPopulation, getSpeciesThreats, getSpeciesHabitats } from 'actions/species';
 
 const mapStateToProps = (state, { params }) => ({
   id: params.id,
   category: state.species.selectedCategory,
+  stats: state.species.stats || false,
   sites: state.species.sites[params.id] || false,
   population: state.species.population[params.id] || false,
   threats: state.species.threats[params.id] || false,
@@ -12,6 +13,7 @@ const mapStateToProps = (state, { params }) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  getSpeciesStats: id => dispatch(getSpeciesStats(id)),
   getSpeciesData: (id, category) => {
     switch (category) {
       case 'population':

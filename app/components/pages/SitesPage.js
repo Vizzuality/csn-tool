@@ -36,8 +36,12 @@ class SitesPage extends React.Component {
               {this.props.selected ?
                 <div className="navigation-wrapper">
                   <div className="c-navigation">
-                    <NavLink className="breadcrumb" to="/sites" i18nText="backToSites" />
-                    <h2>{unslug(this.props.selected)}</h2>
+                    <div className="content">
+                      <div className="title">
+                        <NavLink className="breadcrumb" to="/sites" i18nText="backToSites" />
+                        <h2>{unslug(this.props.selected)}</h2>
+                      </div>
+                    </div>
                   </div>
                 </div>
               : <div className="navigation-wrapper">

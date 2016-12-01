@@ -4,7 +4,10 @@ import SpeciesMap from 'components/species/SpeciesMap';
 import SpeciesDetailTable from 'containers/species/SpeciesDetailTable';
 
 class SpeciesDetailPage extends React.Component {
+
   componentWillMount() {
+    this.props.getSpeciesStats(this.props.id);
+
     if (!this.props.sites) {
       this.props.getSpeciesData(this.props.id, this.props.category);
     }
@@ -12,6 +15,7 @@ class SpeciesDetailPage extends React.Component {
 
   componentWillReceiveProps(newProps) {
     if (this.hasNewParams(newProps)) {
+      this.props.getSpeciesStats(newProps.id);
       this.props.getSpeciesData(newProps.id, newProps.category);
     }
   }
@@ -28,12 +32,16 @@ class SpeciesDetailPage extends React.Component {
         <div className="l-navigation">
           <div className="row">
             <div className="column c-navigation">
-              {this.props.id
+              {this.props.stats.species
                 ? <div className="content">
                   <div className="title">
                     <NavLink className="breadcrumb" to="/species" i18nText="backToSpecies" />
-
-                    <h2>{this.props.id}</h2>
+                    <div className="name">
+                      <h2>{this.props.stats.species[0].scientific_name}</h2>
+                      <div className={`iucn-icon -${this.props.stats.species[0].iucn_category}`}>
+                        {this.props.stats.species[0].iucn_category}
+                      </div>
+                    </div>
                   </div>
                   <div className="stats">
                     <div className="list">
@@ -42,7 +50,7 @@ class SpeciesDetailPage extends React.Component {
                           English name
                         </div>
                         <div className="value">
-                          Value
+                          {this.props.stats.species[0].english_name}
                         </div>
                       </div>
                       <div className="item">
@@ -50,7 +58,7 @@ class SpeciesDetailPage extends React.Component {
                           Family
                         </div>
                         <div className="value">
-                          Value
+                          {this.props.stats.species[0].family}
                         </div>
                       </div>
                     </div>
@@ -84,7 +92,9 @@ SpeciesDetailPage.contextTypes = {
 SpeciesDetailPage.propTypes = {
   id: React.PropTypes.string.isRequired,
   category: React.PropTypes.string.isRequired,
+  getSpeciesStats: React.PropTypes.func.isRequired,
   getSpeciesData: React.PropTypes.func.isRequired,
+  stats: React.PropTypes.any.isRequired,
   sites: React.PropTypes.any
 };
 
