@@ -12,7 +12,7 @@ function getSitesData(sites) {
 const mapStateToProps = (state) => ({
   selected: state.sites.selected,
   category: state.sites.selectedCategory,
-  stats: state.species.stats || false,
+  stats: state.sites.stats || false,
   list: state.sites.list.length >= 0,
   locations: state.sites.locations.length >= 0,
   data: getSitesData(state.sites),

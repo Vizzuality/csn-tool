@@ -7,6 +7,7 @@ const initialState = {
   selectedCategory: 'species',
   locations: false,
   list: false,
+  stats: {},
   species: {},
   populations: {},
   habitats: {},

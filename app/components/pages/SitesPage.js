@@ -14,6 +14,7 @@ class SitesPage extends React.Component {
   }
 
   componentWillMount() {
+    this.props.setViewMode('map');
     this.getData(this.props);
   }
 
@@ -52,13 +53,13 @@ class SitesPage extends React.Component {
         <div className="l-navigation">
           <div className="row">
             <div className="column">
-              {this.props.stats.sites ?
+              {this.props.selected && this.props.stats.site ?
                 <div className="navigation-wrapper">
                   <div className="c-navigation">
                     <div className="content">
                       <div className="title">
                         <NavLink className="breadcrumb" to="/sites" i18nText="backToSites" />
-                        <h2>{this.props.stats.species[0].name}</h2>
+                        <h2>{this.props.stats.site[0].name}</h2>
                       </div>
                       <div className="stats">
                         <div className="list">
@@ -67,7 +68,7 @@ class SitesPage extends React.Component {
                               Country
                             </div>
                             <div className="value">
-                              {this.props.stats.sites[0].country}
+                              {this.props.stats.site[0].country}
                             </div>
                           </div>
                           <div className="item">
@@ -75,7 +76,7 @@ class SitesPage extends React.Component {
                               Protection status
                             </div>
                             <div className="value">
-                              {this.props.stats.sites[0].protection_status}
+                              {this.props.stats.site[0].protection_status}
                             </div>
                           </div>
                         </div>
