@@ -6,6 +6,13 @@ import SitesTable from 'containers/sites/SitesTable';
 import { unslug } from 'helpers/string';
 
 class SitesPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.listPage = 0;
+    this.onEndReached = this.onEndReached.bind(this);
+    this.clearSites = this.onClearSites.bind(this);
+  }
+
   componentWillMount() {
     this.getData(this.props);
   }
@@ -14,12 +21,22 @@ class SitesPage extends React.Component {
     this.getData(newProps);
   }
 
+  onEndReached() {
+    this.listPage = this.listPage + 1;
+    this.props.getSitesList(this.listPage);
+  }
+
+  onClearSites() {
+    this.listPage = 0;
+    this.props.clearSites();
+  }
+
   getData(props) {
     if (props.selected && !props.data) {
       props.getSitesData(props.selected, props.category);
     } else if (!props.selected) {
       if (props.viewMode === 'list' && !props.list) {
-        props.getSitesList();
+        props.getSitesList(this.listPage);
       }
       if (props.viewMode === 'map' && !props.locations) {
         props.getSitesLocations();
@@ -60,7 +77,15 @@ class SitesPage extends React.Component {
           <div className="l-table">
             <div className="row">
               <div className="column">
-                <SitesTable data={this.props.list} slug={this.props.selected} category={this.props.category} />
+                {this.props.viewMode === 'list' &&
+                  <SitesTable
+                    data={this.props.list}
+                    slug={this.props.selected}
+                    category={this.props.category}
+                    endReached={this.onEndReached}
+                    clearSites={this.clearSites}
+                  />
+                }
               </div>
             </div>
           </div>
@@ -71,6 +96,7 @@ class SitesPage extends React.Component {
 }
 
 SitesPage.propTypes = {
+  clearSites: React.PropTypes.func.isRequired,
   getSitesLocations: React.PropTypes.func.isRequired,
   getSitesList: React.PropTypes.func.isRequired,
   getSitesData: React.PropTypes.func.isRequired,

@@ -1,4 +1,4 @@
-import { SET_SITES_PARAMS, GET_SITES_LIST, GET_SITES_SPECIES,
+import { CLEAR_SITES_LIST, SET_SITES_PARAMS, GET_SITES_LIST, GET_SITES_SPECIES,
          GET_SITES_POPULATIONS, GET_SITES_HABITATS, GET_SITES_THREATS,
          SET_SITES_SEARCH, SET_VIEW_MODE, GET_SITES_LOCATIONS } from 'constants';
 
@@ -30,8 +30,16 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { viewMode: action.payload });
     case GET_SITES_LOCATIONS:
       return Object.assign({}, state, { locations: action.payload });
-    case GET_SITES_LIST:
-      return Object.assign({}, state, { list: action.payload });
+    case CLEAR_SITES_LIST:
+      return Object.assign({}, state, { list: false });
+    case GET_SITES_LIST: {
+      if (!state.list) {
+        return Object.assign({}, state, { list: action.payload });
+      }
+      // concat with the new page results
+      const list = [...state.list, ...action.payload];
+      return Object.assign({}, state, { list });
+    }
     case GET_SITES_SPECIES: {
       const data = Object.assign({}, state.species, {});
       data[action.payload.id] = action.payload.data;
