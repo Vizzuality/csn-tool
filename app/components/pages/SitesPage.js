@@ -32,7 +32,9 @@ class SitesPage extends React.Component {
   }
 
   getData(props) {
-    this.props.getSitesStats(props.selected);
+    if (props.selected) {
+      this.props.getSitesStats(props.selected);
+    }
 
     if (props.selected && !props.data) {
       props.getSitesData(props.selected, props.category);
