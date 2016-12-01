@@ -53,14 +53,16 @@ function getSitesSpecies(req, res) {
       FROM sites
       WHERE site_id = ${req.params.id}
     )
-    SELECT s.scientific_name, s.english_name, s.species_id as id, string_agg(flyway.populationname, ', ') as population,
-      ss.season, ss.csn_criteria, ss.iba_criteria, my_sites.lat, my_sites.lon, my_sites.site_name
+    SELECT s.scientific_name, s.english_name, s.species_id as id,
+    s.iucn_category, my_sites.lat, my_sites.lon, my_sites.site_name,
+    s.hyperlink
     FROM species s
     INNER JOIN species_and_flywaygroups AS flyway
     ON flyway.ssid = s.species_id
-    INNER JOIN species_sites AS ss ON ss.species_id = s.species_id AND ss.site_id IN (SELECT site_id FROM my_sites)
-    INNER JOIN my_sites ON ST_CONTAINS(flyway.the_geom_webmercator, my_sites.the_geom_webmercator)
-    GROUP BY s.scientific_name, s.english_name, s.species_id, ss.season, ss.csn_criteria, ss.iba_criteria, my_sites.lat, my_sites.lon, my_sites.site_name
+    INNER JOIN my_sites ON ST_CONTAINS(flyway.the_geom_webmercator,
+                                       my_sites.the_geom_webmercator)
+    GROUP BY s.scientific_name, s.english_name, s.species_id, s.iucn_category,
+    my_sites.lat, my_sites.lon, my_sites.site_name, s.hyperlink
     ORDER BY s.scientific_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
@@ -91,13 +93,18 @@ function getSitePopulations(req, res) {
       FROM sites
       WHERE site_id = ${req.params.id}
     )
-    SELECT s.scientific_name, s.english_name, s.species_id as id, flyway.populationname as population,
-      ss.season, ss.csn_criteria, ss.iba_criteria, my_sites.lat, my_sites.lon, my_sites.site_name
+    SELECT s.scientific_name, s.english_name, s.species_id as id,
+      flyway.populationname as population, ss.season, ss.csn_criteria,
+      ss._end AS end, ss.start AS start, ss.minimum, ss.maximum, ss.units,
+      ss.iba_criteria, my_sites.lat, my_sites.lon, my_sites.site_name,
+      s.hyperlink
     FROM species s
     INNER JOIN species_and_flywaygroups AS flyway
     ON flyway.ssid = s.species_id
-    INNER JOIN species_sites AS ss ON ss.species_id = s.species_id AND ss.site_id IN (SELECT site_id FROM my_sites)
-    INNER JOIN my_sites ON ST_CONTAINS(flyway.the_geom_webmercator, my_sites.the_geom_webmercator)
+    INNER JOIN my_sites ON ST_CONTAINS(flyway.the_geom_webmercator,
+                                       my_sites.the_geom_webmercator)
+    INNER JOIN species_sites AS ss ON ss.species_id = s.species_id AND
+      ss.site_id IN (SELECT site_id FROM my_sites)
     ORDER BY s.scientific_name`;
   rp(CARTO_SQL + query)
     .then((data) => {

@@ -4,12 +4,13 @@ import SitesTable from 'components/sites/SitesTable';
 function getSitesColums(category) {
   switch (category) {
     case 'populations':
-      return ['scientific_name', 'english_name', 'population', 'season'];
+      return ['scientific_name', 'english_name', 'population', 'season',
+     'start', 'end', 'minimum', 'maximum', 'units', 'csn_criteria',
+     'iba_criteria'];
     case 'threats':
       return ['threat_name'];
     case 'species':
-      return ['scientific_name', 'english_name', 'population', 'season',
-        'csn_criteria', 'iba_criteria'];
+      return ['scientific_name', 'english_name', 'iucn_category'];
     default:
       return ['country', 'site_name', 'protection_status', 'csn', 'iba'];
   }
