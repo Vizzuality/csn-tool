@@ -6,9 +6,6 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 class SitesTable extends React.Component {
   constructor() {
     super();
-    this.state = {
-      loading: true
-    };
     this.threshold = 200; // threshold to scroll request
     this.handleScroll = this.handleScroll.bind(this);
     this.timeout = null;
@@ -18,27 +15,17 @@ class SitesTable extends React.Component {
     window.addEventListener('scroll', this.handleScroll);
   }
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.data.length && this.props.data.length === newProps.data.length) {
-      this.setAllData();
-    }
-  }
-
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
     this.props.clearSites();
-  }
-
-  setAllData() {
-    this.setState({ loading: false });
   }
 
   handleScroll() {
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
       const scroll = document.body.scrollTop;
-      const positionTop = this.loading.offsetTop;
-      if (scroll >= positionTop - this.threshold && this.state.loading) {
+      const positionTop = this.loadingEl.offsetTop;
+      if (scroll >= positionTop - this.threshold && this.props.loading) {
         this.props.endReached();
       }
     }, 100);
@@ -53,17 +40,14 @@ class SitesTable extends React.Component {
 
     return (
       <div className="c-paginated-table">
-        {this.props.selected
-          ? <SitesFilters id={this.props.selected} category={this.props.category} />
-          : ''
-        }
+        <SitesFilters id={this.props.selected || false} category={this.props.category} />
         <TableList
           data={this.props.data}
           columns={this.props.columns}
           detailLink={detailLink}
         />
-        <div className="loading -relative" ref={(loading) => { this.loading = loading; }}>
-          {!this.props.selected && this.state.loading &&
+        <div className="loading -relative" ref={(loading) => { this.loadingEl = loading; }}>
+          {!this.props.selected && this.props.loading &&
             <LoadingSpinner inner />
           }
         </div>
@@ -79,6 +63,7 @@ SitesTable.contextTypes = {
 SitesTable.propTypes = {
   clearSites: React.PropTypes.func.isRequired,
   endReached: React.PropTypes.func.isRequired,
+  loading: React.PropTypes.bool.isRequired,
   selected: React.PropTypes.string,
   data: React.PropTypes.any,
   category: React.PropTypes.string,

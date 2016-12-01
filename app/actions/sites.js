@@ -37,15 +37,19 @@ export function getSitesStats(id) {
       });
   };
 }
-export function getSitesList(page) {
-  const url = `${config.apiHost}/sites?page=${page}`;
+export function getSitesList(page, search) {
+  const searchQuery = search ? `&search=${search}` : '';
+  const url = `${config.apiHost}/sites?page=${page}${searchQuery}`;
   return dispatch => {
     fetch(url)
       .then(response => response.json())
       .then(data => {
         dispatch({
           type: GET_SITES_LIST,
-          payload: data
+          payload: {
+            search: search !== undefined,
+            data
+          }
         });
       });
   };

@@ -7,6 +7,9 @@ import SitesTable from 'containers/sites/SitesTable';
 class SitesPage extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      tableLoading: true
+    };
     this.listPage = 0;
     this.onEndReached = this.onEndReached.bind(this);
     this.clearSites = this.onClearSites.bind(this);
@@ -19,6 +22,14 @@ class SitesPage extends React.Component {
 
   componentWillReceiveProps(newProps) {
     this.getData(newProps);
+    if (!this.props.selected) {
+      // 200 is the row per page in the request
+      if (newProps.list.length < 200) {
+        this.setState({ tableLoading: false });
+      } else {
+        this.setState({ tableLoading: true });
+      }
+    }
   }
 
   onEndReached() {
@@ -117,6 +128,7 @@ class SitesPage extends React.Component {
                     category={this.props.category}
                     endReached={this.onEndReached}
                     clearSites={this.clearSites}
+                    loading={this.state.tableLoading}
                   />
                 }
               </div>

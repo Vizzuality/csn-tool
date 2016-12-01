@@ -13,7 +13,7 @@ const mapStateToProps = (state) => ({
   selected: state.sites.selected,
   category: state.sites.selectedCategory,
   stats: state.sites.stats || false,
-  list: state.sites.list.length >= 0,
+  list: state.sites.list,
   locations: state.sites.locations.length >= 0,
   data: getSitesData(state.sites),
   viewMode: state.sites.viewMode

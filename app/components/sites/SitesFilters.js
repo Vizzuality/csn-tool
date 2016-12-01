@@ -14,7 +14,7 @@ function SitesFilters(props) {
         </div>
       </div>
       <div className="column small-12 medium-4">
-        <SitesSearch placeholder="sitesFilter" />
+        <SitesSearch id={props.id} placeholder="sitesFilter" />
       </div>
     </div>
   );
@@ -26,7 +26,7 @@ SitesFilters.contextTypes = {
 };
 
 SitesFilters.propTypes = {
-  id: React.PropTypes.string,
+  id: React.PropTypes.any,
   category: React.PropTypes.string
 };
 
