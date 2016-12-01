@@ -6,7 +6,7 @@ function SitesTable(props, context) {
   const title = props.selected ? context.t('triggerSpeciesList') : context.t('sitesList');
   let detailLink = props.selected ? 'species' : 'sites';
 
-  if (props.category === 'threats') {
+  if (['threats', 'habitats'].indexOf(props.category) >= 0) {
     detailLink = '';
   }
 

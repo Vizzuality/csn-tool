@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import SitesPage from 'components/pages/SitesPage';
-import { getSitesList, getSitesLocations, getSitesSpecies,
+import { getSitesList, getSitesLocations, getSitesSpecies, getSitesHabitats,
   getSitesPopulations, getSitesThreats, setViewMode } from 'actions/sites';
 
 function getSitesData(sites) {
@@ -25,6 +25,9 @@ const mapDispatchToProps = (dispatch) => ({
     switch (category) {
       case 'populations':
         dispatch(getSitesPopulations(id));
+        break;
+      case 'habitats':
+        dispatch(getSitesHabitats(id));
         break;
       case 'threats':
         dispatch(getSitesThreats(id));

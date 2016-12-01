@@ -6,6 +6,8 @@ function getSitesColums(category) {
     case 'populations':
       return ['scientific_name', 'english_name', 'populations', 'a', 'b', 'c',
         'table_1_status'];
+    case 'habitats':
+      return ['habitat_name'];
     case 'threats':
       return ['threat_name'];
     case 'species':
