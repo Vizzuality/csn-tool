@@ -31,37 +31,38 @@
 
 .l-mask {
   position: relative;
-  width: 100%;
+  width: 200%;
   height: calc(100vh - $header-height);
+  overflow-y: hidden;
 
   .l-map,
   .l-table {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    width: 50%;
     transition: transform 0.3s ease-in-out;
   }
 
   .l-map {
-    transform: translateX(0);
+    position: absolute;
+    transform: translate3d(0, 0, 0);
   }
 
   .l-table {
-    left: 100%;
-    width: 100%;
+    margin-left: 50%;
     padding-top: calc($header-height + 20px);
-    transform: translateX(0%);
-    overflow-y: auto;
+    transform: translate3d(0, 0, 0);
+    overflow-y: hidden;
   }
 
   &.list {
+    height: auto;
+    overflow-y: auto;
+
     .l-map {
-      transform: translateX(-100%);
+      transform: translate3d(-100%, 0, 0);
     }
     .l-table {
-      transform: translateX(-100%);
+      transform: translate3d(-100%, 0, 0);
+      overflow-y: auto;
     }
   }
 }
