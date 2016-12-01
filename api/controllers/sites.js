@@ -90,7 +90,8 @@ function getSitesPopulations(req, res) {
     SELECT s.scientific_name, s.english_name, s.species_id AS id,
     my_sites.lat, my_sites.lon, my_sites.site_name, s.hyperlink,
     dd.a, dd.b, dd.c, dd.table_1_status,
-    dd.populations
+    dd.populations,
+    'http://wpe.wetlands.org/view/' || dd.wpepopid AS pop_hyperlink
     FROM species AS s
     INNER JOIN species_and_flywaygroups AS flyway
     ON flyway.ssid = s.species_id
