@@ -48,22 +48,16 @@ function getSitesLocations(req, res) {
 }
 
 function getSitesSpecies(req, res) {
-  const query = `WITH my_sites AS (
-      SELECT DISTINCT the_geom_webmercator, site_id, lat, lon, site_name
-      FROM sites
-      WHERE site_id = ${req.params.id}
-    )
-    SELECT s.scientific_name, s.english_name, s.species_id as id,
-    s.iucn_category, my_sites.lat, my_sites.lon, my_sites.site_name,
-    s.hyperlink
-    FROM species s
-    INNER JOIN species_and_flywaygroups AS flyway
-    ON flyway.ssid = s.species_id
-    INNER JOIN my_sites ON ST_CONTAINS(flyway.the_geom_webmercator,
-                                       my_sites.the_geom_webmercator)
-    GROUP BY s.scientific_name, s.english_name, s.species_id, s.iucn_category,
-    my_sites.lat, my_sites.lon, my_sites.site_name, s.hyperlink
-    ORDER BY s.scientific_name`;
+  const query = `SELECT s.scientific_name, s.english_name, s.species_id AS id,
+    s.iucn_category, si.lat, si.lon, si.site_name, s.hyperlink,
+    ss._end AS end, ss.start, ss.minimum, ss.maximum, ss.season,
+    ss.units, ss.iba_criteria, ss.csn_criteria
+    FROM species AS s
+    INNER JOIN species_sites AS ss ON ss.species_id = s.species_id
+    INNER JOIN sites AS si ON si.site_id = ss.site_id
+    WHERE si.site_id = ${req.params.id}
+    ORDER BY s.scientific_name
+  `;
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);
@@ -93,19 +87,19 @@ function getSitePopulations(req, res) {
       FROM sites
       WHERE site_id = ${req.params.id}
     )
-    SELECT s.scientific_name, s.english_name, s.species_id as id,
-      flyway.populationname as population, ss.season, ss.csn_criteria,
-      ss._end AS end, ss.start AS start, ss.minimum, ss.maximum, ss.units,
-      ss.iba_criteria, my_sites.lat, my_sites.lon, my_sites.site_name,
-      s.hyperlink
-    FROM species s
+    SELECT s.scientific_name, s.english_name, s.species_id AS id,
+    my_sites.lat, my_sites.lon, my_sites.site_name, s.hyperlink,
+    dd.a, dd.b, dd.c, dd.table_1_status,
+    dd.populations
+    FROM species AS s
     INNER JOIN species_and_flywaygroups AS flyway
     ON flyway.ssid = s.species_id
     INNER JOIN my_sites ON ST_CONTAINS(flyway.the_geom_webmercator,
                                        my_sites.the_geom_webmercator)
-    INNER JOIN species_sites AS ss ON ss.species_id = s.species_id AND
-      ss.site_id IN (SELECT site_id FROM my_sites)
-    ORDER BY s.scientific_name`;
+    INNER JOIN populations_species_no_geo AS dd ON
+    dd.wpepopid = flyway.wpepopid
+    ORDER BY s.scientific_name
+    LIMIT 400`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);
