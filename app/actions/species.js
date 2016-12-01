@@ -109,3 +109,10 @@ export function setSearchFilter(search) {
     payload: search
   };
 }
+
+export function resetSearchFilter() {
+  return {
+    type: SET_SPECIES_DETAIL_SEARCH,
+    payload: ''
+  };
+}

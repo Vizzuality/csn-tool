@@ -1,5 +1,5 @@
 import React from 'react';
-import SpeciesTable from 'components/species/SpeciesTable';
+import SpeciesTable from 'containers/species/SpeciesTable';
 
 class SpeciesPage extends React.Component {
   componentWillMount() {
