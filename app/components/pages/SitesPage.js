@@ -3,7 +3,6 @@ import NavLink from 'containers/common/NavLink';
 import ViewToggler from 'components/common/ViewToggler';
 import SitesMap from 'containers/sites/SitesMap';
 import SitesTable from 'containers/sites/SitesTable';
-import { unslug } from 'helpers/string';
 
 class SitesPage extends React.Component {
   constructor(props) {
