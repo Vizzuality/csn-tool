@@ -1,5 +1,5 @@
 import React from 'react';
-import NavLink from 'containers/common/NavLink';
+import GoBackLink from 'containers/common/GoBackLink';
 import CountriesMap from 'containers/countries/CountriesMap';
 import CountriesTable from 'containers/countries/CountriesTable';
 
@@ -32,7 +32,7 @@ class CountriesPage extends React.Component {
                 ? <div>
                   <div className="content">
                     <div className="title">
-                      <NavLink className="breadcrumb" to="/countries" i18nText="backToCountries" />
+                      <GoBackLink className="breadcrumb" i18nText="back" />
                       <h2>{this.props.country}</h2>
                     </div>
                   </div>

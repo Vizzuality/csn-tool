@@ -1,5 +1,5 @@
 import React from 'react';
-import NavLink from 'containers/common/NavLink';
+import GoBackLink from 'containers/common/GoBackLink';
 import ViewToggler from 'components/common/ViewToggler';
 import SitesMap from 'containers/sites/SitesMap';
 import SitesTable from 'containers/sites/SitesTable';
@@ -60,7 +60,7 @@ class SitesPage extends React.Component {
                   <div className="c-navigation">
                     <div className="content">
                       <div className="title">
-                        <NavLink className="breadcrumb" to="/sites" i18nText="backToSites" />
+                        <GoBackLink className="breadcrumb" i18nText="back" />
                         <h2>{this.props.stats.site[0].name}</h2>
                       </div>
                       <div className="stats">
