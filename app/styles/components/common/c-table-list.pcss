@@ -20,14 +20,18 @@
         border-bottom: rem(1) solid rgba($border-color, 0.2);
       }
 
-      &:last-child {
-        border-bottom: none;
-      }
-
       > div {
         flex-basis: 50%;
-        padding-right: rem(12);
-
+        padding-right: rem(15);
+        display: flex;
+        
+        &:last-child {
+          justify-content: flex-end;
+          text-align: right;
+          padding-right: 0;
+          flex-basis: 24px;
+        }
+      
         &.link {
 
           a {
@@ -70,8 +74,8 @@
       .map-link {
         display: inline-block;
         position: relative;
-        top: 2px;
         margin-left: rem(5);
+        height: 18px;
       }
 
       .country-column {
