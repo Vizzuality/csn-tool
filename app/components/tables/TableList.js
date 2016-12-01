@@ -55,10 +55,9 @@ function TableList(props, context) {
                   </button>
                 </div>);
               } else if (column === 'country') {
-                // debugger
                 return (<div className="country-column" key={index2}>
                   <span className={`flag ${(item.iso2).toLowerCase()}`}></span>
-                  <div className={`text ${column}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
+                  <div className={`text ${column}`}> {item[column]} </div>
                 </div>);
               }
 
