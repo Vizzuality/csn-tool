@@ -1,10 +1,9 @@
 import React from 'react';
-import LoadingSpinner from 'components/common/LoadingSpinner';
 import SpeciesTable from 'components/species/SpeciesTable';
 
 class SpeciesPage extends React.Component {
   componentWillMount() {
-    if (!this.props.species.length) {
+    if (!this.props.species) {
       this.props.getSpeciesList();
     }
   }
@@ -13,10 +12,7 @@ class SpeciesPage extends React.Component {
     return (
       <div className="l-page row">
         <div className="column">
-          {!this.props.species.length
-            ? <LoadingSpinner transparent />
-            : <SpeciesTable data={this.props.species} />
-          }
+          <SpeciesTable data={this.props.species} />
         </div>
       </div>
     );
@@ -30,7 +26,7 @@ SpeciesPage.contextTypes = {
 
 SpeciesPage.propTypes = {
   getSpeciesList: React.PropTypes.func.isRequired,
-  species: React.PropTypes.array
+  species: React.PropTypes.any.isRequired // bool or array
 };
 
 export default SpeciesPage;

@@ -1,22 +1,31 @@
-import { GET_SITES_LIST, GET_SITES_DETAIL, SET_SITES_PARAMS } from 'constants';
+import { CLEAR_SITES_LIST, GET_SITES_LIST, GET_SITES_SPECIES, GET_SITES_POPULATIONS,
+         GET_SITES_HABITATS, GET_SITES_THREATS, SET_SITES_PARAMS,
+         SET_SITES_SEARCH, SET_VIEW_MODE, GET_SITES_LOCATIONS } from 'constants';
 import { push } from 'react-router-redux';
 
-export function setSiteParams(site) {
+export function setSiteParams(site, category) {
   return {
     type: SET_SITES_PARAMS,
-    payload: site
+    payload: { site, category }
   };
 }
 
-export function goSiteDetail(slug) {
+export function goSiteDetail(id) {
   return (dispatch, state) => {
     const lang = state().i18nState.lang;
-    dispatch(push(`/${lang}/sites/${slug}`));
+    dispatch(push(`/${lang}/sites/${id}`));
   };
 }
 
-export function getSitesList() {
-  const url = `${config.apiHost}/sites`;
+export function clearSites() {
+  return {
+    type: CLEAR_SITES_LIST,
+    payload: { }
+  };
+}
+
+export function getSitesList(page) {
+  const url = `${config.apiHost}/sites?page=${page}`;
   return dispatch => {
     fetch(url)
       .then(response => response.json())
@@ -29,23 +38,114 @@ export function getSitesList() {
   };
 }
 
-export function getSitesDetail(slug) {
-  const url = `${config.apiHost}/sites/${slug}`;
+export function getSitesLocations() {
+  const url = `${config.apiHost}/sites/locations`;
+  return dispatch => {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        dispatch({
+          type: GET_SITES_LOCATIONS,
+          payload: data
+        });
+      });
+  };
+}
+
+export function getSitesSpecies(id) {
+  const url = `${config.apiHost}/sites/${id}`;
   return dispatch => {
     try {
       fetch(url)
         .then(response => response.json())
         .then(data => {
           dispatch({
-            type: GET_SITES_DETAIL,
-            payload: { slug, data }
+            type: GET_SITES_SPECIES,
+            payload: { id, data }
           });
         });
     } catch (err) {
       dispatch({
-        type: GET_SITES_DETAIL,
-        payload: { slug, data: [] }
+        type: GET_SITES_SPECIES,
+        payload: { id, data: [] }
       });
     }
+  };
+}
+
+export function getSitesPopulations(id) {
+  const url = `${config.apiHost}/sites/${id}/populations`;
+  return dispatch => {
+    try {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          dispatch({
+            type: GET_SITES_POPULATIONS,
+            payload: { id, data }
+          });
+        });
+    } catch (err) {
+      dispatch({
+        type: GET_SITES_POPULATIONS,
+        payload: { id, data: [] }
+      });
+    }
+  };
+}
+
+export function getSitesHabitats(id) {
+  const url = `${config.apiHost}/sites/${id}/habitats`;
+  return dispatch => {
+    try {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          dispatch({
+            type: GET_SITES_HABITATS,
+            payload: { id, data }
+          });
+        });
+    } catch (err) {
+      dispatch({
+        type: GET_SITES_HABITATS,
+        payload: { id, data: [] }
+      });
+    }
+  };
+}
+
+export function getSitesThreats(id) {
+  const url = `${config.apiHost}/sites/${id}/threats`;
+  return dispatch => {
+    try {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          dispatch({
+            type: GET_SITES_THREATS,
+            payload: { id, data }
+          });
+        });
+    } catch (err) {
+      dispatch({
+        type: GET_SITES_THREATS,
+        payload: { id, data: [] }
+      });
+    }
+  };
+}
+
+export function setSearchFilter(search) {
+  return {
+    type: SET_SITES_SEARCH,
+    payload: search
+  };
+}
+
+export function setViewMode(viewMode) {
+  return {
+    type: SET_VIEW_MODE,
+    payload: viewMode
   };
 }

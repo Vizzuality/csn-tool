@@ -1,23 +1,20 @@
 import React from 'react';
 import NavLink from 'containers/common/NavLink';
+import CountriesSearch from 'containers/countries/CountriesSearch';
 
-function TableFilters(props, context) {
+function TableFilters(props) {
   return (
     <div className="row c-table-filters">
-      <div className="column small-12 medium-5 tags">
-        <NavLink to={`/countries/${props.country}/sites`} i18nText="sites" />
-        <NavLink to={`/countries/${props.country}/species`} i18nText="species" />
-        <NavLink to={`/countries/${props.country}/populations`} i18nText="populations" />
-      </div>
-      <div className="column small-12 offset-medium-1 medium-2 filters">
-        <div>
-          {context.t('filters')}
+      <div className="column small-12 medium-8">
+        <div className="tags">
+          <NavLink to={`/countries/${props.country}/sites`} i18nText="sites" className={props.category && props.category === 'sites' ? 'is-active' : ''} />
+          <NavLink to={`/countries/${props.country}/sitesOld`} i18nText="sitesOld" className={props.category && props.category === 'sitesOld' ? 'is-active' : ''} />
+          <NavLink to={`/countries/${props.country}/species`} i18nText="species" className={props.category && props.category === 'species' ? 'is-active' : ''} />
+          <NavLink to={`/countries/${props.country}/populations`} i18nText="populations" className={props.category && props.category === 'populations' ? 'is-active' : ''} />
         </div>
       </div>
-      <div className="column small-12 medium-4 search">
-        <div>
-          {context.t('search')}
-        </div>
+      <div className="column small-12 medium-4">
+        <CountriesSearch placeholder="countriesFilter" />
       </div>
     </div>
   );
@@ -29,7 +26,8 @@ TableFilters.contextTypes = {
 };
 
 TableFilters.propTypes = {
-  country: React.PropTypes.string.isRequired
+  country: React.PropTypes.string.isRequired,
+  category: React.PropTypes.string
 };
 
 export default TableFilters;

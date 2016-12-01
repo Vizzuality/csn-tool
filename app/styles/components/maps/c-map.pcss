@@ -1,6 +1,7 @@
 .c-map {
   min-height: 500px;
   height: 100%;
+  background-color: $ashy-green;
 
   .map-marker {
     position: relative;
@@ -22,7 +23,37 @@
     }
   }
 
+  .-layer-blending {
+    mix-blend-mode: multiply;
+  }
+
   .leaflet-pane {
     z-index: 0;
+  }
+
+  .leaflet-overlay-pane, {
+    mix-blend-mode: multiply;
+
+    .leaflet-interactive {
+      fill-opacity: 1;
+    }
+  }
+}
+
+.marker-cluster {
+  background-clip: padding-box;
+  text-align: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 13px;
+  background-color: $warm-grey;
+  border: 2px solid $font-main-inv;
+
+  > span {
+    font-family: $font-body;
+    font-size: $font-size-s;
+    font-weight: 600;
+    line-height: 24px;
+    color: $font-main-inv;
   }
 }

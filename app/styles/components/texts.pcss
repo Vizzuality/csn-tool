@@ -30,6 +30,11 @@ h4,
     font-size: $font-size;
   }
 
+  &.-map-title {
+    font-size: $font-size;
+    text-transform: uppercase;
+  }
+
   &.-center {
     text-align: center;
   }
@@ -65,11 +70,27 @@ p,
   font-weight: 500;
   line-height: 1.6;
   color: $font-main;
-  margin: 1rem 0;
 
   /* Size and format */
   &.-intro {
     opacity: 0.6;
+  }
+
+  &.-title {
+    font-size: rem(16);
+    font-weight: 700;
+  }
+
+  &.-input-label {
+    font-size: rem(10);
+    font-weight: 600;
+    letter-spacing: rem(0.7);
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  &.-bold {
+    font-weight: 700;
   }
 
   /* Color rules */

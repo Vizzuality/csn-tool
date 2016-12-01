@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useScroll } from 'react-router-scroll';
 import { IndexRoute, Router, Route, applyRouterMiddleware, Redirect } from 'react-router';
-import { updateLanguage, updateCountriesPage, updateSitesPage } from './RoutesActions';
+import { updateLanguage, updateCountriesPage, updateSitesPage, updateSpeciesDetailPage } from './RoutesActions';
 import ReactGA from 'react-ga';
 
 import ContainerPage from 'components/pages/ContainerPage';
@@ -67,7 +67,7 @@ function shouldUpdateScroll(prevRouterProps, { location }) {
    * both the old path and the new one match (i.e. if the global regex and the
    * regex params match the two paths) */
   const regexes = [
-    /\/countries\/((?:[A-z]|[1-9]|-)+)(?:\/(?:.*))?/
+    /\/(countries|species|sites)\/((?:[A-z]|[1-9]|-)+)(?:\/(?:.*))?/
   ];
 
   for (let i = 0, j = regexes.length; i < j; i++) {
@@ -98,11 +98,17 @@ const Routes = ({ history }) => (
   >
     <Route path=":lang" component={ContainerPage} onEnter={updateLanguage} >
       <IndexRoute component={HomePage} />
-      <Route path="countries(/:iso)(/:cat)" component={CountriesPage} onEnter={updateCountriesPage} />
-      <Route path="sites(/:site)" component={SitesPage} onEnter={updateSitesPage} />
+      <Route path="countries">
+        <IndexRoute component={CountriesPage} onEnter={updateCountriesPage} />
+        <Route path=":iso(/:cat)" component={CountriesPage} onEnter={updateCountriesPage} />
+      </Route>
+      <Route path="sites">
+        <IndexRoute component={SitesPage} onEnter={updateSitesPage} />
+        <Route path=":site(/:cat)" component={SitesPage} onEnter={updateSitesPage} />
+      </Route>
       <Route path="species">
         <IndexRoute component={SpeciesPage} />
-        <Route path=":slug" component={SpeciesDetailPage} />
+        <Route path=":id(/:cat)" component={SpeciesDetailPage} onEnter={updateSpeciesDetailPage} />
       </Route>
     </Route>
     <Redirect from="*" to="en" />

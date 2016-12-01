@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import StayUpdate from 'containers/common/StayUpdate';
-import MainNav from 'containers/common/MainNav';
+import MainNav from 'components/common/MainNav';
 
 function Footer(props) {
   return (
