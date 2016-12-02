@@ -42,11 +42,15 @@ function getSites(req, res) {
 }
 
 function getSitesDetails(req, res) {
-  const query = `SELECT site_id AS id, protection_status,
+  const query = `SELECT sites.site_id AS id, protection_status,
     iso3 as country, site_name, lat, lon,
-    hyperlink, csn, iba
+    hyperlink, csn, iba, COUNT(ss.species_id) AS qualifying_species
     FROM sites
-    WHERE site_id = ${req.params.id}`;
+    INNER JOIN species_sites AS ss ON ss.site_id = sites.site_id
+    WHERE sites.site_id = ${req.params.id}
+    GROUP BY sites.site_id, sites.protection_status, iso3, site_name, lat,
+    lon, hyperlink, csn, iba
+    `;
   rp(CARTO_SQL + query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
@@ -62,7 +66,8 @@ function getSitesDetails(req, res) {
             lon: row.lon,
             hyperlink: row.hyperlink,
             csn: row.csn,
-            iba: row.iba
+            iba: row.iba,
+            qualifying_species: row.qualifying_species
           }]
         });
       } else {

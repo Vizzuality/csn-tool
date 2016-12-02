@@ -13,9 +13,7 @@ class SitesPage extends React.Component {
   }
 
   getData(props) {
-    if (props.stats && !props.stats.site) {
-      this.props.getSitesStats(props.site);
-    }
+    this.props.getSitesStats(props.site);
     if (!props.data) {
       props.getSitesData(props.site, props.category);
     }
@@ -51,6 +49,14 @@ class SitesPage extends React.Component {
                             </div>
                             <div className="value">
                               {this.props.stats.site[0].protection_status}
+                            </div>
+                          </div>
+                          <div className="item">
+                            <div className="label">
+                              Qualifying Species
+                            </div>
+                            <div className="value">
+                              {this.props.stats.site[0].qualifying_species}
                             </div>
                           </div>
                         </div>
