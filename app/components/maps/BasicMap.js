@@ -1,5 +1,5 @@
 import React from 'react';
-import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
+import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS, MAP_INITIAL_ZOOM } from 'constants/map';
 
 class Map extends React.Component {
 
@@ -7,7 +7,7 @@ class Map extends React.Component {
     this.map = L.map('map-basic', {
       minZoom: MAP_MIN_ZOOM,
       maxBounds: MAP_MAX_BOUNDS,
-      zoom: MAP_MIN_ZOOM,
+      zoom: MAP_INITIAL_ZOOM,
       center: MAP_CENTER,
       detectRetina: true,
       zoomControl: false
