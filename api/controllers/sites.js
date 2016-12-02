@@ -42,11 +42,15 @@ function getSites(req, res) {
 }
 
 function getSitesDetails(req, res) {
-  const query = `SELECT site_id AS id, protection_status,
+  const query = `SELECT sites.site_id AS id, protection_status,
     iso3 as country, site_name, lat, lon,
-    hyperlink, csn, iba
+    hyperlink, csn, iba, COUNT(ss.species_id) AS qualifying_species
     FROM sites
-    WHERE site_id = ${req.params.id}`;
+    INNER JOIN species_sites AS ss ON ss.site_id = sites.site_id
+    WHERE sites.site_id = ${req.params.id}
+    GROUP BY sites.site_id, sites.protection_status, iso3, site_name, lat,
+    lon, hyperlink, csn, iba
+    `;
   rp(CARTO_SQL + query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
@@ -62,7 +66,8 @@ function getSitesDetails(req, res) {
             lon: row.lon,
             hyperlink: row.hyperlink,
             csn: row.csn,
-            iba: row.iba
+            iba: row.iba,
+            qualifying_species: row.qualifying_species
           }]
         });
       } else {
@@ -170,70 +175,10 @@ function getSitesPopulations(req, res) {
     });
 }
 
-function getSitesHabitats(req, res) {
-  const query = `SELECT s.lat, s.lon, s.site_name, p.habitat_name
-    FROM sites s
-    INNER JOIN sites_habitats p on p.site_id = s.site_id
-    WHERE s.site_id = ${req.params.id}`;
-
-  rp(CARTO_SQL + query)
-    .then((data) => {
-      const results = JSON.parse(data).rows || [];
-      if (results && results.length > 0) {
-        res.json({
-          site: [{
-            lat: results[0].lat,
-            lon: results[0].lon,
-            site_name: results[0].site_name
-          }],
-          data: results.map((item) => ({ habitat_name: item.habitat_name }))
-        });
-      } else {
-        res.status(404);
-        res.json({ site: [], data: [], error: 'There are no habitats for this site' });
-      }
-    })
-    .catch((err) => {
-      res.status(err.statusCode || 500);
-      res.json({ error: err.message });
-    });
-}
-
-function getSitesThreats(req, res) {
-  const query = `SELECT s.lat, s.lon, s.site_name, p.threat_name
-    FROM sites s
-    INNER JOIN sites_threats p on p.site_id = s.site_id
-    WHERE s.site_id = ${req.params.id}`;
-
-  rp(CARTO_SQL + query)
-    .then((data) => {
-      const results = JSON.parse(data).rows || [];
-      if (results && results.length > 0) {
-        res.json({
-          site: [{
-            lat: results[0].lat,
-            lon: results[0].lon,
-            site_name: results[0].site_name
-          }],
-          data: results.map((item) => ({ threat_name: item.threat_name }))
-        });
-      } else {
-        res.status(404);
-        res.json({ site: [], data: [], error: 'There are no threats for this site' });
-      }
-    })
-    .catch((err) => {
-      res.status(err.statusCode || 500);
-      res.json({ error: err.message });
-    });
-}
-
 module.exports = {
   getSites,
   getSitesDetails,
   getSitesLocations,
   getSitesSpecies,
-  getSitesPopulations,
-  getSitesHabitats,
-  getSitesThreats
+  getSitesPopulations
 };

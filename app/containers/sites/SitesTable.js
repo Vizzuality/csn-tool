@@ -27,7 +27,8 @@ function getSitesData(sites, columns) {
 }
 
 const mapStateToProps = (state) => {
-  const columns = ['country', 'site_name', 'protection_status', 'csn', 'iba'];
+  const columns = ['country', 'site_name', 'protection_status', 'csn', 'iba',
+    'qualifying_species'];
 
   return {
     selected: state.sites.selected,

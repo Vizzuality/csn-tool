@@ -6,13 +6,9 @@ function getSitesColums(category) {
     case 'populations':
       return ['scientific_name', 'english_name', 'populations', 'a', 'b', 'c',
         'table_1_status'];
-    case 'habitats':
-      return ['habitat_name'];
-    case 'threats':
-      return ['threat_name'];
     default:
-      return ['scientific_name', 'english_name', 'iucn_category', 'start', 'end',
-        'minimum', 'maximum', 'units', 'csn_criteria', 'iba_criteria'];
+      return ['scientific_name', 'english_name', 'iucn_category', 'season', 'start',
+        'end', 'minimum', 'maximum', 'units', 'csn_criteria', 'iba_criteria'];
   }
 }
 

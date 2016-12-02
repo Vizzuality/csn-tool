@@ -1,5 +1,5 @@
-import { CLEAR_SITES_LIST, GET_SITES_STATS, GET_SITES_LIST, GET_SITES_SPECIES, GET_SITES_POPULATIONS,
-         GET_SITES_HABITATS, GET_SITES_THREATS, SET_SITES_PARAMS,
+import { CLEAR_SITES_LIST, GET_SITES_STATS, GET_SITES_LIST, GET_SITES_SPECIES,
+         GET_SITES_POPULATIONS, SET_SITES_PARAMS,
          SET_SITES_SEARCH, SET_VIEW_MODE, GET_SITES_LOCATIONS } from 'constants';
 import { push } from 'react-router-redux';
 
@@ -105,48 +105,6 @@ export function getSitesPopulations(id) {
     } catch (err) {
       dispatch({
         type: GET_SITES_POPULATIONS,
-        payload: { id, data: [] }
-      });
-    }
-  };
-}
-
-export function getSitesHabitats(id) {
-  const url = `${config.apiHost}/sites/${id}/habitats`;
-  return dispatch => {
-    try {
-      fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          dispatch({
-            type: GET_SITES_HABITATS,
-            payload: { id, data }
-          });
-        });
-    } catch (err) {
-      dispatch({
-        type: GET_SITES_HABITATS,
-        payload: { id, data: [] }
-      });
-    }
-  };
-}
-
-export function getSitesThreats(id) {
-  const url = `${config.apiHost}/sites/${id}/threats`;
-  return dispatch => {
-    try {
-      fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          dispatch({
-            type: GET_SITES_THREATS,
-            payload: { id, data }
-          });
-        });
-    } catch (err) {
-      dispatch({
-        type: GET_SITES_THREATS,
         payload: { id, data: [] }
       });
     }
