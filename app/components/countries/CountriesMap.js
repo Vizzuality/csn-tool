@@ -1,6 +1,6 @@
 import React from 'react';
 import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, BASEMAP_ATTRIBUTION_CARTO,
-         MAP_INITIAL_ZOOM, MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
+         MAP_INITIAL_ZOOM, MAP_MIN_ZOOM, MAP_CENTER } from 'constants/map';
 import { createLayer } from 'helpers/map';
 
 class CountriesMap extends React.Component {

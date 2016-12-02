@@ -1,6 +1,6 @@
 import React from 'react';
-import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, BASEMAP_ATTRIBUTION_CARTO,
-         MAP_INITIAL_ZOOM, MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
+import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX,
+         MAP_INITIAL_ZOOM, MAP_MIN_ZOOM } from 'constants/map';
 
 class SitesMap extends React.Component {
 
