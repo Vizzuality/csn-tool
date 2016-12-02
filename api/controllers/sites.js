@@ -4,6 +4,14 @@ const CARTO_SQL = require('../constants').CARTO_SQL;
 const NUM_RESULTS_PER_PAGE = 200;
 
 function getSites(req, res) {
+  const search = req.query.search
+    ? `AND UPPER(s.country) like UPPER('%${req.query.search}%')
+      OR UPPER(s.site_name) like UPPER('%${req.query.search}%')
+      OR UPPER(s.protection_status) like UPPER('%${req.query.search}%')
+      OR UPPER(s.csn) like UPPER('%${req.query.search}%')
+      OR UPPER(s.iba) like UPPER('%${req.query.search}%')`
+    : '';
+
   const query = `with stc as (
         select site_id, SUM(case when csn_criteria = ''
         then 0 else 1 end) as csn, SUM(case when iba_criteria = '' then 0 else 1
@@ -14,9 +22,10 @@ function getSites(req, res) {
     stc.csn, stc.iba, s.hyperlink
     FROM sites s
     INNER JOIN stc ON stc.site_id = s.site_id
-    WHERE s.site_id in (SELECT * from p)
+    WHERE s.site_id IN (SELECT * from p) ${search}
     ORDER BY s.country`;
-  rp(`${CARTO_SQL}${query}&rows_per_page=${NUM_RESULTS_PER_PAGE}&page=${req.query.page}`)
+
+  rp(encodeURI(`${CARTO_SQL}${query}&rows_per_page=${NUM_RESULTS_PER_PAGE}&page=${req.query.page}`))
     .then((data) => {
       const result = JSON.parse(data);
       if (result.rows && result.rows.length > 0) {

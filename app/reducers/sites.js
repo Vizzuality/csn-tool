@@ -37,10 +37,14 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { list: false });
     case GET_SITES_LIST: {
       if (!state.list) {
-        return Object.assign({}, state, { list: action.payload });
+        return Object.assign({}, state, { list: action.payload.data });
+      } else if (action.payload.search) {
+        const newState = Object.assign({}, state);
+        newState.list = action.payload.data;
+        return newState;
       }
       // concat with the new page results
-      const list = [...state.list, ...action.payload];
+      const list = [...state.list, ...action.payload.data];
       return Object.assign({}, state, { list });
     }
     case GET_SITES_SPECIES: {
