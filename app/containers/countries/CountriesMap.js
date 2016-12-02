@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { getCountriesGeom, goCountryDetail } from 'actions/countries';
+import { goSiteDetail } from 'actions/sites';
 import CountriesMap from 'components/countries/CountriesMap';
 
 const mapStateToProps = (state) => ({
@@ -10,6 +11,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getGeoms: () => dispatch(getCountriesGeom()),
+  goToSite: (id) => dispatch(goSiteDetail(id)),
   goToDetail: (iso) => dispatch(goCountryDetail(iso))
 });
 

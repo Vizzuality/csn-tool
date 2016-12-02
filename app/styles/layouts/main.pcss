@@ -13,9 +13,10 @@
   top: $header-height;
   right: 0;
   left: 0;
-  padding: rem(20) 0;
   background-color: rgba($bg-dark-color, 0.7);
   z-index: 2;
+  padding: rem(15) 0;
+  height: rem(70);
 
   .navigation-wrapper {
     display: flex;
@@ -71,7 +72,8 @@
   height: calc(100vh - $header-height);
 
   &.-short {
-    height: 500px;
+    height: calc(100vh - $header-height - 200px);
+    min-height: 550px;
   }
 }
 

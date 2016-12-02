@@ -1,8 +1,23 @@
 import { connect } from 'react-redux';
-import SitesTable from 'components/sites/SitesTable';
+import SitesDetailTable from 'components/sites/SitesDetailTable';
+
+function getSitesColums(category) {
+  switch (category) {
+    case 'populations':
+      return ['scientific_name', 'english_name', 'populations', 'a', 'b', 'c',
+        'table_1_status'];
+    default:
+      return ['scientific_name', 'english_name', 'iucn_category', 'season', 'start',
+        'end', 'minimum', 'maximum', 'units', 'csn_criteria', 'iba_criteria'];
+  }
+}
 
 function getSitesData(sites, columns) {
-  const data = sites.list || false;
+  let data = [];
+
+  data = sites[sites.selectedCategory] && sites[sites.selectedCategory][sites.selected]
+    ? sites[sites.selectedCategory][sites.selected].data
+    : false;
 
   if (!data || !sites.searchFilter) return data;
 
@@ -27,11 +42,10 @@ function getSitesData(sites, columns) {
 }
 
 const mapStateToProps = (state) => {
-  const columns = ['country', 'site_name', 'protection_status', 'csn', 'iba',
-    'qualifying_species'];
+  const columns = getSitesColums(state.sites.selectedCategory);
 
   return {
-    selected: state.sites.selected,
+    site: state.sites.selected,
     category: state.sites.selectedCategory,
     data: getSitesData(state.sites, columns),
     columns
@@ -40,4 +54,4 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = () => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(SitesTable);
+export default connect(mapStateToProps, mapDispatchToProps)(SitesDetailTable);

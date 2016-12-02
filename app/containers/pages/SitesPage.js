@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import SitesPage from 'components/pages/SitesPage';
-import { getSitesStats, getSitesList, getSitesLocations, getSitesSpecies, getSitesHabitats,
-  getSitesPopulations, getSitesThreats, setViewMode, clearSites } from 'actions/sites';
+import { getSitesStats, getSitesList, getSitesLocations, getSitesSpecies,
+  getSitesPopulations, setViewMode, clearSites } from 'actions/sites';
 
 function getSitesData(sites) {
   return sites[sites.selectedCategory] && sites[sites.selectedCategory][sites.selected]
@@ -13,7 +13,7 @@ const mapStateToProps = (state) => ({
   selected: state.sites.selected,
   category: state.sites.selectedCategory,
   stats: state.sites.stats || false,
-  list: state.sites.list.length >= 0,
+  list: state.sites.list,
   locations: state.sites.locations.length >= 0,
   data: getSitesData(state.sites),
   viewMode: state.sites.viewMode
@@ -27,12 +27,6 @@ const mapDispatchToProps = (dispatch) => ({
     switch (category) {
       case 'populations':
         dispatch(getSitesPopulations(id));
-        break;
-      case 'habitats':
-        dispatch(getSitesHabitats(id));
-        break;
-      case 'threats':
-        dispatch(getSitesThreats(id));
         break;
       case 'species':
         dispatch(getSitesSpecies(id));
