@@ -3,12 +3,14 @@ import SpeciesDetailFilters from 'components/species/SpeciesDetailFilters';
 import TableList from 'components/tables/TableList';
 
 function SpeciesDetailTable(props) {
+  const detailLink = 'sites' === props.category ? props.category : '';
   return (
     <div>
       <SpeciesDetailFilters id={props.id} category={props.category} />
       <TableList
         data={props.data}
         columns={props.columns}
+        detailLink={detailLink}
       />
     </div>
   );
