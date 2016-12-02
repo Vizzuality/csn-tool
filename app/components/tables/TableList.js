@@ -31,11 +31,6 @@ function TableList(props, context) {
                       <use xlinkHref="#icon-open_in_new"></use>
                     </svg>
                   </a>
-                  <button className="map-link">
-                    <svg className="icon -small -grey">
-                      <use xlinkHref="#icon-map"></use>
-                    </svg>
-                  </button>
                 </div>);
               } else if (column === 'populations' && item.pop_hyperlink) {
                 return (<div key={index2}><div className={`text ${column}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
