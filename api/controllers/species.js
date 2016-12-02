@@ -60,7 +60,7 @@ function getSpeciesDetails(req, res) {
 function getSpeciesSites(req, res) {
   const query = `SELECT s.species_id, ss.csn_criteria as csn,
       ss.iba_criteria as iba, ss.maximum, ss.minimum, ss.season,
-      si.country, si.site_name, si.lat, si.lon,
+      si.country, si.site_name, si.lat, si.lon, si.iso2,
       string_agg(p.populations, ', ') as population,
       si.hyperlink, si.site_id AS id
     FROM species s
@@ -69,7 +69,7 @@ function getSpeciesSites(req, res) {
     INNER JOIN sites si ON ss.site_id = si.site_id
     WHERE s.species_id = '${req.params.id}'
     GROUP BY ss.csn_criteria, ss.iba_criteria, ss.maximum, ss.minimum,
-    ss.season, si.country, si.site_name, si.lat, si.lon,
+    ss.season, si.country, si.iso2 ,si.site_name, si.lat, si.lon,
     si.hyperlink, si.site_id, 1
     ORDER BY si.site_name`;
   rp(CARTO_SQL + query)
