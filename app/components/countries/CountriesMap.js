@@ -37,6 +37,7 @@ class CountriesMap extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
+    this.handleMapScroll(newProps.country);
     if (newProps.geoms && this.props.geoms !== newProps.geoms) {
       this.drawGeo(newProps.geoms);
     }
@@ -95,8 +96,16 @@ class CountriesMap extends React.Component {
 
     this.map.attributionControl.addAttribution(BASEMAP_ATTRIBUTION_MAPBOX);
     this.map.zoomControl.setPosition('topright');
-    this.map.scrollWheelZoom.disable();
+    this.handleMapScroll(this.props.country);
     this.tileLayer = L.tileLayer(BASEMAP_TILE).addTo(this.map).setZIndex(0);
+  }
+
+  handleMapScroll(country) {
+    if (country) {
+      this.map.scrollWheelZoom.disable();
+    } else {
+      this.map.scrollWheelZoom.enable();
+    }
   }
 
   addTopoJSONLayer() {

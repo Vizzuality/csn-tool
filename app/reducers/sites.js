@@ -1,5 +1,5 @@
-import { CLEAR_SITES_LIST, SET_SITES_PARAMS, GET_SITES_STATS, GET_SITES_LIST, GET_SITES_SPECIES,
-         GET_SITES_POPULATIONS, GET_SITES_HABITATS, GET_SITES_THREATS,
+import { CLEAR_SITES_LIST, SET_SITES_PARAMS, GET_SITES_STATS, GET_SITES_LIST,
+         GET_SITES_SPECIES, GET_SITES_POPULATIONS,
          SET_SITES_SEARCH, SET_VIEW_MODE, GET_SITES_LOCATIONS } from 'constants';
 
 const initialState = {
@@ -10,8 +10,6 @@ const initialState = {
   stats: {},
   species: {},
   populations: {},
-  habitats: {},
-  threats: {},
   searchFilter: '',
   viewMode: 'map'
 };
@@ -37,10 +35,14 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { list: false });
     case GET_SITES_LIST: {
       if (!state.list) {
-        return Object.assign({}, state, { list: action.payload });
+        return Object.assign({}, state, { list: action.payload.data });
+      } else if (action.payload.search) {
+        const newState = Object.assign({}, state);
+        newState.list = action.payload.data;
+        return newState;
       }
       // concat with the new page results
-      const list = [...state.list, ...action.payload];
+      const list = [...state.list, ...action.payload.data];
       return Object.assign({}, state, { list });
     }
     case GET_SITES_SPECIES: {
@@ -52,16 +54,6 @@ export default function (state = initialState, action) {
       const data = Object.assign({}, state.populations, {});
       data[action.payload.id] = action.payload.data;
       return Object.assign({}, state, { populations: data });
-    }
-    case GET_SITES_HABITATS: {
-      const data = Object.assign({}, state.habitats, {});
-      data[action.payload.id] = action.payload.data;
-      return Object.assign({}, state, { habitats: data });
-    }
-    case GET_SITES_THREATS: {
-      const data = Object.assign({}, state.threats, {});
-      data[action.payload.id] = action.payload.data;
-      return Object.assign({}, state, { threats: data });
     }
     default:
       return state;

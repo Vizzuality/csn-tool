@@ -4,6 +4,14 @@ const CARTO_SQL = require('../constants').CARTO_SQL;
 const NUM_RESULTS_PER_PAGE = 200;
 
 function getSites(req, res) {
+  const search = req.query.search
+    ? `AND UPPER(s.country) like UPPER('%${req.query.search}%')
+      OR UPPER(s.site_name) like UPPER('%${req.query.search}%')
+      OR UPPER(s.protection_status) like UPPER('%${req.query.search}%')
+      OR UPPER(s.csn) like UPPER('%${req.query.search}%')
+      OR UPPER(s.iba) like UPPER('%${req.query.search}%')`
+    : '';
+
   const query = `with stc as (
         select site_id, SUM(case when csn_criteria = ''
         then 0 else 1 end) as csn, SUM(case when iba_criteria = '' then 0 else 1
@@ -14,9 +22,10 @@ function getSites(req, res) {
     stc.csn, stc.iba, s.hyperlink
     FROM sites s
     INNER JOIN stc ON stc.site_id = s.site_id
-    WHERE s.site_id in (SELECT * from p)
+    WHERE s.site_id IN (SELECT * from p) ${search}
     ORDER BY s.country`;
-  rp(`${CARTO_SQL}${query}&rows_per_page=${NUM_RESULTS_PER_PAGE}&page=${req.query.page}`)
+
+  rp(encodeURI(`${CARTO_SQL}${query}&rows_per_page=${NUM_RESULTS_PER_PAGE}&page=${req.query.page}`))
     .then((data) => {
       const result = JSON.parse(data);
       if (result.rows && result.rows.length > 0) {
@@ -33,11 +42,15 @@ function getSites(req, res) {
 }
 
 function getSitesDetails(req, res) {
-  const query = `SELECT site_id AS id, protection_status,
+  const query = `SELECT sites.site_id AS id, protection_status,
     iso3 as country, site_name, lat, lon,
-    hyperlink, csn, iba
+    hyperlink, csn, iba, COUNT(ss.species_id) AS qualifying_species
     FROM sites
-    WHERE site_id = ${req.params.id}`;
+    INNER JOIN species_sites AS ss ON ss.site_id = sites.site_id
+    WHERE sites.site_id = ${req.params.id}
+    GROUP BY sites.site_id, sites.protection_status, iso3, site_name, lat,
+    lon, hyperlink, csn, iba
+    `;
   rp(CARTO_SQL + query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
@@ -53,7 +66,8 @@ function getSitesDetails(req, res) {
             lon: row.lon,
             hyperlink: row.hyperlink,
             csn: row.csn,
-            iba: row.iba
+            iba: row.iba,
+            qualifying_species: row.qualifying_species
           }]
         });
       } else {
@@ -161,70 +175,10 @@ function getSitesPopulations(req, res) {
     });
 }
 
-function getSitesHabitats(req, res) {
-  const query = `SELECT s.lat, s.lon, s.site_name, p.habitat_name
-    FROM sites s
-    INNER JOIN sites_habitats p on p.site_id = s.site_id
-    WHERE s.site_id = ${req.params.id}`;
-
-  rp(CARTO_SQL + query)
-    .then((data) => {
-      const results = JSON.parse(data).rows || [];
-      if (results && results.length > 0) {
-        res.json({
-          site: [{
-            lat: results[0].lat,
-            lon: results[0].lon,
-            site_name: results[0].site_name
-          }],
-          data: results.map((item) => ({ habitat_name: item.habitat_name }))
-        });
-      } else {
-        res.status(404);
-        res.json({ site: [], data: [], error: 'There are no habitats for this site' });
-      }
-    })
-    .catch((err) => {
-      res.status(err.statusCode || 500);
-      res.json({ error: err.message });
-    });
-}
-
-function getSitesThreats(req, res) {
-  const query = `SELECT s.lat, s.lon, s.site_name, p.threat_name
-    FROM sites s
-    INNER JOIN sites_threats p on p.site_id = s.site_id
-    WHERE s.site_id = ${req.params.id}`;
-
-  rp(CARTO_SQL + query)
-    .then((data) => {
-      const results = JSON.parse(data).rows || [];
-      if (results && results.length > 0) {
-        res.json({
-          site: [{
-            lat: results[0].lat,
-            lon: results[0].lon,
-            site_name: results[0].site_name
-          }],
-          data: results.map((item) => ({ threat_name: item.threat_name }))
-        });
-      } else {
-        res.status(404);
-        res.json({ site: [], data: [], error: 'There are no threats for this site' });
-      }
-    })
-    .catch((err) => {
-      res.status(err.statusCode || 500);
-      res.json({ error: err.message });
-    });
-}
-
 module.exports = {
   getSites,
   getSitesDetails,
   getSitesLocations,
   getSitesSpecies,
-  getSitesPopulations,
-  getSitesHabitats,
-  getSitesThreats
+  getSitesPopulations
 };

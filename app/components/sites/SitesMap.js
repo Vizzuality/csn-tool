@@ -92,8 +92,8 @@ class SitesMap extends React.Component {
   }
 
   fitBounds() {
-    // const markersGroup = new L.featureGroup(this.markersList); // eslint-disable-line new-cap
-    // this.map.fitBounds(markersGroup.getBounds(), { maxZoom: 8 });
+    const markersGroup = new L.featureGroup(this.markerList); // eslint-disable-line new-cap
+    this.map.fitBounds(markersGroup.getBounds(), { maxZoom: 5 });
   }
 
   render() {

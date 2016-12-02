@@ -10,7 +10,7 @@ function getSpeciesDetailColums(category) {
     case 'threats':
       return ['threat_level_1', 'threat_level_2'];
     default:
-      return ['site_name', 'protection_status', 'iba', 'csn'];
+      return ['site_name', 'country', 'protection_status', 'iba', 'csn'];
   }
 }
 

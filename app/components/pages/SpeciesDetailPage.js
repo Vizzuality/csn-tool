@@ -26,7 +26,6 @@ class SpeciesDetailPage extends React.Component {
   }
 
   render() {
-    if (this.props.sites.error) return <p>There was an error getting data</p>;
     return (
       <div className="l-page">
         <div className="l-navigation">
@@ -37,7 +36,7 @@ class SpeciesDetailPage extends React.Component {
                   <div className="title">
                     <GoBackLink className="breadcrumb" i18nText="back" />
                     <div className="name">
-                      <h2>{this.props.stats.species[0].scientific_name}</h2>
+                      <h2 className="scientific-name">{this.props.stats.species[0].scientific_name}</h2>
                       <div className={`iucn-icon -${this.props.stats.species[0].iucn_category}`}>
                         {this.props.stats.species[0].iucn_category}
                       </div>

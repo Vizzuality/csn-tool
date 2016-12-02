@@ -16,7 +16,7 @@ function TableList(props, context) {
             </div>
           ))}
           {props.detailLink &&
-            <div className="text -title">
+            <div className="text -title link">
               ...
             </div>
           }
@@ -31,11 +31,6 @@ function TableList(props, context) {
                       <use xlinkHref="#icon-open_in_new"></use>
                     </svg>
                   </a>
-                  <button className="map-link">
-                    <svg className="icon -small -grey">
-                      <use xlinkHref="#icon-map"></use>
-                    </svg>
-                  </button>
                 </div>);
               } else if (column === 'populations' && item.pop_hyperlink) {
                 return (<div key={index2}><div className={`text ${column}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
@@ -57,7 +52,7 @@ function TableList(props, context) {
               } else if (column === 'country') {
                 return (<div className="country-column" key={index2}>
                   <span className={`flag ${(item.iso2).toLowerCase()}`}></span>
-                  <div className={`text ${column}`}> {item[column]} </div>
+                  <div className={`text ${column}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
                 </div>);
               }
 
