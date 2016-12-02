@@ -55,6 +55,7 @@ export const translations = {
     'start' : 'Start',
     'end' : 'End',
     'units' : 'Units',
+    'qualifying_species': 'Qualifying species'
   },
   es: {
     'country': 'Pais',
@@ -112,5 +113,6 @@ export const translations = {
     'start' : 'Inicio',
     'end' : 'Fin',
     'units' : 'Unidades',
+    'qualifying_species': 'Especies qualificadas'
   },
 }
