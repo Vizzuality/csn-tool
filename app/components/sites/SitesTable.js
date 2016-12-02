@@ -31,7 +31,7 @@ class SitesTable extends React.Component {
   }
 
   render() {
-    const detailLink = ['threats', 'habitats'].indexOf(this.props.category) < 0
+    const detailLink = ['populations'].indexOf(this.props.category) < 0
       ? 'sites'
       : '';
 
