@@ -46,7 +46,7 @@ function getSitesData(sites, columns) {
 }
 
 const mapStateToProps = (state) => {
-  const columns = getSitesColums(state.sites.selected);
+  const columns = getSitesColums(state.sites.selectedCategory);
 
   return {
     site: state.sites.selected,
