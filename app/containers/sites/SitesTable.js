@@ -1,34 +1,8 @@
 import { connect } from 'react-redux';
 import SitesTable from 'components/sites/SitesTable';
 
-function getSitesColums(category) {
-  switch (category) {
-    case 'populations':
-      return ['scientific_name', 'english_name', 'populations', 'a', 'b', 'c',
-        'table_1_status'];
-    case 'habitats':
-      return ['habitat_name'];
-    case 'threats':
-      return ['threat_name'];
-    case 'species':
-      return ['scientific_name', 'english_name', 'iucn_category',
-     'start', 'end', 'minimum', 'maximum', 'units', 'csn_criteria',
-     'iba_criteria'];
-    default:
-      return ['country', 'site_name', 'protection_status', 'csn', 'iba'];
-  }
-}
-
 function getSitesData(sites, columns) {
-  let data = [];
-
-  if (!sites.selected) {
-    data = sites.list;
-  } else {
-    data = sites[sites.selectedCategory] && sites[sites.selectedCategory][sites.selected]
-      ? sites[sites.selectedCategory][sites.selected].data
-      : false;
-  }
+  const data = sites.list || false;
 
   if (!data || !sites.searchFilter) return data;
 
@@ -53,8 +27,7 @@ function getSitesData(sites, columns) {
 }
 
 const mapStateToProps = (state) => {
-  const selected = !state.sites.selected ? '' : state.sites.selectedCategory;
-  const columns = getSitesColums(selected);
+  const columns = ['country', 'site_name', 'protection_status', 'csn', 'iba'];
 
   return {
     selected: state.sites.selected,

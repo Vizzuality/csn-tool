@@ -17,7 +17,6 @@ class SitesTable extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
-    this.props.clearSites();
   }
 
   handleScroll() {
@@ -32,22 +31,20 @@ class SitesTable extends React.Component {
   }
 
   render() {
-    let detailLink = this.props.selected ? 'species' : 'sites';
-
-    if (['threats', 'habitats'].indexOf(this.props.category) >= 0) {
-      detailLink = '';
-    }
+    const detailLink = ['threats', 'habitats'].indexOf(this.props.category) < 0
+      ? 'sites'
+      : '';
 
     return (
       <div className="c-paginated-table">
-        <SitesFilters id={this.props.selected || false} category={this.props.category} />
+        <SitesFilters category={this.props.category} />
         <TableList
           data={this.props.data}
           columns={this.props.columns}
           detailLink={detailLink}
         />
         <div className="loading -relative" ref={(loading) => { this.loadingEl = loading; }}>
-          {!this.props.selected && this.props.loading &&
+          {this.props.loading &&
             <LoadingSpinner inner />
           }
         </div>
@@ -61,7 +58,6 @@ SitesTable.contextTypes = {
 };
 
 SitesTable.propTypes = {
-  clearSites: React.PropTypes.func.isRequired,
   endReached: React.PropTypes.func.isRequired,
   loading: React.PropTypes.bool.isRequired,
   selected: React.PropTypes.string,
