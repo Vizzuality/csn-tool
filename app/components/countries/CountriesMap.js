@@ -1,6 +1,6 @@
 import React from 'react';
 import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, BASEMAP_ATTRIBUTION_CARTO,
-         MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
+         MAP_INITIAL_ZOOM, MAP_MIN_ZOOM, MAP_CENTER } from 'constants/map';
 import { createLayer } from 'helpers/map';
 
 class CountriesMap extends React.Component {
@@ -66,7 +66,7 @@ class CountriesMap extends React.Component {
   }
 
   showPopup(latlng, properties) {
-    const html = `<h3 class="header -map-title -highlighted">${properties.name}</h3><p class="text -light">Click to see it page</p>`;
+    const html = `<h3 class="header -map-title -highlighted">${properties.name}</h3><p class="text -light">Click to see its page</p>`;
 
     this.popup.setLatLng(latlng)
       .setContent(html)
@@ -87,9 +87,8 @@ class CountriesMap extends React.Component {
   initMap() {
     this.map = L.map('countries-map', {
       minZoom: MAP_MIN_ZOOM,
-      maxBounds: MAP_MAX_BOUNDS,
-      zoom: MAP_MIN_ZOOM,
-      center: MAP_CENTER,
+      zoom: MAP_INITIAL_ZOOM,
+      center: [52, 7],
       detectRetina: true,
       zoomAnimation: false
     });
