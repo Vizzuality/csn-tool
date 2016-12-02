@@ -6,7 +6,7 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 class SitesTable extends React.Component {
   constructor() {
     super();
-    this.threshold = 200; // threshold to scroll request
+    this.threshold = 550; // TODO: review the threshold to scroll request
     this.handleScroll = this.handleScroll.bind(this);
     this.timeout = null;
   }
@@ -24,7 +24,7 @@ class SitesTable extends React.Component {
     this.timeout = setTimeout(() => {
       const scroll = document.body.scrollTop;
       const positionTop = this.loadingEl.offsetTop;
-      if (scroll >= positionTop - this.threshold && this.props.loading) {
+      if (scroll >= (positionTop - this.threshold) && this.props.loading) {
         this.props.endReached();
       }
     }, 100);

@@ -26,7 +26,6 @@ class SpeciesDetailPage extends React.Component {
   }
 
   render() {
-    if (this.props.sites.error) return <p>There was an error getting data</p>;
     return (
       <div className="l-page">
         <div className="l-navigation">
