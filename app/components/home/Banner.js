@@ -5,7 +5,7 @@ import BasicMap from 'components/maps/BasicMap';
 function Banner() {
   return (
     <div className="c-banner">
-      <BasicMap />
+      <BasicMap/>
       <div className="content">
         <svg>
           <use xlinkHref="#logo-big"></use>
@@ -15,7 +15,6 @@ function Banner() {
           of 294 species of waterbirds and the important sites upon which they depend
           in Africa and Western Eurasia.
         </h3>
-        <NavLink to="/countries" i18nText="getStarted" className="btn" />
       </div>
     </div>
   );
