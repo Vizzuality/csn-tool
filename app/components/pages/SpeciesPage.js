@@ -10,7 +10,7 @@ class SpeciesPage extends React.Component {
 
   render() {
     return (
-      <div className="l-page row">
+      <div className="l-page -header row">
         <div className="column">
           <SpeciesTable data={this.props.species} />
         </div>
