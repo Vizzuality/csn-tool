@@ -1,11 +1,10 @@
 import React from 'react';
-import NavLink from 'containers/common/NavLink';
 import BasicMap from 'components/maps/BasicMap';
 
 function Banner() {
   return (
     <div className="c-banner">
-      <BasicMap/>
+      <BasicMap />
       <div className="content">
         <svg>
           <use xlinkHref="#logo-big"></use>
