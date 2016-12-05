@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
 import SitesTable from 'components/sites/SitesTable';
+import { getSitesList } from 'actions/sites';
 
 function getSitesData(sites, columns) {
-  const data = sites.list || false;
+  const list = sites.list || false;
 
-  if (!data || !sites.searchFilter) return data;
+  if (!list.data || !sites.searchFilter) return list;
 
-  const newData = data.map((a) => Object.assign({}, a));
+  const newData = list.data.map((a) => Object.assign({}, a));
 
   const filteredData = newData.filter((item) => {
     let match = false;
@@ -33,11 +34,13 @@ const mapStateToProps = (state) => {
   return {
     selected: state.sites.selected,
     category: state.sites.selectedCategory,
-    data: getSitesData(state.sites, columns),
+    list: getSitesData(state.sites, columns),
     columns
   };
 };
 
-const mapDispatchToProps = () => ({});
+const mapDispatchToProps = (dispatch) => ({
+  getSitesList: (page) => dispatch(getSitesList(page))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(SitesTable);
