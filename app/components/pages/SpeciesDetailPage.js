@@ -71,7 +71,7 @@ class SpeciesDetailPage extends React.Component {
         <div className="l-map -short -header">
           <SpeciesMap id={this.props.id} data={this.props.sites} />
         </div>
-        <div className="row">
+        <div className="row l-content -short">
           <div className="column">
             <SpeciesDetailTable data={this.props.sites} id={this.props.id} category={this.props.category} />
           </div>
