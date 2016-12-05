@@ -73,7 +73,7 @@ class SitesPage extends React.Component {
             <SitesMap slug={this.props.site} />
           </div>
           <div className="l-table">
-            <div className="row l-content">
+            <div className="row l-content -short">
               <div className="column">
                 <SitesDetailTable
                   data={this.props.data}

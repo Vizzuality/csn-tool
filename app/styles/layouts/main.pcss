@@ -49,12 +49,12 @@
 
   .l-map {
     left: 0;
-    top:0;
+    top: 0;
   }
 
   .l-table {
     left: 50%;
-    top:calc(-100vh + $header-height);
+    top: calc(-100vh + $header-height);
     padding-top: calc($header-height + 20px);
   }
 
@@ -72,13 +72,13 @@
 
 .l-map {
   position: fixed;
-  top:$header-height;
+  top: $header-height;
   width: 100%;
   height: calc(100vh - $header-height);
   z-index: -300;
 
   &.-short {
-    height: calc(100vh - $header-height - 100px);
+    height: calc(100vh - $header-height - $content-peek);
   }
 }
 
@@ -87,8 +87,12 @@
 }
 
 .l-content {
-  margin-top: calc(100vh - 100px);
+  margin-top: calc(100vh);
   z-index: 999999999;
+
+  &.-short {
+    margin-top: calc(100vh - $content-peek);
+  }
 
   &.-no-padding {
     padding: 0;
