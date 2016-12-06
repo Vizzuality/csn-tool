@@ -7,7 +7,7 @@ const router = Express.Router(); // eslint-disable-line new-cap
 
 // Countries
 router.route('/countries').get(CountriesCtrl.getCountries);
-router.route('/countries/:iso').get(CountriesCtrl.getCountry);
+router.route('/countries/:iso').get(CountriesCtrl.getCountryDetails);
 router.route('/countries/:iso/sites').get(CountriesCtrl.getCountrySites);
 router.route('/countries/:iso/sitesOld').get(CountriesCtrl.getCountrySitesOld);
 router.route('/countries/:iso/species').get(CountriesCtrl.getCountrySpecies);
