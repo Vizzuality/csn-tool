@@ -2,14 +2,9 @@ import React from 'react';
 import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, BASEMAP_ATTRIBUTION_CARTO,
   MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
 import { createLayer, getSqlQuery } from 'helpers/map';
-import SpeciesLegend from 'containers/species/SpeciesLegend';
+import SpeciesDetailLegend from 'containers/species/SpeciesDetailLegend';
 
 class SpeciesMap extends React.Component {
-
-  componentWillMount() {
-    this.getData(this.props);
-  }
-
   componentDidMount() {
     this.map = L.map('map-base', {
       minZoom: MAP_MIN_ZOOM,
@@ -34,7 +29,6 @@ class SpeciesMap extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.getData(newProps);
     if (newProps.layers.sites) {
       if (!this.markers.length && newProps.sites && newProps.sites.length) {
         this.drawMarkers(newProps.sites);
@@ -47,11 +41,6 @@ class SpeciesMap extends React.Component {
 
   componentWillUnmount() {
     this.map.remove();
-  }
-
-  getData(props) {
-    if (!props.sites) this.props.getSpeciesSites(props.id);
-    if (!props.population) this.props.getSpeciesPopulation(props.id);
   }
 
   getBounds(id) {
@@ -125,16 +114,17 @@ class SpeciesMap extends React.Component {
   }
 
   drawMarkers(speciesSites) {
-    const speciesIcon = L.divIcon({
-      className: 'map-marker',
-      iconSize: null,
-      html: '<span class="icon"</span>'
-    });
+    function getMarkerIcon(item) {
+      return L.divIcon({
+        className: 'map-marker',
+        iconSize: null,
+        html: `<span class='icon -${item.protection_status_slug}'</span>`
+      });
+    }
 
     speciesSites.forEach((item) => {
       if (item.lat && item.lon) {
-        const marker = L.marker([item.lat, item.lon],
-                                { icon: speciesIcon }).addTo(this.map);
+        const marker = L.marker([item.lat, item.lon], { icon: getMarkerIcon(item) }).addTo(this.map);
         marker.
           bindPopup(`<p class="text -light" >Season: ${item.season}</p> <p class="text -light">Site: ${item.site_name}</p>`);
         marker.on('mouseover', function () {
@@ -169,7 +159,7 @@ class SpeciesMap extends React.Component {
       <div className="l-maps-container">
         <div id={'map-base'} className="c-map -full"></div>
         <div className="l-legend">
-          <SpeciesLegend />
+          <SpeciesDetailLegend />
         </div>
       </div>
     );
@@ -185,9 +175,7 @@ SpeciesMap.contextTypes = {
 SpeciesMap.propTypes = {
   id: React.PropTypes.string.isRequired,
   sites: React.PropTypes.any.isRequired,
-  population: React.PropTypes.any.isRequired,
-  getSpeciesSites: React.PropTypes.func.isRequired,
-  getSpeciesPopulation: React.PropTypes.func.isRequired
+  population: React.PropTypes.any.isRequired
 };
 
 export default SpeciesMap;

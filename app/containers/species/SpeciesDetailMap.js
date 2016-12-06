@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { getSpeciesSites, getSpeciesPopulation } from 'actions/species';
 import SpeciesDetailMap from 'components/species/SpeciesDetailMap';
 
 const mapStateToProps = (state) => ({
@@ -9,9 +8,6 @@ const mapStateToProps = (state) => ({
   layers: state.species.layers
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  getSpeciesPopulation: (id) => dispatch(getSpeciesPopulation(id)),
-  getSpeciesSites: (id) => dispatch(getSpeciesSites(id))
-});
+const mapDispatchToProps = () => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(SpeciesDetailMap);

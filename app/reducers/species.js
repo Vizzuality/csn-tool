@@ -35,7 +35,9 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { list: action.payload });
     case GET_SPECIES_SITES: {
       const data = Object.assign({}, state.sites, {});
-      data[action.payload.id] = action.payload.data;
+      data[action.payload.id] = action.payload.data.error
+        ? []
+        : action.payload.data;
       return Object.assign({}, state, { sites: data });
     }
     case GET_SPECIES_POPULATION: {
