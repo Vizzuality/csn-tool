@@ -1,10 +1,9 @@
 .c-banner {
-  position: relative;
-  height: 590px;
-
-  svg {
-    margin-bottom: 45px;
-  }
+  position: fixed;
+  top: 50px;
+  height: calc(100vh - $header-height - $content-peek);
+  width: 100%;
+  z-index: -200;
 
   > .content {
     position: absolute;
@@ -16,8 +15,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    z-index: 1;
-    background-color: rgba($black, 0.5);
+    background-color: rgba(#000, 0.5);
 
     > .text {
       max-width: 650px;
