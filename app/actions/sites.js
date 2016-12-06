@@ -48,8 +48,8 @@ export function getSitesList(page, search) {
         dispatch({
           type: GET_SITES_LIST,
           payload: {
-            search: search !== undefined,
             page: page || 0,
+            search,
             data
           }
         });

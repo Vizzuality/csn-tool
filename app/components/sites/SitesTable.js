@@ -22,7 +22,7 @@ class SitesTable extends React.Component {
         <InfiniteScroll
           page={this.props.list.page}
           hasMore={this.props.list.hasMore}
-          loadMore={() => this.props.getSitesList(this.props.list.page + 1)}
+          loadMore={() => this.props.getSitesList(this.props.list.page + 1, this.props.list.search)}
         >
           <TableList
             data={this.props.list.data}

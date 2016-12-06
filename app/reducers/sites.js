@@ -9,6 +9,7 @@ const initialState = {
   locations: false,
   list: {
     page: 0,
+    search: '',
     data: false,
     hasMore: false
   },
@@ -39,18 +40,16 @@ export default function (state = initialState, action) {
     case CLEAR_SITES_LIST:
       return Object.assign({}, state, { list: false });
     case GET_SITES_LIST: {
-      if (action.payload.search) {
-        const newList = Object.assign({}, state.list);
-        newList.page = action.payload.page;
-        newList.data = action.payload.data;
-        newList.hasMore = action.payload.data.length === RESULTS_PER_PAGE;
-        return Object.assign({}, state, { list: newList });
-      }
       const newList = Object.assign({}, state.list);
       newList.page = action.payload.page;
+      newList.search = action.payload.search || '';
       newList.hasMore = action.payload.data.length === RESULTS_PER_PAGE;
-      // concat with the new page results
-      newList.data = [...newList.data, ...action.payload.data];
+      if (action.payload.page === 0) {
+        newList.data = action.payload.data;
+      } else {
+        // concat with the new page results
+        newList.data = [...newList.data, ...action.payload.data];
+      }
       return Object.assign({}, state, { list: newList });
     }
     case GET_SITES_SPECIES: {
