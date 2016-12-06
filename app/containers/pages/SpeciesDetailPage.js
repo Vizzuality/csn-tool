@@ -2,14 +2,17 @@ import { connect } from 'react-redux';
 import SpeciesDetailPage from 'components/pages/SpeciesDetailPage';
 import { getSpeciesStats, getSpeciesSites, getSpeciesPopulation, getSpeciesThreats, getSpeciesHabitats } from 'actions/species';
 
-const mapStateToProps = (state, { params }) => ({
-  id: params.id,
+function getSpeciesData(species) {
+  return species[species.selectedCategory] && species[species.selectedCategory][species.selected]
+    ? species[species.selectedCategory][species.selected]
+    : false;
+}
+
+const mapStateToProps = (state) => ({
+  id: state.species.selected,
   category: state.species.selectedCategory,
   stats: state.species.stats || false,
-  sites: state.species.sites[params.id] || false,
-  population: state.species.population[params.id] || false,
-  threats: state.species.threats[params.id] || false,
-  habitats: state.species.habitats[params.id] || false
+  data: getSpeciesData(state.species)
 });
 
 const mapDispatchToProps = (dispatch) => ({

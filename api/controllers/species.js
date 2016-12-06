@@ -1,5 +1,6 @@
 const rp = require('request-promise');
 const CARTO_SQL = require('../constants').CARTO_SQL;
+const normalizeSiteStatus = require('../helpers/index').normalizeSiteStatus;
 
 function getSpeciesList(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family, s.species_id as id,
@@ -60,7 +61,7 @@ function getSpeciesDetails(req, res) {
 function getSpeciesSites(req, res) {
   const query = `SELECT s.species_id, ss.csn_criteria as csn,
       ss.iba_criteria as iba, ss.maximum, ss.minimum, ss.season,
-      si.country, si.site_name, si.lat, si.lon, si.iso2,
+      si.country, si.site_name, si.lat, si.lon, si.iso2, si.protection_status,
       string_agg(p.populations, ', ') as population,
       si.hyperlink, si.site_id AS id
     FROM species s
@@ -69,7 +70,7 @@ function getSpeciesSites(req, res) {
     INNER JOIN sites si ON ss.site_id = si.site_id
     WHERE s.species_id = '${req.params.id}'
     GROUP BY ss.csn_criteria, ss.iba_criteria, ss.maximum, ss.minimum,
-    ss.season, si.country, si.iso2 ,si.site_name, si.lat, si.lon,
+    ss.season, si.country, si.iso2, si.protection_status ,si.site_name, si.lat, si.lon,
     si.hyperlink, si.site_id, 1
     ORDER BY si.site_name`;
   rp(CARTO_SQL + query)
@@ -77,9 +78,9 @@ function getSpeciesSites(req, res) {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
         results.map((item) => {
-          const species = item;
-          species.avg = Math.floor((item.maximum + item.minimum) / 2);
-          return species;
+          const site = item;
+          site.protection_status_slug = normalizeSiteStatus(item.protection_status);
+          return site;
         });
         res.json(results);
       } else {
