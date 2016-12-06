@@ -8,7 +8,7 @@ const mapDispatchToProps = (dispatch) => ({
   // TODO: fix bug wrong page pager after search
   setSearchFilter: (search) => {
     if (search) {
-      dispatch(getSitesList(null, search));
+      dispatch(getSitesList(0, search));
     } else {
       dispatch(getSitesList(0, null));
     }

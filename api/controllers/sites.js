@@ -1,9 +1,10 @@
 const rp = require('request-promise');
 const CARTO_SQL = require('../constants').CARTO_SQL;
 
-const NUM_RESULTS_PER_PAGE = 200;
+const RESULTS_PER_PAGE = 200;
 
 function getSites(req, res) {
+  const results = req.query.results || RESULTS_PER_PAGE;
   const search = req.query.search
     ? `AND UPPER(s.country) like UPPER('%${req.query.search}%')
       OR UPPER(s.site_name) like UPPER('%${req.query.search}%')
@@ -25,7 +26,7 @@ function getSites(req, res) {
     WHERE s.site_id IN (SELECT * from p) ${search}
     ORDER BY s.country`;
 
-  rp(encodeURI(`${CARTO_SQL}${query}&rows_per_page=${NUM_RESULTS_PER_PAGE}&page=${req.query.page}`))
+  rp(encodeURI(`${CARTO_SQL}${query}&rows_per_page=${results}&page=${req.query.page}`))
     .then((data) => {
       const result = JSON.parse(data);
       if (result.rows && result.rows.length > 0) {

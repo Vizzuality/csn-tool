@@ -1,6 +1,7 @@
 import { CLEAR_SITES_LIST, GET_SITES_STATS, GET_SITES_LIST, GET_SITES_SPECIES,
          GET_SITES_POPULATIONS, SET_SITES_PARAMS,
          SET_SITES_SEARCH, SET_VIEW_MODE, GET_SITES_LOCATIONS } from 'constants';
+import { RESULTS_PER_PAGE } from 'constants/config';
 import { push } from 'react-router-redux';
 
 export function setSiteParams(site, category) {
@@ -39,7 +40,7 @@ export function getSitesStats(id) {
 }
 export function getSitesList(page, search) {
   const searchQuery = search ? `&search=${search}` : '';
-  const url = `${config.apiHost}/sites?page=${page}${searchQuery}`;
+  const url = `${config.apiHost}/sites?page=${page}&results=${RESULTS_PER_PAGE}${searchQuery}`;
   return dispatch => {
     fetch(url)
       .then(response => response.json())
@@ -47,7 +48,8 @@ export function getSitesList(page, search) {
         dispatch({
           type: GET_SITES_LIST,
           payload: {
-            search: search !== undefined,
+            page: page || 0,
+            search,
             data
           }
         });
