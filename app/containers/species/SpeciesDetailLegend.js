@@ -6,14 +6,24 @@ function getLegendData(species) {
   const legend = [];
   if (species.sites[species.selected]) {
     const sites = species.sites[species.selected];
-    const unique = [...new Set(sites.map(item => item.protection_status))];
+    const unique = {};
+    const distinct = [];
+    sites.forEach((site) => {
+      if (!unique[site.protection_status_slug]) {
+        distinct.push({
+          icon: 'circle',
+          name: site.protection_status,
+          status: site.protection_status_slug
+        });
+        unique[site.protection_status_slug] = true;
+      }
+    });
+
     legend.push({
       name: 'Critical sites',
       active: species.layers.sites,
       layer: 'sites',
-      data: unique.map((item) => ({
-        name: item
-      }))
+      data: distinct
     });
   }
   // if (species.population[species.selected]) {
