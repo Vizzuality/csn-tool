@@ -1,6 +1,6 @@
 import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION,
   GET_SPECIES_THREATS, GET_SPECIES_HABITATS, SET_SPECIES_DETAIL_PARAMS,
-  SET_SPECIES_DETAIL_SEARCH } from 'constants';
+  SET_SPECIES_DETAIL_SEARCH, TOGGLE_SPECIES_LAYER } from 'constants';
 
 export function getSpeciesStats(id) {
   const url = `${config.apiHost}/species/${id}/details`;
@@ -114,5 +114,12 @@ export function resetSearchFilter() {
   return {
     type: SET_SPECIES_DETAIL_SEARCH,
     payload: ''
+  };
+}
+
+export function toggleLayer(layer) {
+  return {
+    type: TOGGLE_SPECIES_LAYER,
+    payload: layer
   };
 }
