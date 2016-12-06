@@ -1,28 +1,28 @@
 import React from 'react';
 import GoBackLink from 'containers/common/GoBackLink';
-import SpeciesMap from 'components/species/SpeciesMap';
+import SpeciesDetailMap from 'containers/species/SpeciesDetailMap';
 import SpeciesDetailTable from 'containers/species/SpeciesDetailTable';
 
 class SpeciesDetailPage extends React.Component {
 
   componentWillMount() {
     this.props.getSpeciesStats(this.props.id);
-
-    if (!this.props.sites) {
+    // Sites and populations always needed in the map
+    this.props.getSpeciesData(this.props.id, 'sites');
+    this.props.getSpeciesData(this.props.id, 'population');
+    if (this.props.category !== 'sites' && this.props.category !== 'population') {
       this.props.getSpeciesData(this.props.id, this.props.category);
     }
   }
 
   componentWillReceiveProps(newProps) {
-    if (this.hasNewParams(newProps)) {
-      this.props.getSpeciesStats(newProps.id);
+    if (this.hasNewParams(newProps) && !newProps.data) {
       this.props.getSpeciesData(newProps.id, newProps.category);
     }
   }
 
   hasNewParams(newProps) {
-    return this.props.id !== newProps.id
-      || this.props.category !== newProps.category;
+    return this.props.category !== newProps.category;
   }
 
   render() {
@@ -69,11 +69,11 @@ class SpeciesDetailPage extends React.Component {
           </div>
         </div>
         <div className="l-map -short -header">
-          <SpeciesMap id={this.props.id} data={this.props.sites} />
+          <SpeciesDetailMap />
         </div>
-        <div className="row">
+        <div className="row l-content -short">
           <div className="column">
-            <SpeciesDetailTable data={this.props.sites} id={this.props.id} category={this.props.category} />
+            <SpeciesDetailTable id={this.props.id} category={this.props.category} />
           </div>
         </div>
       </div>
@@ -92,7 +92,7 @@ SpeciesDetailPage.propTypes = {
   getSpeciesStats: React.PropTypes.func.isRequired,
   getSpeciesData: React.PropTypes.func.isRequired,
   stats: React.PropTypes.any.isRequired,
-  sites: React.PropTypes.any
+  data: React.PropTypes.any
 };
 
 export default SpeciesDetailPage;

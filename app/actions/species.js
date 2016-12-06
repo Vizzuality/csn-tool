@@ -1,49 +1,74 @@
 import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION,
   GET_SPECIES_THREATS, GET_SPECIES_HABITATS, SET_SPECIES_DETAIL_PARAMS,
-  SET_SPECIES_DETAIL_SEARCH } from 'constants';
+  SET_SPECIES_DETAIL_SEARCH, TOGGLE_SPECIES_LAYER } from 'constants';
 
 export function getSpeciesStats(id) {
-  const url = `${config.apiHost}/species/${id}/details`;
+  const url = `${config.apiHost}/species/${id}`;
   return dispatch => {
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        dispatch({
-          type: GET_SPECIES_STATS,
-          payload: data
+    try {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          dispatch({
+            type: GET_SPECIES_STATS,
+            payload: data
+          });
         });
+    } catch (err) {
+      dispatch({
+        type: GET_SPECIES_STATS,
+        payload: []
       });
+    }
   };
 }
 
 export function getSpeciesList() {
   const url = `${config.apiHost}/species`;
   return dispatch => {
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        dispatch({
-          type: GET_SPECIES_LIST,
-          payload: data
+    try {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          dispatch({
+            type: GET_SPECIES_LIST,
+            payload: data
+          });
         });
+    } catch (err) {
+      dispatch({
+        type: GET_SPECIES_LIST,
+        payload: []
       });
+    }
   };
 }
 
 export function getSpeciesSites(id) {
-  const url = `${config.apiHost}/species/${id}`;
+  const url = `${config.apiHost}/species/${id}/sites`;
   return dispatch => {
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        dispatch({
-          type: GET_SPECIES_SITES,
-          payload: {
-            id,
-            data
-          }
+    try {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          dispatch({
+            type: GET_SPECIES_SITES,
+            payload: {
+              id,
+              data
+            }
+          });
         });
+    } catch (err) {
+      const data = [];
+      dispatch({
+        type: GET_SPECIES_SITES,
+        payload: {
+          id,
+          data
+        }
       });
+    }
   };
 }
 
@@ -114,5 +139,12 @@ export function resetSearchFilter() {
   return {
     type: SET_SPECIES_DETAIL_SEARCH,
     payload: ''
+  };
+}
+
+export function toggleLayer(layer) {
+  return {
+    type: TOGGLE_SPECIES_LAYER,
+    payload: layer
   };
 }

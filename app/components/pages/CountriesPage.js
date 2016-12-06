@@ -6,14 +6,19 @@ import CountriesTable from 'containers/countries/CountriesTable';
 class CountriesPage extends React.Component {
 
   componentWillMount() {
-    if (this.props.country && !this.props.countryData) {
-      this.props.getCountryData(this.props.country, this.props.category);
-    }
+    this.getData(this.props);
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.country && this.hasNewParams(newProps) && !newProps.countryData) {
-      this.props.getCountryData(newProps.country, newProps.category);
+    if (newProps.country && this.hasNewParams(newProps)) {
+      this.getData(newProps);
+    }
+  }
+
+  getData(props) {
+    if (props.country) {
+      if (!props.countryStats) props.getCountryStats(props.country);
+      if (!props.countryData) props.getCountryData(props.country, props.category);
     }
   }
 
@@ -33,7 +38,7 @@ class CountriesPage extends React.Component {
                   <div className="content">
                     <div className="title">
                       <GoBackLink className="breadcrumb" i18nText="back" />
-                      <h2>{this.props.country}</h2>
+                      <h2>{this.props.countryStats.country}</h2>
                     </div>
                   </div>
                 </div>
@@ -49,11 +54,9 @@ class CountriesPage extends React.Component {
         <div className={`l-map ${this.props.country ? '-short -header' : '-header'}`}>
           <CountriesMap />
         </div>
-        <div className={!this.props.country ? '-no-padding' : ''}>
-          <div className="row">
-            <div className="column">
-              {this.props.country && <CountriesTable />}
-            </div>
+        <div className={`row l-content ${this.props.country ? '-short' : ''}`}>
+          <div className="column">
+            {this.props.country && <CountriesTable />}
           </div>
         </div>
       </div>
@@ -68,7 +71,9 @@ CountriesPage.contextTypes = {
 CountriesPage.propTypes = {
   country: React.PropTypes.string,
   category: React.PropTypes.string,
+  countryStats: React.PropTypes.any,
   countryData: React.PropTypes.any,
+  getCountryStats: React.PropTypes.func.isRequired,
   getCountryData: React.PropTypes.func.isRequired,
   countriesLength: React.PropTypes.number
 };

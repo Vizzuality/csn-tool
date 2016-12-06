@@ -2,9 +2,9 @@ import React from 'react';
 import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, BASEMAP_ATTRIBUTION_CARTO,
   MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
 import { createLayer, getSqlQuery } from 'helpers/map';
+import SpeciesDetailLegend from 'containers/species/SpeciesDetailLegend';
 
 class SpeciesMap extends React.Component {
-
   componentDidMount() {
     this.map = L.map('map-base', {
       minZoom: MAP_MIN_ZOOM,
@@ -19,17 +19,23 @@ class SpeciesMap extends React.Component {
     this.map.scrollWheelZoom.disable();
     this.tileLayer = L.tileLayer(BASEMAP_TILE).addTo(this.map).setZIndex(0);
 
-    if (this.props.data && this.props.data.length) {
-      this.drawMarkers(this.props.data);
+
+    this.markers = [];
+    if (this.props.sites && this.props.sites.length) {
+      this.drawMarkers(this.props.sites);
     }
 
     this.getBounds(this.props.id);
   }
 
   componentWillReceiveProps(newProps) {
-    if (!this.markers && newProps.data && newProps.data.length) {
-      this.drawMarkers(newProps.data);
-      this.fitMarkersBounds();
+    if (newProps.layers.sites) {
+      if (!this.markers.length && newProps.sites && newProps.sites.length) {
+        this.drawMarkers(newProps.sites);
+        this.fitMarkersBounds();
+      }
+    } else {
+      this.clearMarkers();
     }
   }
 
@@ -56,7 +62,6 @@ class SpeciesMap extends React.Component {
         this.map.fitBounds([
           [coords[2][1], coords[2][0]],
           [coords[4][1], coords[4][0]]
-
         ]);
       }
     }
@@ -76,39 +81,17 @@ class SpeciesMap extends React.Component {
       line-dasharray: 1, 7;
       line-cap: round;
     }
-    #species_and_flywaygroups[colour_index=1]{
-    line-color: #a6cee3;
-    }
-    #species_and_flywaygroups[colour_index=2]{
-    line-color: #1f78b4;
-    }
-    #species_and_flywaygroups[colour_index=3]{
-    line-color: #b2df8a;
-    }
-    #species_and_flywaygroups[colour_index=4]{
-    line-color: #33a02c;
-    }
-    #species_and_flywaygroups[colour_index=5]{
-      line-color: #fb9a99;
-    }
-    #species_and_flywaygroups[colour_index=6]{
-    line-color: #e31a1c;
-    }
-    #species_and_flywaygroups[colour_index=7]{
-      line-color: #fdbf6f;
-    }
-    #species_and_flywaygroups[colour_index=8]{
-      line-color: #ff7f00;
-    }
-    #species_and_flywaygroups[colour_index=9]{
-      line-color: #cab2d6;
-    }
-    #species_and_flywaygroups[colour_index=10]{
-      line-color: #6a3d9a;
-    }
-    #species_and_flywaygroups[colour_index=11]{
-      line-color: #ffff99;
-    }`;
+    #species_and_flywaygroups[colour_index=1]{ line-color: #a6cee3;}
+    #species_and_flywaygroups[colour_index=2]{ line-color: #1f78b4;}
+    #species_and_flywaygroups[colour_index=3]{ line-color: #b2df8a;}
+    #species_and_flywaygroups[colour_index=4]{ line-color: #33a02c;}
+    #species_and_flywaygroups[colour_index=5]{ line-color: #fb9a99;}
+    #species_and_flywaygroups[colour_index=6]{ line-color: #e31a1c;}
+    #species_and_flywaygroups[colour_index=7]{ line-color: #fdbf6f;}
+    #species_and_flywaygroups[colour_index=8]{ line-color: #ff7f00;}
+    #species_and_flywaygroups[colour_index=9]{ line-color: #cab2d6;}
+    #species_and_flywaygroups[colour_index=10]{ line-color: #6a3d9a;}
+    #species_and_flywaygroups[colour_index=11]{ line-color: #ffff99;}`;
 
 
     createLayer({
@@ -130,18 +113,18 @@ class SpeciesMap extends React.Component {
     }
   }
 
-  drawMarkers(speciesData) {
-    this.markers = [];
-    const speciesIcon = L.divIcon({
-      className: 'map-marker',
-      iconSize: null,
-      html: '<span class="icon"</span>'
-    });
+  drawMarkers(speciesSites) {
+    function getMarkerIcon(item) {
+      return L.divIcon({
+        className: 'map-marker',
+        iconSize: null,
+        html: `<span class='icon -${item.protection_status_slug}'</span>`
+      });
+    }
 
-    speciesData.forEach((item) => {
+    speciesSites.forEach((item) => {
       if (item.lat && item.lon) {
-        const marker = L.marker([item.lat, item.lon],
-                                { icon: speciesIcon }).addTo(this.map);
+        const marker = L.marker([item.lat, item.lon], { icon: getMarkerIcon(item) }).addTo(this.map);
         marker.
           bindPopup(`<p class="text -light" >Season: ${item.season}</p> <p class="text -light">Site: ${item.site_name}</p>`);
         marker.on('mouseover', function () {
@@ -175,6 +158,9 @@ class SpeciesMap extends React.Component {
     return (
       <div className="l-maps-container">
         <div id={'map-base'} className="c-map -full"></div>
+        <div className="l-legend">
+          <SpeciesDetailLegend />
+        </div>
       </div>
     );
   }
@@ -188,7 +174,8 @@ SpeciesMap.contextTypes = {
 
 SpeciesMap.propTypes = {
   id: React.PropTypes.string.isRequired,
-  data: React.PropTypes.any.isRequired
+  sites: React.PropTypes.any.isRequired,
+  population: React.PropTypes.any.isRequired
 };
 
 export default SpeciesMap;

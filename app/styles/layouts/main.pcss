@@ -1,5 +1,7 @@
 .l-header {
-  position: relative;
+  position: fixed;
+  top: 0;
+  width: 100%;
   z-index: 100;
   background-color: $bg-dark-color;
 
@@ -9,7 +11,7 @@
 }
 
 .l-navigation {
-  position: absolute;
+  position: fixed;
   top: $header-height;
   right: 0;
   left: 0;
@@ -26,54 +28,65 @@
 }
 
 .l-main {
-  background-color: rgba($bg-main-color, 0.3);
-  min-height: calc(100vh - $header-height - $footer-height);
+  background-color: rgb(242, 242, 242);
 }
 
 .l-mask {
   position: relative;
+  top: 50px;
   width: 200%;
   height: calc(100vh - $header-height);
-  overflow-y: hidden;
 
   .l-map,
   .l-table {
+    position: relative;
+    top: 0;
+    z-index: 0;
     width: 50%;
+    transform: translate3d(0, 0, 0);
     transition: transform 0.3s ease-in-out;
   }
 
   .l-map {
-    position: absolute;
-    transform: translate3d(0, 0, 0);
+    left: 0;
+    top: 0;
   }
 
   .l-table {
-    margin-left: 50%;
+    left: 50%;
+    top: calc(-100vh + $header-height);
     padding-top: calc($header-height + 20px);
-    transform: translate3d(0, 0, 0);
-    overflow-y: hidden;
   }
 
   &.list {
     height: auto;
-    overflow-y: auto;
 
     .l-map {
       transform: translate3d(-100%, 0, 0);
     }
     .l-table {
       transform: translate3d(-100%, 0, 0);
-      overflow-y: auto;
     }
   }
 }
 
 .l-map {
+  position: fixed;
+  top: $header-height;
+  width: 100%;
   height: calc(100vh - $header-height);
+  z-index: -300;
 
   &.-short {
-    height: calc(100vh - $header-height - 200px);
-    min-height: 550px;
+    height: calc(100vh - $header-height - $content-peek);
+  }
+
+  .l-legend {
+    background-color: $dark;
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+    width: 340px;
   }
 }
 
@@ -82,18 +95,30 @@
 }
 
 .l-content {
-  padding: rem(50);
+  margin-top: calc(100vh);
+  z-index: 999999999;
 
-  &.-home {
-    padding-top: rem(70);
+  &.-short {
+    margin-top: calc(100vh - $content-peek);
   }
 
   &.-no-padding {
     padding: 0;
   }
 
+  &.-home {
+    padding: rem(30) 0;
+  }
+
   .intro-text {
-    opacity: 0.6;
+    opacity: 0.7;
+  }
+}
+
+.l-page {
+
+  &.-header {
+    padding: rem(50) 0;
   }
 }
 

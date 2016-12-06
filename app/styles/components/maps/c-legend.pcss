@@ -1,0 +1,57 @@
+.c-legend {
+  padding: 1rem;
+  > .item {
+    position: relative;
+    padding-right: 24px;
+
+    > p {
+      color: $font-main-inv;
+      font-size: $font-size;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .c-switch {
+      position: absolute;
+      top: 4px;
+      right: 0;
+    }
+
+    > .sub-item {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 2px;
+
+      > .icon {
+        width: 12px;
+        height: 12px;
+        border-radius: 10px;
+        margin-right: 5px;
+        border: 2px solid $font-main-inv;
+        background-color: $site-unknown-color;
+
+        &.-whole {
+          background-color: $site-whole-color;
+        }
+        &.-most {
+          background-color: $site-most-color;
+        }
+        &.-some {
+          background-color: $site-some-color;
+        }
+        &.-little {
+          background-color: $site-little-color;
+        }
+      }
+
+      > p {
+        color: $font-main-inv;
+        font-size: $font-size-s;
+        line-height: 1.5;
+        letter-spacing: -0.2px;
+        opacity: 0.5;
+      }
+    }
+  }
+}

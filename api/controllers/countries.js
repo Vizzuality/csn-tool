@@ -19,13 +19,13 @@ function getCountries(req, res) {
     });
 }
 
-function getCountry(req, res) {
+function getCountryDetails(req, res) {
   const query = `SELECT * FROM countries WHERE iso3='${req.params.iso}'`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);
       if (result.rows && result.rows.length > 0) {
-        res.json(result.rows);
+        res.json(result.rows[0]);
       } else {
         res.status(404);
         res.json({ error: 'No country found' });
@@ -154,7 +154,7 @@ function getCountryPopulations(req, res) {
 
 module.exports = {
   getCountries,
-  getCountry,
+  getCountryDetails,
   getCountrySites,
   getCountrySitesOld,
   getCountrySpecies,

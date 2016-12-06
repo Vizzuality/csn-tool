@@ -1,5 +1,4 @@
 import React from 'react';
-import NavLink from 'containers/common/NavLink';
 import BasicMap from 'components/maps/BasicMap';
 
 function Banner() {
@@ -15,7 +14,6 @@ function Banner() {
           of 294 species of waterbirds and the important sites upon which they depend
           in Africa and Western Eurasia.
         </h3>
-        <NavLink to="/countries" i18nText="getStarted" className="btn" />
       </div>
     </div>
   );
