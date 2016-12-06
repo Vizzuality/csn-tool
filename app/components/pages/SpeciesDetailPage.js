@@ -1,13 +1,12 @@
 import React from 'react';
 import GoBackLink from 'containers/common/GoBackLink';
-import SpeciesMap from 'components/species/SpeciesMap';
+import SpeciesDetailMap from 'containers/species/SpeciesDetailMap';
 import SpeciesDetailTable from 'containers/species/SpeciesDetailTable';
 
 class SpeciesDetailPage extends React.Component {
 
   componentWillMount() {
     this.props.getSpeciesStats(this.props.id);
-
     if (!this.props.sites) {
       this.props.getSpeciesData(this.props.id, this.props.category);
     }
@@ -69,7 +68,7 @@ class SpeciesDetailPage extends React.Component {
           </div>
         </div>
         <div className="l-map -short -header">
-          <SpeciesMap id={this.props.id} data={this.props.sites} />
+          <SpeciesDetailMap />
         </div>
         <div className="row l-content -short">
           <div className="column">
