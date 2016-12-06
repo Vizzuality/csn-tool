@@ -1,5 +1,6 @@
 const rp = require('request-promise');
 const CARTO_SQL = require('../constants').CARTO_SQL;
+const normalizeSiteStatus = require('../helpers/index').normalizeSiteStatus;
 
 function getSpeciesList(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family, s.species_id as id,
@@ -77,9 +78,9 @@ function getSpeciesSites(req, res) {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
         results.map((item) => {
-          const species = item;
-          species.avg = Math.floor((item.maximum + item.minimum) / 2);
-          return species;
+          const site = item;
+          site.protection_status_slug = normalizeSiteStatus(item.protection_status);
+          return site;
         });
         res.json(results);
       } else {
