@@ -34,7 +34,7 @@ class SitesPage extends React.Component {
                 <div className="c-navigation">
                   <div className="content">
                     <div className="title">
-                      <h2>Sites</h2>
+                      <h2>{this.context.t('sites')}</h2>
                     </div>
                   </div>
                 </div>
@@ -64,6 +64,10 @@ class SitesPage extends React.Component {
     );
   }
 }
+
+SitesPage.contextTypes = {
+  t: React.PropTypes.func.isRequired
+};
 
 SitesPage.propTypes = {
   clearSites: React.PropTypes.func.isRequired,

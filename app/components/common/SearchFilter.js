@@ -28,7 +28,7 @@ class SearchFilter extends React.Component {
   render() {
     return (
       <div className="c-table-search">
-        <label className="text -input-label" htmlFor="tableSearch">search by</label>
+        <label className="text -input-label" htmlFor="tableSearch">{this.context.t('filterBy')}</label>
         <input
           id="tableSearch"
           type="text"
