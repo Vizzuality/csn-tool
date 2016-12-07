@@ -2,6 +2,7 @@ import React from 'react';
 import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, BASEMAP_ATTRIBUTION_CARTO,
          MAP_INITIAL_ZOOM, MAP_MIN_ZOOM, MAP_CENTER } from 'constants/map';
 import { createLayer } from 'helpers/map';
+import CountriesLegend from 'containers/countries/CountriesLegend';
 
 class CountriesMap extends React.Component {
 
@@ -42,11 +43,15 @@ class CountriesMap extends React.Component {
       this.drawGeo(newProps.geoms);
     }
 
-    if (newProps.data && newProps.data.length) {
-      this.clearMarkers();
-      this.drawMarkers(newProps.data);
-      this.fitBounds();
-      this.addLayer();
+    if (newProps.layers.sites) {
+      if (newProps.data && newProps.data.length) {
+        this.clearMarkers();
+        this.drawMarkers(newProps.data);
+        this.fitBounds();
+        this.addLayer();
+      } else {
+        this.clearMarkers();
+      }
     } else {
       this.clearMarkers();
     }
@@ -208,15 +213,17 @@ class CountriesMap extends React.Component {
 
   drawMarkers(countryData) {
     if (!countryData.length) return;
-    const sitesIcon = L.divIcon({
-      className: 'map-marker',
-      iconSize: null,
-      html: '<span class="icon -secondary"</span>'
-    });
+    function getMarkerIcon(item) {
+      return L.divIcon({
+        className: 'map-marker',
+        iconSize: null,
+        html: `<span class='icon -${item.protection_status_slug}'</span>`
+      });
+    }
 
     countryData.forEach((site) => {
       if (site.lat && site.lon) {
-        const marker = L.marker([site.lat, site.lon], { icon: sitesIcon }).addTo(this.map);
+        const marker = L.marker([site.lat, site.lon], { icon: getMarkerIcon(site) }).addTo(this.map);
         marker.bindPopup(`<p class="text -light">${site.site_name}</p>`);
         marker.on('mouseover', () => {
           marker.openPopup();
@@ -255,7 +262,14 @@ class CountriesMap extends React.Component {
 
   render() {
     return (
-      <div id={'countries-map'} className="c-map"></div>
+      <div className="l-maps-container">
+        <div id={'countries-map'} className="c-map"></div>
+        {this.props.country &&
+          <div className="l-legend">
+            <CountriesLegend />
+          </div>
+        }
+      </div>
     );
   }
 }

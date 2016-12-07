@@ -6,7 +6,8 @@ import CountriesMap from 'components/countries/CountriesMap';
 const mapStateToProps = (state) => ({
   country: state.countries.selected,
   geoms: state.countries.geoms,
-  data: state.countries.sites[state.countries.selected] || []
+  data: state.countries.sites[state.countries.selected] || [],
+  layers: state.countries.layers
 });
 
 const mapDispatchToProps = (dispatch) => ({

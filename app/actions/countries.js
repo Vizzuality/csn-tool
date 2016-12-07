@@ -1,5 +1,5 @@
 import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_SITES,
-        GET_COUNTRIES_STATS, GET_COUNTRIES_SITES_OLD,
+        GET_COUNTRIES_STATS, GET_COUNTRIES_SITES_OLD, TOGGLE_COUNTRIES_LAYER,
         GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS,
         SET_COUNTRY_PARAMS, SET_COUNTRY_SEARCH } from 'constants';
 import { push } from 'react-router-redux';
@@ -155,5 +155,12 @@ export function setSearchFilter(search) {
   return {
     type: SET_COUNTRY_SEARCH,
     payload: search
+  };
+}
+
+export function toggleLayer(layer) {
+  return {
+    type: TOGGLE_COUNTRIES_LAYER,
+    payload: layer
   };
 }

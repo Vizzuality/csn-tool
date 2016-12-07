@@ -5,6 +5,7 @@ import SitesDetailTable from 'containers/sites/SitesDetailTable';
 
 class SitesPage extends React.Component {
   componentWillMount() {
+    this.props.getSitesStats(this.props.site);
     this.getData(this.props);
   }
 
@@ -13,7 +14,6 @@ class SitesPage extends React.Component {
   }
 
   getData(props) {
-    this.props.getSitesStats(props.site);
     if (!props.data) {
       props.getSitesData(props.site, props.category);
     }
