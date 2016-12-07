@@ -37,8 +37,15 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { locations: action.payload });
     case GET_SITES_STATS:
       return Object.assign({}, state, { stats: action.payload });
-    case CLEAR_SITES_LIST:
-      return Object.assign({}, state, { list: false });
+    case CLEAR_SITES_LIST: {
+      const list = {
+        page: 0,
+        search: '',
+        data: false,
+        hasMore: false
+      };
+      return Object.assign({}, state, { list });
+    }
     case GET_SITES_LIST: {
       const newList = Object.assign({}, state.list);
       newList.page = action.payload.page;
