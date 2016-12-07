@@ -1,5 +1,5 @@
 import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_SITES,
-         GET_COUNTRIES_STATS, GET_COUNTRIES_SITES_OLD,
+         GET_COUNTRIES_STATS, GET_COUNTRIES_SITES_OLD, TOGGLE_COUNTRIES_LAYER,
          GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS,
          SET_COUNTRY_PARAMS, SET_COUNTRY_SEARCH } from 'constants';
 
@@ -13,7 +13,10 @@ const initialState = {
   sites: {},
   sitesOld: {},
   species: {},
-  populations: {}
+  populations: {},
+  layers: {
+    sites: true
+  }
 };
 
 export default function (state = initialState, action) {
@@ -55,6 +58,11 @@ export default function (state = initialState, action) {
       const populations = Object.assign({}, state.populations, {});
       populations[action.payload.iso] = action.payload.data;
       return Object.assign({}, state, { populations });
+    }
+    case TOGGLE_COUNTRIES_LAYER: {
+      const layers = Object.assign({}, state.layers);
+      layers[action.payload] = !layers[action.payload];
+      return Object.assign({}, state, { layers });
     }
     default:
       return state;

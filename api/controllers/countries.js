@@ -1,5 +1,6 @@
 const rp = require('request-promise');
 const CARTO_SQL = require('../constants').CARTO_SQL;
+const normalizeSiteStatus = require('../helpers/index').normalizeSiteStatus;
 
 function getCountries(req, res) {
   const query = 'SELECT * FROM countries';
@@ -43,7 +44,7 @@ function getCountrySites(req, res) {
       SUM(case when iba_criteria = '' then 0 else 1 end) as iba
         from species_sites group by site_id)
     SELECT c.country, c.iso3,
-      s.protection_status, s.site_name, s.lat, s.lon, s.site_id as id,
+      s.protection_status, s.site_name, s.lat, s.lon, s.site_id as id, s.protection_status,
       stc.csn, stc.iba, s.hyperlink
     FROM sites s
   	INNER JOIN countries c ON s.country_id = c.country_id AND
@@ -52,9 +53,14 @@ function getCountrySites(req, res) {
     ORDER BY s.site_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
-      const result = JSON.parse(data);
-      if (result.rows && result.rows.length > 0) {
-        res.json(result.rows);
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        results.map((item) => {
+          const site = item;
+          site.protection_status_slug = normalizeSiteStatus(item.protection_status);
+          return site;
+        });
+        res.json(results);
       } else {
         res.status(404);
         res.json({ error: 'No sites found' });
