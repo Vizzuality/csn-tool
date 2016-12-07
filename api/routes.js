@@ -2,6 +2,7 @@ const Express = require('express');
 const CountriesCtrl = require('./controllers/countries');
 const SitesCtrl = require('./controllers/sites');
 const SpeciesCtrl = require('./controllers/species');
+const LayersCtrl = require('./controllers/layers');
 
 const router = Express.Router(); // eslint-disable-line new-cap
 
@@ -27,5 +28,9 @@ router.route('/species/:id/sites').get(SpeciesCtrl.getSpeciesSites);
 router.route('/species/:id/population').get(SpeciesCtrl.getSpeciesPopulation);
 router.route('/species/:id/threats').get(SpeciesCtrl.getSpeciesThreats);
 router.route('/species/:id/habitats').get(SpeciesCtrl.getSpeciesHabitats);
+
+// Layers
+router.route('/layers').get(LayersCtrl.getLayers);
+router.route('/layers/species/:id').get(LayersCtrl.getLayersSpecies);
 
 module.exports = router;
