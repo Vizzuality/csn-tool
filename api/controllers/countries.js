@@ -1,4 +1,4 @@
-const rp = require('request-promise');
+const rp = require('request-promise-native');
 const CARTO_SQL = require('../constants').CARTO_SQL;
 const normalizeSiteStatus = require('../helpers/index').normalizeSiteStatus;
 
