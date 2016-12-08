@@ -5,6 +5,10 @@ import { createLayer, getSqlQuery } from 'helpers/map';
 import SpeciesDetailLegend from 'containers/species/SpeciesDetailLegend';
 
 class SpeciesMap extends React.Component {
+  componentWillMount() {
+    this.props.getData(this.props.id);
+  }
+
   componentDidMount() {
     this.map = L.map('map-base', {
       minZoom: MAP_MIN_ZOOM,
@@ -21,22 +25,22 @@ class SpeciesMap extends React.Component {
 
 
     this.markers = [];
-    if (this.props.sites && this.props.sites.length) {
-      this.drawMarkers(this.props.sites);
-    }
+    // if (this.props.sites && this.props.sites.length) {
+    //   this.drawMarkers(this.props.sites);
+    // }
 
-    this.getBounds(this.props.id);
+    // this.getBounds(this.props.id);
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.layers.sites) {
-      if (!this.markers.length && newProps.sites && newProps.sites.length) {
-        this.drawMarkers(newProps.sites);
-        this.fitMarkersBounds();
-      }
-    } else {
-      this.clearMarkers();
-    }
+    // if (newProps.layers.sites) {
+    //   if (!this.markers.length && newProps.sites && newProps.sites.length) {
+    //     this.drawMarkers(newProps.sites);
+    //     this.fitMarkersBounds();
+    //   }
+    // } else {
+    //   this.clearMarkers();
+    // }
   }
 
   componentWillUnmount() {
@@ -66,7 +70,7 @@ class SpeciesMap extends React.Component {
       }
     }
 
-    this.addLayer(this.props.id);
+    // this.addLayer(this.props.id);
   }
 
   addLayer(id) {
@@ -174,8 +178,8 @@ SpeciesMap.contextTypes = {
 
 SpeciesMap.propTypes = {
   id: React.PropTypes.string.isRequired,
-  sites: React.PropTypes.any.isRequired,
-  population: React.PropTypes.any.isRequired
+  getData: React.PropTypes.func.isRequired,
+  data: React.PropTypes.any.isRequired
 };
 
 export default SpeciesMap;

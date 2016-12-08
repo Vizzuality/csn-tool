@@ -19,7 +19,7 @@ function Legend(props) {
           <div className="item" key={index}>
             <p>{item.name}</p>
             <Switch checked={item.active} onChange={() => props.onSwitchChange(item.layer)} />
-            {getSubItems(item.data)}
+            {getSubItems(item.legendData)}
           </div>
         ))
       }

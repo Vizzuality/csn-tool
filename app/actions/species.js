@@ -1,6 +1,6 @@
 import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION,
   GET_SPECIES_THREATS, GET_SPECIES_HABITATS, SET_SPECIES_DETAIL_PARAMS,
-  SET_SPECIES_DETAIL_SEARCH, TOGGLE_SPECIES_LAYER } from 'constants';
+  SET_SPECIES_DETAIL_SEARCH, GET_SPECIES_LAYER, TOGGLE_SPECIES_LAYER } from 'constants';
 
 export function getSpeciesStats(id) {
   const url = `${config.apiHost}/species/${id}`;
@@ -104,6 +104,7 @@ export function getSpeciesThreats(id) {
       });
   };
 }
+
 export function getSpeciesHabitats(id) {
   const url = `${config.apiHost}/species/${id}/habitats`;
   return dispatch => {
@@ -112,6 +113,23 @@ export function getSpeciesHabitats(id) {
       .then(data => {
         dispatch({
           type: GET_SPECIES_HABITATS,
+          payload: {
+            id,
+            data
+          }
+        });
+      });
+  };
+}
+
+export function getSpeciesLayers(id) {
+  const url = `${config.apiHost}/layers/species/${id}`;
+  return dispatch => {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        dispatch({
+          type: GET_SPECIES_LAYER,
           payload: {
             id,
             data

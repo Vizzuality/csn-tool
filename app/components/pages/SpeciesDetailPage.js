@@ -7,10 +7,9 @@ class SpeciesDetailPage extends React.Component {
 
   componentWillMount() {
     this.props.getSpeciesStats(this.props.id);
-    // Sites and populations always needed in the map
+    // Sites always needed in the map
     this.props.getSpeciesData(this.props.id, 'sites');
-    this.props.getSpeciesData(this.props.id, 'population');
-    if (this.props.category !== 'sites' && this.props.category !== 'population') {
+    if (this.props.category !== 'sites') {
       this.props.getSpeciesData(this.props.id, this.props.category);
     }
   }

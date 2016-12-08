@@ -33,7 +33,7 @@ function getLayersSpecies(req, res) {
         const parsedLayer = LayersService.serialize(results)[0];
         LayersService.getData(parsedLayer, id)
           .then((layer) => {
-            res.json(layer);
+            res.json([layer]);
           })
           .catch(err => {
             res.status(err.statusCode || 500);
