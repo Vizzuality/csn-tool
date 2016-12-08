@@ -23,6 +23,12 @@ Run server locally usgin npm:
 npm start
 ```
 
+For API develop hot reload changes use:
+
+```bash
+npm run dev
+```
+
 Run server locally using Heroku environment:
 
 ```bash
