@@ -19,17 +19,21 @@ function serialize(layers) {
   }));
 }
 
-function getData(layer, id) {
+function getCartoQuery(query) {
+  return rp(encodeURI(CARTO_SQL + query));
+}
+
+function getLayerData(layer, id) {
   return new Promise((resolve, reject) => {
     const newLayer = layer;
     const promises = [];
     if (layer.legendQuery) {
       const legendQuery = layer.legendQuery.replace(new RegExp('(\\${id})', 'g'), id);
-      promises.push(rp(encodeURI(CARTO_SQL + legendQuery)));
+      promises.push(getCartoQuery(legendQuery));
     }
     if (layer.query) {
       const query = layer.query.replace(new RegExp('(\\${id})', 'g'), id);
-      promises.push(rp(encodeURI(CARTO_SQL + query)));
+      promises.push(getCartoQuery(query));
     }
 
     if (promises.length) {
@@ -50,6 +54,22 @@ function getData(layer, id) {
         });
     } else {
       resolve(newLayer);
+    }
+  });
+}
+
+function getData(layers, id) {
+  return new Promise((resolve, reject) => {
+    for (let i = 0, layersLength = layers.length; i < layersLength; i++) {
+      const promises = [];
+      promises.push(getLayerData(layers[i], id));
+      Promise.all(promises)
+        .then(dataLayers => {
+          resolve(dataLayers);
+        })
+        .catch(err => {
+          reject(err);
+        });
     }
   });
 }

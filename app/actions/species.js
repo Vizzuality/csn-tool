@@ -123,7 +123,7 @@ export function getSpeciesHabitats(id) {
 }
 
 export function getSpeciesLayers(id) {
-  const url = `${config.apiHost}/layers/species/${id}`;
+  const url = `${config.apiHost}/layers/${id}?section=species`;
   return dispatch => {
     fetch(url)
       .then(response => response.json())

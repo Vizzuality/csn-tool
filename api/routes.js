@@ -30,7 +30,6 @@ router.route('/species/:id/threats').get(SpeciesCtrl.getSpeciesThreats);
 router.route('/species/:id/habitats').get(SpeciesCtrl.getSpeciesHabitats);
 
 // Layers
-router.route('/layers').get(LayersCtrl.getLayers);
-router.route('/layers/species/:id').get(LayersCtrl.getLayersSpecies);
+router.route('/layers/:id').get(LayersCtrl.getLayers);
 
 module.exports = router;
