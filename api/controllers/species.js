@@ -1,5 +1,6 @@
 const rp = require('request-promise-native');
 const CARTO_SQL = require('../constants').CARTO_SQL;
+const LayersService = require('../services/layers');
 const normalizeSiteStatus = require('../helpers/index').normalizeSiteStatus;
 
 function getSpeciesList(req, res) {
@@ -162,11 +163,23 @@ function getSpeciesHabitats(req, res) {
     });
 }
 
+function getSpeciesLayers(req, res) {
+  LayersService.getLayers('species', req.params.id)
+    .then((layers) => {
+      res.json(layers);
+    })
+    .catch(err => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
 module.exports = {
   getSpeciesList,
   getSpeciesDetails,
   getSpeciesSites,
   getSpeciesPopulation,
   getSpeciesThreats,
-  getSpeciesHabitats
+  getSpeciesHabitats,
+  getSpeciesLayers
 };

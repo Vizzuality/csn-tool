@@ -74,7 +74,39 @@ function getData(layers, id) {
   });
 }
 
+function getLayers(section, id) {
+  let sectionQuery = '';
+  if (section) {
+    sectionQuery = `WHERE section = '${section}'`;
+  }
+  const query = `SELECT * FROM layer_spec ${sectionQuery}`;
+
+  return new Promise((resolve, reject) => {
+    rp(encodeURI(CARTO_SQL + query))
+      .then((data) => {
+        const results = JSON.parse(data).rows || [];
+        if (results && results.length > 0) {
+          const parsedLayers = serialize(results);
+          getData(parsedLayers, id)
+            .then((layers) => {
+              resolve(layers);
+            })
+            .catch(err => {
+              reject(err);
+            });
+        } else {
+          reject({
+            statusCode: 404,
+            message: 'No layers found'
+          });
+        }
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
 module.exports = {
-  serialize,
-  getData
+  getLayers
 };

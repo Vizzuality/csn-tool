@@ -2,7 +2,6 @@ const Express = require('express');
 const CountriesCtrl = require('./controllers/countries');
 const SitesCtrl = require('./controllers/sites');
 const SpeciesCtrl = require('./controllers/species');
-const LayersCtrl = require('./controllers/layers');
 
 const router = Express.Router(); // eslint-disable-line new-cap
 
@@ -13,6 +12,7 @@ router.route('/countries/:iso/sites').get(CountriesCtrl.getCountrySites);
 router.route('/countries/:iso/sitesOld').get(CountriesCtrl.getCountrySitesOld);
 router.route('/countries/:iso/species').get(CountriesCtrl.getCountrySpecies);
 router.route('/countries/:iso/populations').get(CountriesCtrl.getCountryPopulations);
+router.route('/countries/:iso/layers').get(CountriesCtrl.getCountryLayers);
 
 // Sites
 router.route('/sites').get(SitesCtrl.getSites);
@@ -20,6 +20,7 @@ router.route('/sites/locations').get(SitesCtrl.getSitesLocations);
 router.route('/sites/:id').get(SitesCtrl.getSitesSpecies);
 router.route('/sites/:id/details').get(SitesCtrl.getSitesDetails);
 router.route('/sites/:id/populations').get(SitesCtrl.getSitesPopulations);
+router.route('/sites/:id/layers').get(SitesCtrl.getSitesLayers);
 
 // Species
 router.route('/species').get(SpeciesCtrl.getSpeciesList);
@@ -28,8 +29,6 @@ router.route('/species/:id/sites').get(SpeciesCtrl.getSpeciesSites);
 router.route('/species/:id/population').get(SpeciesCtrl.getSpeciesPopulation);
 router.route('/species/:id/threats').get(SpeciesCtrl.getSpeciesThreats);
 router.route('/species/:id/habitats').get(SpeciesCtrl.getSpeciesHabitats);
-
-// Layers
-router.route('/layers/:id').get(LayersCtrl.getLayers);
+router.route('/species/:id/layers').get(SpeciesCtrl.getSpeciesLayers);
 
 module.exports = router;

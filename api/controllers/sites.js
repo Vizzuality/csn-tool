@@ -1,5 +1,6 @@
 const rp = require('request-promise-native');
 const CARTO_SQL = require('../constants').CARTO_SQL;
+const LayersService = require('../services/layers');
 
 const RESULTS_PER_PAGE = 200;
 
@@ -176,10 +177,22 @@ function getSitesPopulations(req, res) {
     });
 }
 
+function getSitesLayers(req, res) {
+  LayersService.getLayers('sites', req.params.id)
+    .then((layers) => {
+      res.json(layers);
+    })
+    .catch(err => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
 module.exports = {
   getSites,
   getSitesDetails,
   getSitesLocations,
   getSitesSpecies,
-  getSitesPopulations
+  getSitesPopulations,
+  getSitesLayers
 };
