@@ -1,11 +1,15 @@
 import React from 'react';
 import Switch from 'components/common/Switch';
 
-function getSubItems(subItems) {
-  return subItems.map((subItem, index2) => (
-    <div className="sub-item" key={index2}>
-      <span className={`icon ${subItem.icon ? `-${subItem.icon}` : ''} ${subItem.status ? `-${subItem.status}` : ''}`} />
-      <p>{subItem.name}</p>
+function getSubItems(layer) {
+  const config = layer.legendConfig;
+  return layer.legendData.map((item, index) => (
+    <div className="sub-item" key={index}>
+      <span
+        className={`icon ${config.icon ? `-${config.icon}` : ''}`}
+        style={{ backgroundColor: layer.buckets[item.key] }}
+      />
+      <p>{item.name}</p>
     </div>
   ));
 }
@@ -18,8 +22,8 @@ function Legend(props) {
         props.data.map((item, index) => (
           <div className="item" key={index}>
             <p>{item.name}</p>
-            <Switch checked={item.active} onChange={() => props.onSwitchChange(item.layer)} />
-            {getSubItems(item.legendData)}
+            <Switch checked={item.active} onChange={() => props.onSwitchChange(item.slug)} />
+            {getSubItems(item)}
           </div>
         ))
       }

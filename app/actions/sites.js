@@ -26,53 +26,75 @@ export function clearSites() {
 }
 
 export function getSitesStats(id) {
-  const url = `${config.apiHost}/sites/${id}/details`;
+  const url = `${config.apiHost}/sites/${id}`;
   return dispatch => {
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        dispatch({
-          type: GET_SITES_STATS,
-          payload: data
+    try {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          dispatch({
+            type: GET_SITES_STATS,
+            payload: data
+          });
         });
+    } catch (err) {
+      dispatch({
+        type: GET_SITES_STATS,
+        payload: { data: {} }
       });
+    }
   };
 }
+
 export function getSitesList(page, search) {
   const searchQuery = search ? `&search=${search}` : '';
   const url = `${config.apiHost}/sites?page=${page}&results=${RESULTS_PER_PAGE}${searchQuery}`;
   return dispatch => {
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        dispatch({
-          type: GET_SITES_LIST,
-          payload: {
-            page: page || 0,
-            search,
-            data
-          }
+    try {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          dispatch({
+            type: GET_SITES_LIST,
+            payload: {
+              page: page || 0,
+              search,
+              data
+            }
+          });
         });
+    } catch (err) {
+      dispatch({
+        type: GET_SITES_LIST,
+        payload: { page: 0, search: '', data: [] }
       });
+    }
   };
 }
 
 export function getSitesLocations() {
   const url = `${config.apiHost}/sites/locations`;
   return dispatch => {
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        dispatch({
-          type: GET_SITES_LOCATIONS,
-          payload: data
+    try {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          dispatch({
+            type: GET_SITES_LOCATIONS,
+            payload: data
+          });
         });
+    } catch (err) {
+      dispatch({
+        type: GET_SITES_LOCATIONS,
+        payload: { data: [] }
       });
+    }
   };
 }
 
 export function getSitesSpecies(id) {
-  const url = `${config.apiHost}/sites/${id}`;
+  const url = `${config.apiHost}/sites/${id}/species`;
   return dispatch => {
     try {
       fetch(url)

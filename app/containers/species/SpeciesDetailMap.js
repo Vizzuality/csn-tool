@@ -6,11 +6,11 @@ const mapStateToProps = (state) => ({
   id: state.species.selected,
   sites: state.species.sites[state.species.selected] || false,
   population: state.species.population[state.species.selected] || false,
-  data: state.species.layers[state.species.selected] || false
+  layers: state.species.layers[state.species.selected] || false
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getData: (id) => dispatch(getSpeciesLayers(id))
+  getLayers: (id) => dispatch(getSpeciesLayers(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SpeciesDetailMap);

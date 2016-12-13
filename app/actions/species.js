@@ -60,13 +60,9 @@ export function getSpeciesSites(id) {
           });
         });
     } catch (err) {
-      const data = [];
       dispatch({
         type: GET_SPECIES_SITES,
-        payload: {
-          id,
-          data
-        }
+        payload: { id, data: [] }
       });
     }
   };
@@ -123,19 +119,26 @@ export function getSpeciesHabitats(id) {
 }
 
 export function getSpeciesLayers(id) {
-  const url = `${config.apiHost}/layers/${id}?section=species`;
+  const url = `${config.apiHost}/species/${id}/layers`;
   return dispatch => {
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        dispatch({
-          type: GET_SPECIES_LAYER,
-          payload: {
-            id,
-            data
-          }
+    try {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          dispatch({
+            type: GET_SPECIES_LAYER,
+            payload: {
+              id,
+              data
+            }
+          });
         });
+    } catch (err) {
+      dispatch({
+        type: GET_SPECIES_LAYER,
+        payload: { id, data: [] }
       });
+    }
   };
 }
 
@@ -160,9 +163,9 @@ export function resetSearchFilter() {
   };
 }
 
-export function toggleLayer(layer) {
+export function toggleLayer(layerSlug) {
   return {
     type: TOGGLE_SPECIES_LAYER,
-    payload: layer
+    payload: layerSlug
   };
 }

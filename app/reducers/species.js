@@ -58,9 +58,18 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { layers: data });
     }
     case TOGGLE_SPECIES_LAYER: {
-      const layers = Object.assign({}, state.layers);
-      layers[action.payload] = !layers[action.payload];
-      return Object.assign({}, state, { layers });
+      // We need inmutable array to change the state
+      // http://vincent.billey.me/pure-javascript-immutable-array
+      const layers = [...state.layers[state.selected]];
+      for (let i = 0, layersLength = layers.length; i < layersLength; i++) {
+        if (layers[i].slug === action.payload) {
+          layers[i].active = !layers[i].active;
+          break;
+        }
+      }
+      const selected = {};
+      selected[state.selected] = layers;
+      return Object.assign({}, state, { layers: selected });
     }
     default:
       return state;

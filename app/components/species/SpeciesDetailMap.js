@@ -1,12 +1,20 @@
 import React from 'react';
 import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, BASEMAP_ATTRIBUTION_CARTO,
   MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
-import { createLayer, getSqlQuery } from 'helpers/map';
 import SpeciesDetailLegend from 'containers/species/SpeciesDetailLegend';
 
 class SpeciesMap extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      loading: false
+    };
+    // Adds suppport to topojson
+    this.includeTopoJSONLayer();
+  }
+
   componentWillMount() {
-    this.props.getData(this.props.id);
+    this.props.getLayers(this.props.id);
   }
 
   componentDidMount() {
@@ -24,100 +32,100 @@ class SpeciesMap extends React.Component {
     this.tileLayer = L.tileLayer(BASEMAP_TILE).addTo(this.map).setZIndex(0);
 
 
-    this.markers = [];
-    // if (this.props.sites && this.props.sites.length) {
-    //   this.drawMarkers(this.props.sites);
-    // }
-
-    // this.getBounds(this.props.id);
+    this.mapLayers = {};
+    if (this.props.layers && this.props.layers.length) {
+      this.updateLayers(this.props.layers);
+    }
   }
 
   componentWillReceiveProps(newProps) {
-    // if (newProps.layers.sites) {
-    //   if (!this.markers.length && newProps.sites && newProps.sites.length) {
-    //     this.drawMarkers(newProps.sites);
-    //     this.fitMarkersBounds();
-    //   }
-    // } else {
-    //   this.clearMarkers();
-    // }
+    if (newProps.layers && newProps.layers.length) {
+      this.updateLayers(newProps.layers);
+    }
   }
 
   componentWillUnmount() {
     this.map.remove();
   }
 
-  getBounds(id) {
-    const query = `SELECT ST_AsGeoJSON(ST_Envelope(st_union(f.the_geom)))
-      as bbox FROM species s
-      INNER JOIN species_and_flywaygroups f on f.ssid = s.species_id
-      WHERE s.species_id = ${id}`;
-
-    getSqlQuery(query, this.setBounds.bind(this));
-  }
-
-  setBounds(res) {
-    const bounds = JSON.parse(res[0].bbox);
-
-    if (bounds) {
-      const coords = bounds.coordinates[0];
-
-      if (coords) {
-        this.map.fitBounds([
-          [coords[2][1], coords[2][0]],
-          [coords[4][1], coords[4][0]]
-        ]);
+  includeTopoJSONLayer() {
+    L.TopoJSON = L.GeoJSON.extend({
+      addData(jsonData) {
+        if (jsonData.type === 'Topology') {
+          Object.keys(jsonData.objects).forEach((key) => {
+            const geojson = topojson.feature(jsonData, jsonData.objects[key]);
+            L.GeoJSON.prototype.addData.call(this, geojson);
+          });
+        } else {
+          L.GeoJSON.prototype.addData.call(this, jsonData);
+        }
       }
-    }
-
-    // this.addLayer(this.props.id);
+    });
   }
 
-  addLayer(id) {
-    const query = `SELECT f.the_geom_webmercator, f.colour_index FROM species s
-      INNER JOIN species_and_flywaygroups f on f.ssid = s.species_id
-      WHERE s.species_id = ${id}`;
-
-    const cartoCSS = `#species_and_flywaygroups{
-      polygon-opacity: 0;
-      line-opacity: 1;
-      line-width: 3;
-      line-dasharray: 1, 7;
-      line-cap: round;
-    }
-    #species_and_flywaygroups[colour_index=1]{ line-color: #a6cee3;}
-    #species_and_flywaygroups[colour_index=2]{ line-color: #1f78b4;}
-    #species_and_flywaygroups[colour_index=3]{ line-color: #b2df8a;}
-    #species_and_flywaygroups[colour_index=4]{ line-color: #33a02c;}
-    #species_and_flywaygroups[colour_index=5]{ line-color: #fb9a99;}
-    #species_and_flywaygroups[colour_index=6]{ line-color: #e31a1c;}
-    #species_and_flywaygroups[colour_index=7]{ line-color: #fdbf6f;}
-    #species_and_flywaygroups[colour_index=8]{ line-color: #ff7f00;}
-    #species_and_flywaygroups[colour_index=9]{ line-color: #cab2d6;}
-    #species_and_flywaygroups[colour_index=10]{ line-color: #6a3d9a;}
-    #species_and_flywaygroups[colour_index=11]{ line-color: #ffff99;}`;
-
-
-    createLayer({
-      sql: query,
-      cartocss: cartoCSS
-    }, this.addTile.bind(this));
+  layerAlreadyAdded(layer) {
+    return this.mapLayers[layer.slug] !== undefined;
   }
 
-  addTile(url) {
-    if (this.layer) {
-      this.layer.setUrl(url);
-    } else {
-      this.layer = L.tileLayer(url, {
-        noWrap: true,
-        attribution: BASEMAP_ATTRIBUTION_CARTO
-      }).setZIndex(2);
-      this.layer.addTo(this.map);
-      this.layer.getContainer().classList.add('-layer-blending');
+  updateLayers(layers) {
+    if (layers && layers.length) {
+      layers.forEach((layer) => {
+        if (layer.active) {
+          if (!this.layerAlreadyAdded(layer)) {
+            this.addMapLayer(layer);
+          }
+        } else if (this.mapLayers[layer.slug]) {
+          this.removeMapLayer(layer.slug);
+        }
+      });
     }
   }
 
-  drawMarkers(speciesSites) {
+  addMapLayer(layer) {
+    if (!this.state.loading) {
+      this.setState({
+        loading: true
+      });
+    }
+    switch (layer.type) {
+      case 'topojson':
+        this.addTopoJSONLayer(layer);
+        break;
+      case 'markers':
+        this.addMarkersLayer(layer);
+        break;
+      case 'tiles':
+        this.addTileLayer(layer);
+        break;
+      default:
+        break;
+    }
+  }
+
+  removeMapLayer(layerSlug) {
+    this.map.removeLayer(this.mapLayers[layerSlug]);
+    delete this.mapLayers[layerSlug];
+  }
+
+  addTopoJSONLayer(layer) {
+    const onEachFeature = (geom) => {
+      geom.setStyle({
+        color: layer.buckets[geom.feature.properties.key],
+        weight: 3,
+        opacity: 1,
+        fillOpacity: 0,
+        dashArray: '1, 7'
+      });
+    };
+
+    const topoLayer = new L.TopoJSON();
+    topoLayer.addData(layer.data);
+    topoLayer.addTo(this.map);
+    topoLayer.eachLayer(onEachFeature);
+    this.mapLayers[layer.slug] = topoLayer;
+  }
+
+  addMarkersLayer(markers) {
     function getMarkerIcon(item) {
       return L.divIcon({
         className: 'map-marker',
@@ -126,7 +134,7 @@ class SpeciesMap extends React.Component {
       });
     }
 
-    speciesSites.forEach((item) => {
+    markers.forEach((item) => {
       if (item.lat && item.lon) {
         const marker = L.marker([item.lat, item.lon], { icon: getMarkerIcon(item) }).addTo(this.map);
         marker.
@@ -140,6 +148,14 @@ class SpeciesMap extends React.Component {
         this.markers.push(marker);
       }
     });
+  }
+
+  addTileLayer(url) {
+    this.layer = L.tileLayer(url, {
+      noWrap: true,
+      attribution: BASEMAP_ATTRIBUTION_CARTO
+    }).setZIndex(2);
+    this.layer.addTo(this.map);
   }
 
   clearMarkers() {
@@ -178,8 +194,8 @@ SpeciesMap.contextTypes = {
 
 SpeciesMap.propTypes = {
   id: React.PropTypes.string.isRequired,
-  getData: React.PropTypes.func.isRequired,
-  data: React.PropTypes.any.isRequired
+  getLayers: React.PropTypes.func.isRequired,
+  layers: React.PropTypes.any.isRequired
 };
 
 export default SpeciesMap;
