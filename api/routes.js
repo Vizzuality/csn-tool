@@ -17,8 +17,8 @@ router.route('/countries/:iso/layers').get(CountriesCtrl.getCountryLayers);
 // Sites
 router.route('/sites').get(SitesCtrl.getSites);
 router.route('/sites/locations').get(SitesCtrl.getSitesLocations);
-router.route('/sites/:id').get(SitesCtrl.getSitesSpecies);
-router.route('/sites/:id/details').get(SitesCtrl.getSitesDetails);
+router.route('/sites/:id').get(SitesCtrl.getSitesDetails);
+router.route('/sites/:id/species').get(SitesCtrl.getSitesSpecies);
 router.route('/sites/:id/populations').get(SitesCtrl.getSitesPopulations);
 router.route('/sites/:id/layers').get(SitesCtrl.getSitesLayers);
 

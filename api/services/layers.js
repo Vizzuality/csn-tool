@@ -7,6 +7,7 @@ function serialize(layers) {
     layerOrder: item.layer_order,
     zIndex: item.z_index,
     buckets: JSON.parse(item.buckets),
+    legendConfig: JSON.parse(item.legend_config),
     legendData: JSON.parse(item.legend_data),
     data: {},
     slug: item.slug,
@@ -32,7 +33,8 @@ function getLayerData(layer, id) {
       promises.push(getCartoQuery(legendQuery));
     }
     if (layer.query) {
-      const query = layer.query.replace(new RegExp('(\\${id})', 'g'), id);
+      let query = layer.query.replace(new RegExp('(\\${id})', 'g'), id);
+      query += layer.type === 'topojson' ? '&format=topojson' : '';
       promises.push(getCartoQuery(query));
     }
 
@@ -43,8 +45,9 @@ function getLayerData(layer, id) {
           if (legendData && legendData.length) {
             newLayer.legendData = legendData;
           }
-          const data = JSON.parse(values[1]).rows || [];
-          if (data && data.length) {
+
+          const data = layer.type === 'topojson' ? JSON.parse(values[1]) : JSON.parse(values[1]).rows || [];
+          if (data) {
             newLayer.data = data;
           }
           resolve(newLayer);
