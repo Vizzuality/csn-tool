@@ -53,9 +53,7 @@ class SitesPage extends React.Component {
           <div className="l-table">
             <div className="row">
               <div className="column">
-                {this.props.viewMode === 'list' &&
-                  <SitesTable />
-                }
+                <SitesTable />
               </div>
             </div>
           </div>
