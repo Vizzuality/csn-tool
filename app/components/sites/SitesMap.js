@@ -1,14 +1,20 @@
 import React from 'react';
-import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX,
+import { withRouter } from 'react-router';
+import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, MAP_CENTER,
          MAP_INITIAL_ZOOM, MAP_MIN_ZOOM } from 'constants/map';
+import { replaceUrlParams } from 'helpers/router';
 
 class SitesMap extends React.Component {
 
   componentDidMount() {
+    const query = this.props.router.getCurrentLocation().query;
+    const center = query.lat && query.lng
+     ? [query.lat, query.lng]
+     : MAP_CENTER;
     this.map = L.map('map-base', {
       minZoom: MAP_MIN_ZOOM,
-      zoom: MAP_INITIAL_ZOOM,
-      center: [52, 7],
+      zoom: query.zoom || MAP_INITIAL_ZOOM,
+      center,
       detectRetina: true,
       zoomAnimation: false
     });
@@ -35,15 +41,16 @@ class SitesMap extends React.Component {
 
     if (this.props.data && this.props.data.length) {
       this.drawMarkers(this.props.data);
-      this.fitBounds();
     }
+    this.setListeners();
   }
 
   componentWillReceiveProps(newProps) {
     if (newProps.data && newProps.data.length) {
-      this.clearMarkers();
-      this.drawMarkers(newProps.data);
-      this.fitBounds();
+      if (this.props.data.length !== newProps.data.length) {
+        this.clearMarkers();
+        this.drawMarkers(newProps.data);
+      }
     } else {
       this.clearMarkers();
     }
@@ -51,6 +58,32 @@ class SitesMap extends React.Component {
 
   componentWillUnmount() {
     this.map.remove();
+    this.unsetListeners();
+  }
+
+  setListeners() {
+    this.map.on('dragend', this.setMapParams.bind(this));
+    this.map.on('zoomend', this.setMapParams.bind(this));
+  }
+
+  getMapParams() {
+    const latLng = this.map.getCenter();
+    return {
+      zoom: this.map.getZoom(),
+      lat: latLng.lat,
+      lng: latLng.lng
+    };
+  }
+
+  setMapParams() {
+    const route = this.props.router.getCurrentLocation();
+    const url = replaceUrlParams(route.pathname + route.search, this.getMapParams());
+    this.props.router.push(url);
+  }
+
+  unsetListeners() {
+    this.map.off('dragend', this.setMapParams.bind(this));
+    this.map.off('zoomend', this.setMapParams.bind(this));
   }
 
   drawMarkers(data) {
@@ -91,11 +124,6 @@ class SitesMap extends React.Component {
     this.markerList = [];
   }
 
-  fitBounds() {
-    const markersGroup = new L.featureGroup(this.markerList); // eslint-disable-line new-cap
-    this.map.fitBounds(markersGroup.getBounds(), { maxZoom: 5 });
-  }
-
   render() {
     return (
       <div className="l-maps-container">
@@ -106,10 +134,11 @@ class SitesMap extends React.Component {
 }
 
 SitesMap.propTypes = {
+  router: React.PropTypes.object.isRequired,
   selected: React.PropTypes.string,
   goToDetail: React.PropTypes.func.isRequired,
   id: React.PropTypes.string,
   data: React.PropTypes.any
 };
 
-export default SitesMap;
+export default withRouter(SitesMap);
