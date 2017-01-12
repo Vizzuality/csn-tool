@@ -1,48 +1,20 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, MAP_CENTER,
-         MAP_INITIAL_ZOOM, MAP_MIN_ZOOM } from 'constants/map';
-import { replaceUrlParams } from 'helpers/router';
+import BasicMap from 'components/maps/BasicMap';
 
-class SitesMap extends React.Component {
+class SitesMap extends BasicMap {
+  constructor(props) {
+    super(props);
+    this.markerList = [];
+  }
 
   componentDidMount() {
-    const query = this.props.router.getCurrentLocation().query;
-    const center = query.lat && query.lng
-     ? [query.lat, query.lng]
-     : MAP_CENTER;
-    this.map = L.map('map-base', {
-      minZoom: MAP_MIN_ZOOM,
-      zoom: query.zoom || MAP_INITIAL_ZOOM,
-      center,
-      detectRetina: true,
-      zoomAnimation: false
-    });
-    this.markers = L.markerClusterGroup({
-      showCoverageOnHover: false,
-      removeOutsideVisibleBounds: true,
-      animate: false,
-      animateAddingMarkers: false,
-      chunkedLoading: true,
-      iconCreateFunction(cluster) {
-        return L.divIcon({
-          html: `<span>${cluster.getAllChildMarkers().length}</span>`,
-          className: 'marker-cluster',
-          iconSize: L.point(28, 28)
-        });
-      }
-    });
-    this.markerList = [];
-
-    this.map.attributionControl.addAttribution(BASEMAP_ATTRIBUTION_MAPBOX);
-    this.map.zoomControl.setPosition('topright');
-    this.map.scrollWheelZoom.disable();
-    this.tileLayer = L.tileLayer(BASEMAP_TILE).addTo(this.map).setZIndex(0);
+    this.initMap();
+    this.addShareControl();
 
     if (this.props.data && this.props.data.length) {
       this.drawMarkers(this.props.data);
     }
-    this.setListeners();
   }
 
   componentWillReceiveProps(newProps) {
@@ -57,33 +29,7 @@ class SitesMap extends React.Component {
   }
 
   componentWillUnmount() {
-    this.map.remove();
-    this.unsetListeners();
-  }
-
-  setListeners() {
-    this.map.on('dragend', this.setMapParams.bind(this));
-    this.map.on('zoomend', this.setMapParams.bind(this));
-  }
-
-  getMapParams() {
-    const latLng = this.map.getCenter();
-    return {
-      zoom: this.map.getZoom(),
-      lat: latLng.lat,
-      lng: latLng.lng
-    };
-  }
-
-  setMapParams() {
-    const route = this.props.router.getCurrentLocation();
-    const url = replaceUrlParams(route.pathname + route.search, this.getMapParams());
-    this.props.router.push(url);
-  }
-
-  unsetListeners() {
-    this.map.off('dragend', this.setMapParams.bind(this));
-    this.map.off('zoomend', this.setMapParams.bind(this));
+    this.remove();
   }
 
   drawMarkers(data) {
@@ -120,14 +66,14 @@ class SitesMap extends React.Component {
   }
 
   clearMarkers() {
-    this.markers.clearLayers();
+    if (this.markers) this.markers.clearLayers();
     this.markerList = [];
   }
 
   render() {
     return (
       <div className="l-maps-container">
-        <div id={'map-base'} className="c-map -full"></div>
+        <div id={this.props.id} className="c-map -full"></div>
       </div>
     );
   }
