@@ -1,56 +1,77 @@
-.leaflet-right .leaflet-control {
-  margin: 0;
-}
+.c-map {
+  .leaflet-top.leaflet-right {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1;
 
-.leaflet-control-zoom {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 1;
+    .leaflet-control {
+      margin: 10px 0 0;
+      border: none;
+    }
 
-  .-header & {
-    top: rem(85);
+    .-header & {
+      top: rem(85);
+    }
   }
-}
+  .leaflet-top {
+    .-header & {
+      top: rem(85);
+    }
+  }
 
-.leaflet-bar {
-  box-shadow: none;
-  border-radius: 0;
+  .leaflet-bar {
+    box-shadow: none;
+    border-radius: 0;
 
-  a,
-  a:hover {
+    a,
+    a:hover {
+      width: rem(40);
+      height: rem(40);
+      font-size: rem(24);
+      line-height: rem(40);
+      color: $white;
+      background-color: rgba($bg-dark-color, 0.6);
+
+      &:first-child {
+        border: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-bottom: rem(1) solid $border-color;
+      }
+
+      &:last-child {
+        border: 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      &.leaflet-disabled {
+        background-color: rgba($bg-dark-color, 0.6);
+        color: rgba($white, 0.4);
+      }
+    }
+
+    a:hover {
+      background-color: rgba($bg-dark-color, 0.8);
+    }
+  }
+
+  .leaflet-custom-control {
     width: rem(40);
     height: rem(40);
-    padding: rem(6);
     font-size: rem(24);
+    line-height: rem(40);
     color: $white;
     background-color: rgba($bg-dark-color, 0.6);
 
-    &:first-child {
-      border: 0;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-      border-bottom: rem(1) solid $border-color;
-    }
-
-    &:last-child {
-      border: 0;
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-
-    &.leaflet-disabled {
-      background-color: rgba($bg-dark-color, 0.6);
-      color: rgba($white, 0.4);
+    &.share-control {
+      height: auto;
     }
   }
 
-  a:hover {
-    background-color: rgba($bg-dark-color, 0.8);
+  .leaflet-control-zoom-in,
+  .leaflet-control-zoom-out {
+    /* border: 1px solid $border-color; */
   }
-}
-
-.leaflet-control-zoom-in,
-.leaflet-control-zoom-out {
-  /* border: 1px solid $border-color; */
 }
