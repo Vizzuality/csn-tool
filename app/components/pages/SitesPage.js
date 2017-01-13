@@ -48,7 +48,7 @@ class SitesPage extends React.Component {
         </div>
         <div className={`l-mask ${this.props.viewMode}`}>
           <div className={"l-map -header"}>
-            <SitesMap slug={this.props.selected} />
+            <SitesMap markerCluster slug={this.props.selected} id="sites-page-map" />
           </div>
           <div className="l-table">
             <div className="row">

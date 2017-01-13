@@ -1,0 +1,79 @@
+$share-btn-size: rem(40);
+
+$share-twitter-color: #6bcfef;
+$share-facebook-color: #4a6da7;
+$share-mail-color: #f45c46;
+
+.c-share {
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  min-height: $share-btn-size;
+
+  .share-btn {
+    position: relative;
+    top: 0;
+    width: $share-btn-size;
+    height: $share-btn-size;
+    margin-bottom: -40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    z-index: 2;
+    opacity: 0;
+    border-bottom: 1px solid $bg-dark-color;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    svg {
+      fill: $white;
+      transition: fill 0.3s ease-in-out;
+    }
+
+    &.-share {
+      z-index: 3;
+      opacity: 1;
+      margin-bottom: 0;
+    }
+
+    &:hover {
+
+      &.-twitter {
+        background-color: $share-twitter-color;
+      }
+
+      &.-facebook {
+        background-color: $share-facebook-color;
+      }
+
+      &.-mail {
+        background-color: $share-mail-color;
+      }
+
+      .icon {
+        fill: $white;
+      }
+    }
+  }
+
+  &:hover {
+
+    .share-btn {
+      opacity: 1;
+
+      &:not(.-share) {
+        margin-bottom: 0;
+      }
+
+      &.-share {
+        margin-top: -40px;
+        opacity: 0;
+        z-index: 1;
+      }
+    }
+  }
+}

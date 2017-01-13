@@ -1,24 +1,13 @@
 import React from 'react';
-import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, BASEMAP_ATTRIBUTION_CARTO,
-  MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
+import { withRouter } from 'react-router';
+import BasicMap from 'components/maps/BasicMap';
+import { BASEMAP_ATTRIBUTION_CARTO } from 'constants/map';
 import { createLayer, getSqlQuery } from 'helpers/map';
 import SpeciesDetailLegend from 'containers/species/SpeciesDetailLegend';
 
-class SpeciesMap extends React.Component {
+class SpeciesMap extends BasicMap {
   componentDidMount() {
-    this.map = L.map('map-base', {
-      minZoom: MAP_MIN_ZOOM,
-      maxBounds: MAP_MAX_BOUNDS,
-      zoom: MAP_MIN_ZOOM,
-      center: MAP_CENTER,
-      detectRetina: true
-    });
-
-    this.map.attributionControl.addAttribution(BASEMAP_ATTRIBUTION_MAPBOX);
-    this.map.zoomControl.setPosition('topright');
-    this.map.scrollWheelZoom.disable();
-    this.tileLayer = L.tileLayer(BASEMAP_TILE).addTo(this.map).setZIndex(0);
-
+    this.initMap();
 
     this.markers = [];
     if (this.props.sites && this.props.sites.length) {
@@ -40,7 +29,7 @@ class SpeciesMap extends React.Component {
   }
 
   componentWillUnmount() {
-    this.map.remove();
+    this.remove();
   }
 
   getBounds(id) {
@@ -157,7 +146,7 @@ class SpeciesMap extends React.Component {
   render() {
     return (
       <div className="l-maps-container">
-        <div id={'map-base'} className="c-map -full"></div>
+        <div id={this.props.id} className="c-map -full"></div>
         <div className="l-legend">
           <SpeciesDetailLegend />
         </div>
@@ -173,9 +162,10 @@ SpeciesMap.contextTypes = {
 
 
 SpeciesMap.propTypes = {
+  router: React.PropTypes.object.isRequired,
   id: React.PropTypes.string.isRequired,
   sites: React.PropTypes.any.isRequired,
   population: React.PropTypes.any.isRequired
 };
 
-export default SpeciesMap;
+export default withRouter(SpeciesMap);
