@@ -6,6 +6,7 @@ function NavLink(props, context) {
     <Link activeClassName="-current" className={props.className} to={`/${props.lang}${props.to}`}>
       {props.i18nText ? context.t(props.i18nText) : props.text}
       {props.icon && <svg><use xlinkHref={`#${props.icon}`}></use></svg>}
+      {props.children}
     </Link>
   );
 }
@@ -27,7 +28,9 @@ NavLink.propTypes = {
   // Define the text to show translated
   i18nText: React.PropTypes.string,
   // Define the icon used for the link
-  icon: React.PropTypes.string
+  icon: React.PropTypes.string,
+  // Define the child componets
+  children: React.PropTypes.any
 };
 
 export default NavLink;
