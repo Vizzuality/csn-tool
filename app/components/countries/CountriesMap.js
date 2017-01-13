@@ -101,21 +101,6 @@ class CountriesMap extends BasicMap {
     }
   }
 
-  addTopoJSONLayer() {
-    L.TopoJSON = L.GeoJSON.extend({
-      addData(jsonData) {
-        if (jsonData.type === 'Topology') {
-          Object.keys(jsonData.objects).forEach((key) => {
-            const geojson = topojson.feature(jsonData, jsonData.objects[key]);
-            L.GeoJSON.prototype.addData.call(this, geojson);
-          });
-        } else {
-          L.GeoJSON.prototype.addData.call(this, jsonData);
-        }
-      }
-    });
-  }
-
   addLayer() {
     const query = 'SELECT * FROM mask';
 

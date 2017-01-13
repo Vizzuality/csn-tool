@@ -1,6 +1,6 @@
 import React from 'react';
 import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, MAP_MIN_ZOOM,
-  MAP_CENTER, MAP_MAX_BOUNDS, MAP_INITIAL_ZOOM } from 'constants/map';
+  MAP_CENTER, MAP_INITIAL_ZOOM } from 'constants/map';
 import { render } from 'react-dom';
 import Share from 'components/maps/Share';
 import { replaceUrlParams } from 'helpers/router';
@@ -8,20 +8,7 @@ import { replaceUrlParams } from 'helpers/router';
 class Map extends React.Component {
 
   componentDidMount() {
-    this.map = L.map('map-basic', {
-      minZoom: MAP_MIN_ZOOM,
-      maxBounds: MAP_MAX_BOUNDS,
-      zoom: MAP_INITIAL_ZOOM,
-      center: MAP_CENTER,
-      detectRetina: true,
-      zoomControl: false
-    });
-
-    this.map.attributionControl.addAttribution(BASEMAP_ATTRIBUTION_MAPBOX);
-    this.map.scrollWheelZoom.disable();
-    this.tileLayer = L.tileLayer(BASEMAP_TILE).addTo(this.map).setZIndex(0);
-
-    if (this.props.urlSync) this.setUrlSyncListeners();
+    this.initMap();
   }
 
   componentWillUnmount() {
@@ -59,8 +46,11 @@ class Map extends React.Component {
   }
 
   initMap() {
-    const query = this.props.router.getCurrentLocation().query;
-    const center = query.lat && query.lng
+    let query = {};
+    if (this.props.urlSync) {
+      query = this.props.router.getCurrentLocation().query;
+    }
+    const center = query && query.lat && query.lng
      ? [query.lat, query.lng]
      : MAP_CENTER;
     this.map = L.map(this.props.id, {
@@ -93,7 +83,7 @@ class Map extends React.Component {
     this.map.scrollWheelZoom.disable();
     this.tileLayer = L.tileLayer(BASEMAP_TILE).addTo(this.map).setZIndex(0);
 
-    this.addShareControl();
+    if (this.props.shareControl) this.addShareControl();
     if (this.props.urlSync) this.setUrlSyncListeners();
   }
 
@@ -114,21 +104,38 @@ class Map extends React.Component {
     );
   }
 
+  addTopoJSONLayer() {
+    L.TopoJSON = L.GeoJSON.extend({
+      addData(jsonData) {
+        if (jsonData.type === 'Topology') {
+          Object.keys(jsonData.objects).forEach((key) => {
+            const geojson = topojson.feature(jsonData, jsonData.objects[key]);
+            L.GeoJSON.prototype.addData.call(this, geojson);
+          });
+        } else {
+          L.GeoJSON.prototype.addData.call(this, jsonData);
+        }
+      }
+    });
+  }
+
   render() {
     return (
-      <div id={'map-basic'} className="c-map"></div>
+      <div id={this.props.id} className="c-map"></div>
     );
   }
 }
 
 Map.defaultProps = {
-  urlSync: true
+  urlSync: true,
+  shareControl: true
 };
 
 Map.propTypes = {
-  id: React.PropTypes.string,
+  id: React.PropTypes.string.isRequired,
   router: React.PropTypes.object,
   markerCluster: React.PropTypes.bool,
+  shareControl: React.PropTypes.bool,
   urlSync: React.PropTypes.bool
 };
 

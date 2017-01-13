@@ -10,7 +10,6 @@ class SitesMap extends BasicMap {
 
   componentDidMount() {
     this.initMap();
-    this.addShareControl();
 
     if (this.props.data && this.props.data.length) {
       this.drawMarkers(this.props.data);
