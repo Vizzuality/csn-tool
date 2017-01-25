@@ -167,7 +167,9 @@ function getCountrySimilarSpecies(req, res) {
     INNER JOIN countries c on c.country_id = sc.country_id AND
       c.iso3 = '${req.params.iso}'
     INNER JOIN similar_species ss on ss.species_id = s.species_id
-    GROUP BY s.scientific_name, s.english_name, s.genus, s.family, s.species_id, 1, ss.species_name, ss.confusion_species_group, c.country,
+    WHERE ss.confusion_species_group != ''
+    GROUP BY s.scientific_name, s.english_name, s.genus, s.family, s.species_id, 1,
+    ss.species_name, ss.confusion_species_group, c.country,
     s.hyperlink, sc.country_status, s.iucn_category
     ORDER BY ss.confusion_species_group`;
   rp(CARTO_SQL + query)
