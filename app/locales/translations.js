@@ -10,7 +10,7 @@ export const translations = {
     'species': 'Species',
     'qualifyingSpecies': 'Qualifying Species',
     'populations': 'Populations',
-    'similarSpecies': 'Similar Species',
+    'lookAlikeSpecies': 'Look-alike Species',
     'guidelines': 'Guidelines',
     'about': 'About',
     'stay-update': 'Stay update',

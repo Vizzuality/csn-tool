@@ -158,7 +158,7 @@ function getCountryPopulations(req, res) {
     });
 }
 
-function getCountrySimilarSpecies(req, res) {
+function getCountryLookAlikeSpecies(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family,
     s.species_id as id, ss.species_name, ss.confusion_species_group as confusing_species,
     sc.country_status, s.iucn_category, c.country
@@ -195,5 +195,5 @@ module.exports = {
   getCountrySitesOld,
   getCountrySpecies,
   getCountryPopulations,
-  getCountrySimilarSpecies
+  getCountryLookAlikeSpecies
 };

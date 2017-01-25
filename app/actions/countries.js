@@ -130,8 +130,8 @@ export function getCountryPopulations(iso) {
   };
 }
 
-export function getCountrySimilarSpecies(iso) {
-  const url = `${config.apiHost}/countries/${iso}/similar-species`;
+export function getCountryLookAlikeSpecies(iso) {
+  const url = `${config.apiHost}/countries/${iso}/look-alike-species`;
   return dispatch => {
     try {
       fetch(url)

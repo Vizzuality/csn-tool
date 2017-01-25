@@ -14,7 +14,7 @@ const initialState = {
   sitesOld: {},
   species: {},
   populations: {},
-  similarSpecies: {},
+  lookAlikeSpecies: {},
   layers: {
     sites: true
   }
@@ -61,9 +61,9 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { populations });
     }
     case GET_COUNTRIES_SIMILAR_SPECIES: {
-      const similarSpecies = Object.assign({}, state.similarSpecies, {});
-      similarSpecies[action.payload.iso] = action.payload.data;
-      return Object.assign({}, state, { similarSpecies });
+      const lookAlikeSpecies = Object.assign({}, state.lookAlikeSpecies, {});
+      lookAlikeSpecies[action.payload.iso] = action.payload.data;
+      return Object.assign({}, state, { lookAlikeSpecies });
     }
     case TOGGLE_COUNTRIES_LAYER: {
       const layers = Object.assign({}, state.layers);

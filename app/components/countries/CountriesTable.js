@@ -8,7 +8,7 @@ function getDetailLink(category) {
       return '';
     case 'sitesOld':
       return '';
-    case 'similarSpecies':
+    case 'lookAlikeSpecies':
       return 'species';
     default:
       return category;
