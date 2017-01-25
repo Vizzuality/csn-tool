@@ -11,6 +11,7 @@ function TableFilters(props) {
           <NavLink to={`/countries/${props.country}/sitesOld`} i18nText="sitesOld" className={props.category && props.category === 'sitesOld' ? 'is-active' : ''} />
           <NavLink to={`/countries/${props.country}/species`} i18nText="species" className={props.category && props.category === 'species' ? 'is-active' : ''} />
           <NavLink to={`/countries/${props.country}/populations`} i18nText="populations" className={props.category && props.category === 'populations' ? 'is-active' : ''} />
+          <NavLink to={`/countries/${props.country}/similarSpecies`} i18nText="similarSpecies" className={props.category && props.category === 'similarSpecies' ? 'is-active' : ''} />
         </div>
       </div>
       <div className="column small-12 medium-4">

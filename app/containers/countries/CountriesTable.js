@@ -12,6 +12,8 @@ function getCountryColums(category) {
     case 'sitesOld':
       return ['site_name', 'protection_status', 'iba', 'csn', 'iba_species',
         'csn_species', 'total_percentage'];
+    case 'similarSpecies':
+      return ['scientific_name', 'english_name', 'confusing_species', 'genus'];
     default:
       return ['site_name', 'protection_status', 'iba', 'csn'];
   }

@@ -1,6 +1,6 @@
 import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_SITES,
         GET_COUNTRIES_STATS, GET_COUNTRIES_SITES_OLD, TOGGLE_COUNTRIES_LAYER,
-        GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS,
+        GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS, GET_COUNTRIES_SIMILAR_SPECIES,
         SET_COUNTRY_PARAMS, SET_COUNTRY_SEARCH } from 'constants';
 import { push } from 'react-router-redux';
 
@@ -124,6 +124,27 @@ export function getCountryPopulations(iso) {
     } catch (err) {
       dispatch({
         type: GET_COUNTRIES_POPULATIONS,
+        payload: { iso, data: [] }
+      });
+    }
+  };
+}
+
+export function getCountrySimilarSpecies(iso) {
+  const url = `${config.apiHost}/countries/${iso}/similarSpecies`;
+  return dispatch => {
+    try {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          dispatch({
+            type: GET_COUNTRIES_SIMILAR_SPECIES,
+            payload: { iso, data }
+          });
+        });
+    } catch (err) {
+      dispatch({
+        type: GET_COUNTRIES_SIMILAR_SPECIES,
         payload: { iso, data: [] }
       });
     }
