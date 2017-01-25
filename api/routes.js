@@ -12,7 +12,7 @@ router.route('/countries/:iso/sites').get(CountriesCtrl.getCountrySites);
 router.route('/countries/:iso/sitesOld').get(CountriesCtrl.getCountrySitesOld);
 router.route('/countries/:iso/species').get(CountriesCtrl.getCountrySpecies);
 router.route('/countries/:iso/populations').get(CountriesCtrl.getCountryPopulations);
-router.route('/countries/:iso/similarSpecies').get(CountriesCtrl.getCountrySimilarSpecies);
+router.route('/countries/:iso/similar-species').get(CountriesCtrl.getCountrySimilarSpecies);
 
 // Sites
 router.route('/sites').get(SitesCtrl.getSites);

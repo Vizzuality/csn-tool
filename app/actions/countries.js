@@ -131,7 +131,7 @@ export function getCountryPopulations(iso) {
 }
 
 export function getCountrySimilarSpecies(iso) {
-  const url = `${config.apiHost}/countries/${iso}/similarSpecies`;
+  const url = `${config.apiHost}/countries/${iso}/similar-species`;
   return dispatch => {
     try {
       fetch(url)
