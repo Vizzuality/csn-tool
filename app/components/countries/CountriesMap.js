@@ -1,11 +1,11 @@
 import React from 'react';
-import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, BASEMAP_ATTRIBUTION_CARTO,
-         MAP_INITIAL_ZOOM, MAP_MIN_ZOOM, MAP_CENTER } from 'constants/map';
+import { withRouter } from 'react-router';
+import { BASEMAP_ATTRIBUTION_CARTO, MAP_MIN_ZOOM, MAP_CENTER } from 'constants/map';
+import BasicMap from 'components/maps/BasicMap';
 import { createLayer } from 'helpers/map';
 import CountriesLegend from 'containers/countries/CountriesLegend';
 
-class CountriesMap extends React.Component {
-
+class CountriesMap extends BasicMap {
   constructor() {
     super();
     this.styles = {
@@ -23,6 +23,7 @@ class CountriesMap extends React.Component {
     // Map initialization
     this.initMap();
     this.initPopup();
+    this.handleMapScroll(this.props.country);
 
     // Adds suppport to topojson
     this.addTopoJSONLayer();
@@ -45,10 +46,12 @@ class CountriesMap extends React.Component {
 
     if (newProps.layers.sites) {
       if (newProps.data && newProps.data.length) {
-        this.clearMarkers();
-        this.drawMarkers(newProps.data);
-        this.fitBounds();
-        this.addLayer();
+        if (this.props.data.length !== newProps.data.length) {
+          this.clearMarkers();
+          this.drawMarkers(newProps.data);
+          this.fitBounds();
+          this.addLayer();
+        }
       } else {
         this.clearMarkers();
       }
@@ -64,7 +67,7 @@ class CountriesMap extends React.Component {
   }
 
   componentWillUnmount() {
-    this.map.remove();
+    this.remove();
   }
 
   setPopupPosition(latLng) {
@@ -90,42 +93,12 @@ class CountriesMap extends React.Component {
     }).setContent('');
   }
 
-  initMap() {
-    this.map = L.map('countries-map', {
-      minZoom: MAP_MIN_ZOOM,
-      zoom: MAP_INITIAL_ZOOM,
-      center: [52, 7],
-      detectRetina: true,
-      zoomAnimation: false
-    });
-
-    this.map.attributionControl.addAttribution(BASEMAP_ATTRIBUTION_MAPBOX);
-    this.map.zoomControl.setPosition('topright');
-    this.handleMapScroll(this.props.country);
-    this.tileLayer = L.tileLayer(BASEMAP_TILE).addTo(this.map).setZIndex(0);
-  }
-
   handleMapScroll(country) {
     if (country) {
       this.map.scrollWheelZoom.disable();
     } else {
       this.map.scrollWheelZoom.enable();
     }
-  }
-
-  addTopoJSONLayer() {
-    L.TopoJSON = L.GeoJSON.extend({
-      addData(jsonData) {
-        if (jsonData.type === 'Topology') {
-          Object.keys(jsonData.objects).forEach((key) => {
-            const geojson = topojson.feature(jsonData, jsonData.objects[key]);
-            L.GeoJSON.prototype.addData.call(this, geojson);
-          });
-        } else {
-          L.GeoJSON.prototype.addData.call(this, jsonData);
-        }
-      }
-    });
   }
 
   addLayer() {
@@ -263,7 +236,7 @@ class CountriesMap extends React.Component {
   render() {
     return (
       <div className="l-maps-container">
-        <div id={'countries-map'} className="c-map"></div>
+        <div id={this.props.id} className="c-map"></div>
         {this.props.country &&
           <div className="l-legend">
             <CountriesLegend />
@@ -276,6 +249,8 @@ class CountriesMap extends React.Component {
 
 
 CountriesMap.propTypes = {
+  id: React.PropTypes.string.isRequired,
+  router: React.PropTypes.object.isRequired,
   goToSite: React.PropTypes.func.isRequired,
   goToDetail: React.PropTypes.func.isRequired,
   getGeoms: React.PropTypes.func.isRequired,
@@ -284,4 +259,4 @@ CountriesMap.propTypes = {
   country: React.PropTypes.string
 };
 
-export default CountriesMap;
+export default withRouter(CountriesMap);

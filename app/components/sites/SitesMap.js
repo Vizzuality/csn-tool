@@ -1,56 +1,34 @@
 import React from 'react';
-import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX,
-         MAP_INITIAL_ZOOM, MAP_MIN_ZOOM } from 'constants/map';
+import { withRouter } from 'react-router';
+import BasicMap from 'components/maps/BasicMap';
 
-class SitesMap extends React.Component {
+class SitesMap extends BasicMap {
+  constructor(props) {
+    super(props);
+    this.markerList = [];
+  }
 
   componentDidMount() {
-    this.map = L.map('map-base', {
-      minZoom: MAP_MIN_ZOOM,
-      zoom: MAP_INITIAL_ZOOM,
-      center: [52, 7],
-      detectRetina: true,
-      zoomAnimation: false
-    });
-    this.markers = L.markerClusterGroup({
-      showCoverageOnHover: false,
-      removeOutsideVisibleBounds: true,
-      animate: false,
-      animateAddingMarkers: false,
-      chunkedLoading: true,
-      iconCreateFunction(cluster) {
-        return L.divIcon({
-          html: `<span>${cluster.getAllChildMarkers().length}</span>`,
-          className: 'marker-cluster',
-          iconSize: L.point(28, 28)
-        });
-      }
-    });
-    this.markerList = [];
-
-    this.map.attributionControl.addAttribution(BASEMAP_ATTRIBUTION_MAPBOX);
-    this.map.zoomControl.setPosition('topright');
-    this.map.scrollWheelZoom.disable();
-    this.tileLayer = L.tileLayer(BASEMAP_TILE).addTo(this.map).setZIndex(0);
+    this.initMap();
 
     if (this.props.data && this.props.data.length) {
       this.drawMarkers(this.props.data);
-      this.fitBounds();
     }
   }
 
   componentWillReceiveProps(newProps) {
     if (newProps.data && newProps.data.length) {
-      this.clearMarkers();
-      this.drawMarkers(newProps.data);
-      this.fitBounds();
+      if (this.props.data.length !== newProps.data.length) {
+        this.clearMarkers();
+        this.drawMarkers(newProps.data);
+      }
     } else {
       this.clearMarkers();
     }
   }
 
   componentWillUnmount() {
-    this.map.remove();
+    this.remove();
   }
 
   drawMarkers(data) {
@@ -87,29 +65,25 @@ class SitesMap extends React.Component {
   }
 
   clearMarkers() {
-    this.markers.clearLayers();
+    if (this.markers) this.markers.clearLayers();
     this.markerList = [];
-  }
-
-  fitBounds() {
-    const markersGroup = new L.featureGroup(this.markerList); // eslint-disable-line new-cap
-    this.map.fitBounds(markersGroup.getBounds(), { maxZoom: 5 });
   }
 
   render() {
     return (
       <div className="l-maps-container">
-        <div id={'map-base'} className="c-map -full"></div>
+        <div id={this.props.id} className="c-map -full"></div>
       </div>
     );
   }
 }
 
 SitesMap.propTypes = {
+  router: React.PropTypes.object.isRequired,
   selected: React.PropTypes.string,
   goToDetail: React.PropTypes.func.isRequired,
   id: React.PropTypes.string,
   data: React.PropTypes.any
 };
 
-export default SitesMap;
+export default withRouter(SitesMap);
