@@ -28,5 +28,6 @@ router.route('/species/:id/sites').get(SpeciesCtrl.getSpeciesSites);
 router.route('/species/:id/population').get(SpeciesCtrl.getSpeciesPopulation);
 router.route('/species/:id/threats').get(SpeciesCtrl.getSpeciesThreats);
 router.route('/species/:id/habitats').get(SpeciesCtrl.getSpeciesHabitats);
+router.route('/species/:id/look-alike-species').get(SpeciesCtrl.getSpeciesLookAlikeSpecies);
 
 module.exports = router;
