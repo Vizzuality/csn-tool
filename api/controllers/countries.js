@@ -158,11 +158,42 @@ function getCountryPopulations(req, res) {
     });
 }
 
+function getCountryLookAlikeSpecies(req, res) {
+  const query = `SELECT s.scientific_name, s.english_name,
+    s.species_id as id, ss.species_name,
+    ss.confusion_species_group as confusing_species, c.country
+    FROM species s
+    INNER JOIN species_country sc on sc.species_id = s.species_id
+    INNER JOIN countries c on c.country_id = sc.country_id AND
+      c.iso3 = '${req.params.iso}'
+    INNER JOIN look_alike_species ss on ss.species_id = sc.species_id
+    WHERE ss.confusion_species_group != ''
+    GROUP BY s.scientific_name, s.english_name, s.species_id, 1,
+    ss.species_name, ss.confusion_species_group, c.country,
+    s.hyperlink
+    ORDER BY ss.confusion_species_group`;
+  rp(CARTO_SQL + query)
+    .then((data) => {
+      const result = JSON.parse(data);
+      if (result.rows && result.rows.length > 0) {
+        res.json(result.rows);
+      } else {
+        res.status(404);
+        res.json({ error: 'No species found' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
 module.exports = {
   getCountries,
   getCountryDetails,
   getCountrySites,
   getCountrySitesOld,
   getCountrySpecies,
-  getCountryPopulations
+  getCountryPopulations,
+  getCountryLookAlikeSpecies
 };

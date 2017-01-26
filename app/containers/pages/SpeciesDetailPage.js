@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import SpeciesDetailPage from 'components/pages/SpeciesDetailPage';
-import { getSpeciesStats, getSpeciesSites, getSpeciesPopulation, getSpeciesThreats, getSpeciesHabitats } from 'actions/species';
+import { getSpeciesStats, getSpeciesSites, getSpeciesPopulation, getSpeciesThreats, getSpeciesHabitats, getSpeciesLookAlikeSpecies } from 'actions/species';
 
 function getSpeciesData(species) {
   return species[species.selectedCategory] && species[species.selectedCategory][species.selected]
@@ -27,6 +27,9 @@ const mapDispatchToProps = (dispatch) => ({
         break;
       case 'habitats':
         dispatch(getSpeciesHabitats(id));
+        break;
+      case 'lookAlikeSpecies':
+        dispatch(getSpeciesLookAlikeSpecies(id));
         break;
       default:
         dispatch(getSpeciesSites(id));

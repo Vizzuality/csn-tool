@@ -1,6 +1,6 @@
 import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_SITES,
          GET_COUNTRIES_STATS, GET_COUNTRIES_SITES_OLD, TOGGLE_COUNTRIES_LAYER,
-         GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS,
+         GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS, GET_COUNTRIES_SIMILAR_SPECIES,
          SET_COUNTRY_PARAMS, SET_COUNTRY_SEARCH } from 'constants';
 
 const initialState = {
@@ -14,6 +14,7 @@ const initialState = {
   sitesOld: {},
   species: {},
   populations: {},
+  lookAlikeSpecies: {},
   layers: {
     sites: true
   }
@@ -58,6 +59,11 @@ export default function (state = initialState, action) {
       const populations = Object.assign({}, state.populations, {});
       populations[action.payload.iso] = action.payload.data;
       return Object.assign({}, state, { populations });
+    }
+    case GET_COUNTRIES_SIMILAR_SPECIES: {
+      const lookAlikeSpecies = Object.assign({}, state.lookAlikeSpecies, {});
+      lookAlikeSpecies[action.payload.iso] = action.payload.data;
+      return Object.assign({}, state, { lookAlikeSpecies });
     }
     case TOGGLE_COUNTRIES_LAYER: {
       const layers = Object.assign({}, state.layers);
