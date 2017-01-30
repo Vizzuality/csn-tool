@@ -164,15 +164,54 @@ function getSpeciesHabitats(req, res) {
 }
 
 function getSpeciesLookAlikeSpecies(req, res) {
-  const query = `with s as (SELECT english_name, scientific_name,
-    species.species_id, hyperlink, confusion_species_group
-    FROM species inner join look_alike_species
-    on species.species_id = look_alike_species.species_id),
-    e as (select confusion_species_group
-      from look_alike_species where species_id = '${req.params.id}'),
-    f as (select s.* from s inner join e
-      on s.confusion_species_group = e.confusion_species_group)
-    select * from f`;
+  const query = `WITH species_name AS (
+  SELECT species_name
+  AS name, confusion_species_group, not_aewa_species
+  FROM look_alike_species
+  WHERE species_id = ${req.params.id}
+),
+
+	confusion_species AS (
+  SELECT look_alike_species.species_id, species_name 	AS name, look_alike_species.confusion_species_group, look_alike_species.not_aewa_species
+  FROM look_alike_species
+  INNER JOIN species_name
+  ON species_name.confusion_species_group = look_alike_species.confusion_species_group
+  WHERE species_id <> ${req.params.id}
+),
+
+	original_flyway AS (
+  SELECT species_and_flywaygroups.*, populations_species_no_geo.a, populations_species_no_geo.b, populations_species_no_geo.c
+  FROM species_and_flywaygroups
+  LEFT JOIN populations_species_no_geo ON
+      populations_species_no_geo.populations = populationname AND populations_species_no_geo.species = species_and_flywaygroups.scientificname
+WHERE ssid = ${req.params.id}
+),
+
+	confusion_flyways AS (
+  SELECT species_and_flywaygroups.*, original_flyway.populationname
+  	AS original_popname, original_flyway.a as original_a, original_flyway.b as original_b, original_flyway.c as original_c
+	FROM species_and_flywaygroups
+	INNER JOIN original_flyway
+    ON st_intersects(species_and_flywaygroups.the_geom, original_flyway.the_geom)
+	INNER JOIN confusion_species
+    ON
+  species_and_flywaygroups.ssid = confusion_species.species_id
+),
+
+	confusion_populations AS (
+	SELECT confusion_species.*, confusion_flyways.the_geom, confusion_flyways.populationname, confusion_flyways.original_popname,
+      confusion_flyways.original_a,
+      confusion_flyways.original_b,
+      confusion_flyways.original_c
+	FROM confusion_species
+	INNER JOIN confusion_flyways
+      ON confusion_flyways.ssid = confusion_species.species_id )
+
+SELECT DISTINCT populations_species_no_geo.a, populations_species_no_geo.b, populations_species_no_geo.c, confusion_populations.*
+FROM populations_species_no_geo
+RIGHT JOIN confusion_populations
+ON confusion_populations.species_id = populations_species_no_geo.sisrecid
+AND confusion_populations.populationname = populations_species_no_geo.populations order by original_popname`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
