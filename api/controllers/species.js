@@ -96,7 +96,8 @@ function getSpeciesSites(req, res) {
 
 function getSpeciesPopulation(req, res) {
   const query = `SELECT p.populations, p.a, p.b, p.c, table_1_status,
-    p.species, p.wpepopid,
+    p.species, p.wpepopid, p.flyway_range, p.year_start, p.year_end, p.size_min,
+    p.size_max, p.ramsar_criterion,
     'http://wpe.wetlands.org/view/' || p.wpepopid AS pop_hyperlink
     FROM species s
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
