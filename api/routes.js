@@ -13,6 +13,7 @@ router.route('/countries/:iso/sitesOld').get(CountriesCtrl.getCountrySitesOld);
 router.route('/countries/:iso/species').get(CountriesCtrl.getCountrySpecies);
 router.route('/countries/:iso/populations').get(CountriesCtrl.getCountryPopulations);
 router.route('/countries/:iso/layers').get(CountriesCtrl.getCountryLayers);
+router.route('/countries/:iso/look-alike-species').get(CountriesCtrl.getCountryLookAlikeSpecies);
 
 // Sites
 router.route('/sites').get(SitesCtrl.getSites);
@@ -30,5 +31,6 @@ router.route('/species/:id/population').get(SpeciesCtrl.getSpeciesPopulation);
 router.route('/species/:id/threats').get(SpeciesCtrl.getSpeciesThreats);
 router.route('/species/:id/habitats').get(SpeciesCtrl.getSpeciesHabitats);
 router.route('/species/:id/layers').get(SpeciesCtrl.getSpeciesLayers);
+router.route('/species/:id/look-alike-species').get(SpeciesCtrl.getSpeciesLookAlikeSpecies);
 
 module.exports = router;

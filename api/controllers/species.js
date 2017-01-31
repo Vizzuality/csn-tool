@@ -168,7 +168,33 @@ function getSpeciesLayers(req, res) {
     .then((layers) => {
       res.json(layers);
     })
-    .catch(err => {
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
+function getSpeciesLookAlikeSpecies(req, res) {
+  const query = `with s as (SELECT english_name, scientific_name,
+    species.species_id, hyperlink, confusion_species_group
+    FROM species inner join look_alike_species
+    on species.species_id = look_alike_species.species_id),
+    e as (select confusion_species_group
+      from look_alike_species where species_id = '${req.params.id}'),
+    f as (select s.* from s inner join e
+      on s.confusion_species_group = e.confusion_species_group)
+    select * from f`;
+  rp(CARTO_SQL + query)
+    .then((data) => {
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        res.json(results);
+      } else {
+        res.status(404);
+        res.json({ error: 'There are no habitats for this Species' });
+      }
+    })
+    .catch((err) => {
       res.status(err.statusCode || 500);
       res.json({ error: err.message });
     });
@@ -181,5 +207,6 @@ module.exports = {
   getSpeciesPopulation,
   getSpeciesThreats,
   getSpeciesHabitats,
-  getSpeciesLayers
+  getSpeciesLayers,
+  getSpeciesLookAlikeSpecies
 };

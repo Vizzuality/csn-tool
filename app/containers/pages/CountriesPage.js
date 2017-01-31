@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import CountriesPage from 'components/pages/CountriesPage';
 import { getCountryStats, getCountrySites, getCountrySitesOld, getCountrySpecies,
-  getCountryPopulations } from 'actions/countries';
+  getCountryPopulations, getCountryLookAlikeSpecies } from 'actions/countries';
 
 function getCountryData(countries) {
   return countries[countries.selectedCategory] && countries[countries.selectedCategory][countries.selected]
@@ -29,6 +29,9 @@ const mapDispatchToProps = (dispatch) => ({
         break;
       case 'sitesOld':
         dispatch(getCountrySitesOld(country));
+        break;
+      case 'lookAlikeSpecies':
+        dispatch(getCountryLookAlikeSpecies(country));
         break;
       default:
         dispatch(getCountrySites(country));

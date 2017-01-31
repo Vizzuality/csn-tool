@@ -2,6 +2,7 @@ import React from 'react';
 import Switch from 'components/common/Switch';
 
 function getSubItems(layer) {
+  debugger;
   const config = layer.legendConfig;
   return layer.legendData.map((item, index) => (
     <div className="sub-item" key={index}>

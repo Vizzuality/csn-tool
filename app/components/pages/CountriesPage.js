@@ -52,7 +52,7 @@ class CountriesPage extends React.Component {
           </div>
         </div>
         <div className={`l-map ${this.props.country ? '-short -header' : '-header'}`}>
-          <CountriesMap />
+          <CountriesMap id="countries-map" />
         </div>
         <div className={`row l-content ${this.props.country ? '-short' : ''}`}>
           <div className="column">

@@ -1,36 +1,14 @@
 import React from 'react';
-import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, BASEMAP_ATTRIBUTION_CARTO,
-  MAP_MIN_ZOOM, MAP_CENTER, MAP_MAX_BOUNDS } from 'constants/map';
+import { withRouter } from 'react-router';
+import BasicMap from 'components/maps/BasicMap';
+import { BASEMAP_ATTRIBUTION_CARTO } from 'constants/map';
 import SpeciesDetailLegend from 'containers/species/SpeciesDetailLegend';
 
-class SpeciesMap extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      loading: false
-    };
-    // Adds suppport to topojson
-    this.includeTopoJSONLayer();
-  }
-
-  componentWillMount() {
-    this.props.getLayers(this.props.id);
-  }
-
+class SpeciesMap extends BasicMap {
   componentDidMount() {
-    this.map = L.map('map-base', {
-      minZoom: MAP_MIN_ZOOM,
-      maxBounds: MAP_MAX_BOUNDS,
-      zoom: MAP_MIN_ZOOM,
-      center: MAP_CENTER,
-      detectRetina: true
-    });
-
-    this.map.attributionControl.addAttribution(BASEMAP_ATTRIBUTION_MAPBOX);
-    this.map.zoomControl.setPosition('topright');
-    this.map.scrollWheelZoom.disable();
-    this.tileLayer = L.tileLayer(BASEMAP_TILE).addTo(this.map).setZIndex(0);
-
+    this.initMap();
+    debugger;
+    this.props.getLayers(this.props.id);
 
     this.mapLayers = {};
     if (this.props.layers && this.props.layers.length) {
@@ -45,7 +23,7 @@ class SpeciesMap extends React.Component {
   }
 
   componentWillUnmount() {
-    this.map.remove();
+    this.remove();
   }
 
   includeTopoJSONLayer() {
@@ -177,7 +155,7 @@ class SpeciesMap extends React.Component {
   render() {
     return (
       <div className="l-maps-container">
-        <div id={'map-base'} className="c-map -full"></div>
+        <div id={this.props.id} className="c-map -full"></div>
         <div className="l-legend">
           <SpeciesDetailLegend />
         </div>
@@ -193,9 +171,10 @@ SpeciesMap.contextTypes = {
 
 
 SpeciesMap.propTypes = {
+  router: React.PropTypes.object.isRequired,
   id: React.PropTypes.string.isRequired,
   getLayers: React.PropTypes.func.isRequired,
   layers: React.PropTypes.any.isRequired
 };
 
-export default SpeciesMap;
+export default withRouter(SpeciesMap);

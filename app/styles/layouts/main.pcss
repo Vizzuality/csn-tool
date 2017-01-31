@@ -33,14 +33,13 @@
 
 .l-mask {
   position: relative;
-  top: 50px;
+  padding-top: 50px;
   width: 200%;
-  height: calc(100vh - $header-height);
+  height: calc(100vh);
+  overflow: hidden;
 
   .l-map,
   .l-table {
-    position: relative;
-    top: 0;
     z-index: 0;
     width: 50%;
     transform: translate3d(0, 0, 0);
@@ -48,13 +47,12 @@
   }
 
   .l-map {
-    left: 0;
-    top: 0;
+    position: absolute;
+    top: auto;
   }
 
   .l-table {
-    left: 50%;
-    top: calc(-100vh + $header-height);
+    margin-left: 50%;
     padding-top: calc($header-height + 20px);
   }
 

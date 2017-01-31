@@ -70,7 +70,7 @@ class SitesPage extends React.Component {
         </div>
         <div className="l-page">
           <div className="l-map -header -short">
-            <SitesMap slug={this.props.site} />
+            <SitesMap id="sites-detail-map" markerCluster slug={this.props.site} />
           </div>
           <div className="l-table">
             <div className="row l-content -short">
