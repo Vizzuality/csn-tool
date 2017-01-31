@@ -166,6 +166,7 @@ function getSpeciesHabitats(req, res) {
 function getSpeciesLayers(req, res) {
   LayersService.getLayers('species', req.params.id)
     .then((layers) => {
+      console.log(layers, 'controller');
       res.json(layers);
     })
     .catch((err) => {

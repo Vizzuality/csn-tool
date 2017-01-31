@@ -7,7 +7,6 @@ import SpeciesDetailLegend from 'containers/species/SpeciesDetailLegend';
 class SpeciesMap extends BasicMap {
   componentDidMount() {
     this.initMap();
-    debugger;
     this.props.getLayers(this.props.id);
 
     this.mapLayers = {};
