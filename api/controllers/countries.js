@@ -159,19 +159,56 @@ function getCountryPopulations(req, res) {
 }
 
 function getCountryLookAlikeSpecies(req, res) {
-  const query = `SELECT s.scientific_name, s.english_name,
-    s.species_id as id, ss.species_name,
-    ss.confusion_species_group as confusing_species, c.country
-    FROM species s
-    INNER JOIN species_country sc on sc.species_id = s.species_id
-    INNER JOIN countries c on c.country_id = sc.country_id AND
-      c.iso3 = '${req.params.iso}'
-    INNER JOIN look_alike_species ss on ss.species_id = sc.species_id
-    WHERE ss.confusion_species_group != ''
-    GROUP BY s.scientific_name, s.english_name, s.species_id, 1,
-    ss.species_name, ss.confusion_species_group, c.country,
-    s.hyperlink
-    ORDER BY ss.confusion_species_group`;
+  const query = `WITH species AS (
+    SELECT species.species_id, scientific_name as original_species, p.populations,
+    p.a as original_a, p.b as original_b, p.c as original_c,
+    p.wpepopid as geo_id_original, l.confusion_species_group
+    FROM species
+    INNER JOIN species_country sc
+    ON sc.species_id = species.species_id
+    INNER JOIN countries c
+    ON c.country_id = sc.country_id
+    AND c.iso3 = '${req.params.iso}'
+    INNER JOIN populations_species_no_geo p
+    ON species.species_id = p.sisrecid
+    INNER JOIN look_alike_species l
+    ON l.species_id = species.species_id
+    WHERE l.confusion_species_group != ''
+  ),
+
+  confusion_species AS (
+    SELECT look_alike_species.species_name as confusion_species,
+    look_alike_species.not_aewa_species, look_alike_species.species_id as id,
+    species.*
+    FROM look_alike_species
+    INNER JOIN species
+    ON species.confusion_species_group = look_alike_species.confusion_species_group
+    WHERE look_alike_species.species_id <> species.species_id
+  ),
+
+  country_pops as (
+    SELECT ssis, wpepopid, wpesppid FROM
+      populationflyways_idcodesonly_dissolved
+    WHERE ST_Intersects(the_geom,
+    (
+      SELECT the_geom FROM world_borders WHERE iso3 = '${req.params.iso}')
+    )
+  ),
+
+  confusion_pops as (
+  	SELECT confusion_species.*, pp.a, pp.b, pp.c, pp.populations as confusion_population, pp.wpepopid as geo_id
+  	FROM populations_species_no_geo pp
+  	INNER JOIN confusion_species
+  	ON confusion_species.confusion_species = pp.species
+  )
+
+  SELECT DISTINCT * from confusion_pops
+  WHERE geo_id_original IN (
+  	SELECT wpepopid FROM country_pops
+  ) AND geo_id IN (
+    SELECT wpepopid FROM country_pops
+  )
+  ORDER BY original_species`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);
