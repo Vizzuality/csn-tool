@@ -8,12 +8,14 @@ function getCountryColums(category) {
         'country_status'];
     case 'populations':
       return ['scientific_name', 'english_name', 'iucn_category', 'populations',
-        'a', 'b', 'c', 'table_1_status', 'flyway_range', 'year_start', 'year_end', 'size_min', 'size_max', 'ramsar_criterion'];
+        'a', 'b', 'c', 'table_1_status', 'flyway_range', 'year_start',
+        'year_end', 'size_min', 'size_max', 'ramsar_criterion'];
     case 'sitesOld':
       return ['site_name', 'protection_status', 'iba', 'csn', 'iba_species',
         'csn_species', 'total_percentage'];
     case 'lookAlikeSpecies':
-      return ['scientific_name', 'english_name', 'confusing_species'];
+      return ['original_species', 'populations', 'original_a', 'original_b',
+        'original_c', 'confusion_species', 'confusion_population', 'a', 'b', 'c'];
     default:
       return ['site_name', 'protection_status', 'iba', 'csn'];
   }
