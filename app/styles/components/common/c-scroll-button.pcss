@@ -1,0 +1,50 @@
+.c-scroll-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    background-color: $main-color;
+    border: solid 1px rgba(42, 40, 35, 0.3);
+    cursor: pointer;
+
+    svg {
+      fill: $font-main;
+    }
+  }
+
+  .label {
+    position: absolute;
+    right: 50%;
+    background-color: $bg-dark-color;
+    padding: rem(6);
+    font-size: $font-size;
+    color: $font-main-inv;
+    transform: translateX(calc(100% + 29px));
+    opacity: 1;
+    transition: opacity 0.3s ease;
+
+    &.-hide {
+      opacity: 0;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: rem(-6);
+      width: 0;
+      height: 0;
+      border-top: rem(6) solid transparent;
+      border-bottom: rem(6) solid transparent;
+      border-right: rem(6) solid $bg-dark-color;
+      transform: translateY(-50%);
+    }
+  }
+}
