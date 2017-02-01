@@ -20,6 +20,7 @@ class CountriesPage extends React.Component {
       if (!props.countryStats) props.getCountryStats(props.country);
       if (!props.countryData) props.getCountryData(props.country, props.category);
     }
+    if (!props.countryData) props.getCountriesList();
   }
 
   hasNewParams(newProps) {
@@ -52,7 +53,7 @@ class CountriesPage extends React.Component {
           </div>
         </div>
         <div className={`l-map ${this.props.country ? '-short -header' : '-header'}`}>
-          <CountriesMap id="countries-map" />
+          <CountriesMap id="countries-map" filter={this.props.filter} countries={this.props.countries} />
         </div>
         <div className={`row l-content ${this.props.country ? '-short' : ''}`}>
           <div className="column">
@@ -75,7 +76,9 @@ CountriesPage.propTypes = {
   countryData: React.PropTypes.any,
   getCountryStats: React.PropTypes.func.isRequired,
   getCountryData: React.PropTypes.func.isRequired,
-  countriesLength: React.PropTypes.number
+  countriesLength: React.PropTypes.number,
+  countries: React.PropTypes.array,
+  filter: React.PropTypes.string
 };
 
 export default CountriesPage;

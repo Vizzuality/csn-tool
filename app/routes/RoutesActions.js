@@ -10,9 +10,11 @@ export function updateLanguage(actualState, replace, done) {
 }
 
 export function updateCountriesPage(actualState, replace, done) {
+  // debugger
   const iso = actualState.params.iso || '';
   const cat = actualState.params.cat || 'sites'; // defult value
-  dispatch(setCountryParams(iso, cat));
+  const filter = actualState.location.query.filter || '';
+  dispatch(setCountryParams(iso, cat, filter));
   done();
 }
 
