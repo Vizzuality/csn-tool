@@ -165,10 +165,10 @@ export function getCountriesGeom() {
   };
 }
 
-export function setCountryParams(country, category, filter) {
+export function setCountryParams(params) {
   return {
     type: SET_COUNTRY_PARAMS,
-    payload: { country, category, filter }
+    payload: { country: params.iso, category: params.cat, filter: params.filter }
   };
 }
 

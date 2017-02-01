@@ -2,8 +2,18 @@ import React from 'react';
 import GoBackLink from 'containers/common/GoBackLink';
 import CountriesMap from 'containers/countries/CountriesMap';
 import CountriesTable from 'containers/countries/CountriesTable';
+import Select from 'react-select';
+import { replaceUrlParams } from 'helpers/router';
+import { translations } from 'locales/translations';
 
 class CountriesPage extends React.Component {
+  constructor() {
+    super();
+    this.languages = Object.keys(translations).map((lang) => (
+      { value: lang, label: lang.toUpperCase() }
+    ));
+    this.onSelectChange = this.onSelectChange.bind(this);
+  }
 
   componentWillMount() {
     this.getData(this.props);
@@ -13,6 +23,15 @@ class CountriesPage extends React.Component {
     if (newProps.country && this.hasNewParams(newProps)) {
       this.getData(newProps);
     }
+  }
+
+  onSelectChange(filter) {
+    const params = {
+      filter: filter.value
+    };
+    const route = this.props.router.getCurrentLocation();
+    const url = replaceUrlParams(route.pathname + route.search, params);
+    this.props.router.push(url);
   }
 
   getData(props) {
@@ -47,6 +66,19 @@ class CountriesPage extends React.Component {
                   <div className="title">
                     <h2>{this.context.t('countries')} <span>({this.props.countriesLength || ''})</span></h2>
                   </div>
+                  <Select
+                    name="filter-countries"
+                    className="c-select -right"
+                    clearable={false}
+                    searchable={false}
+                    value={this.props.filter ? this.props.filter : 'all'}
+                    options={[
+                      { value: 'all', label: 'ALL' },
+                      { value: 'aewa', label: 'AEWA' },
+                      { value: 'ramsar', label: 'RAMSAR' }
+                    ]}
+                    onChange={this.onSelectChange}
+                  />
                 </div>
               }
             </div>
@@ -78,7 +110,8 @@ CountriesPage.propTypes = {
   getCountryData: React.PropTypes.func.isRequired,
   countriesLength: React.PropTypes.number,
   countries: React.PropTypes.array,
-  filter: React.PropTypes.string
+  filter: React.PropTypes.string,
+  router: React.PropTypes.object
 };
 
 export default CountriesPage;

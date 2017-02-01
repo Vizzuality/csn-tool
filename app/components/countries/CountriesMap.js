@@ -41,9 +41,8 @@ class CountriesMap extends BasicMap {
 
   componentWillReceiveProps(newProps) {
     this.handleMapScroll(newProps.country);
-    this.drawGeo(newProps.geoms, newProps.countries);
 
-    if (newProps.geoms && this.props.geoms !== newProps.geoms) {
+    if (newProps.countries || newProps.geoms && this.props.geoms !== newProps.geoms) {
       this.drawGeo(newProps.geoms, newProps.countries);
     }
 
@@ -221,15 +220,6 @@ class CountriesMap extends BasicMap {
     this.topoLayer.addTo(this.map);
     this.topoLayer.eachLayer(onEachFeature);
   }
-
-  // updategeos() {
-  //   const onEachFeature = (layer) => {
-  //     const properties = layer.feature.properties.iso3;
-  //     const filters = ['esp', 'gbp'];
-  //     layer.setStyle(this.styles.highlight);
-  //     this.topoLayer.eachLayer(onEachFeature)
-  //   }
-  // }
 
   drawMarkers(countryData) {
     if (!countryData.length) return;

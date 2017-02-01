@@ -9,12 +9,21 @@ export function updateLanguage(actualState, replace, done) {
   done();
 }
 
-export function updateCountriesPage(actualState, replace, done) {
-  // debugger
-  const iso = actualState.params.iso || '';
-  const cat = actualState.params.cat || 'sites'; // defult value
-  const filter = actualState.location.query.filter || '';
-  dispatch(setCountryParams(iso, cat, filter));
+function getCountriesParams(state) {
+  return {
+    iso: state.params.iso || '',
+    cat: state.params.cat || 'sites', // defult value
+    filter: state.location.query.filter || ''
+  };
+}
+
+export function setCountriesPage(actualState, replace, done) {
+  dispatch(setCountryParams(getCountriesParams(actualState)));
+  done();
+}
+
+export function updateCountriesPage(prevState, nextState, replace, done) {
+  dispatch(setCountryParams(getCountriesParams(nextState)));
   done();
 }
 

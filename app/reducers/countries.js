@@ -10,7 +10,6 @@ const initialState = {
   geoms: false,
   countries: [],
   filter: '',
-  activeCountries: {},
   stats: {},
   sites: {},
   sitesOld: {},
