@@ -62,23 +62,26 @@ class CountriesPage extends React.Component {
                     </div>
                   </div>
                 </div>
-                : <div className="content">
+                : <div className="content -filters">
                   <div className="title">
                     <h2>{this.context.t('countries')} <span>({this.props.countriesLength || ''})</span></h2>
                   </div>
-                  <Select
-                    name="filter-countries"
-                    className="c-select -right"
-                    clearable={false}
-                    searchable={false}
-                    value={this.props.filter ? this.props.filter : 'all'}
-                    options={[
-                      { value: 'all', label: 'ALL' },
-                      { value: 'aewa', label: 'AEWA' },
-                      { value: 'ramsar', label: 'RAMSAR' }
-                    ]}
-                    onChange={this.onSelectChange}
-                  />
+                  <div className="c-filter">
+                    <h4>Filter by</h4>
+                    <Select
+                      name="filter-countries"
+                      className="c-select -plain"
+                      clearable={false}
+                      searchable={false}
+                      value={this.props.filter ? this.props.filter : 'all'}
+                      options={[
+                        { value: 'all', label: 'ALL' },
+                        { value: 'aewa', label: 'AEWA' },
+                        { value: 'ramsar', label: 'RAMSAR' }
+                      ]}
+                      onChange={this.onSelectChange}
+                    />
+                  </div>
                 </div>
               }
             </div>

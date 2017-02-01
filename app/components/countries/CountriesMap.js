@@ -28,6 +28,7 @@ class CountriesMap extends BasicMap {
 
     // Adds suppport to topojson
     this.addTopoJSONLayer();
+    this.topoLayer = new L.TopoJSON();
 
     if (this.props.geoms) {
       this.drawGeo(this.props.geoms, this.props.countries);
@@ -184,7 +185,6 @@ class CountriesMap extends BasicMap {
       const filter = this.props.filter;
       const iso = properties.iso3;
       const layerStyle = this.getLayerStyle(filter, countries, iso);
-
       layer.setStyle(layerStyle);
 
       if (properties && properties.name) {
@@ -215,7 +215,7 @@ class CountriesMap extends BasicMap {
       }
     };
 
-    this.topoLayer = new L.TopoJSON();
+    this.topoLayer.clearLayers();
     this.topoLayer.addData(geo);
     this.topoLayer.addTo(this.map);
     this.topoLayer.eachLayer(onEachFeature);
