@@ -83,6 +83,17 @@
     .Select-arrow-zone {
       > .Select-arrow {
         border-top-color: $font-main-inv;
+        content: ' ';
+        position: absolute;
+        top: 12px;
+        right: 15px;
+        width: 8px;
+        height: 8px;
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+        border-width: 2px;
+        border-color: transparent $font-main-inv $font-main-inv transparent;
+        border-style: solid;
       }
     }
   }

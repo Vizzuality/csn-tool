@@ -66,8 +66,8 @@ class CountriesPage extends React.Component {
                   <div className="title">
                     <h2>{this.context.t('countries')} <span>({this.props.countriesLength || ''})</span></h2>
                   </div>
-                  <div className="c-filter">
-                    <h4>Filter by</h4>
+                  <div className="filter">
+                    <h4 className="text -input-label -light">Filter by</h4>
                     <Select
                       name="filter-countries"
                       className="c-select -plain"
