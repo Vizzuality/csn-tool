@@ -6,6 +6,8 @@ export function setLangURL(lang) {
     pathname = pathname !== '/'
       ? pathname.replace(/^\/[a-zA-Z]{2}/g, lang)
       : lang;
-    dispatch(push(`/${pathname}`));
+    const search = state().routing.locationBeforeTransitions.search;
+    const url = pathname + search;
+    dispatch(push(`/${url}`));
   };
 }
