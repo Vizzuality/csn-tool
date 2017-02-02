@@ -3,7 +3,6 @@ const CARTO_SQL = require('../constants').CARTO_SQL;
 const normalizeSiteStatus = require('../helpers/index').normalizeSiteStatus;
 
 function getCountries(req, res) {
-  // const filter = req.params.filter ? WHERE bsyd='${req.params.filter}' : '';
   const query = 'SELECT * FROM countries';
   rp(CARTO_SQL + query)
     .then((data) => {
