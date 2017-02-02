@@ -6,6 +6,12 @@ import Select from 'react-select';
 import { replaceUrlParams } from 'helpers/router';
 import { translations } from 'locales/translations';
 
+const FILTER_OPTIONS = [
+  { value: 'all', label: 'ALL' },
+  { value: 'aewa', label: 'AEWA' },
+  { value: 'ramsar', label: 'RAMSAR' }
+];
+
 class CountriesPage extends React.Component {
   constructor() {
     super();
@@ -74,12 +80,9 @@ class CountriesPage extends React.Component {
                       clearable={false}
                       searchable={false}
                       value={this.props.filter ? this.props.filter : 'all'}
-                      options={[
-                        { value: 'all', label: 'ALL' },
-                        { value: 'aewa', label: 'AEWA' },
-                        { value: 'ramsar', label: 'RAMSAR' }
-                      ]}
+                      options={FILTER_OPTIONS}
                       onChange={this.onSelectChange}
+                      arrowRenderer={() => <svg className="icon"><use xlinkHref="#icon-dropdown_arrow_down"></use></svg>}
                     />
                   </div>
                 </div>

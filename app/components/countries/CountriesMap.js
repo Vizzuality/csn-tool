@@ -158,25 +158,23 @@ class CountriesMap extends BasicMap {
     for (i = 0; i < countries.length; i++) {
       if (countries[i].iso3 === iso) {
         countryData = countries[i];
-        i = countries.length;
+        return countryData;
       }
     }
     return countryData;
   }
 
   getLayerStyle(filter, countries, iso) {
-    let layerStyle = this.styles.base;
     if (filter === 'aewa' || filter === 'ramsar') {
       const countryData = this.getCountryData(countries, iso);
       if (filter === 'aewa' && countryData.aewa_member) {
-        layerStyle = this.styles.base;
+        return this.styles.base;
       } else if (filter === 'ramsar' && countryData.ramsar_member) {
-        layerStyle = this.styles.base;
-      } else {
-        layerStyle = this.styles.hide;
+        return this.styles.base;
       }
+      return this.styles.hide;
     }
-    return layerStyle;
+    return this.styles.base;
   }
 
   drawGeo(geo, countries) {
