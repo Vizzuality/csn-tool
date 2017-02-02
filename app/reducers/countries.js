@@ -9,6 +9,7 @@ const initialState = {
   searchFilter: '',
   geoms: false,
   countries: [],
+  filter: '',
   stats: {},
   sites: {},
   sitesOld: {},
@@ -25,7 +26,8 @@ export default function (state = initialState, action) {
     case SET_COUNTRY_PARAMS: {
       const params = {
         selected: action.payload.country,
-        selectedCategory: action.payload.category
+        selectedCategory: action.payload.category,
+        filter: action.payload.filter
       };
       return Object.assign({}, state, params);
     }

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import CountriesPage from 'components/pages/CountriesPage';
 import { getCountryStats, getCountrySites, getCountrySitesOld, getCountrySpecies,
-  getCountryPopulations, getCountryLookAlikeSpecies } from 'actions/countries';
+  getCountryPopulations, getCountryLookAlikeSpecies, getCountriesList } from 'actions/countries';
 
 function getCountryData(countries) {
   return countries[countries.selectedCategory] && countries[countries.selectedCategory][countries.selected]
@@ -12,6 +12,8 @@ function getCountryData(countries) {
 const mapStateToProps = (state) => ({
   country: state.countries.selected,
   category: state.countries.selectedCategory,
+  filter: state.countries.filter,
+  countries: state.countries.countries,
   countryStats: state.countries.stats[state.countries.selected] || false,
   countryData: getCountryData(state.countries),
   countriesLength: state.countries.geoms ? Object.keys(state.countries.geoms.objects).length : 0
@@ -19,6 +21,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getCountryStats: (iso) => dispatch(getCountryStats(iso)),
+  getCountriesList: () => dispatch(getCountriesList()),
   getCountryData: (country, category) => {
     switch (category) {
       case 'species':
