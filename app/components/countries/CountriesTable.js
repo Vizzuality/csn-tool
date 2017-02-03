@@ -17,7 +17,6 @@ function getDetailLink(category) {
 
 function CountriesTable(props) {
   const detailLink = getDetailLink(props.category);
-
   return (
     <div>
       <CountriesFilters country={props.country} category={props.category} />
