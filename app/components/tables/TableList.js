@@ -10,11 +10,15 @@ function TableList(props, context) {
     : <div className="c-table-list">
       <ul>
         <li className="header">
-          {props.columns.map((column, index) => (
-            <div key={index} className="text -title">
-              {context.t(column)}
-            </div>
-          ))}
+          {props.columns.map((column, index) => {
+            const alignClass = (column === 'a' || column === 'b' || column === 'c') ? '-center' : '-left';
+            return (
+              <div key={index} className={`text -title ${alignClass}`} >
+                {context.t(column)}
+              </div>
+            );
+          }
+          )}
           {props.detailLink &&
             <div className="text -title link">
               ...
