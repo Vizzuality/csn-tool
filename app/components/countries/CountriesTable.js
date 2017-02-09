@@ -1,12 +1,14 @@
 import React from 'react';
 import CountriesFilters from 'components/countries/CountriesFilters';
 import TableList from 'components/tables/TableList';
+import ScrollButton from 'components/common/ScrollButton';
 
 function CountriesTable(props) {
   const detailLink = ['populations', 'sitesOld'].indexOf(props.category) > 0 ? '' : props.category;
 
   return (
-    <div>
+    <div className="c-table" >
+      <ScrollButton />
       <CountriesFilters country={props.country} category={props.category} />
       <TableList
         data={props.data}
