@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { withRouter, Link } from 'react-router';
 import Select from 'react-select';
 import { translations } from 'locales/translations';
 
@@ -16,7 +16,14 @@ class Header extends React.Component {
   }
 
   onSelectChange(lang) {
-    this.props.setLangURL(lang.value);
+    let pathname = this.props.location.pathname;
+    pathname = pathname !== '/'
+      ? pathname.replace(/^\/[a-zA-Z]{2}/g, lang.value)
+      : lang.value;
+    const search = this.props.location.search;
+    // this.props.setLangURL(lang.value);
+    const url = pathname + search;
+    this.props.router.push(`/${url}`);
   }
 
   render() {
@@ -56,8 +63,10 @@ Header.contextTypes = {
 Header.propTypes = {
   // Define the language selected
   lang: React.PropTypes.string.isRequired,
-  // Define the function to upadate the url after language change
-  setLangURL: React.PropTypes.func.isRequired
+  // Define router actions
+  router: React.PropTypes.object,
+  // Define current location
+  location: React.PropTypes.object
 };
 
-export default Header;
+export default withRouter(Header);

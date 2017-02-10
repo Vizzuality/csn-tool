@@ -3,9 +3,21 @@ import CountriesFilters from 'components/countries/CountriesFilters';
 import TableList from 'components/tables/TableList';
 import ScrollButton from 'components/common/ScrollButton';
 
-function CountriesTable(props) {
-  const detailLink = ['populations', 'sitesOld'].indexOf(props.category) > 0 ? '' : props.category;
+function getDetailLink(category) {
+  switch (category) {
+    case 'populations':
+      return '';
+    case 'sitesOld':
+      return '';
+    case 'lookAlikeSpecies':
+      return 'species';
+    default:
+      return category;
+  }
+}
 
+function CountriesTable(props) {
+  const detailLink = getDetailLink(props.category);
   return (
     <div className="c-table" >
       <ScrollButton />

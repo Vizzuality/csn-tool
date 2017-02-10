@@ -1,6 +1,6 @@
 import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_SITES,
         GET_COUNTRIES_STATS, GET_COUNTRIES_SITES_OLD, TOGGLE_COUNTRIES_LAYER,
-        GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS,
+        GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS, GET_COUNTRIES_SIMILAR_SPECIES,
         SET_COUNTRY_PARAMS, SET_COUNTRY_SEARCH } from 'constants';
 import { push } from 'react-router-redux';
 
@@ -130,6 +130,27 @@ export function getCountryPopulations(iso) {
   };
 }
 
+export function getCountryLookAlikeSpecies(iso) {
+  const url = `${config.apiHost}/countries/${iso}/look-alike-species`;
+  return dispatch => {
+    try {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          dispatch({
+            type: GET_COUNTRIES_SIMILAR_SPECIES,
+            payload: { iso, data }
+          });
+        });
+    } catch (err) {
+      dispatch({
+        type: GET_COUNTRIES_SIMILAR_SPECIES,
+        payload: { iso, data: [] }
+      });
+    }
+  };
+}
+
 export function getCountriesGeom() {
   const url = '/geoms.topojson';
   return dispatch => {
@@ -144,10 +165,10 @@ export function getCountriesGeom() {
   };
 }
 
-export function setCountryParams(country, category) {
+export function setCountryParams(params) {
   return {
     type: SET_COUNTRY_PARAMS,
-    payload: { country, category }
+    payload: { country: params.iso, category: params.cat, filter: params.filter }
   };
 }
 

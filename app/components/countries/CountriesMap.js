@@ -10,6 +10,7 @@ class CountriesMap extends BasicMap {
     super();
     this.styles = {
       hide: { color: 'transparent', weight: 0, opacity: 0 },
+      base: { color: '#efd783', weight: 2, opacity: 0 },
       highlight: { color: '#ffc500', weight: 2, opacity: 0 }
     };
     this.markers = [];
@@ -27,9 +28,10 @@ class CountriesMap extends BasicMap {
 
     // Adds suppport to topojson
     this.addTopoJSONLayer();
+    this.topoLayer = new L.TopoJSON();
 
     if (this.props.geoms) {
-      this.drawGeo(this.props.geoms);
+      this.drawGeo(this.props.geoms, this.props.countries);
     }
 
     if (this.props.data && this.props.data.length) {
@@ -40,8 +42,9 @@ class CountriesMap extends BasicMap {
 
   componentWillReceiveProps(newProps) {
     this.handleMapScroll(newProps.country);
-    if (newProps.geoms && this.props.geoms !== newProps.geoms) {
-      this.drawGeo(newProps.geoms);
+
+    if (newProps.countries || newProps.geoms && this.props.geoms !== newProps.geoms) {
+      this.drawGeo(newProps.geoms, newProps.countries);
     }
 
     if (newProps.layers.sites) {
@@ -145,10 +148,43 @@ class CountriesMap extends BasicMap {
     this.props.goToDetail(iso);
   }
 
-  drawGeo(geo) {
+  getCountryData(countries, iso) {
+    let i = 0;
+    let countryData = {
+      iso3: '',
+      ramsar_member: false,
+      aewa_member: false
+    };
+    const length = countries.length;
+    for (i = 0; i < length; i++) {
+      if (countries[i].iso3 === iso) {
+        countryData = countries[i];
+        return countryData;
+      }
+    }
+    return countryData;
+  }
+
+  getLayerStyle(filter, countries, iso) {
+    if (filter === 'aewa' || filter === 'ramsar') {
+      const countryData = this.getCountryData(countries, iso);
+      if (filter === 'aewa' && countryData.aewa_member) {
+        return this.styles.base;
+      } else if (filter === 'ramsar' && countryData.ramsar_member) {
+        return this.styles.base;
+      }
+      return this.styles.hide;
+    }
+    return this.styles.base;
+  }
+
+  drawGeo(geo, countries) {
     const onEachFeature = (layer) => {
       const properties = layer.feature.properties;
-      layer.setStyle(this.styles.hide);
+      const filter = this.props.filter;
+      const iso = properties.iso3;
+      const layerStyle = this.getLayerStyle(filter, countries, iso);
+      layer.setStyle(layerStyle);
 
       if (properties && properties.name) {
         layer.on('mouseover', (e) => {
@@ -164,7 +200,7 @@ class CountriesMap extends BasicMap {
         layer.on('mouseout', () => {
           if (!this.props.country) {
             this.hidePopup();
-            layer.setStyle(this.styles.hide);
+            layer.setStyle(layerStyle);
           }
         });
         layer.on('click', () => {
@@ -178,10 +214,10 @@ class CountriesMap extends BasicMap {
       }
     };
 
-    const topoLayer = new L.TopoJSON();
-    topoLayer.addData(geo);
-    topoLayer.addTo(this.map);
-    topoLayer.eachLayer(onEachFeature);
+    this.topoLayer.clearLayers();
+    this.topoLayer.addData(geo);
+    this.topoLayer.addTo(this.map);
+    this.topoLayer.eachLayer(onEachFeature);
   }
 
   drawMarkers(countryData) {

@@ -96,7 +96,8 @@ function getSpeciesSites(req, res) {
 
 function getSpeciesPopulation(req, res) {
   const query = `SELECT p.populations, p.a, p.b, p.c, table_1_status,
-    p.species, p.wpepopid,
+    p.species, p.wpepopid, p.flyway_range, p.year_start, p.year_end, p.size_min,
+    p.size_max, p.ramsar_criterion,
     'http://wpe.wetlands.org/view/' || p.wpepopid AS pop_hyperlink
     FROM species s
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
@@ -162,11 +163,79 @@ function getSpeciesHabitats(req, res) {
     });
 }
 
+function getSpeciesLookAlikeSpecies(req, res) {
+  const query = `WITH species_name AS (
+    SELECT species_name
+      AS confusion_species, confusion_species_group, not_aewa_species
+    FROM look_alike_species
+    WHERE species_id = ${req.params.id}
+    ),
+
+    confusion_species AS (
+      SELECT look_alike_species.species_id, species_name
+        AS confusion_species, look_alike_species.confusion_species_group, look_alike_species.not_aewa_species
+      FROM look_alike_species
+      INNER JOIN species_name
+      ON species_name.confusion_species_group = look_alike_species.confusion_species_group
+      WHERE species_id <> ${req.params.id}
+    ),
+
+	  original_flyway AS (
+      SELECT species_and_flywaygroups.*, populations_species_no_geo.a, populations_species_no_geo.b, populations_species_no_geo.c
+      FROM species_and_flywaygroups
+      LEFT JOIN populations_species_no_geo
+      ON populations_species_no_geo.populations = populationname
+        AND populations_species_no_geo.species = species_and_flywaygroups.scientificname
+      WHERE ssid = ${req.params.id}
+    ),
+
+	  confusion_flyways AS (
+      SELECT species_and_flywaygroups.*, original_flyway.populationname
+  	    AS original_popname, original_flyway.a as original_a,
+        original_flyway.b as original_b, original_flyway.c as original_c
+	    FROM species_and_flywaygroups
+	    INNER JOIN original_flyway
+      ON st_intersects(species_and_flywaygroups.the_geom, original_flyway.the_geom)
+	    INNER JOIN confusion_species
+      ON species_and_flywaygroups.ssid = confusion_species.species_id
+    ),
+
+	  confusion_populations AS (
+	    SELECT confusion_species.*, confusion_flyways.the_geom, confusion_flyways.populationname,
+        confusion_flyways.original_popname, confusion_flyways.original_a,
+        confusion_flyways.original_b, confusion_flyways.original_c
+	    FROM confusion_species
+	    INNER JOIN confusion_flyways
+      ON confusion_flyways.ssid = confusion_species.species_id )
+
+    SELECT DISTINCT populations_species_no_geo.a, populations_species_no_geo.b,
+      populations_species_no_geo.c, confusion_populations.*
+    FROM populations_species_no_geo
+    RIGHT JOIN confusion_populations
+    ON confusion_populations.species_id = populations_species_no_geo.sisrecid
+      AND confusion_populations.populationname = populations_species_no_geo.populations order by original_popname`;
+  rp(CARTO_SQL + query)
+    .then((data) => {
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        res.json(results);
+      } else {
+        res.status(404);
+        res.json({ error: 'There are no habitats for this Species' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
 module.exports = {
   getSpeciesList,
   getSpeciesDetails,
   getSpeciesSites,
   getSpeciesPopulation,
   getSpeciesThreats,
-  getSpeciesHabitats
+  getSpeciesHabitats,
+  getSpeciesLookAlikeSpecies
 };
