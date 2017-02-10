@@ -1,10 +1,10 @@
 import React from 'react';
 import NavLink from 'containers/common/NavLink';
 import LoadingSpinner from 'components/common/LoadingSpinner';
+import { numberToThousands } from 'helpers/data';
 
 function TableList(props, context) {
   if (!props.data) return (<div className="c-table-list blank"><LoadingSpinner inner transparent /></div>);
-
   return !props.data.length
     ? <div className="c-table-list"><p> No data </p></div>
     : <div className="c-table-list">
@@ -74,8 +74,8 @@ function TableList(props, context) {
                   <div className={`text ${column} ${alignClass}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
                 </div>);
               }
-
-              return (<div key={index2} className={`text ${column} ${alignClass}`} dangerouslySetInnerHTML={{ __html: item[column] }}></div>);
+              const colVal = (typeof item[column] === 'number' && column.indexOf('year') === -1) ? numberToThousands(item[column]) : item[column];
+              return (<div key={index2} className={`text ${column} ${alignClass}`} dangerouslySetInnerHTML={{ __html: colVal }}></div>);
             })}
 
             {props.detailLink &&
