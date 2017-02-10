@@ -53,7 +53,7 @@ function TableList(props, context) {
                 </div>);
               } else if (column === 'populations' && item.pop_hyperlink) {
                 return (<div key={index2}><div className={`text ${column} ${alignClass}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
-                  <a className="external-link" target="_blank" href={item.pop_hyperlink} title="View on WPE">
+                  <a className="external-link" target="_blank" href={item.pop_hyperlink} title="View on Waterbird Population Estimates Portal">
                     <svg className="icon -small -grey">
                       <use xlinkHref="#icon-open_in_new"></use>
                     </svg>
