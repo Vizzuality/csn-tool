@@ -4,7 +4,10 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 import { numberToThousands } from 'helpers/data';
 
 function TableList(props, context) {
+  // debugger
   if (!props.data) return (<div className="c-table-list blank"><LoadingSpinner inner transparent /></div>);
+  const colWidth = props.detailLink ? (97 / props.columns.length) : (100 / props.columns.length);
+  const colCenter = ['a', 'b', 'c', 'original_a', 'original_b', 'original_c', 'iba', 'csn', 'iba_species', 'csn_species'];
   return !props.data.length
     ? <div className="c-table-list"><p> No data </p></div>
     : <div className="c-table-list">
@@ -12,22 +15,21 @@ function TableList(props, context) {
         <li className="header">
           {props.columns.map((column, index) => {
             let alignClass = '';
-            if (column === 'a' || column === 'b' || column === 'c') {
+            if (colCenter.indexOf(column) > -1) {
               alignClass = '-center';
-            } else if (column === 'year_start' || column === 'year_end' || column === 'size_min' || column === 'size_max' || column === 'ramsar_criterion') {
+            } else if (typeof props.data[0][column] === 'number') {
               alignClass = '-right';
             } else {
               alignClass = '-left';
             }
             return (
-              <div key={index} className={`text -title ${alignClass}`} >
+              <div key={index} className={`text -title ${alignClass}`} style={{ width: `${colWidth}%` }}>
                 {context.t(column)}
               </div>
             );
-          }
-          )}
+          })}
           {props.detailLink &&
-            <div className="text -title link">
+            <div className="text -title link" style={{ width: '3%' }}>
               ...
             </div>
           }
@@ -36,15 +38,15 @@ function TableList(props, context) {
           <li key={index} className="table-row f32">
             {props.columns.map((column, index2) => {
               let alignClass = '';
-              if (column === 'a' || column === 'b' || column === 'c') {
+              if (colCenter.indexOf(column) > -1) {
                 alignClass = '-center';
-              } else if (column === 'year_start' || column === 'year_end' || column === 'size_min' || column === 'size_max' || column === 'ramsar_criterion') {
+              } else if (typeof item[column] === 'number') {
                 alignClass = '-right';
               } else {
                 alignClass = '-left';
               }
               if (['scientific_name', 'site_name'].indexOf(column) >= 0 && item.hyperlink) {
-                return (<div key={index2}><div className={`text ${column} ${alignClass}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
+                return (<div key={index2} style={{ width: `${colWidth}%` }}><div className={`text ${column} ${alignClass}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
                   <a className="external-link" target="_blank" href={item.hyperlink}>
                     <svg className="icon -small -grey">
                       <use xlinkHref="#icon-open_in_new"></use>
@@ -52,7 +54,7 @@ function TableList(props, context) {
                   </a>
                 </div>);
               } else if (column === 'populations' && item.pop_hyperlink) {
-                return (<div key={index2}><div className={`text ${column} ${alignClass}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
+                return (<div key={index2} style={{ width: `${colWidth}%` }}><div className={`text ${column} ${alignClass}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
                   <a className="external-link" target="_blank" href={item.pop_hyperlink} title="View on Waterbird Population Estimates Portal">
                     <svg className="icon -small -grey">
                       <use xlinkHref="#icon-open_in_new"></use>
@@ -60,7 +62,7 @@ function TableList(props, context) {
                   </a>
                 </div>);
               } else if (column === 'site_name') {
-                return (<div key={index2}>
+                return (<div key={index2} style={{ width: `${colWidth}%` }}>
                   <div className={`text ${column} ${alignClass}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
                   <button className="map-link">
                     <svg className="icon -small -grey">
@@ -69,13 +71,13 @@ function TableList(props, context) {
                   </button>
                 </div>);
               } else if (column === 'country') {
-                return (<div className="country-column" key={index2}>
+                return (<div className="country-column" key={index2} style={{ width: `${colWidth}%` }}>
                   <span className={`flag ${(item.iso2).toLowerCase()}`}></span>
                   <div className={`text ${column} ${alignClass}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
                 </div>);
               }
               const colVal = (typeof item[column] === 'number' && column.indexOf('year') === -1) ? numberToThousands(item[column]) : item[column];
-              return (<div key={index2} className={`text ${column} ${alignClass}`} dangerouslySetInnerHTML={{ __html: colVal }}></div>);
+              return (<div key={index2} className={`text ${column} ${alignClass}`} style={{ width: `${colWidth}%` }} dangerouslySetInnerHTML={{ __html: colVal }}></div>);
             })}
 
             {props.detailLink &&

@@ -10,6 +10,7 @@
       display: flex;
       align-items: flex-start;
       padding: rem(10) 0;
+      flex-wrap: wrap;
 
       &.header {
         border-bottom: rem(2) solid $border-color;
@@ -24,9 +25,12 @@
       }
 
       > div {
-        flex-basis: 50%;
+        /*flex-basis: 50%;*/
         padding-right: rem(15);
         /*display: flex;*/
+        /*flex-grow: 1;*/
+        /*width: 100%;*/
+        /*overflow: hidden; // Or flex might break*/
 
         &:last-child {
           padding-right: 0;
@@ -37,6 +41,8 @@
           text-align: right;
           flex-basis: 24px;
           min-width: 24px;
+          position: absolute;
+          right: 0;
 
           a {
             display: flex;
