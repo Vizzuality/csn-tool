@@ -9,7 +9,7 @@
       list-style: none;
       display: flex;
       align-items: flex-start;
-      padding: rem(10) 0;
+      padding: rem(10) rem(10);
       flex-wrap: wrap;
 
       &.header {
@@ -36,8 +36,7 @@
           text-align: right;
           flex-basis: 24px;
           min-width: 24px;
-          position: absolute;
-          right: 0;
+          position: relative;
 
           a {
             display: flex;
@@ -48,6 +47,8 @@
             padding: rem(6) rem(6) rem(6) rem(8);
             border-radius: 50%;
             background-color: rgba($white, 0.5);
+            position: absolute;
+            right: rem(-5);
           }
 
           a:hover {
