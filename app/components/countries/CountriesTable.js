@@ -5,7 +5,7 @@ import TableList from 'components/tables/TableList';
 function getDetailLink(category) {
   switch (category) {
     case 'populations':
-      return '';
+      return 'species';
     case 'sitesOld':
       return '';
     case 'lookAlikeSpecies':
@@ -17,7 +17,6 @@ function getDetailLink(category) {
 
 function CountriesTable(props) {
   const detailLink = getDetailLink(props.category);
-
   return (
     <div>
       <CountriesFilters country={props.country} category={props.category} />
