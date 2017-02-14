@@ -6,7 +6,7 @@ function TableList(props, context) {
   if (!props.data) return (<div className="c-table-list blank"><LoadingSpinner inner transparent /></div>);
 
   return !props.data.length
-    ? <div className="c-table-list"><p> No data </p></div>
+    ? <div className="c-table-list"><div className="no-data"><p className="text -title"> No data </p></div></div>
     : <div className="c-table-list">
       <ul>
         <li className="header">

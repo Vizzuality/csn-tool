@@ -40,13 +40,9 @@ class CountriesMap extends BasicMap {
   }
 
   componentWillReceiveProps(newProps) {
+    this.setActiveLayer();
     this.handleMapScroll(newProps.country);
-    const { countries, geoms, data } = this.props;
-    if ((newProps.countries && countries.length !== newProps.countries.length)
-      || (newProps.data && data !== newProps.data)
-      || (newProps.geoms && geoms !== newProps.geoms)) {
-      this.drawGeo(newProps.geoms, newProps.countries);
-    }
+    this.drawGeo(newProps.geoms, newProps.countries);
 
     if (newProps.layers.sites) {
       if (newProps.data && newProps.data.length) {
@@ -70,6 +66,18 @@ class CountriesMap extends BasicMap {
 
   componentWillUnmount() {
     this.remove();
+  }
+
+  setActiveLayer() {
+    const onEachFeature = (layer) => {
+      const properties = layer.feature.properties;
+      const iso = properties.iso3;
+      const isoParam = this.props.country;
+      if (iso === isoParam) {
+        this.activeLayer = layer;
+      }
+    };
+    this.topoLayer.eachLayer(onEachFeature);
   }
 
   setPopupPosition(latLng) {
@@ -164,17 +172,23 @@ class CountriesMap extends BasicMap {
     return countryData;
   }
 
-  getLayerStyle(filter, countries, iso) {
-    if (filter === 'aewa' || filter === 'ramsar') {
-      const countryData = this.getCountryData(countries, iso);
-      if (filter === 'aewa' && countryData.aewa_member) {
-        return this.styles.base;
-      } else if (filter === 'ramsar' && countryData.ramsar_member) {
-        return this.styles.base;
+  getLayerStyle(filter, countries, iso, isoParam) {
+    if (this.props.country === '') {
+      if (filter === 'aewa' || filter === 'ramsar') {
+        const countryData = this.getCountryData(countries, iso);
+        if (filter === 'aewa' && countryData.aewa_member) {
+          return this.styles.base;
+        } else if (filter === 'ramsar' && countryData.ramsar_member) {
+          return this.styles.base;
+        }
+        return this.styles.hide;
       }
-      return this.styles.hide;
+      return this.styles.base;
     }
-    return this.styles.base;
+    if (iso === isoParam) {
+      return this.styles.base;
+    }
+    return this.styles.hide;
   }
 
   drawGeo(geo, countries) {
@@ -183,11 +197,9 @@ class CountriesMap extends BasicMap {
       const filter = this.props.filter;
       const iso = properties.iso3;
       const isoParam = this.props.country;
-      const layerStyle = this.getLayerStyle(filter, countries, iso);
+      const layerStyle = this.getLayerStyle(filter, countries, iso, isoParam);
       layer.setStyle(layerStyle);
-      if (iso === isoParam) {
-        this.fitBounds(layer);
-      }
+
       if (properties && properties.name) {
         layer.on('mouseover', (e) => {
           if (!this.props.country) {
@@ -205,13 +217,12 @@ class CountriesMap extends BasicMap {
           }
         });
         layer.on('click', () => {
-          this.currentLayer = layer;
           if (!this.props.country) {
-            layer.setStyle(this.styles.highlight);
             this.goToDetail(properties.iso3);
           } else {
             this.hidePopup();
           }
+          this.fitBounds(this.activeLayer);
         });
       }
     };
@@ -266,7 +277,6 @@ class CountriesMap extends BasicMap {
   }
 
   outBounds() {
-    this.drawGeo(this.props.geoms, this.props.countries);
     this.map.setView(MAP_CENTER, MAP_MIN_ZOOM);
   }
 
