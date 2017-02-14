@@ -276,7 +276,7 @@ class CountriesMap extends BasicMap {
 
   fitBounds(layer) {
     if (layer) {
-      this.map.fitBounds(layer.getBounds().pad(0.5));
+      this.map.fitBounds(layer.getBounds(), { paddingTopLeft: [80, 0], paddingBottomRight: [80, 0] });
     }
   }
 

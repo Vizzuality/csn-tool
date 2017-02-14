@@ -25,10 +25,26 @@ class SitesMap extends BasicMap {
     } else {
       this.clearMarkers();
     }
+
+    if (newProps.selected && newProps.data.length > 0) {
+      this.map.setView([newProps.data[0].lat, newProps.data[0].lon], 8);
+    }
   }
 
   componentWillUnmount() {
     this.remove();
+  }
+
+  setActiveSite() {
+    const onEachFeature = (layer) => {
+      const properties = layer.feature.properties;
+      const iso = properties.iso3;
+      const isoParam = this.props.country;
+      if (iso === isoParam) {
+        this.activeLayer = layer;
+      }
+    };
+    this.topoLayer.eachLayer(onEachFeature);
   }
 
   drawMarkers(data) {
