@@ -44,6 +44,10 @@ class CountriesMap extends BasicMap {
     this.handleMapScroll(newProps.country);
     this.drawGeo(newProps.geoms, newProps.countries);
 
+    if (newProps.country && newProps.router.location.search === '') {
+      this.fitBounds(this.activeLayer);
+    }
+
     if (newProps.layers.sites) {
       if (newProps.data && newProps.data.length) {
         if (this.props.data.length !== newProps.data.length) {
@@ -272,7 +276,7 @@ class CountriesMap extends BasicMap {
 
   fitBounds(layer) {
     if (layer) {
-      this.map.fitBounds(layer.getBounds(), { padding: [50, 50] });
+      this.map.fitBounds(layer.getBounds().pad(0.5));
     }
   }
 
