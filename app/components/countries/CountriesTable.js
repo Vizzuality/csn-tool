@@ -5,7 +5,7 @@ import TableList from 'components/tables/TableList';
 function getDetailLink(category) {
   switch (category) {
     case 'populations':
-      return '';
+      return 'species';
     case 'sitesOld':
       return '';
     case 'lookAlikeSpecies':
