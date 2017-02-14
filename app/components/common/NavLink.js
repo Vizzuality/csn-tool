@@ -1,9 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { withRouter, Link } from 'react-router';
 
 function NavLink(props, context) {
+  let search = props.router.location.search;
+  if (props.parent) {
+    search = '';
+  }
   return (
-    <Link activeClassName="-current" className={props.className} to={`/${props.lang}${props.to}`}>
+    <Link activeClassName="-current" className={props.className} to={`/${props.lang}${props.to}${search}`}>
       {props.i18nText ? context.t(props.i18nText) : props.text}
       {props.icon && <svg><use xlinkHref={`#${props.icon}`}></use></svg>}
       {props.children}
@@ -30,7 +34,11 @@ NavLink.propTypes = {
   // Define the icon used for the link
   icon: React.PropTypes.string,
   // Define the child componets
-  children: React.PropTypes.any
+  children: React.PropTypes.any,
+  // Define whether link is a top level
+  parent: React.PropTypes.bool,
+  // Define the child componets
+  router: React.PropTypes.object
 };
 
-export default NavLink;
+export default withRouter(NavLink);
