@@ -4,7 +4,6 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 import { numberToThousands } from 'helpers/data';
 
 function TableList(props, context) {
-  // debugger
   if (!props.data) return (<div className="c-table-list blank"><LoadingSpinner inner transparent /></div>);
   const colWidth = props.detailLink ? (97.5 / props.columns.length) : (100 / props.columns.length);
   const colCenter = ['a', 'b', 'c', 'original_a', 'original_b', 'original_c', 'iba', 'csn', 'iba_species', 'csn_species'];

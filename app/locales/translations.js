@@ -147,7 +147,7 @@ export const translations = {
     'size_max': 'Talla max',
     'ramsar_criterion': 'Criterio Ramsar 6',
     'table_1_status': 'Estado tabla 1',
-    'total_percentage': 'Totale %',
+    'total_percentage': 'Total %',
     'threats': 'Amenazas',
     'threat_name': 'Nombre de amenaza',
     'threat_level_1': 'Nivel de amenaza 1',
