@@ -9,9 +9,9 @@ class CountriesMap extends BasicMap {
   constructor() {
     super();
     this.styles = {
-      hide: { color: 'transparent', weight: 0, opacity: 0 },
-      base: { color: '#efd783', weight: 2, opacity: 0 },
-      highlight: { color: '#ffc500', weight: 2, opacity: 0 }
+      hide: { color: 'transparent', opacity: 0 },
+      base: { fillColor: '#ffc500', fillOpacity: 0.5, color: 'transparent', opacity: 0 },
+      highlight: { fillColor: '#ffc500', fillOpacity: 1, color: 'transparent', opacity: 0 }
     };
     this.markers = [];
   }

@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import CountriesTable from 'components/countries/CountriesTable';
+import { setSearchFilter } from 'actions/countries';
 
 function getCountryColums(category) {
   switch (category) {
@@ -58,6 +59,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = () => ({});
+const mapDispatchToProps = (dispatch) => ({
+  cleanSearchFilter: (search) => dispatch(setSearchFilter(search))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(CountriesTable);
