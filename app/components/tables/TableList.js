@@ -8,7 +8,7 @@ function TableList(props, context) {
   const colWidth = props.detailLink ? (97.5 / props.columns.length) : (100 / props.columns.length);
   const colCenter = ['a', 'b', 'c', 'original_a', 'original_b', 'original_c', 'iba', 'csn', 'iba_species', 'csn_species'];
   return !props.data.length
-    ? <div className="c-table-list"><p> No data </p></div>
+    ? <div className="c-table-list"><div className="no-data"><p className="text -title"> No data </p></div></div>
     : <div className="c-table-list">
       <ul>
         <li className="header">
