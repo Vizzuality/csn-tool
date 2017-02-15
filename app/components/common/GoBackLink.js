@@ -1,8 +1,16 @@
 import React from 'react';
 
 function GoBackLink(props, context) {
+  let url;
+  if (window.previousLocation) {
+    const prevPath = window.previousLocation.pathname.substring(4);
+    const prevSearch = window.previousLocation.search;
+    url = prevPath + prevSearch;
+  } else {
+    url = props.endPoint;
+  }
   return (
-    <a href={`/${props.lang}/${props.endPoint}`} className={props.className} >
+    <a href={`/${props.lang}/${url}`} className={props.className} >
       {props.i18nText ? context.t(props.i18nText) : props.text}
       {props.icon && <svg><use xlinkHref={`#${props.icon}`}></use></svg>}
     </a>

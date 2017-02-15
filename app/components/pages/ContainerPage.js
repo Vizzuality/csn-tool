@@ -13,6 +13,17 @@ class ContainerPage extends React.Component {
     return { location };
   }
 
+  componentWillReceiveProps(newProps) {
+    const oldPath = this.props.location.pathname.split('/')[2];
+    const newPath = newProps.location.pathname.split('/')[2];
+    const routeLength = newProps.location.pathname.split('/').length;
+    if (routeLength <= 3) {
+      window.previousLocation = newProps.location;
+    } else if (oldPath !== newPath) {
+      window.previousLocation = this.props.location;
+    }
+  }
+
   render() {
     return (
       <I18n translations={translations}>
