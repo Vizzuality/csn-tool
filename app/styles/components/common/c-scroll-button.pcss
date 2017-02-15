@@ -3,6 +3,11 @@
   align-items: center;
   justify-content: center;
 
+  &.-hide {
+    opacity: 0;
+    transition: opacity 0.25s ease-in-out;
+  }
+
   .button {
     display: flex;
     align-items: center;
@@ -29,10 +34,6 @@
     transform: translateX(calc(100% + 29px));
     opacity: 1;
     transition: opacity 0.3s ease;
-
-    &.-hide {
-      opacity: 0;
-    }
 
     &::after {
       content: "";

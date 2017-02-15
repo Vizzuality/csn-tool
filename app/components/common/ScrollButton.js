@@ -35,6 +35,7 @@ class ScrollButton extends React.Component {
     this.timeout = setTimeout(() => {
       this.onScroll();
     }, 250);
+    this.hideLabel();
   }
 
   hideLabel() {
@@ -62,11 +63,11 @@ class ScrollButton extends React.Component {
 
   render() {
     return (
-      <div className="c-scroll-button" ref={(scrollEl) => { this.scrollEl = scrollEl; }}>
+      <div className={`c-scroll-button ${this.state.showLabel ? '' : '-hide'}`} ref={(scrollEl) => { this.scrollEl = scrollEl; }}>
         <div className="button" onClick={this.handleClick}>
           <svg width="18" height="11" viewBox="0 0 18 11"><title>Scroll down</title><path d="M1.641-.044l7.27 7.278 7.374-7.241L17.823 1.5 8.91 10.411 0 1.5z" fillRule="evenodd" /></svg>
         </div>
-        <div className={`label ${this.state.showLabel ? '' : '-hide'}`}><span>Scroll down to see the data</span></div>
+        <div className={`label`}><span>Scroll down to see the data</span></div>
       </div>
     );
   }
