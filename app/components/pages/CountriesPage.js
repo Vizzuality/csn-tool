@@ -63,7 +63,7 @@ class CountriesPage extends React.Component {
                 ? <div>
                   <div className="content">
                     <div className="title">
-                      <GoBackLink className="breadcrumb" i18nText="back" />
+                      <GoBackLink className="breadcrumb" i18nText="back" endPoint="countries" lang={this.props.params.lang} />
                       <h2>{this.props.countryStats.country}</h2>
                     </div>
                   </div>
@@ -117,7 +117,9 @@ CountriesPage.propTypes = {
   countriesLength: React.PropTypes.number,
   countries: React.PropTypes.array,
   filter: React.PropTypes.string,
-  router: React.PropTypes.object
+  router: React.PropTypes.object,
+  params: React.PropTypes.object,
+  lang: React.PropTypes.string
 };
 
 export default CountriesPage;

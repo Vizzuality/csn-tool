@@ -2,7 +2,7 @@ import React from 'react';
 
 function GoBackLink(props, context) {
   return (
-    <a href="#" className={props.className} onClick={props.goBack} >
+    <a href={`/${props.lang}/${props.endPoint}`} className={props.className} >
       {props.i18nText ? context.t(props.i18nText) : props.text}
       {props.icon && <svg><use xlinkHref={`#${props.icon}`}></use></svg>}
     </a>
@@ -24,7 +24,11 @@ GoBackLink.propTypes = {
   // Define the text to show translated
   i18nText: React.PropTypes.string,
   // Define the icon used for the link
-  icon: React.PropTypes.string
+  icon: React.PropTypes.string,
+  // Define link end point
+  endPoint: React.PropTypes.string,
+  // Define link language state
+  lang: React.PropTypes.string
 };
 
 export default GoBackLink;
