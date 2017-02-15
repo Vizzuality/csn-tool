@@ -1,4 +1,5 @@
 import React from 'react';
+import smoothScroll from 'smoothscroll';
 
 function topPosition(domEl) {
   if (!domEl) {
@@ -41,7 +42,7 @@ class ScrollButton extends React.Component {
   }
 
   scrollTo(el) {
-    window.scroll(0, topPosition(el) - this.props.threshold);
+    smoothScroll(topPosition(el) - this.props.threshold);
   }
 
   handleClick() {
