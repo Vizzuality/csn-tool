@@ -25,7 +25,6 @@ class ScrollButton extends React.Component {
 
   onScroll() {
     if (this.scrollEl && this.scrollEl.getBoundingClientRect().top < Number(this.props.threshold)) {
-      this.hideLabel();
       this.detachScrollListener();
     }
   }
