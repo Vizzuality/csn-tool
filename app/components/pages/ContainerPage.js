@@ -14,6 +14,10 @@ class ContainerPage extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
+    this.trackBackLinks(newProps);
+  }
+
+  trackBackLinks(newProps) {
     const oldPath = this.props.location.pathname.split('/')[2];
     const newPath = newProps.location.pathname.split('/')[2];
     const routeLength = newProps.location.pathname.split('/').length;
