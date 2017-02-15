@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import CountriesTable from 'components/countries/CountriesTable';
+import { setSearchFilter } from 'actions/countries';
 
 function getCountryColums(category) {
   switch (category) {
@@ -8,7 +9,7 @@ function getCountryColums(category) {
         'country_status'];
     case 'populations':
       return ['scientific_name', 'english_name', 'iucn_category', 'populations',
-        'a', 'b', 'c', 'table_1_status', 'flyway_range', 'year_start',
+        'a', 'b', 'c', 'flyway_range', 'year_start',
         'year_end', 'size_min', 'size_max', 'ramsar_criterion'];
     case 'sitesOld':
       return ['site_name', 'protection_status', 'iba', 'csn', 'iba_species',
@@ -58,6 +59,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = () => ({});
+const mapDispatchToProps = (dispatch) => ({
+  cleanSearchFilter: (search) => dispatch(setSearchFilter(search))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(CountriesTable);

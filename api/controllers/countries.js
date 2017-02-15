@@ -44,7 +44,7 @@ function getCountrySites(req, res) {
       SUM(case when iba_criteria = '' then 0 else 1 end) as iba
         from species_sites group by site_id)
     SELECT c.country, c.iso3,
-      s.protection_status, s.site_name, s.lat, s.lon, s.site_id as id, s.protection_status,
+      s.protection_status, s.site_name, s.lat, s.lon, s.site_id as id,
       stc.csn, stc.iba, s.hyperlink
     FROM sites s
   	INNER JOIN countries c ON s.country_id = c.country_id AND
@@ -60,7 +60,7 @@ function getCountrySites(req, res) {
           site.protection_status_slug = normalizeSiteStatus(item.protection_status);
           return site;
         });
-        res.json(results);
+        res.json([results]);
       } else {
         res.status(404);
         res.json({ error: 'No sites found' });
@@ -127,7 +127,6 @@ function getCountrySpecies(req, res) {
       res.json({ error: err.message });
     });
 }
-
 function getCountryPopulations(req, res) {
   const query = `with r as (
     SELECT ssis, wpepopid, wpesppid FROM
@@ -136,8 +135,8 @@ function getCountryPopulations(req, res) {
      (SELECT the_geom FROM world_borders WHERE iso3 = '${req.params.iso}'))),
   f AS (SELECT ssis,  wpepopid, wpesppid AS wpesppid FROM r ),
   d AS (select * from species s INNER JOIN f ON species_id=ssis)
-  SELECT scientific_name, d.english_name, d.iucn_category, d.wpepopid pop_id, dd.*,
-  'http://wpe.wetlands.org/view/' || d.wpepopid AS pop_hyperlink
+  SELECT scientific_name, d.english_name, d.iucn_category, d.wpepopid pop_id,
+  dd.sisrecid as id, dd.*, 'http://wpe.wetlands.org/view/' || d.wpepopid AS pop_hyperlink
   FROM d
   INNER JOIN populations_species_no_geo dd on d.wpepopid=dd.wpepopid
   ORDER BY d.scientific_name

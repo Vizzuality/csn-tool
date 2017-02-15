@@ -9,7 +9,8 @@
       list-style: none;
       display: flex;
       align-items: flex-start;
-      padding: rem(10) 0;
+      padding: rem(10) rem(10);
+      flex-wrap: wrap;
 
       &.header {
         border-bottom: rem(2) solid $border-color;
@@ -24,9 +25,7 @@
       }
 
       > div {
-        flex-basis: 50%;
         padding-right: rem(15);
-        display: flex;
 
         &:last-child {
           padding-right: 0;
@@ -37,6 +36,7 @@
           text-align: right;
           flex-basis: 24px;
           min-width: 24px;
+          position: relative;
 
           a {
             display: flex;
@@ -47,6 +47,8 @@
             padding: rem(6) rem(6) rem(6) rem(8);
             border-radius: 50%;
             background-color: rgba($white, 0.5);
+            position: absolute;
+            right: rem(-5);
           }
 
           a:hover {
@@ -72,6 +74,20 @@
         &.scientific_name {
           font-style: italic;
         }
+
+        &.-left {
+          text-align: left;
+        }
+
+        &.-center {
+          text-align: center;
+        }
+
+        &.-right {
+          text-align: right;
+          padding-right: 0;
+          padding-left: 15px;
+        }
       }
 
       .external-link,
@@ -92,5 +108,12 @@
         transform: scale(0.6, 0.6);
       }
     }
+  }
+
+  .no-data {
+    min-height: rem(300);
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }

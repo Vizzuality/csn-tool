@@ -6,7 +6,7 @@ import ScrollButton from 'components/common/ScrollButton';
 function getDetailLink(category) {
   switch (category) {
     case 'populations':
-      return '';
+      return 'species';
     case 'sitesOld':
       return '';
     case 'lookAlikeSpecies':
@@ -16,26 +16,33 @@ function getDetailLink(category) {
   }
 }
 
-function CountriesTable(props) {
-  const detailLink = getDetailLink(props.category);
-  return (
-    <div className="c-table" >
-      <ScrollButton />
-      <CountriesFilters country={props.country} category={props.category} />
-      <TableList
-        data={props.data}
-        columns={props.columns}
-        detailLink={detailLink}
-      />
-    </div>
-  );
+class CountriesTable extends React.Component {
+  componentWillMount() {
+    this.props.cleanSearchFilter('');
+  }
+
+  render() {
+    const detailLink = getDetailLink(this.props.category);
+    return (
+      <div className="c-table">
+        <ScrollButton />
+        <CountriesFilters country={this.props.country} category={this.props.category} />
+        <TableList
+          data={this.props.data}
+          columns={this.props.columns}
+          detailLink={detailLink}
+        />
+      </div>
+    );
+  }
 }
 
 CountriesTable.propTypes = {
   country: React.PropTypes.string.isRequired,
   category: React.PropTypes.string.isRequired,
   columns: React.PropTypes.array.isRequired,
-  data: React.PropTypes.any
+  data: React.PropTypes.any,
+  cleanSearchFilter: React.PropTypes.func
 };
 
 export default CountriesTable;
