@@ -7,7 +7,8 @@ const mapStateToProps = (state) => ({
   country: state.countries.selected,
   geoms: state.countries.geoms,
   data: state.countries.sites[state.countries.selected] || [],
-  layers: state.countries.layers
+  layers: state.countries.layers,
+  scroll: state.scroll.scroll
 });
 
 const mapDispatchToProps = (dispatch) => ({

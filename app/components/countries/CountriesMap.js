@@ -285,9 +285,10 @@ class CountriesMap extends BasicMap {
   }
 
   render() {
+    const mapClass = this.props.scroll ? 'c-map -hidden' : 'c-map';
     return (
       <div className="l-maps-container">
-        <div id={this.props.id} className="c-map"></div>
+        <div id={this.props.id} className={`${mapClass}`}></div>
         {this.props.country &&
           <div className="l-legend">
             <CountriesLegend />

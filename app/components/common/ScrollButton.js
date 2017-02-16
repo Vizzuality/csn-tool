@@ -1,13 +1,6 @@
 import React from 'react';
 import smoothScroll from 'smoothscroll';
 
-function topPosition(domEl) {
-  if (!domEl) {
-    return 0;
-  }
-  return domEl.offsetTop + topPosition(domEl.offsetParent);
-}
-
 class ScrollButton extends React.Component {
   constructor(props) {
     super(props);
@@ -24,8 +17,8 @@ class ScrollButton extends React.Component {
   }
 
   onScroll() {
-    this.hideLabel();
-    if (this.scrollEl && this.scrollEl.getBoundingClientRect().top < Number(this.props.threshold)) {
+    if (window.pageYOffset >= (this.props.scrollLimit / 4)) {
+      this.hideLabel();
       this.detachScrollListener();
     }
   }
@@ -41,13 +34,10 @@ class ScrollButton extends React.Component {
     if (this.state.showLabel) this.setState({ showLabel: false });
   }
 
-  scrollTo(el) {
-    smoothScroll(topPosition(el) - this.props.threshold);
-  }
-
   handleClick() {
+    // console.log(this.props.scrollLimit);
     this.hideLabel();
-    this.scrollTo(this.scrollEl);
+    smoothScroll(this.props.scrollLimit);
   }
 
   attachScrollListener() {
@@ -62,7 +52,7 @@ class ScrollButton extends React.Component {
 
   render() {
     return (
-      <div className={`c-scroll-button ${this.state.showLabel ? '' : '-hide'}`} ref={(scrollEl) => { this.scrollEl = scrollEl; }}>
+      <div className={`c-scroll-button ${this.state.showLabel ? '' : '-hide'}`}>
         <div className="button" onClick={this.handleClick}>
           <svg width="18" height="11" viewBox="0 0 18 11"><title>Scroll down</title><path d="M1.641-.044l7.27 7.278 7.374-7.241L17.823 1.5 8.91 10.411 0 1.5z" fillRule="evenodd" /></svg>
         </div>
@@ -77,7 +67,8 @@ ScrollButton.defaultProps = {
 };
 
 ScrollButton.propTypes = {
-  threshold: React.PropTypes.number
+  threshold: React.PropTypes.number,
+  scrollLimit: React.PropTypes.number
 };
 
 export default ScrollButton;

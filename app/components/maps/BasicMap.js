@@ -40,19 +40,6 @@ class Map extends React.Component {
     this.map.off('zoomend', this.setMapParams.bind(this));
   }
 
-  hideMap(hidePoint) {
-    const el = document.getElementById(this.props.id);
-    window.addEventListener('scroll', () => {
-      const yPos = window.pageYOffset;
-      if (el.classList.contains('-hidden') && yPos < hidePoint) {
-        el.classList.remove('-hidden');
-      }
-      if (yPos > hidePoint) {
-        el.classList.add('-hidden');
-      }
-    });
-  }
-
   remove() {
     this.map.remove();
     if (this.props.urlSync) this.unsetUrlSyncListeners();
@@ -98,8 +85,6 @@ class Map extends React.Component {
 
     if (this.props.shareControl) this.addShareControl();
     if (this.props.urlSync) this.setUrlSyncListeners();
-
-    this.hideMap(1500);
   }
 
   addShareControl() {
