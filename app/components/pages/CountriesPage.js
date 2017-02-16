@@ -62,8 +62,13 @@ class CountriesPage extends React.Component {
   handleScroll() {
     if (window.pageYOffset >= this.props.scrollLimit - 100 && !this.props.scroll) {
       this.props.setScrollState(true);
-    } else if (window.pageYOffset <= this.props.scrollLimit - 100 && this.props.scroll) {
+    } else if (window.pageYOffset < this.props.scrollLimit - 100 && this.props.scroll) {
       this.props.setScrollState(false);
+    }
+    if (window.pageYOffset >= this.props.scrollLimit - 30 && this.props.scroll) {
+      this.navigation.classList.add('-fixed');
+    } else if (window.pageYOffset < this.props.scrollLimit - 30 && !this.props.scroll) {
+      this.navigation.classList.remove('-fixed');
     }
   }
 
@@ -78,10 +83,9 @@ class CountriesPage extends React.Component {
   }
 
   render() {
-    const navClass = this.props.scroll ? 'l-navigation -fixed' : 'l-navigation';
     return (
       <div className="l-page">
-        <div className={`${navClass}`}>
+        <div className="l-navigation" ref={(ref) => { this.navigation = ref; }}>
           <div className="row">
             <div className="column c-navigation">
               {this.props.country

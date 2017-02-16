@@ -14,10 +14,12 @@ class CountriesMap extends BasicMap {
       highlight: { fillColor: '#ffc500', fillOpacity: 1, color: 'transparent', opacity: 0 }
     };
     this.markers = [];
+    this.handleScroll = this.handleScroll.bind(this);
   }
 
   componentWillMount() {
     this.props.getGeoms();
+    this.attachScrollListener();
   }
 
   componentDidMount() {
@@ -70,6 +72,7 @@ class CountriesMap extends BasicMap {
 
   componentWillUnmount() {
     this.remove();
+    this.detachScrollListener();
   }
 
   setActiveLayer() {
@@ -284,11 +287,26 @@ class CountriesMap extends BasicMap {
     this.map.setView(MAP_CENTER, MAP_MIN_ZOOM);
   }
 
+  handleScroll() {
+    if (window.pageYOffset >= this.props.scrollLimit + 30 && !this.mapContainer.classList.contains('-hidden')) {
+      this.mapContainer.classList.add('-hidden');
+    } else if (window.pageYOffset < this.props.scrollLimit + 30 && this.mapContainer.classList.contains('-hidden')) {
+      this.mapContainer.classList.remove('-hidden');
+    }
+  }
+
+  attachScrollListener() {
+    window.addEventListener('scroll', this.handleScroll);
+  }
+
+  detachScrollListener() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
   render() {
-    const mapClass = this.props.scroll ? 'c-map -hidden' : 'c-map';
     return (
       <div className="l-maps-container">
-        <div id={this.props.id} className={`${mapClass}`}></div>
+        <div id={this.props.id} className="c-map" ref={(ref) => { this.mapContainer = ref; }}></div>
         {this.props.country &&
           <div className="l-legend">
             <CountriesLegend />
