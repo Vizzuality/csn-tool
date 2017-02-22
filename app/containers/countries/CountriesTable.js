@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import CountriesTable from 'components/countries/CountriesTable';
 import { setSearchFilter } from 'actions/countries';
-import { setScrollLimit, setScrollState } from 'actions/scroll';
+import { setScrollLimit } from 'actions/scroll';
 
 function getCountryColums(category) {
   switch (category) {
