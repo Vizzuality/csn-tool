@@ -19,16 +19,22 @@ class CountriesPage extends React.Component {
       { value: lang, label: lang.toUpperCase() }
     ));
     this.onSelectChange = this.onSelectChange.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
   }
 
   componentWillMount() {
     this.getData(this.props);
+    this.attachScrollListener();
   }
 
   componentWillReceiveProps(newProps) {
     if (newProps.country && this.hasNewParams(newProps)) {
       this.getData(newProps);
     }
+  }
+
+  componentWillUnmount() {
+    this.detachScrollListener();
   }
 
   onSelectChange(filter) {
@@ -53,17 +59,40 @@ class CountriesPage extends React.Component {
       || this.props.category !== newProps.category;
   }
 
+  handleScroll() {
+    if (window.pageYOffset >= this.props.scrollLimit - 100 && !this.props.scroll) {
+      this.props.setScrollState(true);
+    } else if (window.pageYOffset < this.props.scrollLimit - 100 && this.props.scroll) {
+      this.props.setScrollState(false);
+    }
+    if (window.pageYOffset >= this.props.scrollLimit - 30 && this.props.scroll) {
+      this.navigation.classList.add('-fixed');
+    } else if (window.pageYOffset < this.props.scrollLimit - 30 && !this.props.scroll) {
+      this.navigation.classList.remove('-fixed');
+    }
+  }
+
+  attachScrollListener() {
+    window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('resize', this.handleScroll);
+  }
+
+  detachScrollListener() {
+    window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('resize', this.handleScroll);
+  }
+
   render() {
     return (
       <div className="l-page">
-        <div className="l-navigation">
+        <div className="l-navigation" ref={(ref) => { this.navigation = ref; }}>
           <div className="row">
             <div className="column c-navigation">
               {this.props.country
                 ? <div>
                   <div className="content">
                     <div className="title">
-                      <GoBackLink className="breadcrumb" i18nText="back" />
+                      <GoBackLink className="breadcrumb" i18nText="back" endPoint="countries" lang={this.props.params.lang} />
                       <h2>{this.props.countryStats.country}</h2>
                     </div>
                   </div>
@@ -117,7 +146,12 @@ CountriesPage.propTypes = {
   countriesLength: React.PropTypes.number,
   countries: React.PropTypes.array,
   filter: React.PropTypes.string,
-  router: React.PropTypes.object
+  router: React.PropTypes.object,
+  params: React.PropTypes.object,
+  lang: React.PropTypes.string,
+  setScrollState: React.PropTypes.func,
+  scroll: React.PropTypes.bool,
+  scrollLimit: React.PropTypes.number
 };
 
 export default CountriesPage;

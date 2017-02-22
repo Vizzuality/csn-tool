@@ -1,11 +1,13 @@
 import React from 'react';
 import SitesDetailFilters from 'components/sites/SitesDetailFilters';
 import TableList from 'components/tables/TableList';
+import ScrollButton from 'components/common/ScrollButton';
 
 function SitesDetailTable(props) {
   const detailLink = props.category === 'species' ? props.category : '';
   return (
-    <div>
+    <div className="c-table" >
+      <ScrollButton />
       <SitesDetailFilters id={props.slug} category={props.category} />
       <TableList
         data={props.data}

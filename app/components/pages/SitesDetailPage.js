@@ -30,7 +30,7 @@ class SitesPage extends React.Component {
                   <div className="c-navigation">
                     <div className="content">
                       <div className="title">
-                        <GoBackLink className="breadcrumb" i18nText="back" />
+                        <GoBackLink className="breadcrumb" i18nText="back" endPoint="sites" lang={this.props.params.lang} />
                         <h2>{this.props.stats.site[0].name}</h2>
                       </div>
                       <div className="stats">
@@ -95,7 +95,9 @@ SitesPage.propTypes = {
   stats: React.PropTypes.any,
   data: React.PropTypes.any,
   site: React.PropTypes.string,
-  category: React.PropTypes.string
+  category: React.PropTypes.string,
+  params: React.PropTypes.object,
+  lang: React.PropTypes.string
 };
 
 export default SitesPage;

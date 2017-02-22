@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import CountriesPage from 'components/pages/CountriesPage';
 import { getCountryStats, getCountrySites, getCountrySitesOld, getCountrySpecies,
   getCountryPopulations, getCountryLookAlikeSpecies, getCountriesList } from 'actions/countries';
+import { setScrollState } from 'actions/scroll';
 
 function getCountryData(countries) {
   return countries[countries.selectedCategory] && countries[countries.selectedCategory][countries.selected]
@@ -16,10 +17,13 @@ const mapStateToProps = (state) => ({
   countries: state.countries.countries,
   countryStats: state.countries.stats[state.countries.selected] || false,
   countryData: getCountryData(state.countries),
-  countriesLength: state.countries.geoms ? Object.keys(state.countries.geoms.objects).length : 0
+  countriesLength: state.countries.geoms ? Object.keys(state.countries.geoms.objects).length : 0,
+  scroll: state.scroll.scroll,
+  scrollLimit: state.scroll.scrollLimit
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  setScrollState: (bool) => dispatch(setScrollState(bool)),
   getCountryStats: (iso) => dispatch(getCountryStats(iso)),
   getCountriesList: () => dispatch(getCountriesList()),
   getCountryData: (country, category) => {

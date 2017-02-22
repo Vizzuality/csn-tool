@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import CountriesTable from 'components/countries/CountriesTable';
 import { setSearchFilter } from 'actions/countries';
+import { setScrollLimit } from 'actions/scroll';
 
 function getCountryColums(category) {
   switch (category) {
@@ -55,12 +56,15 @@ const mapStateToProps = (state) => {
     country: state.countries.selected,
     category: state.countries.selectedCategory,
     data: getCountryData(state.countries, columns),
-    columns
+    columns,
+    scroll: state.scroll.scroll,
+    scrollLimit: state.scroll.scrollLimit
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  cleanSearchFilter: (search) => dispatch(setSearchFilter(search))
+  cleanSearchFilter: (search) => dispatch(setSearchFilter(search)),
+  setScrollLimit: (pos) => dispatch(setScrollLimit(pos))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CountriesTable);

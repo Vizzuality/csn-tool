@@ -3,39 +3,54 @@ import NavLink from 'containers/common/NavLink';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import { numberToThousands } from 'helpers/data';
 
-function TableList(props, context) {
-  if (!props.data) return (<div className="c-table-list blank"><LoadingSpinner inner transparent /></div>);
-  const colWidth = props.detailLink ? (97.5 / props.columns.length) : (100 / props.columns.length);
-  const colCenter = ['a', 'b', 'c', 'original_a', 'original_b', 'original_c', 'iba', 'csn', 'iba_species', 'csn_species'];
-  return !props.data.length
+class TableList extends React.Component {
+
+  componentDidUpdate() {
+    // this.setPaddingOffset();
+  }
+
+  setPaddingOffset() {
+    if (this.tableList && this.props.scroll) {
+      const paddingOffset = this.props.filtersHeight + this.headerContainer.offsetHeight + 26;
+      this.tableList.style.paddingTop = `${paddingOffset}px`;
+    } else if (this.tableList && !this.props.scroll) {
+      this.tableList.style.paddingTop = '0px';
+    }
+  }
+
+  render() {
+    if (!this.props.data) return (<div className="c-table-list blank"><LoadingSpinner inner transparent /></div>);
+    const colWidth = this.props.detailLink ? (97.5 / this.props.columns.length) : (100 / this.props.columns.length);
+    const colCenter = ['a', 'b', 'c', 'original_a', 'original_b', 'original_c', 'iba', 'csn', 'iba_species', 'csn_species'];
+    return !this.props.data.length
     ? <div className="c-table-list"><div className="no-data"><p className="text -title"> No data </p></div></div>
-    : <div className="c-table-list">
+    : <div id="table-rows" className="c-table-list" ref={(ref) => { this.tableList = ref; }}>
       <ul>
-        <li className="header">
-          {props.columns.map((column, index) => {
+        <li className="header" ref={(ref) => { this.headerContainer = ref; }}>
+          {this.props.columns.map((column, index) => {
             let alignClass = '';
             if (colCenter.indexOf(column) > -1) {
               alignClass = '-center';
-            } else if (typeof props.data[0][column] === 'number') {
+            } else if (typeof this.props.data[0][column] === 'number') {
               alignClass = '-right';
             } else {
               alignClass = '-left';
             }
             return (
               <div key={index} className={`text -title ${alignClass}`} style={{ width: `${colWidth}%` }}>
-                {context.t(column)}
+                {this.context.t(column)}
               </div>
             );
           })}
-          {props.detailLink &&
+          {this.props.detailLink &&
             <div className="text -title link" style={{ width: '2.5%' }}>
               ...
             </div>
           }
         </li>
-        {props.data.map((item, index) => (
+        {this.props.data.map((item, index) => (
           <li key={index} className="table-row f32">
-            {props.columns.map((column, index2) => {
+            {this.props.columns.map((column, index2) => {
               let alignClass = '';
               if (colCenter.indexOf(column) > -1) {
                 alignClass = '-center';
@@ -79,9 +94,9 @@ function TableList(props, context) {
               return (<div key={index2} className={`text ${column} ${alignClass}`} style={{ width: `${colWidth}%` }} dangerouslySetInnerHTML={{ __html: colVal }}></div>);
             })}
 
-            {props.detailLink &&
+            {this.props.detailLink &&
               <div className="link">
-                <NavLink to={`/${props.detailLink}/${item.id}`} icon="icon-table_arrow_right" parent />
+                <NavLink to={`/${this.props.detailLink}/${item.id}`} icon="icon-table_arrow_right" parent />
               </div>
             }
           </li>
@@ -89,6 +104,7 @@ function TableList(props, context) {
         <li></li>
       </ul>
     </div>;
+  }
 }
 
 TableList.contextTypes = {
@@ -100,7 +116,10 @@ TableList.propTypes = {
   detailLink: React.PropTypes.string,
   columns: React.PropTypes.array.isRequired,
   data: React.PropTypes.any.isRequired,
-  fitBounds: React.PropTypes.func
+  fitBounds: React.PropTypes.func,
+  getHeaderHeight: React.PropTypes.func,
+  filtersHeight: React.PropTypes.number,
+  scroll: React.PropTypes.bool
 };
 
 export default TableList;

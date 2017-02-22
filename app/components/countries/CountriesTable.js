@@ -1,6 +1,7 @@
 import React from 'react';
-import CountriesFilters from 'components/countries/CountriesFilters';
-import TableList from 'components/tables/TableList';
+import CountriesFilters from 'containers/countries/CountriesFilters';
+import TableList from 'containers/tables/TableList';
+import ScrollButton from 'containers/common/ScrollButton';
 
 function getDetailLink(category) {
   switch (category) {
@@ -16,14 +17,32 @@ function getDetailLink(category) {
 }
 
 class CountriesTable extends React.Component {
+
   componentWillMount() {
     this.props.cleanSearchFilter('');
   }
 
+  componentDidMount() {
+    this.props.setScrollLimit(this.topPosition(this.tableContainer));
+  }
+
+  topPosition(domEl) {
+    if (!domEl) {
+      return 0;
+    }
+    return domEl.offsetTop + this.topPosition(domEl.offsetParent);
+  }
+
   render() {
     const detailLink = getDetailLink(this.props.category);
+    const tableClass = this.props.scroll ? 'c-table -fixed' : 'c-table';
     return (
-      <div>
+      <div
+        id="table-list"
+        className={`${tableClass}`}
+        ref={(ref) => { this.tableContainer = ref; }}
+      >
+        <ScrollButton />
         <CountriesFilters country={this.props.country} category={this.props.category} />
         <TableList
           data={this.props.data}
@@ -40,7 +59,10 @@ CountriesTable.propTypes = {
   category: React.PropTypes.string.isRequired,
   columns: React.PropTypes.array.isRequired,
   data: React.PropTypes.any,
-  cleanSearchFilter: React.PropTypes.func
+  cleanSearchFilter: React.PropTypes.func,
+  setScrollLimit: React.PropTypes.func,
+  scroll: React.PropTypes.bool,
+  scrollLimit: React.PropTypes.number
 };
 
 export default CountriesTable;

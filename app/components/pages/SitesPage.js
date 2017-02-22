@@ -27,7 +27,7 @@ class SitesPage extends React.Component {
   render() {
     return (
       <div className="l-page">
-        <div className="l-navigation">
+        <div className="l-navigation -fixed">
           <div className="row">
             <div className="column">
               <div className="navigation-wrapper">
