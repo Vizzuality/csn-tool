@@ -6,7 +6,7 @@ import { numberToThousands } from 'helpers/data';
 class TableList extends React.Component {
 
   componentDidUpdate() {
-    this.setPaddingOffset();
+    // this.setPaddingOffset();
   }
 
   setPaddingOffset() {
