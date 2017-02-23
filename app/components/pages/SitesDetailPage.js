@@ -2,6 +2,7 @@ import React from 'react';
 import GoBackLink from 'containers/common/GoBackLink';
 import SitesMap from 'containers/sites/SitesMap';
 import SitesDetailTable from 'containers/sites/SitesDetailTable';
+import { StickyContainer } from 'react-sticky';
 
 class SitesPage extends React.Component {
   componentWillMount() {
@@ -13,6 +14,9 @@ class SitesPage extends React.Component {
     this.getData(newProps);
   }
 
+  componentWillUnmount() {
+  }
+
   getData(props) {
     if (!props.data) {
       props.getSitesData(props.site, props.category);
@@ -20,9 +24,10 @@ class SitesPage extends React.Component {
   }
 
   render() {
+    const tableClass = this.props.scroll ? 'l-navigation -fixed' : 'l-navigation';
     return (
       <div className="l-page">
-        <div className="l-navigation">
+        <div className={`${tableClass}`}>
           <div className="row">
             <div className="column">
               {this.props.stats.site &&
@@ -72,17 +77,19 @@ class SitesPage extends React.Component {
           <div className="l-map -header -short">
             <SitesMap id="sites-detail-map" markerCluster slug={this.props.site} />
           </div>
-          <div className="l-table">
-            <div className="row l-content -short">
-              <div className="column">
-                <SitesDetailTable
-                  data={this.props.data}
-                  slug={this.props.site}
-                  category={this.props.category}
-                />
+          <StickyContainer>
+            <div className="l-table">
+              <div className="row l-content -short">
+                <div className="column">
+                  <SitesDetailTable
+                    data={this.props.data}
+                    slug={this.props.site}
+                    category={this.props.category}
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          </StickyContainer>
         </div>
       </div>
     );
@@ -97,7 +104,8 @@ SitesPage.propTypes = {
   site: React.PropTypes.string,
   category: React.PropTypes.string,
   params: React.PropTypes.object,
-  lang: React.PropTypes.string
+  lang: React.PropTypes.string,
+  scroll: React.PropTypes.bool
 };
 
 export default SitesPage;

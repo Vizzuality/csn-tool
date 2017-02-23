@@ -16,12 +16,10 @@ const mapStateToProps = (state) => ({
   category: state.species.selectedCategory,
   stats: state.species.stats || false,
   data: getSpeciesData(state.species),
-  scroll: state.scroll.scroll,
-  scrollLimit: state.scroll.scrollLimit
+  scroll: state.scroll.scroll
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setScrollState: (bool) => dispatch(setScrollState(bool)),
   getSpeciesStats: id => dispatch(getSpeciesStats(id)),
   getSpeciesData: (id, category) => {
     switch (category) {

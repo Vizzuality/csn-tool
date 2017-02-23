@@ -1,6 +1,6 @@
 import React from 'react';
 import CountriesFilters from 'components/countries/CountriesFilters';
-import TableListHeader from 'components/tables/TableListHeader';
+import TableListHeader from 'containers/tables/TableListHeader';
 import TableList from 'components/tables/TableList';
 import ScrollButton from 'containers/common/ScrollButton';
 import { Sticky } from 'react-sticky';
@@ -24,24 +24,12 @@ class CountriesTable extends React.Component {
     this.props.cleanSearchFilter('');
   }
 
-  componentDidMount() {
-    this.props.setScrollLimit(this.topPosition(this.tableContainer));
-  }
-
-  topPosition(domEl) {
-    if (!domEl) {
-      return 0;
-    }
-    return domEl.offsetTop + this.topPosition(domEl.offsetParent);
-  }
-
   render() {
     const detailLink = getDetailLink(this.props.category);
     return (
       <div
         id="table-list"
         className="c-table"
-        ref={(ref) => { this.tableContainer = ref; }}
       >
         <ScrollButton />
         <Sticky topOffset={-120} stickyClassName={'-sticky'}>
@@ -67,8 +55,7 @@ CountriesTable.propTypes = {
   category: React.PropTypes.string.isRequired,
   columns: React.PropTypes.array.isRequired,
   data: React.PropTypes.any,
-  cleanSearchFilter: React.PropTypes.func,
-  setScrollLimit: React.PropTypes.func
+  cleanSearchFilter: React.PropTypes.func
 };
 
 export default CountriesTable;

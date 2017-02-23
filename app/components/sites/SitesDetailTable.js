@@ -1,14 +1,23 @@
 import React from 'react';
 import SitesDetailFilters from 'components/sites/SitesDetailFilters';
 import TableList from 'components/tables/TableList';
-import ScrollButton from 'components/common/ScrollButton';
+import TableListHeader from 'components/tables/TableListHeader';
+import ScrollButton from 'containers/common/ScrollButton';
+import { Sticky } from 'react-sticky';
 
 function SitesDetailTable(props) {
   const detailLink = props.category === 'species' ? props.category : '';
   return (
     <div className="c-table" >
       <ScrollButton />
-      <SitesDetailFilters id={props.slug} category={props.category} />
+      <Sticky topOffset={-120} stickyClassName={'-sticky'}>
+        <SitesDetailFilters id={props.slug} category={props.category} />
+        <TableListHeader
+          data={props.data}
+          columns={props.columns}
+          detailLink={detailLink}
+        />
+      </Sticky>
       <TableList
         data={props.data}
         columns={props.columns}

@@ -1,8 +1,13 @@
 import { connect } from 'react-redux';
 import ScrollButton from 'components/common/ScrollButton';
+import { setScrollState } from 'actions/scroll';
 
 const mapStateToProps = (state) => ({
-  scrollLimit: state.scroll.scrollLimit
+  scroll: state.scroll.scroll
 });
 
-export default connect(mapStateToProps)(ScrollButton);
+const mapDispatchToProps = (dispatch) => ({
+  setScrollState: (pos) => dispatch(setScrollState(pos))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScrollButton);

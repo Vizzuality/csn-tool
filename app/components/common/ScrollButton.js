@@ -14,13 +14,24 @@ class ScrollButton extends React.Component {
 
   componentDidMount() {
     this.attachScrollListener();
+    this.cache();
   }
 
   onScroll() {
-    if (window.pageYOffset >= (this.props.scrollLimit / 4)) {
+    if (window.pageYOffset >= (this.scrollLimit / 4)) {
       this.hideLabel();
-      this.detachScrollListener();
     }
+  }
+
+  cache() {
+    this.scrollLimit = this.topPosition(this.scrollContainer) - this.props.threshold;
+  }
+
+  topPosition(domEl) {
+    if (!domEl) {
+      return 0;
+    }
+    return domEl.offsetTop + this.topPosition(domEl.offsetParent);
   }
 
   handleScroll() {
@@ -28,6 +39,11 @@ class ScrollButton extends React.Component {
     this.timeout = setTimeout(() => {
       this.onScroll();
     }, 250);
+    if (window.pageYOffset >= this.scrollLimit && !this.props.scroll) {
+      this.props.setScrollState(true);
+    } else if (window.pageYOffset < this.scrollLimit && this.props.scroll) {
+      this.props.setScrollState(false);
+    }
   }
 
   hideLabel() {
@@ -35,9 +51,8 @@ class ScrollButton extends React.Component {
   }
 
   handleClick() {
-    // console.log(this.props.scrollLimit);
     this.hideLabel();
-    smoothScroll(this.props.scrollLimit);
+    smoothScroll(this.scrollLimit);
   }
 
   attachScrollListener() {
@@ -52,7 +67,7 @@ class ScrollButton extends React.Component {
 
   render() {
     return (
-      <div className={`c-scroll-button ${this.state.showLabel ? '' : '-hide'}`}>
+      <div className={`c-scroll-button ${this.state.showLabel ? '' : '-hide'}`} ref={(ref) => { this.scrollContainer = ref; }}>
         <div className="button" onClick={this.handleClick}>
           <svg width="18" height="11" viewBox="0 0 18 11"><title>Scroll down</title><path d="M1.641-.044l7.27 7.278 7.374-7.241L17.823 1.5 8.91 10.411 0 1.5z" fillRule="evenodd" /></svg>
         </div>
@@ -63,12 +78,13 @@ class ScrollButton extends React.Component {
 }
 
 ScrollButton.defaultProps = {
-  threshold: 100
+  threshold: 30
 };
 
 ScrollButton.propTypes = {
   threshold: React.PropTypes.number,
-  scrollLimit: React.PropTypes.number
+  setScrollState: React.PropTypes.func,
+  scroll: React.PropTypes.bool
 };
 
 export default ScrollButton;

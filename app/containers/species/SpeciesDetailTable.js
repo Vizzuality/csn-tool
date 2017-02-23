@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import SpeciesDetailTable from 'components/species/SpeciesDetailTable';
-import { setScrollLimit } from 'actions/scroll';
 
 function getSpeciesDetailColums(category) {
   switch (category) {
@@ -54,8 +53,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  setScrollLimit: (pos) => dispatch(setScrollLimit(pos))
-});
+const mapDispatchToProps = () => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(SpeciesDetailTable);

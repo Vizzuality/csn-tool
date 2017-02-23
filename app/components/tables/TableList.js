@@ -79,8 +79,6 @@ TableList.propTypes = {
   columns: React.PropTypes.array.isRequired,
   data: React.PropTypes.any.isRequired,
   fitBounds: React.PropTypes.func,
-  getHeaderHeight: React.PropTypes.func,
-  filtersHeight: React.PropTypes.number,
   scroll: React.PropTypes.bool
 };
 

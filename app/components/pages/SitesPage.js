@@ -2,6 +2,7 @@ import React from 'react';
 import ViewToggler from 'components/common/ViewToggler';
 import SitesMap from 'containers/sites/SitesMap';
 import SitesTable from 'containers/sites/SitesTable';
+import { StickyContainer } from 'react-sticky';
 
 class SitesPage extends React.Component {
 
@@ -46,18 +47,20 @@ class SitesPage extends React.Component {
             </div>
           </div>
         </div>
-        <div className={`l-mask ${this.props.viewMode}`}>
-          <div className={"l-map -header"}>
-            <SitesMap markerCluster slug={this.props.selected} id="sites-page-map" />
-          </div>
-          <div className="l-table">
-            <div className="row">
-              <div className="column c-table -fixed -static -static-offset">
-                <SitesTable />
+        <StickyContainer>
+          <div className={`l-mask ${this.props.viewMode}`}>
+            <div className={"l-map -header"}>
+              <SitesMap markerCluster slug={this.props.selected} id="sites-page-map" />
+            </div>
+            <div className="l-table">
+              <div className="row">
+                <div className="column c-table">
+                  <SitesTable />
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </StickyContainer>
       </div>
     );
   }

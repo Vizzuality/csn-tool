@@ -2,9 +2,9 @@ import React from 'react';
 import GoBackLink from 'containers/common/GoBackLink';
 import SpeciesDetailMap from 'containers/species/SpeciesDetailMap';
 import SpeciesDetailTable from 'containers/species/SpeciesDetailTable';
+import { StickyContainer } from 'react-sticky';
 
 class SpeciesDetailPage extends React.Component {
-
   componentWillMount() {
     this.props.getSpeciesStats(this.props.id);
     // Sites and populations always needed in the map
@@ -26,9 +26,10 @@ class SpeciesDetailPage extends React.Component {
   }
 
   render() {
+    const tableClass = this.props.scroll ? 'l-navigation -fixed' : 'l-navigation';
     return (
       <div className="l-page">
-        <div className="l-navigation">
+        <div className={`${tableClass}`}>
           <div className="row">
             <div className="column c-navigation">
               {this.props.stats.species
@@ -71,11 +72,13 @@ class SpeciesDetailPage extends React.Component {
         <div className="l-map -short -header">
           <SpeciesDetailMap id="species-detail-map" />
         </div>
-        <div className="row l-content -short">
-          <div className="column">
-            <SpeciesDetailTable id={this.props.id} category={this.props.category} />
+        <StickyContainer>
+          <div className="row l-content -short">
+            <div className="column">
+              <SpeciesDetailTable id={this.props.id} category={this.props.category} />
+            </div>
           </div>
-        </div>
+        </StickyContainer>
       </div>
     );
   }
@@ -94,7 +97,8 @@ SpeciesDetailPage.propTypes = {
   stats: React.PropTypes.any.isRequired,
   data: React.PropTypes.any,
   params: React.PropTypes.object,
-  lang: React.PropTypes.string
+  lang: React.PropTypes.string,
+  scroll: React.PropTypes.bool
 };
 
 export default SpeciesDetailPage;

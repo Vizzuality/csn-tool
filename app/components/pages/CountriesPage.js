@@ -20,22 +20,16 @@ class CountriesPage extends React.Component {
       { value: lang, label: lang.toUpperCase() }
     ));
     this.onSelectChange = this.onSelectChange.bind(this);
-    this.handleScroll = this.handleScroll.bind(this);
   }
 
   componentWillMount() {
     this.getData(this.props);
-    this.attachScrollListener();
   }
 
   componentWillReceiveProps(newProps) {
     if (newProps.country && this.hasNewParams(newProps)) {
       this.getData(newProps);
     }
-  }
-
-  componentWillUnmount() {
-    this.detachScrollListener();
   }
 
   onSelectChange(filter) {
@@ -60,33 +54,11 @@ class CountriesPage extends React.Component {
       || this.props.category !== newProps.category;
   }
 
-  handleScroll() {
-    if (window.pageYOffset >= this.props.scrollLimit - 100 && !this.props.scroll) {
-      this.props.setScrollState(true);
-    } else if (window.pageYOffset < this.props.scrollLimit - 100 && this.props.scroll) {
-      this.props.setScrollState(false);
-    }
-    if (window.pageYOffset >= this.props.scrollLimit - 30 && this.props.scroll) {
-      this.navigation.classList.add('-fixed');
-    } else if (window.pageYOffset < this.props.scrollLimit - 30 && !this.props.scroll) {
-      this.navigation.classList.remove('-fixed');
-    }
-  }
-
-  attachScrollListener() {
-    window.addEventListener('scroll', this.handleScroll);
-    window.addEventListener('resize', this.handleScroll);
-  }
-
-  detachScrollListener() {
-    window.removeEventListener('scroll', this.handleScroll);
-    window.removeEventListener('resize', this.handleScroll);
-  }
-
   render() {
+    const tableClass = this.props.scroll ? 'l-navigation -fixed' : 'l-navigation';
     return (
       <div className="l-page">
-        <div className="l-navigation" ref={(ref) => { this.navigation = ref; }}>
+        <div className={`${tableClass}`}>
           <div className="row">
             <div className="column c-navigation">
               {this.props.country
@@ -152,9 +124,7 @@ CountriesPage.propTypes = {
   router: React.PropTypes.object,
   params: React.PropTypes.object,
   lang: React.PropTypes.string,
-  setScrollState: React.PropTypes.func,
-  scroll: React.PropTypes.bool,
-  scrollLimit: React.PropTypes.number
+  scroll: React.PropTypes.bool
 };
 
 export default CountriesPage;
