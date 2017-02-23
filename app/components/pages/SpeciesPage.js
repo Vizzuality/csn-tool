@@ -1,5 +1,6 @@
 import React from 'react';
 import SpeciesTable from 'containers/species/SpeciesTable';
+import { StickyContainer } from 'react-sticky';
 
 class SpeciesPage extends React.Component {
   componentWillMount() {
@@ -10,11 +11,13 @@ class SpeciesPage extends React.Component {
 
   render() {
     return (
-      <div className="l-page -header row">
-        <div className="column c-table -fixed -static">
-          <SpeciesTable data={this.props.species} />
+      <StickyContainer>
+        <div className="l-page -header row">
+          <div className="column c-table">
+            <SpeciesTable data={this.props.species} />
+          </div>
         </div>
-      </div>
+      </StickyContainer>
     );
   }
 }

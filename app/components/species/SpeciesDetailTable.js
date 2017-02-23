@@ -1,6 +1,7 @@
 import React from 'react';
 import SpeciesDetailFilters from 'components/species/SpeciesDetailFilters';
 import TableList from 'components/tables/TableList';
+import TableListHeader from 'components/tables/TableListHeader';
 import ScrollButton from 'components/common/ScrollButton';
 
 function SpeciesDetailTable(props) {
@@ -9,6 +10,11 @@ function SpeciesDetailTable(props) {
     <div className="c-table" >
       <ScrollButton />
       <SpeciesDetailFilters id={props.id} category={props.category} />
+      <TableListHeader
+        data={props.data}
+        columns={props.columns}
+        detailLink={detailLink}
+      />
       <TableList
         data={props.data}
         columns={props.columns}

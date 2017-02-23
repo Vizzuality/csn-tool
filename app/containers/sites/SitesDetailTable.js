@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import SitesDetailTable from 'components/sites/SitesDetailTable';
+import { setScrollLimit } from 'actions/scroll';
 
 function getSitesColums(category) {
   switch (category) {
@@ -52,6 +53,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = () => ({});
+const mapDispatchToProps = (dispatch) => ({
+  setScrollLimit: (pos) => dispatch(setScrollLimit(pos))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(SitesDetailTable);

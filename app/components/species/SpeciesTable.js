@@ -1,11 +1,20 @@
 import React from 'react';
+import TableListHeader from 'components/tables/TableListHeader';
 import TableList from 'components/tables/TableList';
 import SpeciesFilters from 'components/species/SpeciesFilters';
+import { Sticky } from 'react-sticky';
 
 function SpeciesTable(props) {
   return (
     <div>
-      <SpeciesFilters />
+      <Sticky topOffset={-50} stickyClassName={'-sticky -small'}>
+        <SpeciesFilters />
+        <TableListHeader
+          data={props.data}
+          columns={props.columns}
+          detailLink="species"
+        />
+      </Sticky>
       <TableList
         data={props.data}
         columns={props.columns}
