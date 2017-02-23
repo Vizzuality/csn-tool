@@ -287,7 +287,7 @@ class CountriesMap extends BasicMap {
   render() {
     return (
       <div className="l-maps-container">
-        <div id={this.props.id} className="c-map" ref={(ref) => { this.mapContainer = ref; }}></div>
+        <div id={this.props.id} className="c-map"></div>
         {this.props.country &&
           <div className="l-legend">
             <CountriesLegend />
