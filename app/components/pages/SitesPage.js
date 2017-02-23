@@ -3,6 +3,7 @@ import ViewToggler from 'components/common/ViewToggler';
 import SitesMap from 'containers/sites/SitesMap';
 import SitesTable from 'containers/sites/SitesTable';
 import { StickyContainer } from 'react-sticky';
+import { withRouter } from 'react-router';
 
 class SitesPage extends React.Component {
 
@@ -78,4 +79,4 @@ SitesPage.propTypes = {
   viewMode: React.PropTypes.string
 };
 
-export default SitesPage;
+export default withRouter(SitesPage);

@@ -58,7 +58,7 @@ class ScrollButton extends React.Component {
 
   handleClick() {
     this.hideLabel();
-    smoothScroll(this.scrollLimit);
+    smoothScroll(this.scrollLimit - 70);
   }
 
   attachScrollListener() {
