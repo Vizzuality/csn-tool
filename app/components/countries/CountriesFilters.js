@@ -4,7 +4,7 @@ import CountriesSearch from 'containers/countries/CountriesSearch';
 
 function TableFilters(props) {
   return (
-    <div id="table-filters" className="row c-table-filters">
+    <div className="row c-table-filters">
       <div className="column small-12 medium-8">
         <div className="tags">
           <NavLink to={`/countries/${props.country}/sites`} i18nText="sites" className={props.category && props.category === 'sites' ? 'is-active' : ''} />

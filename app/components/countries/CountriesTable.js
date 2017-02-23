@@ -27,10 +27,7 @@ class CountriesTable extends React.Component {
   render() {
     const detailLink = getDetailLink(this.props.category);
     return (
-      <div
-        id="table-list"
-        className="c-table"
-      >
+      <div className="c-table">
         <ScrollButton />
         <Sticky topOffset={-120} stickyClassName={'-sticky'}>
           <CountriesFilters country={this.props.country} category={this.props.category} />

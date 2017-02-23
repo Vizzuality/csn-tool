@@ -3,7 +3,6 @@ import ViewToggler from 'components/common/ViewToggler';
 import SitesMap from 'containers/sites/SitesMap';
 import SitesTable from 'containers/sites/SitesTable';
 import { StickyContainer } from 'react-sticky';
-import { withRouter } from 'react-router';
 
 class SitesPage extends React.Component {
 
@@ -29,7 +28,7 @@ class SitesPage extends React.Component {
   render() {
     return (
       <div className="l-page">
-        <div className="l-navigation -fixed">
+        <div className="l-navigation">
           <div className="row">
             <div className="column">
               <div className="navigation-wrapper">
@@ -79,4 +78,4 @@ SitesPage.propTypes = {
   viewMode: React.PropTypes.string
 };
 
-export default withRouter(SitesPage);
+export default SitesPage;

@@ -54,6 +54,7 @@
     "react-router-redux": "^4.0.5",
     "react-router-scroll": "^0.3.2",
     "react-select": "^1.0.0-rc.2",
+    "react-sticky": "^5.0.5",
     "redux": "^3.5.2",
     "redux-i18n": "^1.0.8",
     "redux-thunk": "^2.1.0",
