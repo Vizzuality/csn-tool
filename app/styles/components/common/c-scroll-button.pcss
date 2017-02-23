@@ -4,11 +4,30 @@
   justify-content: center;
 
   &.-hide {
-    opacity: 0;
     transition: opacity 0.25s ease-in-out;
+    opacity: 0;
+
+    .button,
+    .label {
+      transition: opacity 0.25s ease-in-out;
+      opacity: 0;
+    }
+  }
+
+  &.-fixed {
+    opacity: 1;
+    transition: opacity 0.25s ease-in-out;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: rem(140);
+    background-color: #656460;
+    z-index: 5;
   }
 
   .button {
+    opacity: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -25,6 +44,7 @@
   }
 
   .label {
+    opacity: 1;
     position: absolute;
     right: 50%;
     background-color: $bg-dark-color;
@@ -32,7 +52,6 @@
     font-size: $font-size;
     color: $font-main-inv;
     transform: translateX(calc(100% + 29px));
-    opacity: 1;
     transition: opacity 0.3s ease;
 
     &::after {

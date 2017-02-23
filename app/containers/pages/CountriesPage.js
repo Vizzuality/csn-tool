@@ -16,8 +16,7 @@ const mapStateToProps = (state) => ({
   countries: state.countries.countries,
   countryStats: state.countries.stats[state.countries.selected] || false,
   countryData: getCountryData(state.countries),
-  countriesLength: state.countries.geoms ? Object.keys(state.countries.geoms.objects).length : 0,
-  scroll: state.scroll.scroll
+  countriesLength: state.countries.geoms ? Object.keys(state.countries.geoms.objects).length : 0
 });
 
 const mapDispatchToProps = (dispatch) => ({

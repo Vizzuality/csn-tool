@@ -26,10 +26,9 @@ class SpeciesDetailPage extends React.Component {
   }
 
   render() {
-    const tableClass = this.props.scroll ? 'l-navigation -fixed' : 'l-navigation';
     return (
       <div className="l-page">
-        <div className={`${tableClass}`}>
+        <div className="l-navigation">
           <div className="row">
             <div className="column c-navigation">
               {this.props.stats.species
@@ -97,8 +96,7 @@ SpeciesDetailPage.propTypes = {
   stats: React.PropTypes.any.isRequired,
   data: React.PropTypes.any,
   params: React.PropTypes.object,
-  lang: React.PropTypes.string,
-  scroll: React.PropTypes.bool
+  lang: React.PropTypes.string
 };
 
 export default SpeciesDetailPage;

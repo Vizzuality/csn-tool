@@ -1,8 +1,8 @@
 import React from 'react';
 import CountriesFilters from 'components/countries/CountriesFilters';
-import TableListHeader from 'containers/tables/TableListHeader';
+import TableListHeader from 'components/tables/TableListHeader';
 import TableList from 'components/tables/TableList';
-import ScrollButton from 'containers/common/ScrollButton';
+import ScrollButton from 'components/common/ScrollButton';
 import { Sticky } from 'react-sticky';
 
 function getDetailLink(category) {

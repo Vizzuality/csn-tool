@@ -55,10 +55,9 @@ class CountriesPage extends React.Component {
   }
 
   render() {
-    const tableClass = this.props.scroll ? 'l-navigation -fixed' : 'l-navigation';
     return (
       <div className="l-page">
-        <div className={`${tableClass}`}>
+        <div className="l-navigation">
           <div className="row">
             <div className="column c-navigation">
               {this.props.country
@@ -123,8 +122,7 @@ CountriesPage.propTypes = {
   filter: React.PropTypes.string,
   router: React.PropTypes.object,
   params: React.PropTypes.object,
-  lang: React.PropTypes.string,
-  scroll: React.PropTypes.bool
+  lang: React.PropTypes.string
 };
 
 export default CountriesPage;

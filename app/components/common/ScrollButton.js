@@ -5,7 +5,8 @@ class ScrollButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showLabel: true
+      showLabel: true,
+      scroll: false
     };
     this.timeout = null;
     this.handleClick = this.handleClick.bind(this);
@@ -14,6 +15,9 @@ class ScrollButton extends React.Component {
 
   componentDidMount() {
     this.attachScrollListener();
+  }
+
+  componentWillReceiveProps() {
     this.cache();
   }
 
@@ -39,10 +43,12 @@ class ScrollButton extends React.Component {
     this.timeout = setTimeout(() => {
       this.onScroll();
     }, 250);
-    if (window.pageYOffset >= this.scrollLimit && !this.props.scroll) {
-      this.props.setScrollState(true);
-    } else if (window.pageYOffset < this.scrollLimit && this.props.scroll) {
-      this.props.setScrollState(false);
+    if (window.pageYOffset >= this.scrollLimit && !this.state.scroll) {
+      this.state.scroll = true;
+      this.scrollContainer.classList.add('-fixed');
+    } else if (window.pageYOffset < this.scrollLimit && this.state.scroll) {
+      this.state.scroll = false;
+      this.scrollContainer.classList.remove('-fixed');
     }
   }
 

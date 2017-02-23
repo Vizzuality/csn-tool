@@ -2,7 +2,7 @@ import React from 'react';
 import SitesDetailFilters from 'components/sites/SitesDetailFilters';
 import TableList from 'components/tables/TableList';
 import TableListHeader from 'components/tables/TableListHeader';
-import ScrollButton from 'containers/common/ScrollButton';
+import ScrollButton from 'components/common/ScrollButton';
 import { Sticky } from 'react-sticky';
 
 function SitesDetailTable(props) {

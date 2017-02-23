@@ -14,9 +14,6 @@ class SitesPage extends React.Component {
     this.getData(newProps);
   }
 
-  componentWillUnmount() {
-  }
-
   getData(props) {
     if (!props.data) {
       props.getSitesData(props.site, props.category);
@@ -24,10 +21,9 @@ class SitesPage extends React.Component {
   }
 
   render() {
-    const tableClass = this.props.scroll ? 'l-navigation -fixed' : 'l-navigation';
     return (
       <div className="l-page">
-        <div className={`${tableClass}`}>
+        <div className="l-navigation">
           <div className="row">
             <div className="column">
               {this.props.stats.site &&
@@ -104,8 +100,7 @@ SitesPage.propTypes = {
   site: React.PropTypes.string,
   category: React.PropTypes.string,
   params: React.PropTypes.object,
-  lang: React.PropTypes.string,
-  scroll: React.PropTypes.bool
+  lang: React.PropTypes.string
 };
 
 export default SitesPage;

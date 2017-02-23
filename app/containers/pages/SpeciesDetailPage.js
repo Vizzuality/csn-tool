@@ -2,8 +2,6 @@ import { connect } from 'react-redux';
 import SpeciesDetailPage from 'components/pages/SpeciesDetailPage';
 import { getSpeciesStats, getSpeciesSites, getSpeciesPopulation,
   getSpeciesThreats, getSpeciesHabitats, getSpeciesLookAlikeSpecies } from 'actions/species';
-import { setScrollState } from 'actions/scroll';
-
 
 function getSpeciesData(species) {
   return species[species.selectedCategory] && species[species.selectedCategory][species.selected]
@@ -15,8 +13,7 @@ const mapStateToProps = (state) => ({
   id: state.species.selected,
   category: state.species.selectedCategory,
   stats: state.species.stats || false,
-  data: getSpeciesData(state.species),
-  scroll: state.scroll.scroll
+  data: getSpeciesData(state.species)
 });
 
 const mapDispatchToProps = (dispatch) => ({

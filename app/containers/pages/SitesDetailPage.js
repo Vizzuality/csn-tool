@@ -13,8 +13,7 @@ const mapStateToProps = (state) => ({
   site: state.sites.selected,
   category: state.sites.selectedCategory,
   stats: state.sites.stats,
-  data: getSitesData(state.sites),
-  scroll: state.scroll.scroll
+  data: getSitesData(state.sites)
 });
 
 const mapDispatchToProps = (dispatch) => ({
