@@ -1,7 +1,9 @@
 import React from 'react';
-import CountriesFilters from 'containers/countries/CountriesFilters';
-import TableList from 'containers/tables/TableList';
+import CountriesFilters from 'components/countries/CountriesFilters';
+import TableListHeader from 'components/tables/TableListHeader';
+import TableList from 'components/tables/TableList';
 import ScrollButton from 'containers/common/ScrollButton';
+import { Sticky } from 'react-sticky';
 
 function getDetailLink(category) {
   switch (category) {
@@ -35,15 +37,21 @@ class CountriesTable extends React.Component {
 
   render() {
     const detailLink = getDetailLink(this.props.category);
-    const tableClass = this.props.scroll ? 'c-table -fixed' : 'c-table';
     return (
       <div
         id="table-list"
-        className={`${tableClass}`}
+        className="c-table"
         ref={(ref) => { this.tableContainer = ref; }}
       >
         <ScrollButton />
-        <CountriesFilters country={this.props.country} category={this.props.category} />
+        <Sticky topOffset={-120} stickyClassName={'-sticky'}>
+          <CountriesFilters country={this.props.country} category={this.props.category} />
+          <TableListHeader
+            data={this.props.data}
+            columns={this.props.columns}
+            detailLink={detailLink}
+          />
+        </Sticky>
         <TableList
           data={this.props.data}
           columns={this.props.columns}
@@ -60,9 +68,7 @@ CountriesTable.propTypes = {
   columns: React.PropTypes.array.isRequired,
   data: React.PropTypes.any,
   cleanSearchFilter: React.PropTypes.func,
-  setScrollLimit: React.PropTypes.func,
-  scroll: React.PropTypes.bool,
-  scrollLimit: React.PropTypes.number
+  setScrollLimit: React.PropTypes.func
 };
 
 export default CountriesTable;

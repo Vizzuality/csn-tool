@@ -11,7 +11,7 @@ class SpeciesPage extends React.Component {
   render() {
     return (
       <div className="l-page -header row">
-        <div className="column">
+        <div className="column c-table -fixed -static">
           <SpeciesTable data={this.props.species} />
         </div>
       </div>

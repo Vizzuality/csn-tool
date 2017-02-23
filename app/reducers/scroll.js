@@ -1,9 +1,8 @@
-import { SET_SCROLL_STATE, SET_SCROLL_LIMIT, GET_FILTERS_HEIGHT } from 'constants';
+import { SET_SCROLL_STATE, SET_SCROLL_LIMIT } from 'constants';
 
 const initialState = {
   scroll: false,
-  scrollLimit: 0,
-  filtersHeight: 0
+  scrollLimit: 0
 };
 
 export default function (state = initialState, action) {
@@ -12,8 +11,6 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { scroll: action.payload });
     case SET_SCROLL_LIMIT:
       return Object.assign({}, state, { scrollLimit: action.payload });
-    case GET_FILTERS_HEIGHT:
-      return Object.assign({}, state, { filtersHeight: action.payload });
     default:
       return state;
   }

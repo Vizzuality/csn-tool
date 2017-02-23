@@ -1,4 +1,4 @@
-import { SET_SCROLL_STATE, SET_SCROLL_LIMIT, GET_FILTERS_HEIGHT } from 'constants';
+import { SET_SCROLL_STATE, SET_SCROLL_LIMIT } from 'constants';
 
 export function setScrollState(bool) {
   return dispatch => {
@@ -14,15 +14,6 @@ export function setScrollLimit(pos) {
     dispatch({
       type: SET_SCROLL_LIMIT,
       payload: pos
-    });
-  };
-}
-
-export function getFiltersHeight(height) {
-  return dispatch => {
-    dispatch({
-      type: GET_FILTERS_HEIGHT,
-      payload: height
     });
   };
 }

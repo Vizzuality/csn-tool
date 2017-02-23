@@ -56,9 +56,7 @@ const mapStateToProps = (state) => {
     country: state.countries.selected,
     category: state.countries.selectedCategory,
     data: getCountryData(state.countries, columns),
-    columns,
-    scroll: state.scroll.scroll,
-    scrollLimit: state.scroll.scrollLimit
+    columns
   };
 };
 

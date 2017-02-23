@@ -52,7 +52,7 @@ class SitesPage extends React.Component {
           </div>
           <div className="l-table">
             <div className="row">
-              <div className="column">
+              <div className="column c-table -fixed -static -static-offset">
                 <SitesTable />
               </div>
             </div>

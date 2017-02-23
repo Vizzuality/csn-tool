@@ -5,6 +5,7 @@ import CountriesTable from 'containers/countries/CountriesTable';
 import Select from 'react-select';
 import { replaceUrlParams } from 'helpers/router';
 import { translations } from 'locales/translations';
+import { StickyContainer } from 'react-sticky';
 
 const FILTER_OPTIONS = [
   { value: 'all', label: 'ALL' },
@@ -122,11 +123,13 @@ class CountriesPage extends React.Component {
         <div className={`l-map ${this.props.country ? '-short -header' : '-header'}`}>
           <CountriesMap id="countries-map" filter={this.props.filter} countries={this.props.countries} />
         </div>
-        <div className={`row l-content ${this.props.country ? '-short' : ''}`}>
-          <div className="column">
-            {this.props.country && <CountriesTable />}
+        <StickyContainer>
+          <div className={`row l-content ${this.props.country ? '-short' : ''}`}>
+            <div className="column">
+              {this.props.country && <CountriesTable />}
+            </div>
           </div>
-        </div>
+        </StickyContainer>
       </div>
     );
   }

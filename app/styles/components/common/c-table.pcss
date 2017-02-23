@@ -1,9 +1,16 @@
 .c-table {
+
   .c-scroll-button {
-    margin-top: -20px;
+    margin-top: rem(-20);
   }
 
-  /* &.-fixed {
+  .-sticky {
+    margin-top: rem(120);
+    background-color: rgb(242, 242, 242);
+    z-index: 1000;
+  }
+/*
+   &.-fixed {
 
     .c-table-filters {
       position: fixed;
@@ -28,5 +35,43 @@
     .c-table-list {
       padding-top: rem(138);
     }
-  } */
+  }*/
+
+  &.-static {
+
+    .c-table-filters {
+      top: rem(50);
+      padding-top: rem(10);
+      padding-bottom: rem(10);
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .header {
+      top: rem(114);
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .c-table-list {
+      padding-top: rem(120);
+    }
+  }
+
+  &.-static-offset {
+
+    .c-table-filters {
+      top: rem(120);
+    }
+
+    .header {
+      top: rem(184);
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .c-table-list {
+      padding-top: rem(175);
+    }
+  }
 }
