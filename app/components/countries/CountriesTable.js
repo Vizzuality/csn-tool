@@ -1,6 +1,9 @@
 import React from 'react';
 import CountriesFilters from 'components/countries/CountriesFilters';
+import TableListHeader from 'components/tables/TableListHeader';
 import TableList from 'components/tables/TableList';
+import ScrollButton from 'components/common/ScrollButton';
+import { Sticky } from 'react-sticky';
 
 function getDetailLink(category) {
   switch (category) {
@@ -16,6 +19,7 @@ function getDetailLink(category) {
 }
 
 class CountriesTable extends React.Component {
+
   componentWillMount() {
     this.props.cleanSearchFilter('');
   }
@@ -23,8 +27,16 @@ class CountriesTable extends React.Component {
   render() {
     const detailLink = getDetailLink(this.props.category);
     return (
-      <div>
-        <CountriesFilters country={this.props.country} category={this.props.category} />
+      <div className="c-table">
+        <ScrollButton />
+        <Sticky topOffset={-120} stickyClassName={'-sticky'}>
+          <CountriesFilters country={this.props.country} category={this.props.category} />
+          <TableListHeader
+            data={this.props.data}
+            columns={this.props.columns}
+            detailLink={detailLink}
+          />
+        </Sticky>
         <TableList
           data={this.props.data}
           columns={this.props.columns}
