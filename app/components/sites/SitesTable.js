@@ -3,7 +3,6 @@ import SitesFilters from 'components/sites/SitesFilters';
 import InfiniteScroll from 'components/common/InfiniteScroll';
 import TableList from 'components/tables/TableList';
 import TableListHeader from 'components/tables/TableListHeader';
-import { Sticky } from 'react-sticky';
 
 class SitesTable extends React.Component {
 

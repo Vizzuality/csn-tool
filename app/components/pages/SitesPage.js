@@ -2,7 +2,6 @@ import React from 'react';
 import ViewToggler from 'components/common/ViewToggler';
 import SitesMap from 'containers/sites/SitesMap';
 import SitesTable from 'containers/sites/SitesTable';
-import { StickyContainer } from 'react-sticky';
 import { withRouter } from 'react-router';
 
 class SitesPage extends React.Component {
@@ -27,27 +26,27 @@ class SitesPage extends React.Component {
   }
 
   render() {
-    if (this.props.routeParams.view === 'table') {
-      return (
-        <div className="l-page">
-          <div className="l-navigation -static">
-            <div className="row">
-              <div className="column">
-                <div className="navigation-wrapper">
-                  <div className="c-navigation">
-                    <div className="content">
-                      <div className="title">
-                        <h2>{this.context.t('sites')}</h2>
-                      </div>
+    return (
+      <div className="l-page">
+        <div className="l-navigation -static">
+          <div className="row">
+            <div className="column">
+              <div className="navigation-wrapper">
+                <div className="c-navigation">
+                  <div className="content">
+                    <div className="title">
+                      <h2>{this.context.t('sites')}</h2>
                     </div>
                   </div>
-                  <ViewToggler
-                    viewMode={this.props.routeParams.view}
-                  />
                 </div>
+                <ViewToggler
+                  viewMode={this.props.routeParams.view}
+                />
               </div>
             </div>
           </div>
+        </div>
+        {this.props.routeParams.view === 'table' &&
           <div className="l-table">
             <div className="row">
               <div className="column c-table">
@@ -55,36 +54,14 @@ class SitesPage extends React.Component {
               </div>
             </div>
           </div>
-        </div>
-      );
-    } else {
-      return (
-        <div className="l-page">
-          <div className="l-navigation">
-            <div className="row">
-              <div className="column">
-                <div className="navigation-wrapper">
-                  <div className="c-navigation">
-                    <div className="content">
-                      <div className="title">
-                        <h2>{this.context.t('sites')}</h2>
-                      </div>
-                    </div>
-                  </div>
-                  <ViewToggler
-                    viewMode={this.props.viewMode}
-                    setViewMode={this.props.setViewMode}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+        }
+        {this.props.routeParams.view !== 'table' &&
           <div className={"l-map -header -relative"}>
             <SitesMap markerCluster slug={this.props.selected} id="sites-page-map" />
           </div>
-        </div>
-      );
-    }
+        }
+      </div>
+    );
   }
 }
 
