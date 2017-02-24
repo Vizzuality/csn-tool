@@ -3,7 +3,7 @@ import SitesSearch from 'containers/sites/SitesSearch';
 
 function SitesFilters(props) {
   return (
-    <div className="row c-table-filters">
+    <div className="row c-table-filters -fixed">
       <div className="column small-12 medium-4 medium-offset-8">
         <SitesSearch id={props.id} placeholder="sitesFilter" />
       </div>

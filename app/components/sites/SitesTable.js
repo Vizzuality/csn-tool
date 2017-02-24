@@ -20,14 +20,12 @@ class SitesTable extends React.Component {
 
     return (
       <div className="c-paginated-table c-table">
-        <Sticky topOffset={-120} stickyClassName={'-sticky'}>
-          <SitesFilters category={this.props.category} />
-          <TableListHeader
-            data={this.props.list.data}
-            columns={this.props.columns}
-            detailLink={detailLink}
-          />
-        </Sticky>
+        <SitesFilters category={this.props.category} />
+        <TableListHeader
+          data={this.props.list.data}
+          columns={this.props.columns}
+          detailLink={detailLink}
+        />
         <InfiniteScroll
           page={this.props.list.page}
           hasMore={this.props.list.hasMore}

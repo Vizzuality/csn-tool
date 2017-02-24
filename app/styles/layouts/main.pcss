@@ -26,6 +26,10 @@
     justify-content: space-between;
     align-items: center;
   }
+
+  &.-static {
+    background-color: #656460;
+  }
 }
 
 .l-main {
@@ -74,10 +78,13 @@
   top: $header-height;
   width: 100%;
   height: calc(100vh - $header-height);
-  z-index: -300;
 
   &.-short {
     height: calc(100vh - $header-height - $content-peek);
+  }
+
+  &.-relative {
+    position: relative;
   }
 
   .l-legend {

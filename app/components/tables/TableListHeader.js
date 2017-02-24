@@ -6,7 +6,7 @@ function TableListHeader(props, context) {
   const colCenter = ['a', 'b', 'c', 'original_a', 'original_b', 'original_c', 'iba', 'csn', 'iba_species', 'csn_species'];
   return !props.columns.length
   ? <div className="c-table-list"><div className="no-data"><p className="text -title"> No data </p></div></div>
-  : <div id="table-rows" className="c-table-list">
+  : <div id="table-rows" className="c-table-list -header">
     <ul>
       <li className="header">
         {props.columns.map((column, index) => {
