@@ -2,6 +2,7 @@ import React from 'react';
 import SitesFilters from 'components/sites/SitesFilters';
 import InfiniteScroll from 'components/common/InfiniteScroll';
 import TableList from 'components/tables/TableList';
+import TableListHeader from 'components/tables/TableListHeader';
 
 class SitesTable extends React.Component {
 
@@ -17,8 +18,13 @@ class SitesTable extends React.Component {
       : '';
 
     return (
-      <div className="c-paginated-table">
+      <div className="c-paginated-table c-table">
         <SitesFilters category={this.props.category} />
+        <TableListHeader
+          data={this.props.list.data}
+          columns={this.props.columns}
+          detailLink={detailLink}
+        />
         <InfiniteScroll
           page={this.props.list.page}
           hasMore={this.props.list.hasMore}

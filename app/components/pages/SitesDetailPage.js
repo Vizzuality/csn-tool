@@ -2,6 +2,7 @@ import React from 'react';
 import GoBackLink from 'containers/common/GoBackLink';
 import SitesMap from 'containers/sites/SitesMap';
 import SitesDetailTable from 'containers/sites/SitesDetailTable';
+import { StickyContainer } from 'react-sticky';
 
 class SitesPage extends React.Component {
   componentWillMount() {
@@ -30,7 +31,7 @@ class SitesPage extends React.Component {
                   <div className="c-navigation">
                     <div className="content">
                       <div className="title">
-                        <GoBackLink className="breadcrumb" i18nText="back" />
+                        <GoBackLink className="breadcrumb" i18nText="back" endPoint="sites" lang={this.props.params.lang} />
                         <h2>{this.props.stats.site[0].name}</h2>
                       </div>
                       <div className="stats">
@@ -72,17 +73,19 @@ class SitesPage extends React.Component {
           <div className="l-map -header -short">
             <SitesMap id="sites-detail-map" markerCluster slug={this.props.site} />
           </div>
-          <div className="l-table">
-            <div className="row l-content -short">
-              <div className="column">
-                <SitesDetailTable
-                  data={this.props.data}
-                  slug={this.props.site}
-                  category={this.props.category}
-                />
+          <StickyContainer>
+            <div className="l-table">
+              <div className="row l-content -short">
+                <div className="column">
+                  <SitesDetailTable
+                    data={this.props.data}
+                    slug={this.props.site}
+                    category={this.props.category}
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          </StickyContainer>
         </div>
       </div>
     );
@@ -95,7 +98,9 @@ SitesPage.propTypes = {
   stats: React.PropTypes.any,
   data: React.PropTypes.any,
   site: React.PropTypes.string,
-  category: React.PropTypes.string
+  category: React.PropTypes.string,
+  params: React.PropTypes.object,
+  lang: React.PropTypes.string
 };
 
 export default SitesPage;

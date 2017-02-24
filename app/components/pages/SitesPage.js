@@ -2,6 +2,7 @@ import React from 'react';
 import ViewToggler from 'components/common/ViewToggler';
 import SitesMap from 'containers/sites/SitesMap';
 import SitesTable from 'containers/sites/SitesTable';
+import { withRouter } from 'react-router';
 
 class SitesPage extends React.Component {
 
@@ -27,7 +28,7 @@ class SitesPage extends React.Component {
   render() {
     return (
       <div className="l-page">
-        <div className="l-navigation">
+        <div className="l-navigation -static">
           <div className="row">
             <div className="column">
               <div className="navigation-wrapper">
@@ -39,25 +40,26 @@ class SitesPage extends React.Component {
                   </div>
                 </div>
                 <ViewToggler
-                  viewMode={this.props.viewMode}
-                  setViewMode={this.props.setViewMode}
+                  viewMode={this.props.routeParams.view}
                 />
               </div>
             </div>
           </div>
         </div>
-        <div className={`l-mask ${this.props.viewMode}`}>
-          <div className={"l-map -header"}>
-            <SitesMap markerCluster slug={this.props.selected} id="sites-page-map" />
-          </div>
+        {this.props.routeParams.view === 'table' &&
           <div className="l-table">
             <div className="row">
-              <div className="column">
+              <div className="column c-table">
                 <SitesTable />
               </div>
             </div>
           </div>
-        </div>
+        }
+        {this.props.routeParams.view !== 'table' &&
+          <div className={"l-map -header -relative"}>
+            <SitesMap markerCluster slug={this.props.selected} id="sites-page-map" />
+          </div>
+        }
       </div>
     );
   }
@@ -72,7 +74,8 @@ SitesPage.propTypes = {
   getSitesLocations: React.PropTypes.func.isRequired,
   setViewMode: React.PropTypes.func.isRequired,
   selected: React.PropTypes.string,
-  viewMode: React.PropTypes.string
+  viewMode: React.PropTypes.string,
+  routeParams: React.PropTypes.object
 };
 
-export default SitesPage;
+export default withRouter(SitesPage);

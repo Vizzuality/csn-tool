@@ -1,22 +1,32 @@
 import React from 'react';
+import { withRouter } from 'react-router';
+import { toggleParams } from 'helpers/router';
 
-function ViewToggler(props, context) {
-  return (
-    <ul className="c-view-toggler">
-      <li
-        className={props.viewMode === 'map' ? 'is-active toggler' : 'toggler'}
-        onClick={() => props.setViewMode('map')}
-      >
-        {context.t('map')}
-      </li>
-      <li
-        className={props.viewMode === 'list' ? 'is-active toggler' : 'toggler'}
-        onClick={() => props.setViewMode('list')}
-      >
-        {context.t('table')}
-      </li>
-    </ul>
-  );
+class ViewToggler extends React.Component {
+
+  onToggleMode(mode) {
+    const url = toggleParams(mode, 'table', this.props.router.getCurrentLocation());
+    this.props.router.push(url);
+  }
+
+  render() {
+    return (
+      <ul className="c-view-toggler">
+        <li
+          className={this.props.viewMode !== 'table' ? 'is-active toggler' : 'toggler'}
+          onClick={() => this.onToggleMode('map')}
+        >
+          {this.context.t('map')}
+        </li>
+        <li
+          className={this.props.viewMode === 'table' ? 'is-active toggler' : 'toggler'}
+          onClick={() => this.onToggleMode('table')}
+        >
+          {this.context.t('table')}
+        </li>
+      </ul>
+    );
+  }
 }
 
 ViewToggler.contextTypes = {
@@ -26,7 +36,8 @@ ViewToggler.contextTypes = {
 
 ViewToggler.propTypes = {
   viewMode: React.PropTypes.string,
-  setViewMode: React.PropTypes.func
+  setViewMode: React.PropTypes.func,
+  router: React.PropTypes.object
 };
 
-export default ViewToggler;
+export default withRouter(ViewToggler);

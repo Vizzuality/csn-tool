@@ -1,7 +1,18 @@
 .c-table-filters {
   align-items: flex-end;
   margin-bottom: rem(15);
-  margin-top: rem(10);
+  padding-top: rem(10);
+
+  &.-fixed {
+    position: fixed;
+    margin-top: rem(120);
+    left: calc((100vw - 1150px) / 2);
+    right: calc((100vw - 1150px) / 2);
+    background: rgb(242, 242, 242);
+    z-index: 5;
+    margin-bottom: 0;
+    padding-bottom: rem(15);
+  }
 
   .tags {
     width: auto;
