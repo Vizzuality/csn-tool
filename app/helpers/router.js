@@ -18,11 +18,11 @@ export function toggleParams(action, targetParam, route) {
   if (route.pathname.indexOf(targetParam) > -1 && action !== targetParam) {
     const index = path.indexOf(targetParam);
     path.splice(index, 1);
-    path.forEach(function (param) {
+    path.forEach((param) => {
       url += `/${param}`;
     });
   } else if (route.pathname.indexOf(targetParam) === -1 && action === targetParam) {
-    path.forEach(function (param) {
+    path.forEach((param) => {
       url += `/${param}`;
     });
     url += `/${action}`;
