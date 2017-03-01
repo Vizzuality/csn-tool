@@ -1,5 +1,5 @@
 import React from 'react';
-import ViewToggler from 'components/common/ViewToggler';
+import ViewToggler from 'components/sites/ViewToggler';
 import SitesMap from 'containers/sites/SitesMap';
 import SitesTable from 'containers/sites/SitesTable';
 import { StickyContainer } from 'react-sticky';
@@ -7,7 +7,6 @@ import { StickyContainer } from 'react-sticky';
 class SitesPage extends React.Component {
 
   componentWillMount() {
-    this.props.setViewMode('map');
     this.getData(this.props);
   }
 
@@ -39,10 +38,7 @@ class SitesPage extends React.Component {
                     </div>
                   </div>
                 </div>
-                <ViewToggler
-                  viewMode={this.props.viewMode}
-                  setViewMode={this.props.setViewMode}
-                />
+                <ViewToggler viewMode={this.props.viewMode} />
               </div>
             </div>
           </div>
