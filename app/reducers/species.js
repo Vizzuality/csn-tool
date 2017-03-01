@@ -1,6 +1,6 @@
 import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION,
   GET_SPECIES_THREATS, GET_SPECIES_HABITATS, GET_SPECIES_LOOK_ALIKE_SPECIES,
-  SET_SPECIES_DETAIL_PARAMS,
+  SET_SPECIES_DETAIL_PARAMS, SET_SPECIES_SORT,
   SET_SPECIES_DETAIL_SEARCH, TOGGLE_SPECIES_LAYER } from 'constants';
 
 const initialState = {
@@ -17,6 +17,10 @@ const initialState = {
   layers: {
     sites: true,
     population: true
+  },
+  sort: {
+    field: '',
+    order: ''
   }
 };
 
@@ -66,6 +70,17 @@ export default function (state = initialState, action) {
       const layers = Object.assign({}, state.layers);
       layers[action.payload] = !layers[action.payload];
       return Object.assign({}, state, { layers });
+    }
+    case SET_SPECIES_SORT: {
+      const list = [...state.list];
+      const sortOrder = action.payload.order === 'desc' ? -1 : 1;
+      list.sort((a, b) => {
+        const field = action.payload.field;
+        if (a[field] < b[field]) return -1 * sortOrder;
+        if (a[field] > b[field]) return 1 * sortOrder;
+        return 0;
+      });
+      return Object.assign({}, state, { list, sort: action.payload });
     }
     default:
       return state;
