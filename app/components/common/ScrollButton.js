@@ -6,7 +6,8 @@ class ScrollButton extends React.Component {
     super(props);
     this.state = {
       showLabel: true,
-      scroll: false
+      scroll: false,
+      fixed: false
     };
     this.timeout = null;
     this.handleClick = this.handleClick.bind(this);
@@ -19,6 +20,10 @@ class ScrollButton extends React.Component {
 
   componentWillReceiveProps() {
     this.cache();
+  }
+
+  componentWillUnmount() {
+    this.detachScrollListener();
   }
 
   onScroll() {
@@ -42,13 +47,17 @@ class ScrollButton extends React.Component {
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
       this.onScroll();
-    }, 250);
+    }, 100);
     if (window.pageYOffset >= this.scrollLimit && !this.state.scroll) {
-      this.state.scroll = true;
-      this.scrollContainer.classList.add('-fixed');
+      this.setState({
+        scroll: true,
+        fixed: true
+      });
     } else if (window.pageYOffset < this.scrollLimit && this.state.scroll) {
-      this.state.scroll = false;
-      this.scrollContainer.classList.remove('-fixed');
+      this.setState({
+        scroll: false,
+        fixed: false
+      });
     }
   }
 
@@ -73,7 +82,7 @@ class ScrollButton extends React.Component {
 
   render() {
     return (
-      <div className={`c-scroll-button ${this.state.showLabel ? '' : '-hide'}`} ref={(ref) => { this.scrollContainer = ref; }}>
+      <div className={`c-scroll-button ${this.state.showLabel ? '' : '-hide'} ${this.state.fixed ? '-fixed' : ''}`} ref={(ref) => { this.scrollContainer = ref; }}>
         <div className="button" onClick={this.handleClick}>
           <svg width="18" height="11" viewBox="0 0 18 11"><title>Scroll down</title><path d="M1.641-.044l7.27 7.278 7.374-7.241L17.823 1.5 8.91 10.411 0 1.5z" fillRule="evenodd" /></svg>
         </div>
