@@ -31,7 +31,7 @@ class SitesPage extends React.Component {
                   <div className="c-navigation">
                     <div className="content">
                       <div className="title">
-                        <GoBackLink className="breadcrumb" i18nText="back" endPoint="sites" lang={this.props.params.lang} />
+                        <GoBackLink className="breadcrumb" i18nText="back" endPoint="sites" />
                         <h2>{this.props.stats.site[0].name}</h2>
                       </div>
                       <div className="stats">

@@ -34,7 +34,7 @@ class SpeciesDetailPage extends React.Component {
               {this.props.stats.species
                 ? <div className="content">
                   <div className="title">
-                    <GoBackLink className="breadcrumb" i18nText="back" endPoint="species" lang={this.props.params.lang} />
+                    <GoBackLink className="breadcrumb" i18nText="back" endPoint="species" />
                     <div className="name">
                       <h2 className="scientific-name">{this.props.stats.species[0].scientific_name}</h2>
                       <div className={`iucn-icon -${this.props.stats.species[0].iucn_category}`}>

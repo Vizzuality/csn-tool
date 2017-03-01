@@ -64,7 +64,7 @@ class CountriesPage extends React.Component {
                 ? <div>
                   <div className="content">
                     <div className="title">
-                      <GoBackLink className="breadcrumb" i18nText="back" endPoint="countries" lang={this.props.params.lang} />
+                      <GoBackLink className="breadcrumb" i18nText="back" endPoint="countries" />
                       <h2>{this.props.countryStats.country}</h2>
                     </div>
                   </div>
