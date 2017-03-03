@@ -1,17 +1,28 @@
 import React from 'react';
+import { withRouter } from 'react-router';
+import { replaceUrlParams } from 'helpers/router';
+
 
 function ViewToggler(props, context) {
+  function onToggleMode(mode) {
+    const params = { viewMode: mode };
+    const route = props.router.getCurrentLocation();
+    const url = replaceUrlParams(route.pathname + route.search, params);
+
+    props.router.push(url);
+  }
+
   return (
     <ul className="c-view-toggler">
       <li
         className={props.viewMode === 'map' ? 'is-active toggler' : 'toggler'}
-        onClick={() => props.setViewMode('map')}
+        onClick={() => onToggleMode('map')}
       >
         {context.t('map')}
       </li>
       <li
         className={props.viewMode === 'list' ? 'is-active toggler' : 'toggler'}
-        onClick={() => props.setViewMode('list')}
+        onClick={() => onToggleMode('list')}
       >
         {context.t('table')}
       </li>
@@ -26,7 +37,7 @@ ViewToggler.contextTypes = {
 
 ViewToggler.propTypes = {
   viewMode: React.PropTypes.string,
-  setViewMode: React.PropTypes.func
+  router: React.PropTypes.object.isRequired
 };
 
-export default ViewToggler;
+export default withRouter(ViewToggler);

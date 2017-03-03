@@ -49,21 +49,24 @@ export function getCountryStats(iso) {
 export function getCountrySites(iso) {
   const url = `${config.apiHost}/countries/${iso}/sites`;
   return dispatch => {
-    try {
-      fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          dispatch({
-            type: GET_COUNTRIES_SITES,
-            payload: { iso, data }
-          });
+    fetch(url)
+      .then(response => {
+        if (response.ok) return response.json();
+        throw Error(response.statusText);
+      })
+      .then(data => {
+        dispatch({
+          type: GET_COUNTRIES_SITES,
+          payload: { iso, data }
         });
-    } catch (err) {
-      dispatch({
-        type: GET_COUNTRIES_SITES,
-        payload: { iso, data: [] }
+      })
+      .catch((err) => {
+        console.warn(err);
+        dispatch({
+          type: GET_COUNTRIES_SITES,
+          payload: { iso, data: [] }
+        });
       });
-    }
   };
 }
 

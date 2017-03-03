@@ -1,11 +1,12 @@
 .c-table-list {
   position: relative;
+  z-index: 2;
 
   > ul {
     padding: 0;
     margin: 0;
 
-    > li {
+    li {
       list-style: none;
       display: flex;
       align-items: flex-start;
@@ -15,6 +16,7 @@
       &.header {
         border-bottom: rem(2) solid $border-color;
         align-items: flex-end;
+
         .header-link {
           flex-basis: 24px;
         }
@@ -108,5 +110,12 @@
         transform: scale(0.6, 0.6);
       }
     }
+  }
+
+  .no-data {
+    min-height: rem(300);
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
