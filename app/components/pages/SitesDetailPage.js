@@ -57,7 +57,7 @@ class SitesPage extends React.Component {
                               IBA in danger
                             </div>
                             <div className="value">
-                              {this.props.stats.site[0].iba_in_danger}
+                              {this.props.stats.site[0].iba_in_danger || '-'}
                             </div>
                           </div>
                           <div className="item">
