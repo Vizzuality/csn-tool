@@ -2,9 +2,9 @@ import React from 'react';
 import GoBackLink from 'containers/common/GoBackLink';
 import SpeciesDetailMap from 'containers/species/SpeciesDetailMap';
 import SpeciesDetailTable from 'containers/species/SpeciesDetailTable';
+import { StickyContainer } from 'react-sticky';
 
 class SpeciesDetailPage extends React.Component {
-
   componentWillMount() {
     this.props.getSpeciesStats(this.props.id);
     // Sites and populations always needed in the map
@@ -34,7 +34,7 @@ class SpeciesDetailPage extends React.Component {
               {this.props.stats.species
                 ? <div className="content">
                   <div className="title">
-                    <GoBackLink className="breadcrumb" i18nText="back" />
+                    <GoBackLink className="breadcrumb" i18nText="back" endPoint="species" />
                     <div className="name">
                       <h2 className="scientific-name">{this.props.stats.species[0].scientific_name}</h2>
                       <div className={`iucn-icon -${this.props.stats.species[0].iucn_category}`}>
@@ -71,11 +71,13 @@ class SpeciesDetailPage extends React.Component {
         <div className="l-map -short -header">
           <SpeciesDetailMap id="species-detail-map" />
         </div>
-        <div className="row l-content -short">
-          <div className="column">
-            <SpeciesDetailTable id={this.props.id} category={this.props.category} />
+        <StickyContainer>
+          <div className="row l-content -short">
+            <div className="column">
+              <SpeciesDetailTable id={this.props.id} category={this.props.category} />
+            </div>
           </div>
-        </div>
+        </StickyContainer>
       </div>
     );
   }
@@ -92,7 +94,9 @@ SpeciesDetailPage.propTypes = {
   getSpeciesStats: React.PropTypes.func.isRequired,
   getSpeciesData: React.PropTypes.func.isRequired,
   stats: React.PropTypes.any.isRequired,
-  data: React.PropTypes.any
+  data: React.PropTypes.any,
+  params: React.PropTypes.object,
+  lang: React.PropTypes.string
 };
 
 export default SpeciesDetailPage;

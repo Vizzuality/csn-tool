@@ -1,7 +1,7 @@
 import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_SITES,
          GET_COUNTRIES_STATS, GET_COUNTRIES_SITES_OLD, TOGGLE_COUNTRIES_LAYER,
          GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS, GET_COUNTRIES_SIMILAR_SPECIES,
-         SET_COUNTRY_PARAMS, SET_COUNTRY_SEARCH } from 'constants';
+         SET_COUNTRY_PARAMS, SET_COUNTRY_SEARCH, SET_COUNTRY_SORT } from 'constants';
 
 const initialState = {
   selected: '',
@@ -18,6 +18,10 @@ const initialState = {
   lookAlikeSpecies: {},
   layers: {
     sites: true
+  },
+  sort: {
+    field: '',
+    order: ''
   }
 };
 
@@ -71,6 +75,31 @@ export default function (state = initialState, action) {
       const layers = Object.assign({}, state.layers);
       layers[action.payload] = !layers[action.payload];
       return Object.assign({}, state, { layers });
+    }
+
+    case SET_COUNTRY_SORT: {
+      let list = null;
+      let isResource = false;
+      if (state.selected && state.selectedCategory) {
+        isResource = true;
+        list = [...state[state.selectedCategory][state.selected]];
+      } else {
+        list = [...state.list];
+      }
+      const sortOrder = action.payload.order === 'desc' ? -1 : 1;
+      list.sort((a, b) => {
+        const itemA = a[action.payload.field] ? a[action.payload.field].toString().trim().toUpperCase() : '';
+        const itemB = b[action.payload.field] ? b[action.payload.field].toString().trim().toUpperCase() : '';
+        if (itemA < itemB) return -1 * sortOrder;
+        if (itemA > itemB) return 1 * sortOrder;
+        return 0;
+      });
+
+      if (isResource) {
+        const data = Object.assign({}, state[state.selectedCategory], { [state.selected]: list });
+        return Object.assign({}, state, { [state.selectedCategory]: data, sort: action.payload });
+      }
+      return Object.assign({}, state, { list, sort: action.payload });
     }
     default:
       return state;

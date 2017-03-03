@@ -4,6 +4,7 @@
   width: 100%;
   z-index: 100;
   background-color: $bg-dark-color;
+  transition: background 1s ease-in;
 
   @media (--medium-viewport) {
     height: $header-height;
@@ -16,7 +17,7 @@
   right: 0;
   left: 0;
   background-color: rgba($bg-dark-color, 0.7);
-  z-index: 2;
+  z-index: 10;
   padding: rem(15) 0;
   height: rem(70);
 
@@ -91,6 +92,12 @@
 .l-maps-container {
   height: 100%;
   position: relative;
+}
+
+.l-sticky-offset {
+  height: 120px;
+  background: transparent;
+  width: 100%;
 }
 
 .l-content {

@@ -9,9 +9,9 @@ class CountriesMap extends BasicMap {
   constructor() {
     super();
     this.styles = {
-      hide: { color: 'transparent', weight: 0, opacity: 0 },
-      base: { color: '#efd783', weight: 2, opacity: 0 },
-      highlight: { color: '#ffc500', weight: 2, opacity: 0 }
+      hide: { color: 'transparent', opacity: 0 },
+      base: { fillColor: '#efd783', fillOpacity: 0.5, color: 'transparent', opacity: 0 },
+      highlight: { fillColor: '#ffc500', fillOpacity: 1, color: 'transparent', opacity: 0 }
     };
     this.markers = [];
   }
@@ -36,15 +36,16 @@ class CountriesMap extends BasicMap {
 
     if (this.props.data && this.props.data.length) {
       this.drawMarkers(this.props.data);
-      this.fitBounds();
     }
   }
 
   componentWillReceiveProps(newProps) {
+    this.setActiveLayer();
     this.handleMapScroll(newProps.country);
+    this.drawGeo(newProps.geoms, newProps.countries);
 
-    if (newProps.countries || newProps.geoms && this.props.geoms !== newProps.geoms) {
-      this.drawGeo(newProps.geoms, newProps.countries);
+    if (newProps.country && newProps.router.location.search === '') {
+      this.fitBounds(this.activeLayer);
     }
 
     if (newProps.layers.sites) {
@@ -52,8 +53,6 @@ class CountriesMap extends BasicMap {
         if (this.props.data.length !== newProps.data.length) {
           this.clearMarkers();
           this.drawMarkers(newProps.data);
-          this.fitBounds();
-          this.addLayer();
         }
       } else {
         this.clearMarkers();
@@ -71,6 +70,18 @@ class CountriesMap extends BasicMap {
 
   componentWillUnmount() {
     this.remove();
+  }
+
+  setActiveLayer() {
+    const onEachFeature = (layer) => {
+      const properties = layer.feature.properties;
+      const iso = properties.iso3;
+      const isoParam = this.props.country;
+      if (iso === isoParam) {
+        this.activeLayer = layer;
+      }
+    };
+    this.topoLayer.eachLayer(onEachFeature);
   }
 
   setPopupPosition(latLng) {
@@ -165,17 +176,23 @@ class CountriesMap extends BasicMap {
     return countryData;
   }
 
-  getLayerStyle(filter, countries, iso) {
-    if (filter === 'aewa' || filter === 'ramsar') {
-      const countryData = this.getCountryData(countries, iso);
-      if (filter === 'aewa' && countryData.aewa_member) {
-        return this.styles.base;
-      } else if (filter === 'ramsar' && countryData.ramsar_member) {
-        return this.styles.base;
+  getLayerStyle(filter, countries, iso, isoParam) {
+    if (this.props.country === '') {
+      if (filter === 'aewa' || filter === 'ramsar') {
+        const countryData = this.getCountryData(countries, iso);
+        if (filter === 'aewa' && countryData.aewa_member) {
+          return this.styles.base;
+        } else if (filter === 'ramsar' && countryData.ramsar_member) {
+          return this.styles.base;
+        }
+        return this.styles.hide;
       }
-      return this.styles.hide;
+      return this.styles.base;
     }
-    return this.styles.base;
+    if (iso === isoParam) {
+      return this.styles.base;
+    }
+    return this.styles.hide;
   }
 
   drawGeo(geo, countries) {
@@ -183,7 +200,8 @@ class CountriesMap extends BasicMap {
       const properties = layer.feature.properties;
       const filter = this.props.filter;
       const iso = properties.iso3;
-      const layerStyle = this.getLayerStyle(filter, countries, iso);
+      const isoParam = this.props.country;
+      const layerStyle = this.getLayerStyle(filter, countries, iso, isoParam);
       layer.setStyle(layerStyle);
 
       if (properties && properties.name) {
@@ -191,7 +209,6 @@ class CountriesMap extends BasicMap {
           if (!this.props.country) {
             this.showPopup(e.latlng, properties);
             layer.setStyle(this.styles.highlight);
-            this.currentLayer = layer;
           }
         });
         layer.on('mousemove', (e) => {
@@ -206,10 +223,10 @@ class CountriesMap extends BasicMap {
         layer.on('click', () => {
           if (!this.props.country) {
             this.goToDetail(properties.iso3);
-            layer.setStyle(this.styles.hide);
           } else {
             this.hidePopup();
           }
+          this.fitBounds(this.activeLayer);
         });
       }
     };
@@ -257,15 +274,13 @@ class CountriesMap extends BasicMap {
     }
   }
 
-  fitBounds() {
-    if (this.markers.length) {
-      const markersGroup = new L.featureGroup(this.markers); // eslint-disable-line new-cap
-      this.map.fitBounds(markersGroup.getBounds(), { padding: [10, 10], maxZoom: 8 });
+  fitBounds(layer) {
+    if (layer) {
+      this.map.fitBounds(layer.getBounds(), { paddingTopLeft: [80, 0], paddingBottomRight: [80, 0] });
     }
   }
 
   outBounds() {
-    this.layer.setOpacity(0);
     this.map.setView(MAP_CENTER, MAP_MIN_ZOOM);
   }
 

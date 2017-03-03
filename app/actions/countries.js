@@ -1,7 +1,7 @@
 import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_SITES,
         GET_COUNTRIES_STATS, GET_COUNTRIES_SITES_OLD, TOGGLE_COUNTRIES_LAYER,
         GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS, GET_COUNTRIES_SIMILAR_SPECIES,
-        SET_COUNTRY_PARAMS, SET_COUNTRY_SEARCH } from 'constants';
+        SET_COUNTRY_PARAMS, SET_COUNTRY_SEARCH, SET_COUNTRY_SORT } from 'constants';
 import { push } from 'react-router-redux';
 
 export function goCountryDetail(iso) {
@@ -49,21 +49,24 @@ export function getCountryStats(iso) {
 export function getCountrySites(iso) {
   const url = `${config.apiHost}/countries/${iso}/sites`;
   return dispatch => {
-    try {
-      fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          dispatch({
-            type: GET_COUNTRIES_SITES,
-            payload: { iso, data }
-          });
+    fetch(url)
+      .then(response => {
+        if (response.ok) return response.json();
+        throw Error(response.statusText);
+      })
+      .then(data => {
+        dispatch({
+          type: GET_COUNTRIES_SITES,
+          payload: { iso, data }
         });
-    } catch (err) {
-      dispatch({
-        type: GET_COUNTRIES_SITES,
-        payload: { iso, data: [] }
+      })
+      .catch((err) => {
+        console.warn(err);
+        dispatch({
+          type: GET_COUNTRIES_SITES,
+          payload: { iso, data: [] }
+        });
       });
-    }
   };
 }
 
@@ -183,5 +186,12 @@ export function toggleLayer(layer) {
   return {
     type: TOGGLE_COUNTRIES_LAYER,
     payload: layer
+  };
+}
+
+export function setCountriesTableSort(sort) {
+  return {
+    type: SET_COUNTRY_SORT,
+    payload: sort
   };
 }

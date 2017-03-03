@@ -27,7 +27,7 @@ class Map extends React.Component {
   setMapParams() {
     const route = this.props.router.getCurrentLocation();
     const url = replaceUrlParams(route.pathname + route.search, this.getMapParams());
-    this.props.router.push(url);
+    this.props.router.replace(url);
   }
 
   setUrlSyncListeners() {
