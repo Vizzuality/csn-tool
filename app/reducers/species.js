@@ -72,14 +72,27 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { layers });
     }
     case SET_SPECIES_SORT: {
-      const list = [...state.list];
+      let list = null;
+      let isResource = false;
+      if (state.selected && state.selectedCategory) {
+        isResource = true;
+        list = [...state[state.selectedCategory][state.selected]];
+      } else {
+        list = [...state.list];
+      }
       const sortOrder = action.payload.order === 'desc' ? -1 : 1;
       list.sort((a, b) => {
-        const field = action.payload.field;
-        if (a[field] < b[field]) return -1 * sortOrder;
-        if (a[field] > b[field]) return 1 * sortOrder;
+        const itemA = a[action.payload.field] !== null ? a[action.payload.field].toString().trim().toUpperCase() : '';
+        const itemB = b[action.payload.field] !== null ? b[action.payload.field].toString().trim().toUpperCase() : '';
+        if (itemA < itemB) return -1 * sortOrder;
+        if (itemA < itemB) return 1 * sortOrder;
         return 0;
       });
+
+      if (isResource) {
+        const data = Object.assign({}, state[state.selectedCategory], { [state.selected]: list });
+        return Object.assign({}, state, { [state.selectedCategory]: data, sort: action.payload });
+      }
       return Object.assign({}, state, { list, sort: action.payload });
     }
     default:
