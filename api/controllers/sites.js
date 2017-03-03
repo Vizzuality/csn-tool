@@ -20,7 +20,7 @@ function getSites(req, res) {
       ),
       p as (SELECT DISTINCT site_id FROM species_sites)
     SELECT s.country, s.iso3, s.iso2, s.site_name, s.protection_status, s.site_id as id, s.lat, s.lon,
-    stc.csn, stc.iba, s.hyperlink
+    stc.csn, stc.iba, s.hyperlink, s.iba_in_danger
     FROM sites s
     INNER JOIN stc ON stc.site_id = s.site_id
     WHERE s.site_id IN (SELECT * from p) ${search}
@@ -45,12 +45,13 @@ function getSites(req, res) {
 function getSitesDetails(req, res) {
   const query = `SELECT sites.site_id AS id, protection_status,
     iso3 as country, site_name, lat, lon,
-    hyperlink, csn, iba, COUNT(ss.species_id) AS qualifying_species
+    hyperlink, csn, iba, COUNT(ss.species_id) AS qualifying_species,
+    sites.iba_in_danger
     FROM sites
     INNER JOIN species_sites AS ss ON ss.site_id = sites.site_id
     WHERE sites.site_id = ${req.params.id}
     GROUP BY sites.site_id, sites.protection_status, iso3, site_name, lat,
-    lon, hyperlink, csn, iba
+    lon, hyperlink, csn, iba, iba_in_danger
     `;
   rp(CARTO_SQL + query)
     .then((data) => {
@@ -68,6 +69,7 @@ function getSitesDetails(req, res) {
             hyperlink: row.hyperlink,
             csn: row.csn,
             iba: row.iba,
+            iba_in_danger: row.iba_in_danger,
             qualifying_species: row.qualifying_species
           }]
         });

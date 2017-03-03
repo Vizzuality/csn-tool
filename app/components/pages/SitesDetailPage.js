@@ -54,6 +54,14 @@ class SitesPage extends React.Component {
                           </div>
                           <div className="item">
                             <div className="label">
+                              IBA in danger
+                            </div>
+                            <div className="value">
+                              {this.props.stats.site[0].iba_in_danger}
+                            </div>
+                          </div>
+                          <div className="item">
+                            <div className="label">
                               Qualifying Species
                             </div>
                             <div className="value">
