@@ -87,7 +87,7 @@ export default function (state = initialState, action) {
         const itemA = a[action.payload.field] !== null ? a[action.payload.field].toString().trim().toUpperCase() : '';
         const itemB = b[action.payload.field] !== null ? b[action.payload.field].toString().trim().toUpperCase() : '';
         if (itemA < itemB) return -1 * sortOrder;
-        if (itemA < itemB) return 1 * sortOrder;
+        if (itemA > itemB) return 1 * sortOrder;
         return 0;
       });
 
