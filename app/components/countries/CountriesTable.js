@@ -1,6 +1,6 @@
 import React from 'react';
 import CountriesFilters from 'components/countries/CountriesFilters';
-import TableListHeader from 'components/tables/TableListHeader';
+import TableListHeader from 'containers/countries/TableListHeader';
 import TableList from 'components/tables/TableList';
 import ScrollButton from 'components/common/ScrollButton';
 import { Sticky } from 'react-sticky';
@@ -32,7 +32,7 @@ class CountriesTable extends React.Component {
         <Sticky topOffset={-120} stickyClassName={'-sticky'}>
           <CountriesFilters country={this.props.country} category={this.props.category} />
           <TableListHeader
-            data={this.props.data}
+            dataSample={this.props.data[0] || {}}
             columns={this.props.columns}
             detailLink={detailLink}
           />

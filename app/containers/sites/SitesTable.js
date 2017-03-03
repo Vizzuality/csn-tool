@@ -7,9 +7,7 @@ function getSitesData(sites, columns) {
 
   if (!list.data || !sites.searchFilter) return list;
 
-  const newData = list.data.map((a) => Object.assign({}, a));
-
-  const filteredData = newData.filter((item) => {
+  const filteredData = sites.filter((item) => {
     let match = false;
     const modItem = item;
     const searchFilter = sites.searchFilter.toLowerCase();

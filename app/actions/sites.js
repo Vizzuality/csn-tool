@@ -1,5 +1,5 @@
 import { CLEAR_SITES_LIST, GET_SITES_STATS, GET_SITES_LIST, GET_SITES_SPECIES,
-         GET_SITES_POPULATIONS, SET_SITES_PARAMS,
+         GET_SITES_POPULATIONS, SET_SITES_PARAMS, SET_SITES_SORT,
          SET_SITES_SEARCH, SET_VIEW_MODE, GET_SITES_LOCATIONS } from 'constants';
 import { RESULTS_PER_PAGE } from 'constants/config';
 import { push } from 'react-router-redux';
@@ -131,5 +131,12 @@ export function setViewMode(viewMode) {
   return {
     type: SET_VIEW_MODE,
     payload: viewMode
+  };
+}
+
+export function setSitesTableSort(sort) {
+  return {
+    type: SET_SITES_SORT,
+    payload: sort
   };
 }

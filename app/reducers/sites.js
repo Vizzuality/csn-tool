@@ -1,5 +1,5 @@
 import { CLEAR_SITES_LIST, SET_SITES_PARAMS, GET_SITES_STATS, GET_SITES_LIST,
-         GET_SITES_SPECIES, GET_SITES_POPULATIONS,
+         GET_SITES_SPECIES, GET_SITES_POPULATIONS, SET_SITES_SORT,
          SET_SITES_SEARCH, SET_VIEW_MODE, GET_SITES_LOCATIONS } from 'constants';
 import { RESULTS_PER_PAGE } from 'constants/config';
 
@@ -17,7 +17,11 @@ const initialState = {
   species: {},
   populations: {},
   searchFilter: '',
-  viewMode: 'map'
+  viewMode: 'map',
+  sort: {
+    field: '',
+    order: ''
+  }
 };
 
 export default function (state = initialState, action) {
@@ -68,6 +72,36 @@ export default function (state = initialState, action) {
       const data = Object.assign({}, state.populations, {});
       data[action.payload.id] = action.payload.data;
       return Object.assign({}, state, { populations: data });
+    }
+    case SET_SITES_SORT: {
+      let list = null;
+      let isResource = false;
+      if (state.selected && state.selectedCategory) {
+        isResource = true;
+        list = [...state[state.selectedCategory][state.selected].data];
+      } else {
+        list = [...state.list];
+      }
+      const sortOrder = action.payload.order === 'desc' ? -1 : 1;
+      list.sort((a, b) => {
+        const itemA = a[action.payload.field] !== null ? a[action.payload.field].toString().trim().toUpperCase() : '';
+        const itemB = b[action.payload.field] !== null ? b[action.payload.field].toString().trim().toUpperCase() : '';
+        if (itemA < itemB) return -1 * sortOrder;
+        if (itemA < itemB) return 1 * sortOrder;
+        return 0;
+      });
+
+      if (isResource) {
+        const newData = {
+          [state.selected]: {
+            site: [...state[state.selectedCategory][state.selected].site],
+            data: list
+          }
+        };
+        const data = Object.assign({}, state[state.selectedCategory], newData);
+        return Object.assign({}, state, { [state.selectedCategory]: data, sort: action.payload });
+      }
+      return Object.assign({}, state, { list, sort: action.payload });
     }
     default:
       return state;

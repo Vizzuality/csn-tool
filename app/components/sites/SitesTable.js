@@ -2,7 +2,7 @@ import React from 'react';
 import SitesFilters from 'components/sites/SitesFilters';
 import InfiniteScroll from 'components/common/InfiniteScroll';
 import TableList from 'components/tables/TableList';
-import TableListHeader from 'components/tables/TableListHeader';
+import TableListHeader from 'containers/sites/TableListHeader';
 import { Sticky } from 'react-sticky';
 
 class SitesTable extends React.Component {
@@ -23,7 +23,7 @@ class SitesTable extends React.Component {
         <Sticky topOffset={-120} stickyClassName={'-sticky'}>
           <SitesFilters category={this.props.category} />
           <TableListHeader
-            data={this.props.list.data}
+            dataSample={this.props.list.data[0] || {}}
             columns={this.props.columns}
             detailLink={detailLink}
           />
