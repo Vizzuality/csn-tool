@@ -155,7 +155,8 @@ class CountriesMap extends BasicMap {
       ramsar_member: false,
       aewa_member: false
     };
-    for (i = 0; i < countries.length; i++) {
+    const length = countries.length;
+    for (i = 0; i < length; i++) {
       if (countries[i].iso3 === iso) {
         countryData = countries[i];
         return countryData;

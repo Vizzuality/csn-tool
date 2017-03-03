@@ -7,19 +7,19 @@ function MainNav() {
     <nav className="c-main-nav">
       <ul>
         <li>
-          <NavLink to={"/countries"} i18nText="countries" />
+          <NavLink to={"/countries"} i18nText="countries" parent />
         </li>
         <li>
-          <NavLink to={"/sites"} i18nText="sites" />
+          <NavLink to={"/sites"} i18nText="sites" parent />
         </li>
         <li>
-          <NavLink to={"/species"} i18nText="species" />
+          <NavLink to={"/species"} i18nText="species" parent />
         </li>
         <li>
-          <NavLink className="-disabled" to="" i18nText="guidelines" />
+          <NavLink className="-disabled" to="" i18nText="guidelines" parent />
         </li>
         <li>
-          <NavLink className="-disabled" to="" i18nText="about" />
+          <NavLink className="-disabled" to="" i18nText="about" parent />
         </li>
       </ul>
     </nav>
