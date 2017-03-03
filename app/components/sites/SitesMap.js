@@ -26,7 +26,7 @@ class SitesMap extends BasicMap {
       this.clearMarkers();
     }
 
-    if (newProps.selected && newProps.data.length > 0) {
+    if (newProps.selected && newProps.data && newProps.data.length > 0) {
       this.map.setView([newProps.data[0].lat, newProps.data[0].lon], 8);
     }
   }

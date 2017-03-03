@@ -1,7 +1,7 @@
 import React from 'react';
 import SpeciesDetailFilters from 'components/species/SpeciesDetailFilters';
 import TableList from 'components/tables/TableList';
-import TableListHeader from 'components/tables/TableListHeader';
+import TableListHeader from 'containers/species/TableListHeader';
 import ScrollButton from 'components/common/ScrollButton';
 import { Sticky } from 'react-sticky';
 
@@ -13,7 +13,7 @@ function SpeciesDetailTable(props) {
       <Sticky topOffset={-120} stickyClassName={'-sticky'}>
         <SpeciesDetailFilters id={props.id} category={props.category} />
         <TableListHeader
-          data={props.data}
+          dataSample={props.data[0] || {}}
           columns={props.columns}
           detailLink={detailLink}
         />

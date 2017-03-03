@@ -6,9 +6,7 @@ function getSpeciesData(species, columns) {
 
   if (!data || !species.searchFilter) return data;
 
-  const newData = data.map((a) => Object.assign({}, a));
-
-  const filteredData = newData.filter((item) => {
+  const filteredData = data.filter((item) => {
     let match = false;
     const modItem = item;
     const searchFilter = species.searchFilter.toLowerCase();
