@@ -60,7 +60,7 @@ function getCountrySites(req, res) {
           site.protection_status_slug = normalizeSiteStatus(item.protection_status);
           return site;
         });
-        res.json([results]);
+        res.json(results);
       } else {
         res.status(404);
         res.json({ error: 'No sites found' });
