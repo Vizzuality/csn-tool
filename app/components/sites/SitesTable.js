@@ -25,7 +25,7 @@ class SitesTable extends React.Component {
           <TableListHeader
             dataSample={this.props.list.data[0] || {}}
             columns={this.props.columns}
-            detailLink={detailLink}
+            detailLink
           />
         </Sticky>
         <InfiniteScroll

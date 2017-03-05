@@ -58,7 +58,7 @@ TableListHeader.contextTypes = {
 };
 
 TableListHeader.propTypes = {
-  detailLink: React.PropTypes.string,
+  detailLink: React.PropTypes.bool,
   columns: React.PropTypes.array.isRequired,
   dataSample: React.PropTypes.object.isRequired,
   sort: React.PropTypes.object.isRequired,
