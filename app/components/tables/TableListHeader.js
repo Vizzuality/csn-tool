@@ -27,13 +27,33 @@ function getFilters(columns, data) {
 class TableListHeader extends React.Component {
   constructor(props) {
     super(props);
+    this.pending = true;
+    this.filters = null;
     if (props.data) {
       this.filters = getFilters(props.columns, props.data);
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.selectedCategory !== nextProps.selectedCategory) {
+      this.pending = true;
+      this.filterBy({ value: 'reset' });
+    }
+    if (this.pending && nextProps.data) {
+      this.pending = false;
+      this.filters = getFilters(nextProps.columns, nextProps.data);
+    }
+  }
+
+
   filterBy(filter) {
-    if (this.props.filterBy) this.props.filterBy(filter);
+    if (this.props.filterBy) {
+      if (filter.value === 'reset') {
+        this.props.filterBy({ field: null, value: null });
+      } else {
+        this.props.filterBy(filter);
+      }
+    }
   }
 
   sortBy(sort) {
@@ -44,8 +64,6 @@ class TableListHeader extends React.Component {
 
   render() {
     if (!this.props.columns || !this.props.data) return null;
-
-    if (!this.filters && this.props.data) this.filters = getFilters(this.props.columns, this.props.data);
 
     const colWidth = this.props.detailLink ? (97.5 / this.props.columns.length) : (100 / this.props.columns.length);
     const colCenter = ['a', 'b', 'c', 'original_a', 'original_b', 'original_c', 'iba', 'csn', 'iba_species', 'csn_species'];
@@ -69,8 +87,9 @@ class TableListHeader extends React.Component {
                   {columnsWithFilter.indexOf(column) >= 0 &&
                     <div className="table-filter">
                       <select onChange={(event) => this.filterBy({ field: column, value: event.target.value })}>
+                        <option value="reset">Reset filter</option>
                         <option value=""></option>
-                        {this.filters[column].map((item, i) => (
+                        {this.filters[column] && this.filters[column].map((item, i) => (
                           <option key={i} value={item}>{item}</option>
                         ))}
                       </select>
@@ -113,6 +132,7 @@ TableListHeader.defaultProps = {
 };
 
 TableListHeader.propTypes = {
+  selectedCategory: React.PropTypes.string.isRequired,
   detailLink: React.PropTypes.string,
   columns: React.PropTypes.array.isRequired,
   data: React.PropTypes.any.isRequired,

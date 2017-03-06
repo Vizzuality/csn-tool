@@ -3,6 +3,7 @@ import TableListHeader from 'components/tables/TableListHeader';
 import { setSitesTableSort, setSitesTableFilter } from 'actions/sites';
 
 const mapStateToProps = (state) => ({
+  selectedCategory: state.sites.selectedCategory,
   sort: state.sites.sort
 });
 
