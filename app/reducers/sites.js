@@ -80,7 +80,7 @@ export default function (state = initialState, action) {
         isResource = true;
         list = [...state[state.selectedCategory][state.selected].data];
       } else {
-        list = [...state.list];
+        list = [...state.list.data];
       }
       const sortOrder = action.payload.order === 'desc' ? -1 : 1;
       list.sort((a, b) => {
@@ -101,7 +101,8 @@ export default function (state = initialState, action) {
         const data = Object.assign({}, state[state.selectedCategory], newData);
         return Object.assign({}, state, { [state.selectedCategory]: data, sort: action.payload });
       }
-      return Object.assign({}, state, { list, sort: action.payload });
+      const newList = Object.assign({}, state.list, { data: list });
+      return Object.assign({}, state, { list: newList, sort: action.payload });
     }
     default:
       return state;
