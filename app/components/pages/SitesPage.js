@@ -2,7 +2,6 @@ import React from 'react';
 import ViewToggler from 'components/sites/ViewToggler';
 import SitesMap from 'containers/sites/SitesMap';
 import SitesTable from 'containers/sites/SitesTable';
-import { StickyContainer } from 'react-sticky';
 
 class SitesPage extends React.Component {
 
