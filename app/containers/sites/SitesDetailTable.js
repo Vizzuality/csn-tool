@@ -13,28 +13,35 @@ function getSitesColums(category) {
 }
 
 function getSitesData(sites, columns) {
-  let data = [];
-
-  data = sites[sites.selectedCategory] && sites[sites.selectedCategory][sites.selected]
+  const data = sites[sites.selectedCategory] && sites[sites.selectedCategory][sites.selected]
     ? sites[sites.selectedCategory][sites.selected].data
     : false;
 
-  if (!data || !sites.searchFilter) return data;
+  if (!data) return data;
 
-  const filteredData = data.filter((item) => {
-    let match = false;
-    const modItem = item;
-    const searchFilter = sites.searchFilter.toLowerCase();
+  let filteredData = data;
+  if (sites.columnFilter.field && columns.indexOf(sites.columnFilter.field)) {
+    filteredData = data.filter((item) => (
+      item[sites.columnFilter.field] && item[sites.columnFilter.field].toString().toUpperCase() === sites.columnFilter.value.toUpperCase()
+    ));
+  }
 
-    for (let i = 0, cLength = columns.length; i < cLength; i++) {
-      if (typeof modItem[columns[i]] === 'string' && modItem[columns[i]].toLowerCase().indexOf(searchFilter) >= 0) {
-        modItem[columns[i]] = modItem[columns[i]].toLowerCase().replace(searchFilter, `<span class="filtered">${searchFilter}</span>`);
-        match = true;
-        break;
+  if (sites.searchFilter) {
+    filteredData = data.filter((item) => {
+      let match = false;
+      const modItem = item;
+      const searchFilter = sites.searchFilter.toLowerCase();
+
+      for (let i = 0, cLength = columns.length; i < cLength; i++) {
+        if (typeof modItem[columns[i]] === 'string' && modItem[columns[i]].toLowerCase().indexOf(searchFilter) >= 0) {
+          modItem[columns[i]] = modItem[columns[i]].toLowerCase().replace(searchFilter, `<span class="filtered">${searchFilter}</span>`);
+          match = true;
+          break;
+        }
       }
-    }
-    return match;
-  });
+      return match;
+    });
+  }
 
   return filteredData;
 }

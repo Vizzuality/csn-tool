@@ -1,13 +1,14 @@
 import { connect } from 'react-redux';
 import TableListHeader from 'components/tables/TableListHeader';
-import { setSpeciesTableSort } from 'actions/species';
+import { setSpeciesTableSort, setSpeciesFilter } from 'actions/species';
 
 const mapStateToProps = (state) => ({
   sort: state.species.sort
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  sortBy: (sort) => dispatch(setSpeciesTableSort(sort))
+  sortBy: (sort) => dispatch(setSpeciesTableSort(sort)),
+  filterBy: (filter) => dispatch(setSpeciesFilter(filter))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableListHeader);

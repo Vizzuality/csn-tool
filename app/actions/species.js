@@ -1,6 +1,6 @@
 import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION,
   GET_SPECIES_THREATS, GET_SPECIES_HABITATS, GET_SPECIES_LOOK_ALIKE_SPECIES,
-  SET_SPECIES_DETAIL_PARAMS, SET_SPECIES_SORT,
+  SET_SPECIES_DETAIL_PARAMS, SET_SPECIES_SORT, SET_SPECIES_COLUMN_FILTER,
   SET_SPECIES_DETAIL_SEARCH, TOGGLE_SPECIES_LAYER } from 'constants';
 
 export function getSpeciesStats(id) {
@@ -171,5 +171,12 @@ export function toggleLayer(layer) {
   return {
     type: TOGGLE_SPECIES_LAYER,
     payload: layer
+  };
+}
+
+export function setSpeciesFilter(filter) {
+  return {
+    type: SET_SPECIES_COLUMN_FILTER,
+    payload: filter
   };
 }

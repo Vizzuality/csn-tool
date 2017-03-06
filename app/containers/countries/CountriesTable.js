@@ -32,7 +32,7 @@ function getCountryData(countries, columns) {
   let filteredData = data;
   if (countries.columnFilter.field && columns.indexOf(countries.columnFilter.field)) {
     filteredData = data.filter((item) => (
-      item[countries.columnFilter.field].toString().toUpperCase() === countries.columnFilter.value.toUpperCase()
+      item[countries.columnFilter.field] && item[countries.columnFilter.field].toString().toUpperCase() === countries.columnFilter.value.toUpperCase()
     ));
   }
 
