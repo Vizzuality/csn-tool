@@ -32,7 +32,7 @@ class CountriesTable extends React.Component {
         <Sticky topOffset={-120} stickyClassName={'-sticky'}>
           <CountriesFilters country={this.props.country} category={this.props.category} />
           <TableListHeader
-            dataSample={this.props.data[0] || {}}
+            data={this.props.data}
             columns={this.props.columns}
             detailLink={detailLink}
           />
