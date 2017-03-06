@@ -17,6 +17,14 @@ function getCountriesParams(state) {
   };
 }
 
+export function setSitesParams(state) {
+  const viewMode = state.location.query.viewMode || 'map';
+  dispatch(setViewMode(viewMode));
+  const site = state.params.site || '';
+  const cat = state.params.cat || 'species';
+  dispatch(setSiteParams(site, cat));
+}
+
 export function setCountriesPage(actualState, replace, done) {
   dispatch(setCountryParams(getCountriesParams(actualState)));
   done();
@@ -35,13 +43,11 @@ export function updateSpeciesDetailPage(actualState, replace, done) {
 }
 
 export function setSitesPage(actualState, replace, done) {
-  const viewMode = actualState.location.query.viewMode || 'map';
-  dispatch(setViewMode(viewMode));
+  setSitesParams(actualState);
   done();
 }
 export function updateSitesPage(actualState, nextState, replace, done) {
-  const viewMode = nextState.location.query.viewMode || 'map';
-  dispatch(setViewMode(viewMode));
+  setSitesParams(nextState);
   done();
 }
 
