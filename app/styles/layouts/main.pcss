@@ -21,6 +21,10 @@
   padding: rem(15) 0;
   height: rem(70);
 
+  &.-dark {
+    background-color: $bg-dark-color;
+  }
+
   .navigation-wrapper {
     display: flex;
     justify-content: space-between;
@@ -30,6 +34,17 @@
 
 .l-main {
   background-color: rgb(242, 242, 242);
+}
+
+.l-container {
+  padding-top: 50px;
+  width: 100%;
+  min-height: calc(100vh);
+  overflow: hidden;
+
+  &.-map {
+    height: calc(100vh);
+  }
 }
 
 .l-mask {

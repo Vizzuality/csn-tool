@@ -4,6 +4,24 @@
     margin-top: rem(-20);
   }
 
+  .sticky-table {
+    position: relative;
+    .sticky-header {
+      position: fixed;
+      top: 120px;
+      left: 0;
+      right: 0;
+      max-width: 74.6rem;
+      margin-left: auto;
+      margin-right: auto;
+      background-color: rgb(242, 242, 242);
+      z-index: 3;
+    }
+    .sticky-content {
+      padding-top: 190px;
+    }
+  }
+
   .-sticky {
     margin-top: rem(120);
     background-color: rgb(242, 242, 242);

@@ -27,7 +27,7 @@ class SitesPage extends React.Component {
   render() {
     return (
       <div className="l-page">
-        <div className="l-navigation">
+        <div className={`l-navigation ${this.props.viewMode === 'list' ? '-dark' : ''} `}>
           <div className="row">
             <div className="column">
               <div className="navigation-wrapper">
@@ -43,20 +43,16 @@ class SitesPage extends React.Component {
             </div>
           </div>
         </div>
-        <StickyContainer>
-          <div className={`l-mask ${this.props.viewMode}`}>
-            <div className={"l-map -header"}>
-              <SitesMap markerCluster slug={this.props.selected} id="sites-page-map" />
-            </div>
-            <div className="l-table">
-              <div className="row">
-                <div className="column c-table">
-                  <SitesTable />
-                </div>
+        <div className={`l-container ${this.props.viewMode === 'map' ? '-map' : ''} `}>
+          {this.props.viewMode === 'list'
+            ? <div className="row">
+              <div className="column c-table">
+                <SitesTable />
               </div>
             </div>
-          </div>
-        </StickyContainer>
+            : <SitesMap markerCluster id="sites-page-map" />
+          }
+        </div>
       </div>
     );
   }
