@@ -120,7 +120,7 @@ class CountriesTable extends React.Component {
             : null
           }
           <TableListHeader
-            dataSample={this.props.data[0] || {}}
+            data={this.props.data}
             columns={columns}
             detailLink
           />

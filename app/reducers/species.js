@@ -1,6 +1,6 @@
 import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION,
   GET_SPECIES_THREATS, GET_SPECIES_HABITATS, GET_SPECIES_LOOK_ALIKE_SPECIES,
-  SET_SPECIES_DETAIL_PARAMS, SET_SPECIES_SORT,
+  SET_SPECIES_DETAIL_PARAMS, SET_SPECIES_SORT, SET_SPECIES_COLUMN_FILTER,
   SET_SPECIES_DETAIL_SEARCH, TOGGLE_SPECIES_LAYER } from 'constants';
 
 const initialState = {
@@ -21,6 +21,10 @@ const initialState = {
   sort: {
     field: '',
     order: ''
+  },
+  columnFilter: {
+    field: '',
+    value: ''
   }
 };
 
@@ -33,6 +37,8 @@ export default function (state = initialState, action) {
       };
       return Object.assign({}, state, params);
     }
+    case SET_SPECIES_COLUMN_FILTER:
+      return Object.assign({}, state, { columnFilter: action.payload });
     case SET_SPECIES_DETAIL_SEARCH:
       return Object.assign({}, state, { searchFilter: action.payload });
     case GET_SPECIES_STATS:

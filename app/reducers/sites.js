@@ -1,6 +1,6 @@
 import { CLEAR_SITES_LIST, SET_SITES_PARAMS, GET_SITES_STATS, GET_SITES_LIST,
          GET_SITES_SPECIES, GET_SITES_POPULATIONS, SET_SITES_SORT,
-         SET_SITES_SEARCH, SET_VIEW_MODE, GET_SITES_LOCATIONS } from 'constants';
+         SET_SITES_SEARCH, SET_VIEW_MODE, GET_SITES_LOCATIONS, SET_SITES_COLUMN_FILTER } from 'constants';
 import { RESULTS_PER_PAGE } from 'constants/config';
 
 const initialState = {
@@ -21,6 +21,10 @@ const initialState = {
   sort: {
     field: '',
     order: ''
+  },
+  columnFilter: {
+    field: '',
+    value: ''
   }
 };
 
@@ -35,6 +39,8 @@ export default function (state = initialState, action) {
     }
     case SET_SITES_SEARCH:
       return Object.assign({}, state, { searchFilter: action.payload });
+    case SET_SITES_COLUMN_FILTER:
+      return Object.assign({}, state, { columnFilter: action.payload });
     case SET_VIEW_MODE:
       return Object.assign({}, state, { viewMode: action.payload });
     case GET_SITES_LOCATIONS:

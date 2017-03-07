@@ -10,7 +10,7 @@ function SpeciesTable(props) {
       <Sticky topOffset={-50} stickyClassName={'-sticky -small'}>
         <SpeciesFilters />
         <TableListHeader
-          dataSample={props.data[0] || {}}
+          data={props.data}
           columns={props.columns}
           detailLink
         />
