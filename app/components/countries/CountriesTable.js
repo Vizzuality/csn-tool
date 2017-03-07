@@ -120,7 +120,8 @@ class CountriesTable extends React.Component {
             : null
           }
           <TableListHeader
-            data={this.props.data}
+            selectedCategory={this.state.selectedItem ? 'expanded' : null}
+            data={data}
             columns={columns}
             detailLink
           />
