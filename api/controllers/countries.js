@@ -158,51 +158,51 @@ function getCountryPopulations(req, res) {
 }
 
 function getCountryPopsWithLookAlikeCounts(req, res) {
-	const query = `WITH get_pops AS (
-		 SELECT species.species_id, scientific_name as original_species, p.populations,
-		 p.a as original_a, p.b as original_b, p.c as original_c,
-		 p.wpepopid as pop_id_origin, l.confusion_species_group
-		 FROM species
-		 INNER JOIN species_country sc
-		 ON sc.species_id = species.species_id
-		 INNER JOIN countries c
-		 ON c.country_id = sc.country_id
-		 AND c.iso3 = '${req.params.iso}'
-		 INNER JOIN populations_species_no_geo p
-		 ON species.species_id = p.sisrecid
-		 INNER JOIN look_alike_species l
-		 ON l.species_id = species.species_id
-		 WHERE l.confusion_species_group <> ''),
-	 confusion_species AS (
-			SELECT look_alike_species.species_name as confusion_species,
-			look_alike_species.not_aewa_species, look_alike_species.species_id as id,
-			get_pops.*
-			FROM look_alike_species
-			INNER JOIN get_pops
-			ON get_pops.confusion_species_group = look_alike_species.confusion_species_group
-			WHERE look_alike_species.species_id <> get_pops.species_id
-	 ),
-	country_pops as (
-		 SELECT ssis, wpepopid, wpesppid FROM
-		 populationflyways_idcodesonly_dissolved
-		 WHERE ST_Intersects(the_geom,
-		 (SELECT the_geom FROM world_borders WHERE iso3 = '${req.params.iso}'))
-	),
-	confusion_pops as (
-		 SELECT confusion_species.*, pp.a, pp.b, pp.c,
-				pp.populations as confusion_population, pp.wpepopid as pop_id
-		 FROM populations_species_no_geo pp
-		 INNER JOIN confusion_species
-		 ON confusion_species.confusion_species = pp.species
-	)
-	SELECT confusion_pops.pop_id_origin, confusion_pops.populations, confusion_pops.original_a,
-	confusion_pops.original_b, confusion_pops.original_c, confusion_pops.original_species, COUNT(confusion_pops.pop_id) AS confusion_species
-	FROM confusion_pops
-	WHERE pop_id_origin IN (SELECT wpepopid FROM country_pops)
-		 AND pop_id IN (SELECT wpepopid FROM country_pops)
-	GROUP BY confusion_pops.pop_id_origin, confusion_pops.populations, confusion_pops.original_a,
-	confusion_pops.original_b, confusion_pops.original_c, confusion_pops.original_species
-	ORDER BY confusion_pops.populations`;
+  const query = `WITH get_pops AS (
+    SELECT species.species_id, scientific_name as original_species, p.populations,
+    p.a as original_a, p.b as original_b, p.c as original_c,
+    p.wpepopid as pop_id_origin, l.confusion_species_group
+    FROM species
+    INNER JOIN species_country sc
+    ON sc.species_id = species.species_id
+    INNER JOIN countries c
+    ON c.country_id = sc.country_id
+    AND c.iso3 = '${req.params.iso}'
+    INNER JOIN populations_species_no_geo p
+    ON species.species_id = p.sisrecid
+    INNER JOIN look_alike_species l
+    ON l.species_id = species.species_id
+    WHERE l.confusion_species_group <> ''),
+    confusion_species AS (
+    SELECT look_alike_species.species_name as confusion_species,
+    look_alike_species.not_aewa_species, look_alike_species.species_id as id,
+    get_pops.*
+    FROM look_alike_species
+    INNER JOIN get_pops
+    ON get_pops.confusion_species_group = look_alike_species.confusion_species_group
+    WHERE look_alike_species.species_id <> get_pops.species_id
+  ),
+  country_pops as (
+    SELECT ssis, wpepopid, wpesppid FROM
+    populationflyways_idcodesonly_dissolved
+    WHERE ST_Intersects(the_geom,
+    (SELECT the_geom FROM world_borders WHERE iso3 = '${req.params.iso}'))
+  ),
+  confusion_pops as (
+    SELECT confusion_species.*, pp.a, pp.b, pp.c,
+    pp.populations as confusion_population, pp.wpepopid as pop_id
+    FROM populations_species_no_geo pp
+    INNER JOIN confusion_species
+    ON confusion_species.confusion_species = pp.species
+  )
+  SELECT confusion_pops.pop_id_origin, confusion_pops.populations, confusion_pops.original_a,
+  confusion_pops.original_b, confusion_pops.original_c, confusion_pops.original_species, COUNT(confusion_pops.pop_id) AS confusion_species
+  FROM confusion_pops
+  WHERE pop_id_origin IN (SELECT wpepopid FROM country_pops)
+  AND pop_id IN (SELECT wpepopid FROM country_pops)
+  GROUP BY confusion_pops.pop_id_origin, confusion_pops.populations, confusion_pops.original_a,
+  confusion_pops.original_b, confusion_pops.original_c, confusion_pops.original_species
+  ORDER BY confusion_pops.populations`;
 
   rp(CARTO_SQL + query)
     .then((data) => {
@@ -296,5 +296,6 @@ module.exports = {
   getCountrySitesOld,
   getCountrySpecies,
   getCountryPopulations,
+  getCountryPopsWithLookAlikeCounts,
   getCountryLookAlikeSpecies
 };
