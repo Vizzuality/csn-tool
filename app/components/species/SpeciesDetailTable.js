@@ -15,7 +15,7 @@ function SpeciesDetailTable(props) {
         <TableListHeader
           data={props.data}
           columns={props.columns}
-          detailLink={detailLink}
+          detailLink
         />
       </Sticky>
       <TableList

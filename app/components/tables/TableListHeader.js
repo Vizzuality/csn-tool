@@ -132,8 +132,8 @@ TableListHeader.defaultProps = {
 };
 
 TableListHeader.propTypes = {
+  detailLink: React.PropTypes.bool,
   selectedCategory: React.PropTypes.string.isRequired,
-  detailLink: React.PropTypes.string,
   columns: React.PropTypes.array.isRequired,
   data: React.PropTypes.any.isRequired,
   includeSort: React.PropTypes.bool,

@@ -30,7 +30,7 @@ class SitesTable extends React.Component {
                 includeSort={false}
                 data={this.props.list.data}
                 columns={this.props.columns}
-                detailLink={detailLink}
+                detailLink
               />
             </div>
             <div className="sticky-content">

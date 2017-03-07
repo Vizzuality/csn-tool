@@ -46,6 +46,7 @@
           height: 24px;
           position: relative;
 
+          button,
           a {
             display: flex;
             align-items: center;
@@ -59,6 +60,7 @@
             right: rem(-5);
           }
 
+          button:hover,
           a:hover {
             background-color: rgba($main-color, 1);
           }
@@ -157,6 +159,56 @@
       }
     }
   }
+}
+
+.table-navigation {
+  .link {
+    position: relative;
+    display: flex;
+    text-transform: uppercase;
+    padding-left: 12px;
+    font-size: $font-size-xs;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.7px;
+    opacity: 0.6;
+    text-decoration: none;
+    color: rgba($font-main, 0.6);
+    margin-bottom: 15px;
+
+    &::after {
+      content: "<";
+      position: absolute;
+      top: 0;
+      left: 3px;
+    }
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    > div:not(:first-child) {
+      margin-left: 15px;
+    }
+
+    span {
+      display: block;
+      color: $font-main;
+      font-size: $font-size;
+
+      &.title {
+        font-size: $font-size-xs;
+        text-transform: uppercase;
+        opacity: 0.6;
+      }
+    }
+  }
+}
+
+.table-loading {
+  position: relative;
+  min-height: 200px;
 }
 
 .table-filter {
