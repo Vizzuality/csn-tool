@@ -6,7 +6,7 @@ import TableList from 'components/tables/TableList';
 import ScrollButton from 'components/common/ScrollButton';
 import { Sticky } from 'react-sticky';
 
-const expandedColumns = ['confusion_species', 'populations', 'a', 'b', 'c'];
+const expandedColumns = ['confusion_species', 'confusion_population', 'a', 'b', 'c'];
 
 class CountriesTable extends React.Component {
   constructor(props) {
