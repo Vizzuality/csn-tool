@@ -28,9 +28,9 @@ class SitesTable extends React.Component {
               <SitesFilters category={this.props.category} />
               <TableListHeader
                 includeSort={false}
-                dataSample={this.props.list.data[0] || {}}
+                data={this.props.list.data}
                 columns={this.props.columns}
-                detailLink={detailLink}
+                detailLink
               />
             </div>
             <div className="sticky-content">

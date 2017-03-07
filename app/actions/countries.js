@@ -1,7 +1,7 @@
 import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_SITES,
         GET_COUNTRIES_STATS, GET_COUNTRIES_SITES_OLD, TOGGLE_COUNTRIES_LAYER,
         GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS, GET_COUNTRIES_SIMILAR_SPECIES,
-        SET_COUNTRY_PARAMS, SET_COUNTRY_SEARCH, SET_COUNTRY_SORT } from 'constants';
+        SET_COUNTRY_PARAMS, SET_COUNTRY_SEARCH, SET_COUNTRY_SORT, SET_COUNTRY_COLUMN_FILTER } from 'constants';
 import { push } from 'react-router-redux';
 
 export function goCountryDetail(iso) {
@@ -193,5 +193,12 @@ export function setCountriesTableSort(sort) {
   return {
     type: SET_COUNTRY_SORT,
     payload: sort
+  };
+}
+
+export function setCountriesTableFilter(filter) {
+  return {
+    type: SET_COUNTRY_COLUMN_FILTER,
+    payload: filter
   };
 }

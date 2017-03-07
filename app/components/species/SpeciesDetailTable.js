@@ -13,9 +13,9 @@ function SpeciesDetailTable(props) {
       <Sticky topOffset={-120} stickyClassName={'-sticky'}>
         <SpeciesDetailFilters id={props.id} category={props.category} />
         <TableListHeader
-          dataSample={props.data[0] || {}}
+          data={props.data}
           columns={props.columns}
-          detailLink={detailLink}
+          detailLink
         />
       </Sticky>
       <TableList

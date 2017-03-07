@@ -3,6 +3,23 @@ import NavLink from 'containers/common/NavLink';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import { numberToThousands } from 'helpers/data';
 
+function getDetailLink(detailLink, item) {
+  if (detailLink && detailLink.type === 'action') {
+    return (
+      <div className="link">
+        <button onClick={() => detailLink.action(item)} icon="icon-table_arrow_right" >
+          <svg><use xlinkHref="#icon-table_arrow_right"></use></svg>
+        </button>
+      </div>
+    );
+  }
+  return (
+    <div className="link">
+      <NavLink to={`/${detailLink}/${item.id}`} icon="icon-table_arrow_right" parent />
+    </div>
+  );
+}
+
 function TableList(props) {
   if (!props.data) return (<div className="c-table-list blank"><LoadingSpinner inner transparent /></div>);
   const colWidth = props.detailLink ? (97.5 / props.columns.length) : (100 / props.columns.length);
@@ -58,9 +75,7 @@ function TableList(props) {
           })}
 
           {props.detailLink &&
-            <div className="link">
-              <NavLink to={`/${props.detailLink}/${item.id}`} icon="icon-table_arrow_right" parent />
-            </div>
+            getDetailLink(props.detailLink, item)
           }
         </li>
       ))}
@@ -74,8 +89,16 @@ TableList.contextTypes = {
   t: React.PropTypes.func.isRequired
 };
 
+TableList.defaultProps = {
+  detailLink: null
+};
+
 TableList.propTypes = {
-  detailLink: React.PropTypes.string,
+  /* page section name or action object {
+    type: 'action',
+    action: function
+  } */
+  detailLink: React.PropTypes.any,
   columns: React.PropTypes.array.isRequired,
   data: React.PropTypes.any.isRequired,
   fitBounds: React.PropTypes.func,

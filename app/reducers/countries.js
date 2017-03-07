@@ -1,7 +1,7 @@
 import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_SITES,
          GET_COUNTRIES_STATS, GET_COUNTRIES_SITES_OLD, TOGGLE_COUNTRIES_LAYER,
          GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS, GET_COUNTRIES_SIMILAR_SPECIES,
-         SET_COUNTRY_PARAMS, SET_COUNTRY_SEARCH, SET_COUNTRY_SORT } from 'constants';
+         SET_COUNTRY_PARAMS, SET_COUNTRY_SEARCH, SET_COUNTRY_SORT, SET_COUNTRY_COLUMN_FILTER } from 'constants';
 
 const initialState = {
   selected: '',
@@ -22,6 +22,10 @@ const initialState = {
   sort: {
     field: '',
     order: ''
+  },
+  columnFilter: {
+    field: '',
+    value: ''
   }
 };
 
@@ -37,6 +41,8 @@ export default function (state = initialState, action) {
     }
     case SET_COUNTRY_SEARCH:
       return Object.assign({}, state, { searchFilter: action.payload });
+    case SET_COUNTRY_COLUMN_FILTER:
+      return Object.assign({}, state, { columnFilter: action.payload });
     case GET_COUNTRIES_LIST:
       return Object.assign({}, state, { countries: action.payload });
     case GET_COUNTRIES_GEOM:

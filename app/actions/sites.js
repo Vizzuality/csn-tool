@@ -1,5 +1,5 @@
 import { CLEAR_SITES_LIST, GET_SITES_STATS, GET_SITES_LIST, GET_SITES_SPECIES,
-         GET_SITES_POPULATIONS, SET_SITES_PARAMS, SET_SITES_SORT,
+         GET_SITES_POPULATIONS, SET_SITES_PARAMS, SET_SITES_SORT, SET_SITES_COLUMN_FILTER,
          SET_SITES_SEARCH, SET_VIEW_MODE, GET_SITES_LOCATIONS } from 'constants';
 import { RESULTS_PER_PAGE } from 'constants/config';
 import { push } from 'react-router-redux';
@@ -138,5 +138,12 @@ export function setSitesTableSort(sort) {
   return {
     type: SET_SITES_SORT,
     payload: sort
+  };
+}
+
+export function setSitesTableFilter(filter) {
+  return {
+    type: SET_SITES_COLUMN_FILTER,
+    payload: filter
   };
 }
