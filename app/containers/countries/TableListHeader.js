@@ -1,13 +1,16 @@
 import { connect } from 'react-redux';
 import TableListHeader from 'components/tables/TableListHeader';
-import { setCountriesTableSort } from 'actions/countries';
+import { setCountriesTableSort, setCountriesTableFilter } from 'actions/countries';
 
 const mapStateToProps = (state) => ({
-  sort: state.countries.sort
+  selectedCategory: state.countries.selectedCategory,
+  sort: state.countries.sort,
+  filter: state.countries.filter
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  sortBy: (sort) => dispatch(setCountriesTableSort(sort))
+  sortBy: (sort) => dispatch(setCountriesTableSort(sort)),
+  filterBy: (filter) => dispatch(setCountriesTableFilter(filter))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableListHeader);

@@ -27,24 +27,31 @@ function getCountryData(countries, columns) {
     ? countries[countries.selectedCategory][countries.selected]
     : false;
 
-  if (!data || !countries.searchFilter) return data;
+  if (!data) return data;
 
-  const newData = data.map((a) => Object.assign({}, a));
+  let filteredData = data;
+  if (countries.columnFilter.field && columns.indexOf(countries.columnFilter.field)) {
+    filteredData = data.filter((item) => (
+      item[countries.columnFilter.field] && item[countries.columnFilter.field].toString().toUpperCase() === countries.columnFilter.value.toUpperCase()
+    ));
+  }
 
-  const filteredData = newData.filter((item) => {
-    let match = false;
-    const modItem = item;
-    const searchFilter = countries.searchFilter.toLowerCase();
+  if (countries.searchFilter) {
+    filteredData = data.filter((item) => {
+      let match = false;
+      const modItem = item;
+      const searchFilter = countries.searchFilter.toLowerCase();
 
-    for (let i = 0, cLength = columns.length; i < cLength; i++) {
-      if (typeof modItem[columns[i]] === 'string' && modItem[columns[i]].toLowerCase().indexOf(searchFilter) >= 0) {
-        modItem[columns[i]] = modItem[columns[i]].toLowerCase().replace(searchFilter, `<span class="filtered">${searchFilter}</span>`);
-        match = true;
-        break;
+      for (let i = 0, cLength = columns.length; i < cLength; i++) {
+        if (typeof modItem[columns[i]] === 'string' && modItem[columns[i]].toLowerCase().indexOf(searchFilter) >= 0) {
+          modItem[columns[i]] = modItem[columns[i]].toLowerCase().replace(searchFilter, `<span class="filtered">${searchFilter}</span>`);
+          match = true;
+          break;
+        }
       }
-    }
-    return match;
-  });
+      return match;
+    });
+  }
 
   return filteredData;
 }
