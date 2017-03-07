@@ -6,6 +6,8 @@ import TableList from 'components/tables/TableList';
 import ScrollButton from 'components/common/ScrollButton';
 import { Sticky } from 'react-sticky';
 
+const expandedColumns = ['confusion_species', 'populations', 'a', 'b', 'c'];
+
 class CountriesTable extends React.Component {
   constructor(props) {
     super(props);
@@ -25,7 +27,7 @@ class CountriesTable extends React.Component {
     this.setState({
       selectedItem: species
     });
-    const url = `${config.apiHost}/countries/${this.props.country}/look-alike-species/${species.species_id}`;
+    const url = `${config.apiHost}/countries/${this.props.country}/look-alike-species/${species.pop_id_origin}`;
     fetch(url)
       .then(res => {
         if (res.ok) return res.json();
@@ -48,7 +50,7 @@ class CountriesTable extends React.Component {
         <div className="nav">
           <div>
             <span className="title">{this.context.t('species')}</span>
-            <h3>{this.state.selectedItem.populations}</h3>
+            <h3>{this.state.selectedItem.original_species}</h3>
           </div>
           <div>
             <span className="title">{this.context.t('population')}</span>
@@ -56,15 +58,15 @@ class CountriesTable extends React.Component {
           </div>
           <div>
             <span className="title">A</span>
-            <span>{this.state.selectedItem.a || '-'}</span>
+            <span>{this.state.selectedItem.original_a || '-'}</span>
           </div>
           <div>
             <span className="title">B</span>
-            <span>{this.state.selectedItem.b || '-'}</span>
+            <span>{this.state.selectedItem.original_b || '-'}</span>
           </div>
           <div>
             <span className="title">C</span>
-            <span>{this.state.selectedItem.c || '-'}</span>
+            <span>{this.state.selectedItem.original_c || '-'}</span>
           </div>
         </div>
       </div>
@@ -107,6 +109,7 @@ class CountriesTable extends React.Component {
     const detailLink = this.getDetailLink(this.props.category);
     const isLookAlikeSpecies = this.props.category === 'lookAlikeSpecies';
     const data = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? this.state.data : this.props.data;
+    const columns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? expandedColumns : this.props.columns;
     return (
       <div className="c-table">
         <ScrollButton />
@@ -118,7 +121,7 @@ class CountriesTable extends React.Component {
           }
           <TableListHeader
             dataSample={this.props.data[0] || {}}
-            columns={this.props.columns}
+            columns={columns}
             detailLink
           />
         </Sticky>
@@ -126,7 +129,7 @@ class CountriesTable extends React.Component {
           ? this.getLoading()
           : <TableList
             data={data}
-            columns={this.props.columns}
+            columns={columns}
             detailLink={detailLink}
           />
         }
