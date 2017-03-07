@@ -28,16 +28,18 @@ function TableListHeader(props, context) {
             return (
               <div key={index} className={`text -title ${alignClass}`} style={{ width: `${colWidth}%` }}>
                 {context.t(column)}
-                <div className="sort">
-                  <button
-                    className={`arrow -asc ${props.sort.field === column && props.sort.order === 'asc' ? '-active' : ''}`}
-                    onClick={() => sortBy({ field: column, order: 'asc' })}
-                  />
-                  <button
-                    className={`arrow -desc ${props.sort.field === column && props.sort.order === 'desc' ? '-active' : ''}`}
-                    onClick={() => sortBy({ field: column, order: 'desc' })}
-                  />
-                </div>
+                {props.includeSort &&
+                  <div className="sort">
+                    <button
+                      className={`arrow -asc ${props.sort.field === column && props.sort.order === 'asc' ? '-active' : ''}`}
+                      onClick={() => sortBy({ field: column, order: 'asc' })}
+                    />
+                    <button
+                      className={`arrow -desc ${props.sort.field === column && props.sort.order === 'desc' ? '-active' : ''}`}
+                      onClick={() => sortBy({ field: column, order: 'desc' })}
+                    />
+                  </div>
+              }
               </div>
             );
           })}
@@ -57,10 +59,15 @@ TableListHeader.contextTypes = {
   t: React.PropTypes.func.isRequired
 };
 
+TableListHeader.defaultProps = {
+  includeSort: true
+};
+
 TableListHeader.propTypes = {
   detailLink: React.PropTypes.bool,
   columns: React.PropTypes.array.isRequired,
   dataSample: React.PropTypes.object.isRequired,
+  includeSort: React.PropTypes.bool,
   sort: React.PropTypes.object.isRequired,
   sortBy: React.PropTypes.func.isRequired
 };
