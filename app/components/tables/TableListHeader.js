@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Filters only for columns a, b and c
-const columnsWithFilter = ['a', 'b', 'c'];
+const columnsWithFilter = ['a', 'b', 'c', 'original_a', 'original_b', 'original_c'];
 
 function getFilters(columns, data) {
   const filters = {};
@@ -39,7 +39,7 @@ class TableListHeader extends React.Component {
       this.pending = true;
       this.filterBy({ value: 'reset' });
     }
-    if (this.pending && nextProps.data) {
+    if (this.pending && this.props.data.length !== nextProps.data.length) {
       this.pending = false;
       this.filters = getFilters(nextProps.columns, nextProps.data);
     }
@@ -88,7 +88,6 @@ class TableListHeader extends React.Component {
                     <div className="table-filter">
                       <select onChange={(event) => this.filterBy({ field: column, value: event.target.value })}>
                         <option value="reset">Reset filter</option>
-                        <option value=""></option>
                         {this.filters[column] && this.filters[column].map((item, i) => (
                           <option key={i} value={item}>{item}</option>
                         ))}

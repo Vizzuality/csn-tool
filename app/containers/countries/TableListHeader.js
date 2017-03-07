@@ -2,8 +2,8 @@ import { connect } from 'react-redux';
 import TableListHeader from 'components/tables/TableListHeader';
 import { setCountriesTableSort, setCountriesTableFilter } from 'actions/countries';
 
-const mapStateToProps = (state) => ({
-  selectedCategory: state.countries.selectedCategory,
+const mapStateToProps = (state, ownProps) => ({
+  selectedCategory: ownProps.selectedCategory || state.countries.selectedCategory,
   sort: state.countries.sort,
   filter: state.countries.filter
 });
