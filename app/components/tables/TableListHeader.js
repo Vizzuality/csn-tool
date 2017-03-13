@@ -29,6 +29,7 @@ class TableListHeader extends React.Component {
     super(props);
     this.pending = true;
     this.filters = null;
+    this.activeFilters = {};
     if (props.data) {
       this.filters = getFilters(props.columns, props.data);
     }
@@ -37,7 +38,7 @@ class TableListHeader extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.selectedCategory !== nextProps.selectedCategory) {
       this.pending = true;
-      this.filterBy({ value: 'reset' });
+      this.filterBy({ field: 'all', value: 'reset' });
     }
     if (this.pending && nextProps.data.length && this.props.data.length !== nextProps.data.length) {
       this.pending = false;
@@ -45,14 +46,16 @@ class TableListHeader extends React.Component {
     }
   }
 
-
   filterBy(filter) {
     if (this.props.filterBy) {
-      if (filter.value === 'reset') {
-        this.props.filterBy({ field: null, value: null });
+      if (filter.value === 'reset' && filter.field === 'all') {
+        this.activeFilters = {};
+      } else if (filter.value === 'reset') {
+        delete this.activeFilters[filter.field];
       } else {
-        this.props.filterBy(filter);
+        this.activeFilters[filter.field] = filter.value;
       }
+      this.props.filterBy(this.activeFilters);
     }
   }
 

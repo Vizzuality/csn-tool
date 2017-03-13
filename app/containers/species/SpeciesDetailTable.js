@@ -24,11 +24,15 @@ function getSpeciesDetailData(species, columns) {
   if (!data) return data;
 
   let filteredData = data;
-  if (species.columnFilter.field && columns.indexOf(species.columnFilter.field)) {
-    filteredData = data.filter((item) => (
-      item[species.columnFilter.field] && item[species.columnFilter.field].toString().toUpperCase() === species.columnFilter.value.toUpperCase()
-    ));
+  if (species.columnFilter) {
+    for (var key in species.columnFilter) {
+      filteredData = filteredData.filter((item) => (
+        item[key] && item[key].toString().toUpperCase() === species.columnFilter[key].toUpperCase()
+      ));
+    }
   }
+
+  console.log(filteredData);
 
   if (species.searchFilter) {
     filteredData = data.filter((item) => {
