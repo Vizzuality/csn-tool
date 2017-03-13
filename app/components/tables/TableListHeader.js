@@ -39,7 +39,7 @@ class TableListHeader extends React.Component {
       this.pending = true;
       this.filterBy({ value: 'reset' });
     }
-    if (this.pending && this.props.data.length !== nextProps.data.length) {
+    if (this.pending && nextProps.data.length && this.props.data.length !== nextProps.data.length) {
       this.pending = false;
       this.filters = getFilters(nextProps.columns, nextProps.data);
     }
