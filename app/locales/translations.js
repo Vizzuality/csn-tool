@@ -2,7 +2,7 @@ export const translations = {
   en: {
     'country': 'Country',
     'countries': 'Countries',
-    'sites': 'Sites',
+    'sites': 'IBA',
     'sitesOld': 'CSN',
     'sitesList': 'Sites list',
     'speciesList': 'Species list',
@@ -93,7 +93,7 @@ export const translations = {
   es: {
     'country': 'Pais',
     'countries': 'Paises',
-    'sites': 'Sitios',
+    'sites': 'IBA',
     'sitesOld': 'CSN',
     'sitesList': 'Lista de sitios',
     'speciesList': 'Lista de especies',
