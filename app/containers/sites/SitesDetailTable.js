@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import SitesDetailTable from 'components/sites/SitesDetailTable';
+import { filterData } from 'helpers/filters';
 
 function getSitesColums(category) {
   switch (category) {
@@ -20,10 +21,8 @@ function getSitesData(sites, columns) {
   if (!data) return data;
 
   let filteredData = data;
-  if (sites.columnFilter.field && columns.indexOf(sites.columnFilter.field)) {
-    filteredData = data.filter((item) => (
-      item[sites.columnFilter.field] && item[sites.columnFilter.field].toString().toUpperCase() === sites.columnFilter.value.toUpperCase()
-    ));
+  if (Object.keys(sites.columnFilter).length !== 0) {
+    filteredData = filterData(filteredData, sites.columnFilter);
   }
 
   if (sites.searchFilter) {

@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import SpeciesDetailTable from 'components/species/SpeciesDetailTable';
+import { filterData } from 'helpers/filters';
 
 function getSpeciesDetailColums(category) {
   switch (category) {
@@ -24,15 +25,9 @@ function getSpeciesDetailData(species, columns) {
   if (!data) return data;
 
   let filteredData = data;
-  if (species.columnFilter) {
-    for (var key in species.columnFilter) {
-      filteredData = filteredData.filter((item) => (
-        item[key] && item[key].toString().toUpperCase() === species.columnFilter[key].toUpperCase()
-      ));
-    }
+  if (Object.keys(species.columnFilter).length !== 0) {
+    filteredData = filterData(filteredData, species.columnFilter);
   }
-
-  console.log(filteredData);
 
   if (species.searchFilter) {
     filteredData = data.filter((item) => {
