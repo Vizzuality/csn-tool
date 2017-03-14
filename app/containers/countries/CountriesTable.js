@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import CountriesTable from 'components/countries/CountriesTable';
 import { setSearchFilter } from 'actions/countries';
+import { filterData } from 'helpers/filters';
 
 function getCountryColums(category) {
   switch (category) {
@@ -30,10 +31,8 @@ function getCountryData(countries, columns) {
   if (!data) return data;
 
   let filteredData = data;
-  if (countries.columnFilter.field && columns.indexOf(countries.columnFilter.field)) {
-    filteredData = data.filter((item) => (
-      item[countries.columnFilter.field] && item[countries.columnFilter.field].toString().toUpperCase() === countries.columnFilter.value.toUpperCase()
-    ));
+  if (Object.keys(countries.columnFilter).length !== 0) {
+    filteredData = filterData(filteredData, countries.columnFilter);
   }
 
   if (countries.searchFilter) {
