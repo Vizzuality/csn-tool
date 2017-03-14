@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 
 class SearchFilter extends React.Component {
   constructor(props) {
@@ -55,4 +56,4 @@ SearchFilter.propTypes = {
   resetSearchFilter: React.PropTypes.func
 };
 
-export default SearchFilter;
+export default withRouter(SearchFilter);
