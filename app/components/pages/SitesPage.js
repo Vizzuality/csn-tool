@@ -103,7 +103,9 @@ SitesPage.propTypes = {
   setViewMode: React.PropTypes.func.isRequired,
   selected: React.PropTypes.string,
   viewMode: React.PropTypes.string,
-  router: React.PropTypes.object
+  router: React.PropTypes.object,
+  getSitesList: React.PropTypes.func,
+  filter: React.PropTypes.string
 };
 
 export default withRouter(SitesPage);

@@ -52,7 +52,8 @@ SitesTable.propTypes = {
   getSitesList: React.PropTypes.func.isRequired,
   list: React.PropTypes.object.isRequired,
   category: React.PropTypes.string,
-  columns: React.PropTypes.array.isRequired
+  columns: React.PropTypes.array.isRequired,
+  router: React.PropTypes.object
 };
 
 export default withRouter(SitesTable);
