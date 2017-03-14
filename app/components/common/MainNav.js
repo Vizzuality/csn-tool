@@ -16,6 +16,9 @@ function MainNav() {
           <NavLink to={"/species"} i18nText="species" parent />
         </li>
         <li>
+          <NavLink to={"/threshold-lookup"} i18nText="thresholdLookup" parent />
+        </li>
+        <li>
           <NavLink className="-disabled" to="" i18nText="guidelines" parent />
         </li>
         <li>

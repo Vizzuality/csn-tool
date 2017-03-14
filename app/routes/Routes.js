@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useScroll } from 'react-router-scroll';
 import { IndexRoute, Router, Route, applyRouterMiddleware, Redirect } from 'react-router';
-import { updateLanguage, setCountriesPage, updateCountriesPage, setSitesPage,
+import { updateLanguage, setCountriesPage, updateCountriesPage, setSitesPage, setThresholdPosition, updateThresholdPosition,
         updateSitesPage, updateSitesDetailPage, updateSpeciesDetailPage } from './RoutesActions';
 import ReactGA from 'react-ga';
 
@@ -13,6 +13,7 @@ import SitesPage from 'containers/pages/SitesPage';
 import SitesDetailPage from 'containers/pages/SitesDetailPage';
 import SpeciesPage from 'containers/pages/SpeciesPage';
 import SpeciesDetailPage from 'containers/pages/SpeciesDetailPage';
+import ThersholdLookup from 'containers/pages/ThersholdLookup';
 
 function shouldUpdateScroll(prevRouterProps, { location }) {
   /**
@@ -112,6 +113,7 @@ const Routes = ({ history }) => (
         <IndexRoute component={SpeciesPage} />
         <Route path=":id(/:cat)" component={SpeciesDetailPage} onEnter={updateSpeciesDetailPage} />
       </Route>
+      <Route path="threshold-lookup" component={ThersholdLookup} onEnter={setThresholdPosition} onChange={updateThresholdPosition} />
     </Route>
     <Redirect from="*" to="en" />
   </Router>
