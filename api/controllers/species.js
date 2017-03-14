@@ -1,6 +1,7 @@
 const rp = require('request-promise');
 const CARTO_SQL = require('../constants').CARTO_SQL;
 const normalizeSiteStatus = require('../helpers/index').normalizeSiteStatus;
+const mergeNames = require('../helpers/index').mergeNames;
 
 function getSpeciesList(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family, s.species_id as id,
@@ -172,12 +173,13 @@ function getSpeciesLookAlikeSpecies(req, res) {
     ),
 
     confusion_species AS (
-      SELECT look_alike_species.species_id, species_name
-        AS confusion_species, look_alike_species.confusion_species_group, look_alike_species.not_aewa_species
-      FROM look_alike_species
-      INNER JOIN species_name
-      ON species_name.confusion_species_group = look_alike_species.confusion_species_group
-      WHERE species_id <> ${req.params.id}
+      SELECT lals.species_id, species_name AS confusion_species, lals.confusion_species_group, lals.not_aewa_species, s.english_name
+      FROM look_alike_species lals
+      INNER JOIN species_name sn
+      ON sn.confusion_species_group = lals.confusion_species_group
+      INNER JOIN species s
+      ON s.species_id = lals.species_id
+      WHERE s.species_id <> ${req.params.id}
     ),
 
 	  original_flyway AS (
@@ -218,7 +220,11 @@ function getSpeciesLookAlikeSpecies(req, res) {
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
-        res.json(results);
+        const params = [
+          { columnName: 'confusion_name', field1: 'confusion_species', field2: 'english_name' }
+        ];
+        const dataParsed = mergeNames(results, params);
+        res.json(dataParsed);
       } else {
         res.status(404);
         res.json({ error: 'There are no habitats for this Species' });

@@ -7,6 +7,17 @@ function normalizeSiteStatus(string) {
   return 'unknown';
 }
 
+function mergeNames(data, params) {
+  return data.map((item) => {
+    const newItem = item;
+    params.forEach((param) => {
+      newItem[param.columnName] = `${item[param.field1]} (${item[param.field2]})`;
+    });
+    return newItem;
+  });
+}
+
 module.exports = {
-  normalizeSiteStatus
+  normalizeSiteStatus,
+  mergeNames
 };
