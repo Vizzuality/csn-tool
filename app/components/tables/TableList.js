@@ -3,6 +3,8 @@ import NavLink from 'containers/common/NavLink';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import { numberToThousands } from 'helpers/data';
 
+const columnsWithYears = ['year', 'start', 'end'];
+
 function getDetailLink(detailLink, item) {
   if (detailLink && detailLink.type === 'action') {
     return (
@@ -70,7 +72,7 @@ function TableList(props) {
                 <div className={`text ${column} ${alignClass}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
               </div>);
             }
-            const colVal = (typeof item[column] === 'number' && column.indexOf('year') === -1) ? numberToThousands(item[column]) : item[column];
+            const colVal = (typeof item[column] === 'number' && columnsWithYears.indexOf(column) === -1) ? numberToThousands(item[column]) : item[column];
             return (<div key={index2} className={`text ${column} ${alignClass}`} style={{ width: `${colWidth}%` }} dangerouslySetInnerHTML={{ __html: colVal }}></div>);
           })}
 

@@ -2,8 +2,8 @@ export const translations = {
   en: {
     'country': 'Country',
     'countries': 'Countries',
-    'sites': 'Sites',
-    'sitesOld': 'Sites from old CSN',
+    'sites': 'IBA',
+    'sitesOld': 'CSN',
     'sitesList': 'Sites list',
     'speciesList': 'Species list',
     'triggerSpeciesList': 'Trigger species list',
@@ -94,8 +94,8 @@ export const translations = {
   es: {
     'country': 'Pais',
     'countries': 'Paises',
-    'sites': 'Sitios',
-    'sitesOld': 'Sitios de viejo CSN',
+    'sites': 'IBA',
+    'sitesOld': 'CSN',
     'sitesList': 'Lista de sitios',
     'speciesList': 'Lista de especies',
     'triggerSpeciesList': 'Lista de especies',
