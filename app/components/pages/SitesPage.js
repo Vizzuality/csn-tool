@@ -15,10 +15,12 @@ class SitesPage extends React.Component {
   constructor() {
     super();
     this.onSelectChange = this.onSelectChange.bind(this);
+    this.getData = this.getData.bind(this);
   }
 
   componentWillMount() {
-    this.getData(this.props);
+    this.props.getSitesLocations(this.props.router.location.query.filter);
+    this.props.getSitesList(0, null, this.props.router.location.query.filter);
   }
 
   componentWillReceiveProps(newProps) {
@@ -29,12 +31,6 @@ class SitesPage extends React.Component {
     this.props.clearSites();
   }
 
-  getData(props) {
-    if (props.viewMode === 'map' && !props.locations) {
-      props.getSitesLocations(props.router.location.query.filter);
-    }
-  }
-
   onSelectChange(filter) {
     const params = {
       filter: filter.value
@@ -42,6 +38,13 @@ class SitesPage extends React.Component {
     const route = this.props.router.getCurrentLocation();
     const url = replaceUrlParams(route.pathname + route.search, params);
     this.props.router.push(url);
+  }
+
+  getData(props) {
+    if (props.filter !== this.props.filter || props.viewMode !== this.props.viewMode) {
+      props.getSitesLocations(props.router.location.query.filter);
+      props.getSitesList(0, null, props.router.location.query.filter);
+    }
   }
 
   render() {
@@ -67,7 +70,7 @@ class SitesPage extends React.Component {
                       options={FILTER_OPTIONS}
                       onChange={this.onSelectChange}
                       arrowRenderer={() => <svg className="icon"><use xlinkHref="#icon-dropdown_arrow_down"></use></svg>}
-                      />
+                    />
                   </div>
                   <ViewToggler viewMode={this.props.viewMode} />
                 </div>
@@ -99,7 +102,8 @@ SitesPage.propTypes = {
   getSitesLocations: React.PropTypes.func.isRequired,
   setViewMode: React.PropTypes.func.isRequired,
   selected: React.PropTypes.string,
-  viewMode: React.PropTypes.string
+  viewMode: React.PropTypes.string,
+  router: React.PropTypes.object
 };
 
 export default withRouter(SitesPage);

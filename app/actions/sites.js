@@ -38,9 +38,9 @@ export function getSitesStats(id) {
       });
   };
 }
-export function getSitesList(page, search) {
+export function getSitesList(page, search, filter) {
   const searchQuery = search ? `&search=${search}` : '';
-  const url = `${config.apiHost}/sites?page=${page}&results=${RESULTS_PER_PAGE}${searchQuery}`;
+  const url = `${config.apiHost}/sites?page=${page}&results=${RESULTS_PER_PAGE}${searchQuery}&filter=${filter}`;
   return dispatch => {
     fetch(url)
       .then(response => response.json())

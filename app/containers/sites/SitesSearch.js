@@ -6,11 +6,11 @@ const mapStateToProps = () => ({});
 
 const mapDispatchToProps = (dispatch) => ({
   // TODO: fix bug wrong page pager after search
-  setSearchFilter: (search) => {
+  setSearchFilter: (search, filter) => {
     if (search) {
-      dispatch(getSitesList(0, search));
+      dispatch(getSitesList(0, search, filter));
     } else {
-      dispatch(getSitesList(0, null));
+      dispatch(getSitesList(0, null, filter));
     }
   }
 });

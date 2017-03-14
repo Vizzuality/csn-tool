@@ -21,7 +21,7 @@ class SearchFilter extends React.Component {
     this.setState({ search: filter });
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
-      this.props.setSearchFilter(filter);
+      this.props.setSearchFilter(filter, this.props.router.location.query.filter);
     }, 400);
   }
 
