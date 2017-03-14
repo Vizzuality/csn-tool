@@ -2,6 +2,7 @@ import React from 'react';
 import ViewToggler from 'components/sites/ViewToggler';
 import SitesMap from 'containers/sites/SitesMap';
 import SitesTable from 'containers/sites/SitesTable';
+import { withRouter } from 'react-router';
 
 class SitesPage extends React.Component {
 
@@ -19,7 +20,7 @@ class SitesPage extends React.Component {
 
   getData(props) {
     if (props.viewMode === 'map' && !props.locations) {
-      props.getSitesLocations();
+      props.getSitesLocations(props.router.params.type);
     }
   }
 
@@ -69,4 +70,4 @@ SitesPage.propTypes = {
   viewMode: React.PropTypes.string
 };
 
-export default SitesPage;
+export default withRouter(SitesPage);

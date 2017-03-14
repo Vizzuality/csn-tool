@@ -10,7 +10,7 @@ function MainNav() {
           <NavLink to={"/countries"} i18nText="countries" parent />
         </li>
         <li>
-          <NavLink to={"/sites"} i18nText="sites" parent />
+          <NavLink to={"/sites/iba"} i18nText="sites" parent />
         </li>
         <li>
           <NavLink to={"/species"} i18nText="species" parent />

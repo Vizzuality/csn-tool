@@ -10,7 +10,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getSitesLocations: () => dispatch(getSitesLocations()),
+  getSitesLocations: (type) => dispatch(getSitesLocations(type)),
   setViewMode: (viewMode) => dispatch(setViewMode(viewMode)),
   clearSites: () => dispatch(clearSites())
 });

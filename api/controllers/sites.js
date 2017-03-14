@@ -85,7 +85,12 @@ function getSitesDetails(req, res) {
 }
 
 function getSitesLocations(req, res) {
-  const query = 'SELECT s.site_name, s.site_id as id, s.lat, s.lon FROM sites s';
+  let query;
+  if (req.params.type === 'csn') {
+    query = `SELECT s.name as site_name, s.siterecid as id, s.lat, s.lon FROM sites_csn_points s`;
+  } else {
+    query = `SELECT s.site_name, s.site_id as id, s.lat, s.lon FROM sites s`;
+  }
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);

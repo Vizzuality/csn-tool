@@ -20,6 +20,7 @@ function getCountriesParams(state) {
 export function setSitesParams(state) {
   const viewMode = state.location.query.viewMode || 'map';
   dispatch(setViewMode(viewMode));
+  const siteType = state.params.type || '';
   const site = state.params.site || '';
   const cat = state.params.cat || 'species';
   dispatch(setSiteParams(site, cat));

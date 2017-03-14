@@ -11,10 +11,10 @@ export function setSiteParams(site, category) {
   };
 }
 
-export function goSiteDetail(id) {
+export function goSiteDetail(id, type) {
   return (dispatch, state) => {
     const lang = state().i18nState.lang;
-    dispatch(push(`/${lang}/sites/${id}`));
+    dispatch(push(`/${lang}/sites/${type}/${id}`));
   };
 }
 
@@ -57,8 +57,8 @@ export function getSitesList(page, search) {
   };
 }
 
-export function getSitesLocations() {
-  const url = `${config.apiHost}/sites/locations`;
+export function getSitesLocations(type) {
+  const url = `${config.apiHost}/sites/locations/${type}`;
   return dispatch => {
     fetch(url)
       .then(response => response.json())
