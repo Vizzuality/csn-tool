@@ -1,9 +1,6 @@
 import { connect } from 'react-redux';
 import SitesDetailTable from 'components/sites/SitesDetailTable';
 
-const columns = ['scientific_name', 'english_name', 'iucn_category', 'season', 'start',
-  'end', 'minimum', 'maximum', 'units', 'csn_criteria', 'iba_criteria'];
-
 function getSitesData(sites, columns) {
   const data = sites[sites.selectedCategory] && sites[sites.selectedCategory][sites.selected]
     ? sites[sites.selectedCategory][sites.selected].data
@@ -39,6 +36,9 @@ function getSitesData(sites, columns) {
 }
 
 const mapStateToProps = (state) => {
+  const columns = ['scientific_name', 'english_name', 'iucn_category', 'season', 'start',
+    'end', 'minimum', 'maximum', 'units', 'csn_criteria', 'iba_criteria'];
+
   return {
     site: state.sites.selected,
     category: state.sites.selectedCategory,
