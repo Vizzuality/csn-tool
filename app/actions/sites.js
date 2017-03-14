@@ -4,17 +4,17 @@ import { CLEAR_SITES_LIST, GET_SITES_STATS, GET_SITES_LIST, GET_SITES_SPECIES,
 import { RESULTS_PER_PAGE } from 'constants/config';
 import { push } from 'react-router-redux';
 
-export function setSiteParams(site, category) {
+export function setSiteParams(site, category, filter) {
   return {
     type: SET_SITES_PARAMS,
-    payload: { site, category }
+    payload: { site, category, filter }
   };
 }
 
-export function goSiteDetail(id, type) {
+export function goSiteDetail(id) {
   return (dispatch, state) => {
     const lang = state().i18nState.lang;
-    dispatch(push(`/${lang}/sites/${type}/${id}`));
+    dispatch(push(`/${lang}/sites/${id}`));
   };
 }
 

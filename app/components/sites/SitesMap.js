@@ -66,7 +66,7 @@ class SitesMap extends BasicMap {
         });
         marker.on('click', () => {
           if (!this.props.selected) {
-            this.props.goToDetail(site.id, this.props.router.params.type);
+            this.props.goToDetail(site.id);
           } else {
             marker.closePopup();
           }
