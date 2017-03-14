@@ -53,7 +53,8 @@ SearchFilter.contextTypes = {
 SearchFilter.propTypes = {
   placeholder: React.PropTypes.string,
   setSearchFilter: React.PropTypes.func.isRequired,
-  resetSearchFilter: React.PropTypes.func
+  resetSearchFilter: React.PropTypes.func,
+  router: React.PropTypes.object
 };
 
 export default withRouter(SearchFilter);

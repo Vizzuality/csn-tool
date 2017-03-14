@@ -27,8 +27,6 @@ function getSites(req, res) {
     WHERE s.site_id IN (SELECT * from p) ${search}
     ORDER BY s.country`;
 
-    console.log(table)
-
   rp(encodeURI(`${CARTO_SQL}${query}&rows_per_page=${results}&page=${req.query.page}`))
     .then((data) => {
       const result = JSON.parse(data);
@@ -90,9 +88,9 @@ function getSitesDetails(req, res) {
 function getSitesLocations(req, res) {
   let query;
   if (req.params.type === 'csn') {
-    query = `SELECT s.site_name, s.site_id as id, s.lat, s.lon FROM sites_csn_points s`;
+    query = 'SELECT s.site_name, s.site_id as id, s.lat, s.lon FROM sites_csn_points s';
   } else {
-    query = `SELECT s.site_name, s.site_id as id, s.lat, s.lon FROM sites s`;
+    query = 'SELECT s.site_name, s.site_id as id, s.lat, s.lon FROM sites s';
   }
   rp(CARTO_SQL + query)
     .then((data) => {
