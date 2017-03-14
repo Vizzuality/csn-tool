@@ -6,11 +6,11 @@ const mergeNames = require('../helpers/index').mergeNames;
 function getSpeciesList(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family, s.species_id as id,
       string_agg(p.populations, ', ') as population, s.hyperlink
-    FROM species s
+    FROM species_main s
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
     GROUP BY s.scientific_name, s.english_name, s.genus, s.family, s.species_id, 1,
-    s.hyperlink
-    ORDER BY s.scientific_name`;
+    s.hyperlink, s.taxonomic_sequence
+    ORDER BY s.taxonomic_sequence`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
@@ -173,11 +173,13 @@ function getSpeciesLookAlikeSpecies(req, res) {
     ),
 
     confusion_species AS (
-      SELECT lals.species_id, species_name AS confusion_species, lals.confusion_species_group, lals.not_aewa_species, s.english_name
+      SELECT lals.species_id, species_name AS confusion_species,
+      lals.confusion_species_group, lals.not_aewa_species, s.english_name,
+      s.taxonomic_sequence
       FROM look_alike_species lals
       INNER JOIN species_name sn
       ON sn.confusion_species_group = lals.confusion_species_group
-      INNER JOIN species s
+      INNER JOIN species_main s
       ON s.species_id = lals.species_id
       WHERE s.species_id <> ${req.params.id}
     ),
@@ -215,7 +217,8 @@ function getSpeciesLookAlikeSpecies(req, res) {
     FROM populations_species_no_geo
     RIGHT JOIN confusion_populations
     ON confusion_populations.species_id = populations_species_no_geo.sisrecid
-      AND confusion_populations.populationname = populations_species_no_geo.populations order by original_popname`;
+      AND confusion_populations.populationname = populations_species_no_geo.populations
+    ORDER BY confusion_populations.taxonomic_sequence`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];

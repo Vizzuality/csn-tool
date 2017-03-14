@@ -107,11 +107,11 @@ function getSitesSpecies(req, res) {
     s.iucn_category, si.lat, si.lon, si.site_name, s.hyperlink,
     ss._end AS end, ss.start, ss.minimum, ss.maximum, ss.season,
     ss.units, ss.iba_criteria, ss.csn_criteria
-    FROM species AS s
+    FROM species_main AS s
     INNER JOIN species_sites AS ss ON ss.species_id = s.species_id
     INNER JOIN sites AS si ON si.site_id = ss.site_id
     WHERE si.site_id = ${req.params.id}
-    ORDER BY s.scientific_name`;
+    ORDER BY s.taxonomic_sequence`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);

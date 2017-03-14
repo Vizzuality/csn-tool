@@ -104,14 +104,14 @@ function getCountrySpecies(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family,
     s.species_id as id, string_agg(p.populations, ', ') as populations, s.hyperlink,
     sc.country_status, s.iucn_category
-    FROM species s
+    FROM species_main s
     INNER JOIN species_country sc on sc.species_id = s.species_id
     INNER JOIN countries c on c.country_id = sc.country_id AND
       c.iso3 = '${req.params.iso}'
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
     GROUP BY s.scientific_name, s.english_name, s.genus, s.family, s.species_id, 1,
-    s.hyperlink, sc.country_status, s.iucn_category
-    ORDER BY s.english_name`;
+    s.hyperlink, sc.country_status, s.iucn_category, s.taxonomic_sequence
+    ORDER BY s.taxonomic_sequence`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);
@@ -244,7 +244,7 @@ function getCountryLookAlikeSpecies(req, res) {
     look_alike_species.not_aewa_species, look_alike_species.species_id as id,
     species.*
     FROM look_alike_species
-    INNER JOIN species
+    INNER JOIN species_main AS species
     ON species.confusion_species_group = look_alike_species.confusion_species_group
     WHERE look_alike_species.species_id <> species.species_id
   ),
@@ -271,7 +271,7 @@ function getCountryLookAlikeSpecies(req, res) {
   ) AND geo_id IN (
     SELECT wpepopid FROM country_pops
   )
-  ORDER BY original_species`;
+  ORDER BY taxonomic_sequence`;
 
   rp(CARTO_SQL + query)
     .then((data) => {
