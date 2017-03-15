@@ -1,13 +1,8 @@
 import { connect } from 'react-redux';
-import { setLocation } from 'actions/threshold';
 import ThresholdMap from 'components/threshold/ThresholdMap';
 
 const mapStateToProps = (state) => ({
-  latLng: state.threshold.latLng
+  coordinates: state.threshold.coordinates
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  onMapClick: (latLng) => dispatch(setLocation(latLng))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ThresholdMap);
+export default connect(mapStateToProps, null)(ThresholdMap);

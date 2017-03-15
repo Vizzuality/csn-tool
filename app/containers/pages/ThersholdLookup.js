@@ -2,7 +2,8 @@ import { connect } from 'react-redux';
 import ThresholdLookupPage from 'components/pages/ThresholdLookupPage';
 
 const mapStateToProps = (state) => ({
-  latLng: state.threshold.latLng
+  coordinates: state.threshold.coordinates,
+  data: state.threshold.data
 });
 
 const mapDispatchToProps = () => ({});

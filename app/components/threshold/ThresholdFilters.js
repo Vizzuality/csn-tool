@@ -1,24 +1,16 @@
 import React from 'react';
-import SitesSearch from 'containers/sites/SitesSearch';
+import ThresholdSearch from 'containers/threshold/ThresholdSearch';
 
-function TresholdFilters(props) {
+function TresholdFilters() {
   return (
     <div className="row c-table-filters">
       <div className="column small-12 medium-4 medium-offset-8">
-        <SitesSearch id={props.id} placeholder="sitesFilter" />
+        <ThresholdSearch placeholder="sitesFilter" />
       </div>
     </div>
   );
 }
 
-TresholdFilters.contextTypes = {
-  // Define function to get the translations
-  t: React.PropTypes.func.isRequired
-};
-
-TresholdFilters.propTypes = {
-  id: React.PropTypes.any,
-  category: React.PropTypes.string
-};
+TresholdFilters.propTypes = {};
 
 export default TresholdFilters;
