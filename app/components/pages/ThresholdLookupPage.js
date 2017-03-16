@@ -44,7 +44,7 @@ class ThresholdLookupPage extends React.Component {
                 </div>
                 : <div className="content">
                   <div className="title">
-                    <div className="name"><h2>{this.context.t('thresholdTool')}</h2></div>
+                    <div className="name"><h2>{this.context.t('thresholdLookup')}</h2></div>
                   </div>
                 </div>
               }
