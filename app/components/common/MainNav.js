@@ -5,7 +5,7 @@ import { withRouter } from 'react-router';
 const TOOLS_PATHS = ['threshold-lookup'];
 
 function MainNav(props, context) {
-  const isTool = props.router.getCurrentLocation().pathname.indexOf(TOOLS_PATHS);
+  const isTool = props.router.getCurrentLocation().pathname.indexOf(TOOLS_PATHS) > 0;
   return (
     <nav className="c-main-nav">
       <ul>
