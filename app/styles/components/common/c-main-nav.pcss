@@ -1,11 +1,11 @@
 .c-main-nav {
   display: flex;
 
-  > ul {
+  ul {
     display: flex;
     flex-direction: row;
 
-    > li {
+    li {
       list-style: none;
       padding: 0 1rem;
       display: flex;
@@ -19,7 +19,8 @@
         padding-right: 0;
       }
 
-      > a {
+      > a,
+      &.parent span {
         font-family: $font-heading;
         font-weight: 700;
         font-size: $font-size-xs;
@@ -28,6 +29,7 @@
         text-decoration: none;
         text-transform: uppercase;
         line-height: 1;
+        cursor: pointer;
 
         &.-current {
           color: $font-main-secondary;
@@ -35,6 +37,33 @@
 
         &.-disabled {
           color: rgba($font-main-inv, 0.5);
+        }
+      }
+
+      &.parent {
+        position: relative;
+
+        > ul {
+          visibility: hidden;
+          padding: 26px 1rem 1rem;
+          opacity: 0;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+          min-width: 12rem;
+          transform: translateY(-2em);
+          z-index: -1;
+          background-color: $bg-dark-color;
+          transition: all 0.3s ease-in-out 0s, visibility 0s linear 0.3s, z-index 0s linear 0.01s;
+        }
+        &:hover {
+          > ul {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0%);
+            transition-delay: 0s, 0s, 0.3s;
+          }
         }
       }
     }

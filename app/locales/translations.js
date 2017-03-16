@@ -155,7 +155,7 @@ export const translations = {
     'total_percentage': 'Total %',
     'threats': 'Amenazas',
     'threat_name': 'Búsqueda de umbral',
-    'thresholdLookup': 'Threshold look up',
+    'thresholdLookup': 'Threshold lookup',
     'threat_level_1': 'Nivel de amenaza 1',
     'threat_level_2': 'Nivel de amenaza 2',
     'habitats': 'Hábitats',

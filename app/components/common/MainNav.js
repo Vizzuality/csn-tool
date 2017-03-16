@@ -1,8 +1,11 @@
 import React from 'react';
 import NavLink from 'containers/common/NavLink';
+import { withRouter } from 'react-router';
 
+const TOOLS_PATHS = ['threshold-lookup'];
 
-function MainNav() {
+function MainNav(props, context) {
+  const isTool = props.router.getCurrentLocation().pathname.indexOf(TOOLS_PATHS);
   return (
     <nav className="c-main-nav">
       <ul>
@@ -15,8 +18,13 @@ function MainNav() {
         <li>
           <NavLink to={"/species"} i18nText="species" parent />
         </li>
-        <li>
-          <NavLink to={"/threshold-lookup"} i18nText="thresholdLookup" parent />
+        <li className="parent">
+          <span className={isTool ? '-current' : ''}>{context.t('tools')}</span>
+          <ul>
+            <li>
+              <NavLink to={"/threshold-lookup"} i18nText="thresholdLookup" parent />
+            </li>
+          </ul>
         </li>
         <li>
           <NavLink className="-disabled" to="" i18nText="guidelines" parent />
@@ -29,4 +37,13 @@ function MainNav() {
   );
 }
 
-export default MainNav;
+MainNav.contextTypes = {
+  // Define function to get the translations
+  t: React.PropTypes.func.isRequired
+};
+
+MainNav.propTypes = {
+  router: React.PropTypes.object.isRequired
+};
+
+export default withRouter(MainNav);
