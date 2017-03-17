@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import BasicMap from 'components/maps/BasicMap';
 import { replaceUrlParams } from 'helpers/router';
-import { BASEMAP_ATTRIBUTION_CARTO } from 'constants/map';
 
 class ThresholdMap extends BasicMap {
   constructor(props) {
@@ -33,7 +32,7 @@ class ThresholdMap extends BasicMap {
   componentDidMount() {
     this.initMap();
     this.map.on('click', this.updateCoords);
-    this.boundsLayer = new L.geoJson();
+    // this.boundsLayer = new L.geoJson();
   }
 
   componentWillUnmount() {
