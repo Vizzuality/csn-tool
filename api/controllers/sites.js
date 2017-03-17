@@ -4,6 +4,7 @@ const CARTO_SQL = require('../constants').CARTO_SQL;
 const RESULTS_PER_PAGE = 200;
 
 function getSites(req, res) {
+  const table = req.query.filter === 'iba' ? 'sites' : 'sites_csn_points';
   const results = req.query.results || RESULTS_PER_PAGE;
   const search = req.query.search
     ? `AND UPPER(s.country) like UPPER('%${req.query.search}%')
@@ -21,7 +22,7 @@ function getSites(req, res) {
       p as (SELECT DISTINCT site_id FROM species_sites)
     SELECT s.country, s.iso3, s.iso2, s.site_name, s.protection_status, s.site_id as id, s.lat, s.lon,
     stc.csn, stc.iba, s.hyperlink, s.iba_in_danger
-    FROM sites s
+    FROM ${table} s
     INNER JOIN stc ON stc.site_id = s.site_id
     WHERE s.site_id IN (SELECT * from p) ${search}
     ORDER BY s.country`;
@@ -85,7 +86,12 @@ function getSitesDetails(req, res) {
 }
 
 function getSitesLocations(req, res) {
-  const query = 'SELECT s.site_name, s.site_id as id, s.lat, s.lon FROM sites s';
+  let query;
+  if (req.params.type === 'csn') {
+    query = 'SELECT s.site_name, s.site_id as id, s.lat, s.lon FROM sites_csn_points s';
+  } else {
+    query = 'SELECT s.site_name, s.site_id as id, s.lat, s.lon FROM sites s';
+  }
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);

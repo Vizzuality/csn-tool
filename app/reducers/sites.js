@@ -13,6 +13,7 @@ const initialState = {
     data: false,
     hasMore: false
   },
+  filter: 'iba',
   stats: {},
   species: {},
   populations: {},
@@ -30,7 +31,8 @@ export default function (state = initialState, action) {
     case SET_SITES_PARAMS: {
       const params = {
         selected: action.payload.site,
-        selectedCategory: action.payload.category
+        selectedCategory: action.payload.category,
+        filter: action.payload.filter
       };
       return Object.assign({}, state, params);
     }

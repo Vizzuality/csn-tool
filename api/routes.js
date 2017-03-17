@@ -17,7 +17,7 @@ router.route('/countries/:iso/look-alike-species/:id').get(CountriesCtrl.getCoun
 
 // Sites
 router.route('/sites').get(SitesCtrl.getSites);
-router.route('/sites/locations').get(SitesCtrl.getSitesLocations);
+router.route('/sites/locations/:type').get(SitesCtrl.getSitesLocations);
 router.route('/sites/:id').get(SitesCtrl.getSitesSpecies);
 router.route('/sites/:id/details').get(SitesCtrl.getSitesDetails);
 router.route('/sites/:id/populations').get(SitesCtrl.getSitesPopulations);

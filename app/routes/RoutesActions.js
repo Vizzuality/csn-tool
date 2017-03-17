@@ -22,7 +22,8 @@ export function setSitesParams(state) {
   dispatch(setViewMode(viewMode));
   const site = state.params.site || '';
   const cat = state.params.cat || 'species';
-  dispatch(setSiteParams(site, cat));
+  const filter = state.location.query.filter || 'iba';
+  dispatch(setSiteParams(site, cat, filter));
 }
 
 export function setCountriesPage(actualState, replace, done) {

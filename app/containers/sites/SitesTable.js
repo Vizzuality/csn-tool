@@ -38,7 +38,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  getSitesList: (page, search) => dispatch(getSitesList(page, search))
+  getSitesList: (page, search, filter) => dispatch(getSitesList(page, search, filter))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SitesTable);
