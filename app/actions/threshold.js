@@ -6,8 +6,7 @@ export function setLocation(coordinates) {
       type: SET_THRESHOLD_POSITION,
       payload: coordinates
     });
-    // const url = `${config.apiHost}/threshold/${coordinates.lat}/${coordinates.lng}`;
-    const url = `${config.apiHost}/species`;
+    const url = `${config.apiHost}/threshold/${coordinates.lat}/${coordinates.lng}`;
     fetch(url)
       .then(res => {
         if (res.ok) return res.json();
