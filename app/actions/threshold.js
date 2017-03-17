@@ -10,12 +10,21 @@ export function setLocation(coordinates) {
     fetch(url)
       .then(res => {
         if (res.ok) return res.json();
-        return new Error();
+        throw new Error(res.statusText);
       })
       .then(data => {
+        if (data) {
+          dispatch({
+            type: SET_THRESHOLD_DATA,
+            payload: data
+          });
+        }
+      })
+      .catch(e => {
+        console.warn(e);
         dispatch({
           type: SET_THRESHOLD_DATA,
-          payload: data
+          payload: []
         });
       });
   };
