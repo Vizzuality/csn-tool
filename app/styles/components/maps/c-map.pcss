@@ -65,6 +65,12 @@
   &.-hidden {
     visibility: hidden;
   }
+
+  &.-threshold {
+    .leaflet-overlay-pane .leaflet-interactive {
+      fill-opacity: 0;
+    }
+  }
 }
 
 .marker-cluster {

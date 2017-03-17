@@ -5,7 +5,7 @@ import { getSitesList } from 'actions/sites';
 const mapStateToProps = (state) => ({
   data: state.threshold.data || [],
   columns: ['populations', 'a', 'b', 'c', 'flyway_range',
-    'year_start', 'year_end', 'size_min', 'size_max', 'ramsar']
+    'year_start', 'year_end', 'size_min', 'size_max', 'ramsar_criterion']
 });
 
 const mapDispatchToProps = (dispatch) => ({

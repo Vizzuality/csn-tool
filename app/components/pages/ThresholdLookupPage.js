@@ -13,7 +13,7 @@ class ThresholdLookupPage extends React.Component {
   }
 
   render() {
-    const { data, coordinates } = this.props;
+    const { data, country, coordinates } = this.props;
     return (
       <div className="l-page">
         <div className={`l-navigation ${data ? '-dark' : ''}`}>
@@ -24,7 +24,7 @@ class ThresholdLookupPage extends React.Component {
                   <div className="title">
                     <GoBackLink className="breadcrumb" i18nText="selectAnotherPoint" endPoint="threshold-lookup" />
                     <div className="name">
-                      <h2 className="scientific-name">{data.country || 'Country'}</h2>
+                      <h2 className="scientific-name">{country || 'Country'}</h2>
                     </div>
                   </div>
                   <div className="stats">
@@ -71,7 +71,8 @@ ThresholdLookupPage.contextTypes = {
 };
 
 ThresholdLookupPage.propTypes = {
-  data: React.PropTypes.array,
+  data: React.PropTypes.bool,
+  country: React.PropTypes.string,
   coordinates: React.PropTypes.object,
   getThreshold: React.PropTypes.func
 };
