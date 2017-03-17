@@ -2,17 +2,14 @@ const rp = require('request-promise');
 const CARTO_SQL = require('../constants').CARTO_SQL;
 
 function getSpeciesByPosition(req, res) {
-  // TODO: BUILD QUERY USING THIS PARAMS
-  console.info(req.params.lat);
-  console.info(req.params.lng);
-  console.info(req.params.zoom); // OPTIONAL
-  const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family, s.species_id as id,
-      string_agg(p.populations, ', ') as population, s.hyperlink
-    FROM species s
-    INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
-    GROUP BY s.scientific_name, s.english_name, s.genus, s.family, s.species_id, 1,
-    s.hyperlink
-    ORDER BY s.scientific_name`;
+  // TO include the geom
+  // SELECT ST_AsGeoJSON(p.the_geom)
+  const query = `SELECT p.populations, p.a, p.b, p.c, p.table_1_status, p.species, p.wpepopid, p.flyway_range, p.year_start,
+    p.year_end, p.size_min, p.size_max, p.ramsar_criterion, 'http://wpe.wetlands.org/view/' || p.wpepopid AS pop_hyperlink, c.name AS country_name
+    FROM populations AS p
+    INNER JOIN world_borders AS c ON
+    ST_CONTAINS(c.the_geom_webmercator, ST_Transform(ST_SetSRID(ST_MakePoint(${req.params.lng},${req.params.lat}), 4326), 3857))
+    WHERE ST_CONTAINS(p.the_geom_webmercator,ST_Transform(ST_SetSRID(ST_MakePoint(${req.params.lng},${req.params.lat}), 4326), 3857))`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
