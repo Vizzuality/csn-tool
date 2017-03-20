@@ -2,6 +2,10 @@
   height: 100%;
   background-color: $ashy-green;
 
+  &.-pointer {
+    cursor: pointer;
+  }
+
   .map-marker {
     position: relative;
 
@@ -60,6 +64,12 @@
 
   &.-hidden {
     visibility: hidden;
+  }
+
+  &.-threshold {
+    .leaflet-overlay-pane .leaflet-interactive {
+      fill-opacity: 0;
+    }
   }
 }
 

@@ -3,6 +3,7 @@ import { setLanguage } from 'redux-i18n';
 import { setCountryParams } from 'actions/countries';
 import { setSpeciesDetailParams } from 'actions/species';
 import { setViewMode, setSiteParams } from 'actions/sites';
+import { setLocation } from 'actions/threshold';
 
 export function updateLanguage(actualState, replace, done) {
   dispatch(setLanguage(actualState.params.lang));
@@ -56,5 +57,24 @@ export function updateSitesDetailPage(actualState, replace, done) {
   const site = actualState.params.site || '';
   const cat = actualState.params.cat || 'species'; // default value
   dispatch(setSiteParams(site, cat));
+  done();
+}
+
+function setThresholdParams(state) {
+  const coordinates = state.location.query.position && state.location.query.position.split(',') || null;
+  if (coordinates) {
+    dispatch(setLocation({
+      lat: coordinates[0],
+      lng: coordinates[1]
+    }));
+  }
+}
+
+export function setThresholdPosition(actualState, replace, done) {
+  setThresholdParams(actualState);
+  done();
+}
+export function updateThresholdPosition(actualState, nextState, replace, done) {
+  setThresholdParams(nextState);
   done();
 }

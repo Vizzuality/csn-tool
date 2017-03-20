@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import StayUpdate from 'containers/common/StayUpdate';
-import MainNav from 'components/common/MainNav';
+import SecondaryNav from 'components/common/SecondaryNav';
 
 function Footer(props) {
   return (
@@ -11,7 +11,7 @@ function Footer(props) {
           <StayUpdate />
         </div>
         <div className="column small-12 medium-6 secondary-menu">
-          <MainNav />
+          <SecondaryNav />
           <Link className="logo" to={`/${props.lang}`}>
             <svg className="icon-logo-small">
               <use xlinkHref="#logo-small"></use>
