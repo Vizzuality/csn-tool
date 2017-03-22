@@ -27,7 +27,7 @@ function getFilters(columns, data) {
 class TableListHeader extends React.Component {
   constructor(props) {
     super(props);
-    this.pending = true;
+    this.pending = false;
     this.filters = null;
     this.activeFilters = {};
     if (props.data) {
@@ -135,7 +135,7 @@ TableListHeader.defaultProps = {
 
 TableListHeader.propTypes = {
   detailLink: React.PropTypes.bool,
-  selectedCategory: React.PropTypes.string.isRequired,
+  selectedCategory: React.PropTypes.string,
   columns: React.PropTypes.array.isRequired,
   data: React.PropTypes.any.isRequired,
   includeSort: React.PropTypes.bool,

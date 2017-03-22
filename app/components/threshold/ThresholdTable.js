@@ -1,7 +1,7 @@
 import React from 'react';
 import { Sticky } from 'react-sticky';
 import TableList from 'components/tables/TableList';
-import TableListHeader from 'containers/species/TableListHeader';
+import TableListHeader from 'containers/threshold/TableListHeader';
 import ThresholdFilters from 'components/threshold/ThresholdFilters';
 import ScrollButton from 'components/common/ScrollButton';
 
