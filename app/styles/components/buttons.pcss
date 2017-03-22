@@ -11,8 +11,24 @@
   background-color: $main-color;
   cursor: pointer;
 
+  &.-small {
+    padding: 8px 12px;
+    min-width: 160px;
+  }
+
   &.-inv {
     background-color: $font-main-inv;
     color: $font-main-secondary;
+  }
+
+  &.-dark {
+    background-color: $bg-dark-color;
+    color: $font-main-inv;
+    border-radius: 0;
+  }
+
+  &.-disabled {
+    opacity: 0.2;
+    cursor: not-allowed;
   }
 }
