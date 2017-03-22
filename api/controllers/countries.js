@@ -40,12 +40,11 @@ function getCountryDetails(req, res) {
 
 function getCountrySites(req, res) {
   const query = `with stc as (select site_id,
-    SUM(case when csn_criteria = '' then 0 else 1 end) as csn,
       SUM(case when iba_criteria = '' then 0 else 1 end) as iba
         from species_sites group by site_id)
     SELECT c.country, c.iso3,
       s.protection_status, s.site_name, s.lat, s.lon, s.site_id as id,
-      stc.csn, stc.iba, s.hyperlink, s.iba_in_danger
+      stc.iba, s.hyperlink, s.iba_in_danger
     FROM sites s
   	INNER JOIN countries c ON s.country_id = c.country_id AND
     c.iso3 = '${req.params.iso}'
