@@ -60,7 +60,7 @@ function getSpeciesDetails(req, res) {
 }
 
 function getSpeciesSites(req, res) {
-  const query = `SELECT s.species_id, ss.csn_criteria as csn,
+  const query = `SELECT s.species_id,
       ss.iba_criteria as iba, ss.maximum, ss.minimum, ss.season,
       si.country, si.site_name, si.lat, si.lon, si.iso2, si.protection_status,
       string_agg(p.populations, ', ') as population,
@@ -70,7 +70,7 @@ function getSpeciesSites(req, res) {
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
     INNER JOIN sites si ON ss.site_id = si.site_id
     WHERE s.species_id = '${req.params.id}'
-    GROUP BY ss.csn_criteria, ss.iba_criteria, ss.maximum, ss.minimum,
+    GROUP BY ss.iba_criteria, ss.maximum, ss.minimum,
     ss.season, si.country, si.iso2, si.protection_status ,si.site_name, si.lat, si.lon,
     si.hyperlink, si.site_id, 1
     ORDER BY si.site_name`;
