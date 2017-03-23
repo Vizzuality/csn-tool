@@ -30,7 +30,7 @@ function getSpeciesList(req, res) {
 function getSpeciesDetails(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.family,
     s.species_id as id, s.iucn_category, s.hyperlink
-    FROM species s
+    FROM species_main s
     WHERE s.species_id = ${req.params.id}
     `;
   rp(CARTO_SQL + query)
@@ -65,7 +65,7 @@ function getSpeciesSites(req, res) {
       si.country, si.site_name, si.lat, si.lon, si.iso2, si.protection_status,
       string_agg(p.populations, ', ') as population,
       si.hyperlink, si.site_id AS id
-    FROM species s
+    FROM species_main s
     INNER JOIN species_sites ss ON s.species_id = ss.species_id
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
     INNER JOIN sites si ON ss.site_id = si.site_id
@@ -100,7 +100,7 @@ function getSpeciesPopulation(req, res) {
     p.species, p.wpepopid, p.flyway_range, p.year_start, p.year_end, p.size_min,
     p.size_max, p.ramsar_criterion,
     'http://wpe.wetlands.org/view/' || p.wpepopid AS pop_hyperlink
-    FROM species s
+    FROM species_main s
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
     WHERE s.species_id = '${req.params.id}'`;
 
@@ -122,7 +122,7 @@ function getSpeciesPopulation(req, res) {
 
 function getSpeciesThreats(req, res) {
   const query = `SELECT p.threat_level_1, p.threat_level_2
-    FROM species s
+    FROM species_main s
     INNER JOIN species_threats p on p.species_id = s.species_id
     WHERE s.species_id = '${req.params.id}'`;
 
@@ -144,7 +144,7 @@ function getSpeciesThreats(req, res) {
 
 function getSpeciesHabitats(req, res) {
   const query = `SELECT p.habitat_level_1, p.habitat_level_2
-    FROM species s
+    FROM species_main s
     INNER JOIN species_habitat p on p.species_id = s.species_id
     WHERE s.species_id = '${req.params.id}'`;
 
