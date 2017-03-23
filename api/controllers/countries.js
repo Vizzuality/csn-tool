@@ -40,16 +40,15 @@ function getCountryDetails(req, res) {
 
 function getCountrySites(req, res) {
   const query = `with stc as (select site_id,
-    SUM(case when csn_criteria = '' then 0 else 1 end) as csn,
       SUM(case when iba_criteria = '' then 0 else 1 end) as iba
         from species_sites group by site_id)
     SELECT c.country, c.iso3,
       s.protection_status, s.site_name, s.lat, s.lon, s.site_id as id,
-      stc.csn, stc.iba, s.hyperlink, s.iba_in_danger
+      stc.iba, s.hyperlink, s.iba_in_danger
     FROM sites s
   	INNER JOIN countries c ON s.country_id = c.country_id AND
     c.iso3 = '${req.params.iso}'
-  	INNER JOIN stc ON stc.site_id = s.site_id
+    LEFT JOIN stc ON stc.site_id = s.site_id
     ORDER BY s.site_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
@@ -102,16 +101,17 @@ function getCountrySitesOld(req, res) {
 
 function getCountrySpecies(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family,
-    s.species_id as id, string_agg(p.populations, ', ') as populations, s.hyperlink,
-    sc.country_status, s.iucn_category
-    FROM species s
+    s.species_id as id, string_agg(p.population_name, ', ') as populations, s.hyperlink,
+    sc.country_status, s.iucn_category, sc.occurrence_status
+    FROM species_main s
     INNER JOIN species_country sc on sc.species_id = s.species_id
     INNER JOIN countries c on c.country_id = sc.country_id AND
       c.iso3 = '${req.params.iso}'
-    INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
+    INNER JOIN populations_iba p on p.species_main_id = s.species_id
     GROUP BY s.scientific_name, s.english_name, s.genus, s.family, s.species_id, 1,
-    s.hyperlink, sc.country_status, s.iucn_category
-    ORDER BY s.english_name`;
+    s.hyperlink, sc.country_status, s.iucn_category, s.taxonomic_sequence,
+    sc.occurrence_status
+    ORDER BY s.taxonomic_sequence`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);
@@ -128,18 +128,24 @@ function getCountrySpecies(req, res) {
     });
 }
 function getCountryPopulations(req, res) {
-  const query = `with r as (
-    SELECT ssis, wpepopid, wpesppid FROM
-    populationflyways_idcodesonly_dissolved
-    WHERE ST_Intersects(the_geom,
-     (SELECT the_geom FROM world_borders WHERE iso3 = '${req.params.iso}'))),
-  f AS (SELECT ssis,  wpepopid, wpesppid AS wpesppid FROM r ),
-  d AS (select * from species s INNER JOIN f ON species_id=ssis)
-  SELECT scientific_name, d.english_name, d.iucn_category, d.wpepopid pop_id,
-  dd.sisrecid as id, dd.*, 'http://wpe.wetlands.org/view/' || d.wpepopid AS pop_hyperlink
-  FROM d
-  INNER JOIN populations_species_no_geo dd on d.wpepopid=dd.wpepopid
-  ORDER BY d.scientific_name
+  const query = `SELECT
+    s.scientific_name,
+    s.english_name,
+    s.iucn_category,
+    pi.wpepopid AS pop_id,
+    s.species_id AS id,
+    'http://wpe.wetlands.org/view/' || pi.wpepopid AS pop_hyperlink,
+    pi.a, pi.b, pi.c, pi.flyway_range,
+    pi.year_start, pi.year_end,
+    pi.size_min, pi.size_max,
+    pi.population_name AS populations,
+    pi.ramsar_criterion_6 AS ramsar_criterion
+    FROM populations_iba AS pi
+    INNER JOIN species_main AS s ON s.species_id = pi.species_main_id
+    WHERE (
+      ST_Intersects(pi.the_geom,(SELECT the_geom FROM world_borders WHERE iso3 = '${req.params.iso}'))
+    )
+    ORDER BY s.taxonomic_sequence
   `;
   rp(CARTO_SQL + query)
     .then((data) => {
@@ -244,7 +250,7 @@ function getCountryLookAlikeSpecies(req, res) {
     look_alike_species.not_aewa_species, look_alike_species.species_id as id,
     species.*
     FROM look_alike_species
-    INNER JOIN species
+    INNER JOIN species_main AS species
     ON species.confusion_species_group = look_alike_species.confusion_species_group
     WHERE look_alike_species.species_id <> species.species_id
   ),
@@ -271,7 +277,7 @@ function getCountryLookAlikeSpecies(req, res) {
   ) AND geo_id IN (
     SELECT wpepopid FROM country_pops
   )
-  ORDER BY original_species`;
+  ORDER BY taxonomic_sequence`;
 
   rp(CARTO_SQL + query)
     .then((data) => {

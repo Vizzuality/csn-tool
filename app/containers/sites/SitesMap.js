@@ -15,7 +15,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  goToDetail: (id) => dispatch(goSiteDetail(id))
+  goToDetail: (id, type) => dispatch(goSiteDetail(id, type))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SitesMap);

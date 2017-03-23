@@ -7,7 +7,7 @@ function TableFilters(props) {
     <div className="row c-table-filters">
       <div className="column small-12 medium-8">
         <div className="tags">
-          <NavLink to={`/countries/${props.country}/sites`} i18nText="sites" className={props.category && props.category === 'sites' ? 'is-active' : ''} />
+          <NavLink to={`/countries/${props.country}/sites`} i18nText="IBA" className={props.category && props.category === 'sites' ? 'is-active' : ''} />
           <NavLink to={`/countries/${props.country}/sitesOld`} i18nText="sitesOld" className={props.category && props.category === 'sitesOld' ? 'is-active' : ''} />
           <NavLink to={`/countries/${props.country}/species`} i18nText="species" className={props.category && props.category === 'species' ? 'is-active' : ''} />
           <NavLink to={`/countries/${props.country}/populations`} i18nText="populations" className={props.category && props.category === 'populations' ? 'is-active' : ''} />

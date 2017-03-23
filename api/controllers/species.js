@@ -1,15 +1,16 @@
 const rp = require('request-promise');
 const CARTO_SQL = require('../constants').CARTO_SQL;
 const normalizeSiteStatus = require('../helpers/index').normalizeSiteStatus;
+const mergeNames = require('../helpers/index').mergeNames;
 
 function getSpeciesList(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family, s.species_id as id,
       string_agg(p.populations, ', ') as population, s.hyperlink
-    FROM species s
+    FROM species_main s
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
     GROUP BY s.scientific_name, s.english_name, s.genus, s.family, s.species_id, 1,
-    s.hyperlink
-    ORDER BY s.scientific_name`;
+    s.hyperlink, s.taxonomic_sequence
+    ORDER BY s.taxonomic_sequence`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
@@ -29,7 +30,7 @@ function getSpeciesList(req, res) {
 function getSpeciesDetails(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.family,
     s.species_id as id, s.iucn_category, s.hyperlink
-    FROM species s
+    FROM species_main s
     WHERE s.species_id = ${req.params.id}
     `;
   rp(CARTO_SQL + query)
@@ -59,17 +60,17 @@ function getSpeciesDetails(req, res) {
 }
 
 function getSpeciesSites(req, res) {
-  const query = `SELECT s.species_id, ss.csn_criteria as csn,
+  const query = `SELECT s.species_id,
       ss.iba_criteria as iba, ss.maximum, ss.minimum, ss.season,
       si.country, si.site_name, si.lat, si.lon, si.iso2, si.protection_status,
       string_agg(p.populations, ', ') as population,
       si.hyperlink, si.site_id AS id
-    FROM species s
+    FROM species_main s
     INNER JOIN species_sites ss ON s.species_id = ss.species_id
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
     INNER JOIN sites si ON ss.site_id = si.site_id
     WHERE s.species_id = '${req.params.id}'
-    GROUP BY ss.csn_criteria, ss.iba_criteria, ss.maximum, ss.minimum,
+    GROUP BY ss.iba_criteria, ss.maximum, ss.minimum,
     ss.season, si.country, si.iso2, si.protection_status ,si.site_name, si.lat, si.lon,
     si.hyperlink, si.site_id, 1
     ORDER BY si.site_name`;
@@ -95,12 +96,12 @@ function getSpeciesSites(req, res) {
 }
 
 function getSpeciesPopulation(req, res) {
-  const query = `SELECT p.populations, p.a, p.b, p.c, table_1_status,
+  const query = `SELECT p.population_name AS populations, p.a, p.b, p.c, table_1_status,
     p.species, p.wpepopid, p.flyway_range, p.year_start, p.year_end, p.size_min,
-    p.size_max, p.ramsar_criterion,
+    p.size_max, p.ramsar_criterion_6 AS ramsar_criterion,
     'http://wpe.wetlands.org/view/' || p.wpepopid AS pop_hyperlink
-    FROM species s
-    INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
+    FROM species_main s
+    INNER JOIN populations_iba p on p.species_main_id = s.species_id
     WHERE s.species_id = '${req.params.id}'`;
 
   rp(CARTO_SQL + query)
@@ -121,7 +122,7 @@ function getSpeciesPopulation(req, res) {
 
 function getSpeciesThreats(req, res) {
   const query = `SELECT p.threat_level_1, p.threat_level_2
-    FROM species s
+    FROM species_main s
     INNER JOIN species_threats p on p.species_id = s.species_id
     WHERE s.species_id = '${req.params.id}'`;
 
@@ -143,7 +144,7 @@ function getSpeciesThreats(req, res) {
 
 function getSpeciesHabitats(req, res) {
   const query = `SELECT p.habitat_level_1, p.habitat_level_2
-    FROM species s
+    FROM species_main s
     INNER JOIN species_habitat p on p.species_id = s.species_id
     WHERE s.species_id = '${req.params.id}'`;
 
@@ -172,12 +173,15 @@ function getSpeciesLookAlikeSpecies(req, res) {
     ),
 
     confusion_species AS (
-      SELECT look_alike_species.species_id, species_name
-        AS confusion_species, look_alike_species.confusion_species_group, look_alike_species.not_aewa_species
-      FROM look_alike_species
-      INNER JOIN species_name
-      ON species_name.confusion_species_group = look_alike_species.confusion_species_group
-      WHERE species_id <> ${req.params.id}
+      SELECT lals.species_id, species_name AS confusion_species,
+      lals.confusion_species_group, lals.not_aewa_species, s.english_name,
+      s.taxonomic_sequence
+      FROM look_alike_species lals
+      INNER JOIN species_name sn
+      ON sn.confusion_species_group = lals.confusion_species_group
+      INNER JOIN species_main s
+      ON s.species_id = lals.species_id
+      WHERE s.species_id <> ${req.params.id}
     ),
 
 	  original_flyway AS (
@@ -213,12 +217,17 @@ function getSpeciesLookAlikeSpecies(req, res) {
     FROM populations_species_no_geo
     RIGHT JOIN confusion_populations
     ON confusion_populations.species_id = populations_species_no_geo.sisrecid
-      AND confusion_populations.populationname = populations_species_no_geo.populations order by original_popname`;
+      AND confusion_populations.populationname = populations_species_no_geo.populations
+    ORDER BY confusion_populations.taxonomic_sequence`;
   rp(CARTO_SQL + query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
-        res.json(results);
+        const params = [
+          { columnName: 'confusion_name', field1: 'confusion_species', field2: 'english_name' }
+        ];
+        const dataParsed = mergeNames(results, params);
+        res.json(dataParsed);
       } else {
         res.status(404);
         res.json({ error: 'There are no habitats for this Species' });

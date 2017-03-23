@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import SpeciesDetailTable from 'components/species/SpeciesDetailTable';
+import { filterData } from 'helpers/filters';
 
 function getSpeciesDetailColums(category) {
   switch (category) {
@@ -10,9 +11,9 @@ function getSpeciesDetailColums(category) {
     case 'threats':
       return ['threat_level_1', 'threat_level_2'];
     case 'lookAlikeSpecies':
-      return ['original_popname', 'original_a', 'original_b', 'original_c', 'confusion_species', 'populationname', 'a', 'b', 'c'];
+      return ['original_popname', 'original_a', 'original_b', 'original_c', 'confusion_name', 'populationname', 'a', 'b', 'c'];
     default:
-      return ['site_name', 'country', 'protection_status', 'iba', 'csn'];
+      return ['site_name', 'country', 'protection_status', 'iba'];
   }
 }
 
@@ -24,10 +25,8 @@ function getSpeciesDetailData(species, columns) {
   if (!data) return data;
 
   let filteredData = data;
-  if (species.columnFilter.field && columns.indexOf(species.columnFilter.field)) {
-    filteredData = data.filter((item) => (
-      item[species.columnFilter.field] && item[species.columnFilter.field].toString().toUpperCase() === species.columnFilter.value.toUpperCase()
-    ));
+  if (Object.keys(species.columnFilter).length !== 0) {
+    filteredData = filterData(filteredData, species.columnFilter);
   }
 
   if (species.searchFilter) {

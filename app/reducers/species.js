@@ -22,10 +22,7 @@ const initialState = {
     field: '',
     order: ''
   },
-  columnFilter: {
-    field: '',
-    value: ''
-  }
+  columnFilter: {}
 };
 
 export default function (state = initialState, action) {

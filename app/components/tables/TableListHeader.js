@@ -29,30 +29,34 @@ class TableListHeader extends React.Component {
     super(props);
     this.pending = true;
     this.filters = null;
+    this.activeFilters = {};
     if (props.data) {
       this.filters = getFilters(props.columns, props.data);
+      this.pending = false;
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.selectedCategory !== nextProps.selectedCategory) {
       this.pending = true;
-      this.filterBy({ value: 'reset' });
+      this.filterBy({ field: 'all', value: 'reset' });
     }
-    if (this.pending && this.props.data.length !== nextProps.data.length) {
+    if (this.pending && nextProps.data.length && this.props.data.length !== nextProps.data.length) {
       this.pending = false;
       this.filters = getFilters(nextProps.columns, nextProps.data);
     }
   }
 
-
   filterBy(filter) {
     if (this.props.filterBy) {
-      if (filter.value === 'reset') {
-        this.props.filterBy({ field: null, value: null });
+      if (filter.value === 'reset' && filter.field === 'all') {
+        this.activeFilters = {};
+      } else if (filter.value === 'reset') {
+        delete this.activeFilters[filter.field];
       } else {
-        this.props.filterBy(filter);
+        this.activeFilters[filter.field] = filter.value;
       }
+      this.props.filterBy(this.activeFilters);
     }
   }
 
@@ -88,7 +92,7 @@ class TableListHeader extends React.Component {
                     <div className="table-filter">
                       <select onChange={(event) => this.filterBy({ field: column, value: event.target.value })}>
                         <option value="reset">Reset filter</option>
-                        {this.filters[column] && this.filters[column].map((item, i) => (
+                        {this.filters && this.filters[column] && this.filters[column].map((item, i) => (
                           <option key={i} value={item}>{item}</option>
                         ))}
                       </select>
@@ -132,7 +136,7 @@ TableListHeader.defaultProps = {
 
 TableListHeader.propTypes = {
   detailLink: React.PropTypes.bool,
-  selectedCategory: React.PropTypes.string.isRequired,
+  selectedCategory: React.PropTypes.string,
   columns: React.PropTypes.array.isRequired,
   data: React.PropTypes.any.isRequired,
   includeSort: React.PropTypes.bool,

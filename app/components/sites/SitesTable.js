@@ -3,12 +3,13 @@ import SitesFilters from 'components/sites/SitesFilters';
 import InfiniteScroll from 'components/common/InfiniteScroll';
 import TableList from 'components/tables/TableList';
 import TableListHeader from 'containers/sites/TableListHeader';
+import { withRouter } from 'react-router';
 
 class SitesTable extends React.Component {
 
   componentWillMount() {
     if (!this.props.list.data) {
-      this.props.getSitesList(this.props.list.page);
+      this.props.getSitesList(this.props.list.page, null, this.props.router.location.query.filter);
     }
   }
 
@@ -51,7 +52,8 @@ SitesTable.propTypes = {
   getSitesList: React.PropTypes.func.isRequired,
   list: React.PropTypes.object.isRequired,
   category: React.PropTypes.string,
-  columns: React.PropTypes.array.isRequired
+  columns: React.PropTypes.array.isRequired,
+  router: React.PropTypes.object
 };
 
-export default SitesTable;
+export default withRouter(SitesTable);

@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 
 class SearchFilter extends React.Component {
   constructor(props) {
@@ -21,7 +22,7 @@ class SearchFilter extends React.Component {
     this.setState({ search: filter });
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
-      this.props.setSearchFilter(filter);
+      this.props.setSearchFilter(filter, this.props.router.location.query.filter);
     }, 400);
   }
 
@@ -52,7 +53,8 @@ SearchFilter.contextTypes = {
 SearchFilter.propTypes = {
   placeholder: React.PropTypes.string,
   setSearchFilter: React.PropTypes.func.isRequired,
-  resetSearchFilter: React.PropTypes.func
+  resetSearchFilter: React.PropTypes.func,
+  router: React.PropTypes.object
 };
 
-export default SearchFilter;
+export default withRouter(SearchFilter);

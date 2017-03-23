@@ -4,10 +4,10 @@ import { CLEAR_SITES_LIST, GET_SITES_STATS, GET_SITES_LIST, GET_SITES_SPECIES,
 import { RESULTS_PER_PAGE } from 'constants/config';
 import { push } from 'react-router-redux';
 
-export function setSiteParams(site, category) {
+export function setSiteParams(site, category, filter) {
   return {
     type: SET_SITES_PARAMS,
-    payload: { site, category }
+    payload: { site, category, filter }
   };
 }
 
@@ -38,9 +38,9 @@ export function getSitesStats(id) {
       });
   };
 }
-export function getSitesList(page, search) {
+export function getSitesList(page, search, filter) {
   const searchQuery = search ? `&search=${search}` : '';
-  const url = `${config.apiHost}/sites?page=${page}&results=${RESULTS_PER_PAGE}${searchQuery}`;
+  const url = `${config.apiHost}/sites?page=${page}&results=${RESULTS_PER_PAGE}${searchQuery}&filter=${filter}`;
   return dispatch => {
     fetch(url)
       .then(response => response.json())
@@ -57,8 +57,8 @@ export function getSitesList(page, search) {
   };
 }
 
-export function getSitesLocations() {
-  const url = `${config.apiHost}/sites/locations`;
+export function getSitesLocations(type) {
+  const url = `${config.apiHost}/sites/locations/${type}`;
   return dispatch => {
     fetch(url)
       .then(response => response.json())

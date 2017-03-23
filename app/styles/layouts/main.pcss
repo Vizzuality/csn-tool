@@ -2,7 +2,7 @@
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 100;
+  z-index: 400;
   background-color: $bg-dark-color;
   transition: background 1s ease-in;
 
@@ -17,9 +17,9 @@
   right: 0;
   left: 0;
   background-color: rgba($bg-dark-color, 0.7);
-  z-index: 10;
   padding: rem(15) 0;
   height: rem(70);
+  z-index: 200;
 
   &.-dark {
     background-color: $bg-dark-color;
@@ -117,7 +117,7 @@
 
 .l-content {
   margin-top: calc(100vh);
-  z-index: 999999999;
+  z-index: 300;
 
   &.-short {
     margin-top: calc(100vh - $content-peek);

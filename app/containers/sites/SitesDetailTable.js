@@ -1,16 +1,6 @@
 import { connect } from 'react-redux';
 import SitesDetailTable from 'components/sites/SitesDetailTable';
-
-function getSitesColums(category) {
-  switch (category) {
-    case 'populations':
-      return ['scientific_name', 'english_name', 'populations', 'a', 'b', 'c',
-        'table_1_status'];
-    default:
-      return ['scientific_name', 'english_name', 'iucn_category', 'season', 'start',
-        'end', 'minimum', 'maximum', 'units', 'csn_criteria', 'iba_criteria'];
-  }
-}
+import { filterData } from 'helpers/filters';
 
 function getSitesData(sites, columns) {
   const data = sites[sites.selectedCategory] && sites[sites.selectedCategory][sites.selected]
@@ -20,10 +10,8 @@ function getSitesData(sites, columns) {
   if (!data) return data;
 
   let filteredData = data;
-  if (sites.columnFilter.field && columns.indexOf(sites.columnFilter.field)) {
-    filteredData = data.filter((item) => (
-      item[sites.columnFilter.field] && item[sites.columnFilter.field].toString().toUpperCase() === sites.columnFilter.value.toUpperCase()
-    ));
+  if (Object.keys(sites.columnFilter).length !== 0) {
+    filteredData = filterData(filteredData, sites.columnFilter);
   }
 
   if (sites.searchFilter) {
@@ -47,7 +35,8 @@ function getSitesData(sites, columns) {
 }
 
 const mapStateToProps = (state) => {
-  const columns = getSitesColums(state.sites.selectedCategory);
+  const columns = ['scientific_name', 'english_name', 'iucn_category', 'season', 'start',
+    'end', 'minimum', 'maximum', 'units', 'csn_criteria', 'iba_criteria'];
 
   return {
     site: state.sites.selected,

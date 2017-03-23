@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
 import CountriesTable from 'components/countries/CountriesTable';
 import { setSearchFilter } from 'actions/countries';
+import { filterData } from 'helpers/filters';
 
 function getCountryColums(category) {
   switch (category) {
     case 'species':
       return ['scientific_name', 'english_name', 'iucn_category',
-        'country_status'];
+        'country_status', 'occurrence_status'];
     case 'populations':
       return ['scientific_name', 'english_name', 'iucn_category', 'populations',
         'a', 'b', 'c', 'flyway_range', 'year_start',
@@ -18,7 +19,7 @@ function getCountryColums(category) {
       return ['original_species', 'populations', 'original_a', 'original_b',
         'original_c', 'confusion_species'];
     default:
-      return ['site_name', 'protection_status', 'iba', 'csn', 'iba_in_danger'];
+      return ['site_name', 'protection_status', 'iba', 'iba_in_danger'];
   }
 }
 
@@ -30,10 +31,8 @@ function getCountryData(countries, columns) {
   if (!data) return data;
 
   let filteredData = data;
-  if (countries.columnFilter.field && columns.indexOf(countries.columnFilter.field)) {
-    filteredData = data.filter((item) => (
-      item[countries.columnFilter.field] && item[countries.columnFilter.field].toString().toUpperCase() === countries.columnFilter.value.toUpperCase()
-    ));
+  if (Object.keys(countries.columnFilter).length !== 0) {
+    filteredData = filterData(filteredData, countries.columnFilter);
   }
 
   if (countries.searchFilter) {
