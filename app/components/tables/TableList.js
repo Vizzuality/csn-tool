@@ -3,7 +3,7 @@ import NavLink from 'containers/common/NavLink';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import { numberToThousands } from 'helpers/data';
 
-const columnsWithYears = ['year', 'start', 'end'];
+const columnsWithYears = ['year', 'start', 'end', 'year_end', 'year_start'];
 
 function getDetailLink(detailLink, item) {
   if (detailLink && detailLink.type === 'action') {
