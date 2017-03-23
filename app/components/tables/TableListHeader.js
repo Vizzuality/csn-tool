@@ -27,11 +27,12 @@ function getFilters(columns, data) {
 class TableListHeader extends React.Component {
   constructor(props) {
     super(props);
-    this.pending = false;
+    this.pending = true;
     this.filters = null;
     this.activeFilters = {};
     if (props.data) {
       this.filters = getFilters(props.columns, props.data);
+      this.pending = false;
     }
   }
 
@@ -91,7 +92,7 @@ class TableListHeader extends React.Component {
                     <div className="table-filter">
                       <select onChange={(event) => this.filterBy({ field: column, value: event.target.value })}>
                         <option value="reset">Reset filter</option>
-                        {this.filters[column] && this.filters[column].map((item, i) => (
+                        {this.filters && this.filters[column] && this.filters[column].map((item, i) => (
                           <option key={i} value={item}>{item}</option>
                         ))}
                       </select>
