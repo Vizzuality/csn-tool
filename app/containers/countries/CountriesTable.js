@@ -7,7 +7,7 @@ function getCountryColums(category) {
   switch (category) {
     case 'species':
       return ['scientific_name', 'english_name', 'iucn_category',
-        'country_status'];
+        'country_status', 'occurrence_status'];
     case 'populations':
       return ['scientific_name', 'english_name', 'iucn_category', 'populations',
         'a', 'b', 'c', 'flyway_range', 'year_start',

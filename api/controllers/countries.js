@@ -101,15 +101,16 @@ function getCountrySitesOld(req, res) {
 
 function getCountrySpecies(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family,
-    s.species_id as id, string_agg(p.populations, ', ') as populations, s.hyperlink,
-    sc.country_status, s.iucn_category
+    s.species_id as id, string_agg(p.population_name, ', ') as populations, s.hyperlink,
+    sc.country_status, s.iucn_category, sc.occurrence_status
     FROM species_main s
     INNER JOIN species_country sc on sc.species_id = s.species_id
     INNER JOIN countries c on c.country_id = sc.country_id AND
       c.iso3 = '${req.params.iso}'
-    INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
+    INNER JOIN populations_iba p on p.species_main_id = s.species_id
     GROUP BY s.scientific_name, s.english_name, s.genus, s.family, s.species_id, 1,
-    s.hyperlink, sc.country_status, s.iucn_category, s.taxonomic_sequence
+    s.hyperlink, sc.country_status, s.iucn_category, s.taxonomic_sequence,
+    sc.occurrence_status
     ORDER BY s.taxonomic_sequence`;
   rp(CARTO_SQL + query)
     .then((data) => {
