@@ -133,12 +133,12 @@ function getCountryPopulations(req, res) {
     WHERE ST_Intersects(the_geom,
      (SELECT the_geom FROM world_borders WHERE iso3 = '${req.params.iso}'))),
   f AS (SELECT ssis,  wpepopid, wpesppid AS wpesppid FROM r ),
-  d AS (select * from species s INNER JOIN f ON species_id=ssis)
+  d AS (select * from species_main s INNER JOIN f ON species_id=ssis)
   SELECT scientific_name, d.english_name, d.iucn_category, d.wpepopid pop_id,
   dd.sisrecid as id, dd.*, 'http://wpe.wetlands.org/view/' || d.wpepopid AS pop_hyperlink
   FROM d
   INNER JOIN populations_species_no_geo dd on d.wpepopid=dd.wpepopid
-  ORDER BY d.scientific_name
+  ORDER BY d.taxonomic_sequence
   `;
   rp(CARTO_SQL + query)
     .then((data) => {
