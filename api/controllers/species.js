@@ -96,12 +96,12 @@ function getSpeciesSites(req, res) {
 }
 
 function getSpeciesPopulation(req, res) {
-  const query = `SELECT p.populations, p.a, p.b, p.c, table_1_status,
+  const query = `SELECT p.population_name AS populations, p.a, p.b, p.c, table_1_status,
     p.species, p.wpepopid, p.flyway_range, p.year_start, p.year_end, p.size_min,
-    p.size_max, p.ramsar_criterion,
+    p.size_max, p.ramsar_criterion_6 AS ramsar_criterion,
     'http://wpe.wetlands.org/view/' || p.wpepopid AS pop_hyperlink
     FROM species_main s
-    INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
+    INNER JOIN populations_iba p on p.species_main_id = s.species_id
     WHERE s.species_id = '${req.params.id}'`;
 
   rp(CARTO_SQL + query)
