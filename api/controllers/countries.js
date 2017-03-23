@@ -127,18 +127,24 @@ function getCountrySpecies(req, res) {
     });
 }
 function getCountryPopulations(req, res) {
-  const query = `with r as (
-    SELECT ssis, wpepopid, wpesppid FROM
-    populationflyways_idcodesonly_dissolved
-    WHERE ST_Intersects(the_geom,
-     (SELECT the_geom FROM world_borders WHERE iso3 = '${req.params.iso}'))),
-  f AS (SELECT ssis,  wpepopid, wpesppid AS wpesppid FROM r ),
-  d AS (select * from species_main s INNER JOIN f ON species_id=ssis)
-  SELECT scientific_name, d.english_name, d.iucn_category, d.wpepopid pop_id,
-  dd.sisrecid as id, dd.*, 'http://wpe.wetlands.org/view/' || d.wpepopid AS pop_hyperlink
-  FROM d
-  INNER JOIN populations_species_no_geo dd on d.wpepopid=dd.wpepopid
-  ORDER BY d.taxonomic_sequence
+  const query = `SELECT
+    s.scientific_name,
+    s.english_name,
+    s.iucn_category,
+    pi.wpepopid AS pop_id,
+    s.species_id AS id,
+    'http://wpe.wetlands.org/view/' || pi.wpepopid AS pop_hyperlink,
+    pi.a, pi.b, pi.c, pi.flyway_range,
+    pi.year_start, pi.year_end,
+    pi.size_min, pi.size_max,
+    pi.population_name AS populations,
+    pi.ramsar_criterion_6 AS ramsar_criterion
+    FROM populations_iba AS pi
+    INNER JOIN species_main AS s ON s.species_id = pi.species_main_id
+    WHERE (
+      ST_Intersects(pi.the_geom,(SELECT the_geom FROM world_borders WHERE iso3 = '${req.params.iso}'))
+    )
+    ORDER BY s.taxonomic_sequence
   `;
   rp(CARTO_SQL + query)
     .then((data) => {
