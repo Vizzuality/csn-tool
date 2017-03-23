@@ -48,7 +48,7 @@ function getCountrySites(req, res) {
     FROM sites s
   	INNER JOIN countries c ON s.country_id = c.country_id AND
     c.iso3 = '${req.params.iso}'
-  	INNER JOIN stc ON stc.site_id = s.site_id
+    LEFT JOIN stc ON stc.site_id = s.site_id
     ORDER BY s.site_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
