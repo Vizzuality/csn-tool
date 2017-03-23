@@ -34,7 +34,7 @@ class SpeciesMap extends BasicMap {
 
   getBounds(id) {
     const query = `SELECT ST_AsGeoJSON(ST_Envelope(st_union(f.the_geom)))
-      as bbox FROM species s
+      as bbox FROM species_main s
       INNER JOIN species_and_flywaygroups f on f.ssid = s.species_id
       WHERE s.species_id = ${id}`;
 
@@ -59,7 +59,7 @@ class SpeciesMap extends BasicMap {
   }
 
   addLayer(id) {
-    const query = `SELECT f.the_geom_webmercator, f.colour_index FROM species s
+    const query = `SELECT f.the_geom_webmercator, f.colour_index FROM species_main s
       INNER JOIN species_and_flywaygroups f on f.ssid = s.species_id
       WHERE s.species_id = ${id}`;
 
