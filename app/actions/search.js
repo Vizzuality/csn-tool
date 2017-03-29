@@ -45,7 +45,7 @@ export function getSearchResults(category, filters) {
         .then(data => {
           dispatch({
             type: GET_SEARCH_RESULTS,
-            payload: data.results
+            payload: data
           });
         });
     } catch (err) {

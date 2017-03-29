@@ -87,8 +87,9 @@ async function getOptions(req, res) {
 
 async function getSitesResults(req, res) {
   try {
-    const data = await getSites();
-    res.json({ results: data });
+    const query = 'SELECT DISTINCT(site_name) as label, iso3 as value FROM sites ORDER by site_name ASC';
+    const data = await rp(CARTO_SQL + query);
+    res.json(JSON.parse(data));
   } catch (err) {
     res.status(err.statusCode || 500);
     res.json({ error: err.message });
@@ -97,8 +98,9 @@ async function getSitesResults(req, res) {
 
 async function getSpeciesResults(req, res) {
   try {
-    const data = await getSites();
-    res.json({ results: data });
+    const query = 'SELECT DISTINCT(site_name) as label, iso3 as value FROM sites ORDER by site_name ASC';
+    const data = await rp(CARTO_SQL + query);
+    res.json(JSON.parse(data));
   } catch (err) {
     res.status(err.statusCode || 500);
     res.json({ error: err.message });
@@ -107,8 +109,9 @@ async function getSpeciesResults(req, res) {
 
 async function getPopulationsResults(req, res) {
   try {
-    const data = await getSites();
-    res.json({ results: data });
+    const query = 'SELECT DISTINCT(site_name) as label, iso3 as value FROM sites ORDER by site_name ASC';
+    const data = await rp(CARTO_SQL + query);
+    res.json(JSON.parse(data));
   } catch (err) {
     res.status(err.statusCode || 500);
     res.json({ error: err.message });
