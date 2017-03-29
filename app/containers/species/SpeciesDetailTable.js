@@ -13,7 +13,7 @@ function getSpeciesDetailColums(category) {
     case 'lookAlikeSpecies':
       return ['original_popname', 'original_a', 'original_b', 'original_c', 'confusion_name', 'populationname', 'a', 'b', 'c'];
     default:
-      return ['site_name', 'country', 'protection_status', 'iba'];
+      return ['site_name', 'iba', 'protected'];
   }
 }
 

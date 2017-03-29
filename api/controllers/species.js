@@ -62,7 +62,7 @@ function getSpeciesDetails(req, res) {
 function getSpeciesSites(req, res) {
   const query = `SELECT s.species_id,
       ss.iba_criteria as iba, ss.maximum, ss.minimum, ss.season,
-      si.country, si.site_name, si.lat, si.lon, si.iso2, si.protection_status,
+      si.site_name, si.lat, si.lon, si.iso2, si.protection_status AS protected,
       string_agg(p.populations, ', ') as population,
       si.hyperlink, si.site_id AS id
     FROM species_main s
@@ -71,7 +71,7 @@ function getSpeciesSites(req, res) {
     INNER JOIN sites si ON ss.site_id = si.site_id
     WHERE s.species_id = '${req.params.id}'
     GROUP BY ss.iba_criteria, ss.maximum, ss.minimum,
-    ss.season, si.country, si.iso2, si.protection_status ,si.site_name, si.lat, si.lon,
+    ss.season, si.iso2, si.protection_status ,si.site_name, si.lat, si.lon,
     si.hyperlink, si.site_id, 1
     ORDER BY si.site_name`;
   rp(CARTO_SQL + query)
@@ -80,7 +80,7 @@ function getSpeciesSites(req, res) {
       if (results && results.length > 0) {
         results.map((item) => {
           const site = item;
-          site.protection_status_slug = normalizeSiteStatus(item.protection_status);
+          site.protected_slug = normalizeSiteStatus(item.protected);
           return site;
         });
         res.json(results);

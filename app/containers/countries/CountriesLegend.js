@@ -9,13 +9,13 @@ function getLegendData(countries) {
     const unique = {};
     const distinct = [];
     sites.forEach((site) => {
-      if (!unique[site.protection_status_slug]) {
+      if (!unique[site.protected_slug]) {
         distinct.push({
           icon: 'circle',
-          name: site.protection_status,
-          status: site.protection_status_slug
+          name: site.protected,
+          status: site.protected_slug
         });
-        unique[site.protection_status_slug] = true;
+        unique[site.protected_slug] = true;
       }
     });
     legend.push({

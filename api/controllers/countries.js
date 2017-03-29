@@ -43,8 +43,8 @@ function getCountrySites(req, res) {
       SUM(case when iba_criteria = '' then 0 else 1 end) as iba
         from species_sites group by site_id)
     SELECT c.country, c.iso3,
-      s.protection_status, s.site_name, s.lat, s.lon, s.site_id as id,
-      stc.iba, s.hyperlink, s.iba_in_danger
+      s.protection_status AS protected, s.site_name, s.lat, s.lon,
+      s.site_id as id, stc.iba, s.hyperlink, s.iba_in_danger
     FROM sites s
   	INNER JOIN countries c ON s.country_id = c.country_id AND
     c.iso3 = '${req.params.iso}'
@@ -56,7 +56,7 @@ function getCountrySites(req, res) {
       if (results && results.length > 0) {
         results.map((item) => {
           const site = item;
-          site.protection_status_slug = normalizeSiteStatus(item.protection_status);
+          site.protection_status_slug = normalizeSiteStatus(item.protected);
           return site;
         });
         res.json(results);
@@ -73,7 +73,7 @@ function getCountrySites(req, res) {
 
 function getCountrySitesOld(req, res) {
   const query = `SELECT c.country, c.iso3,
-      s.protected as protection_status, s.site_name, s.iba,
+      s.protected, s.site_name, s.iba,
       CASE
         WHEN s.csn_species >= 0 THEN 'x'
         ELSE null
