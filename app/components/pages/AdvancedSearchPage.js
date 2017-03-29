@@ -1,5 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
+import SearchResultsTable from 'containers/advanced-search/ResultsTable';
 
 const rows = [
   {
@@ -55,16 +56,10 @@ class AdvancedSearchPage extends React.Component {
     });
   }
 
-  onSearchClick() {
+  onSearchClick(category) {
     const { filters } = this.state;
-    let params = '';
-    Object.keys(filters).forEach((key) => {
-      if (filters[key]) {
-        params += `${params ? '&' : '?'}${key}=${filters[key].value}`;
-      }
-    });
-    if (params.length) {
-      console.info(`TODO: search ${params}`);
+    if (this.hasFilters(filters)) {
+      this.props.onSearch(category, filters);
     } else {
       this.setState({
         errors: {
@@ -103,6 +98,7 @@ class AdvancedSearchPage extends React.Component {
                   <div className="column small-12 medium-3 group-field" key={index2}>
                     <h4 className="label">{this.context.t(section)}</h4>
                     <Select
+                      multi
                       className={`c-select -white ${value ? '-selected' : ''}`}
                       name={section}
                       value={value}
@@ -115,11 +111,11 @@ class AdvancedSearchPage extends React.Component {
             </div>
           ))}
           <div className="row c-search-actions">
-            {this.state.errors.empty &&
-              <div className="column medium-offset-6 validation-error">
+            <div className="column medium-offset-6 validation-error">
+              {this.state.errors.empty &&
                 <span>{this.context.t('selectOneOption')}</span>
-              </div>
-            }
+              }
+            </div>
             <div className="column small-12 medium-2 medium-offset-6">
               <button
                 className={`btn -small -dark ${this.state.filters.site ? '-disabled' : ''}`}
@@ -145,6 +141,13 @@ class AdvancedSearchPage extends React.Component {
               </button>
             </div>
           </div>
+          {this.props.hasResults &&
+            <div className="row">
+              <div className="column">
+                <SearchResultsTable />
+              </div>
+            </div>
+          }
         </div>
       </div>
     );
@@ -156,8 +159,10 @@ AdvancedSearchPage.contextTypes = {
 };
 
 AdvancedSearchPage.propTypes = {
+  hasResults: React.PropTypes.bool.isRequired,
   options: React.PropTypes.object,
-  getOptions: React.PropTypes.func
+  getOptions: React.PropTypes.func.isRequired,
+  onSearch: React.PropTypes.func.isRequired
 };
 
 export default AdvancedSearchPage;

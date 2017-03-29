@@ -1,4 +1,4 @@
-import { GET_SEARCH_OPTIONS } from 'constants';
+import { GET_SEARCH_OPTIONS, GET_SEARCH_RESULTS } from 'constants';
 
 export function getSearchOptions() {
   const url = `${config.apiHost}/search/options`;
@@ -16,6 +16,42 @@ export function getSearchOptions() {
       dispatch({
         type: GET_SEARCH_OPTIONS,
         payload: {}
+      });
+    }
+  };
+}
+
+export function getSearchResults(category, filters) {
+  let params = '';
+  Object.keys(filters).forEach((key) => {
+    if (filters[key]) {
+      params += `${params ? '&' : '?'}`;
+      if (Array.isArray(filters[key]) && filters[key].length > 0) {
+        params += `${key}[]=`;
+        filters[key].forEach((filter, index) => {
+          params += `${index > 0 ? ',' : ''}${filter.value}`;
+        });
+      } else {
+        params += `${key}=${filters[key].value}`;
+      }
+    }
+  });
+
+  const url = `${config.apiHost}/search/${category}${params}`;
+  return dispatch => {
+    try {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          dispatch({
+            type: GET_SEARCH_RESULTS,
+            payload: data.results
+          });
+        });
+    } catch (err) {
+      dispatch({
+        type: GET_SEARCH_RESULTS,
+        payload: []
       });
     }
   };
