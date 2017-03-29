@@ -38,6 +38,9 @@ router.route('/threshold/:lat/:lng/:zoom?').get(ThresholdCtrl.getSpeciesByPositi
 
 // Advanced search
 router.route('/search/options').get(SearchCtrl.getOptions);
+router.route('/search/sites').get(SearchCtrl.getSitesResults);
+router.route('/search/species').get(SearchCtrl.getSpeciesResults);
+router.route('/search/populations').get(SearchCtrl.getPopulationsResults);
 
 
 module.exports = router;
