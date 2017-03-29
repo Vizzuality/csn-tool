@@ -1,37 +1,18 @@
 import React from 'react';
 import Select from 'react-select';
 
-const data = {
-  country: [
-    { value: 'one', label: 'Country one' },
-    { value: 'two', label: 'Country two' }
-  ],
-  sites: [
-    { value: 'one', label: 'Site one' },
-    { value: 'two', label: 'Site two' }
-  ],
-  family: [
-    { value: 'one', label: 'Family one' },
-    { value: 'two', label: 'Family two' }
-  ],
-  genus: [
-    { value: 'one', label: 'Genus one' },
-    { value: 'two', label: 'Genus two' }
-  ],
-  species: [
-    { value: 'one', label: 'Species one' },
-    { value: 'two', label: 'Species two' }
-  ]
-};
-
 const rows = [
   {
-    title: 'Geography',
-    sections: ['country', 'sites']
+    title: 'geography',
+    sections: ['countries', 'sites']
   },
   {
-    title: 'Taxonomy',
+    title: 'taxonomy',
     sections: ['family', 'genus', 'species']
+  },
+  {
+    title: 'habitat',
+    sections: ['habitats']
   }
 ];
 
@@ -47,7 +28,9 @@ class AdvancedSearchPage extends React.Component {
     };
   }
   componentWillMount() {
-    this.props.getData();
+    if (!this.props.options) {
+      this.props.getOptions();
+    }
   }
 
   onSelectChange(section, value) {
@@ -66,25 +49,30 @@ class AdvancedSearchPage extends React.Component {
         <div className="l-container">
           <div className="row">
             <div className="column">
-              <h2>{this.context.t('advancedSearch')}</h2>
+              <h2 className="title">{this.context.t('advancedSearch')}</h2>
             </div>
           </div>
           {rows.map((row, index) => (
             <div className="row c-search-group" key={index}>
               <div className="column small-12">
-                <h3>{row.title}</h3>
+                <h3 className="group-title">{this.context.t(row.title)}</h3>
               </div>
-              {row.sections.map((section, index2) => (
-                <div className="column small-12 medium-3" key={index2}>
-                  <h4>{section}</h4>
-                  <Select
-                    name={section}
-                    value={this.state[section]}
-                    options={data[section]}
-                    onChange={(value) => this.onSelectChange(section, value)}
-                  />
-                </div>
-              ))}
+              {row.sections.map((section, index2) => {
+                const value = this.state[section] || null;
+                const options = this.props.options && this.props.options[section] || [];
+                return (
+                  <div className="column small-12 medium-3 group-field" key={index2}>
+                    <h4 className="label">{this.context.t(section)}</h4>
+                    <Select
+                      className={`c-select -white ${value ? '-selected' : ''}`}
+                      name={section}
+                      value={value}
+                      options={options}
+                      onChange={(select) => this.onSelectChange(section, select)}
+                    />
+                  </div>
+                );
+              })}
             </div>
           ))}
           <div className="row c-search-actions">
@@ -122,8 +110,8 @@ AdvancedSearchPage.contextTypes = {
 };
 
 AdvancedSearchPage.propTypes = {
-  data: React.PropTypes.object.isRequired,
-  getData: React.PropTypes.func
+  options: React.PropTypes.object,
+  getOptions: React.PropTypes.func
 };
 
 export default AdvancedSearchPage;

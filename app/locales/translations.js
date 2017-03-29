@@ -95,7 +95,11 @@ export const translations = {
     'searchForSpecies': 'Search for a species',
     'seeCriticalSites': 'and see its critical sites',
     'introText1': 'The tool makes it easy to obtain information on the sites critical for waterbird species by accessing several independent databases and analysing information at the biogeographical population level, so providing a comprehensive basis for management and decision making. It is designed to help a range of different users from site managers to national authorities and international organisations. The CSN Tool, one of the major achievements of the Wings Over Wetlands (WOW) project, is also an important example of the added value of cooperation between likeminded conservation organisations, international conventions and agreements, governments, UN agencies and other donors.',
-    'introText2': 'The CSN Tool supports both AEWA and the Ramsar Convention on Wetlands. It is also relevant to the EU Birds Directive and the Bern Convention’s Emerald Network.'
+    'introText2': 'The CSN Tool supports both AEWA and the Ramsar Convention on Wetlands. It is also relevant to the EU Birds Directive and the Bern Convention’s Emerald Network.',
+    'geography': 'Geography',
+    'taxonomy': 'Taxonomy',
+    'habitat': 'Habitat'
+
   },
   es: {
     'country': 'Pais',
@@ -194,6 +198,9 @@ export const translations = {
     'searchForSpecies': 'Busca por especies',
     'seeCriticalSites': 'y mira sus sitios críticos',
     'introText1': 'La herramienta facilita la obtención de información sobre los sitios críticos para las especies de aves acuáticas mediante el acceso a varias bases de datos independientes y el análisis de la información a nivel de población biogeográfica, proporcionando así una base integral para la gestión y la toma de decisiones. Está diseñado para ayudar a una variedad de usuarios diferentes, desde los administradores de sitios a las autoridades nacionales y organizaciones internacionales. La Herramienta CSN, uno de los principales logros del proyecto Wings Over Wetlands, es también un ejemplo importante del valor añadido de la cooperación entre organizaciones de conservación afines, convenciones y acuerdos internacionales, gobiernos, agencias de la ONU y otros donantes.',
-    'introText2': 'La herramienta CSN apoya tanto AEWA como la Convención de Ramsar sobre los Humedales. También es relevante para la Directiva de la UE sobre las aves y la Red Esmeralda de la Convención de Berna.'
+    'introText2': 'La herramienta CSN apoya tanto AEWA como la Convención de Ramsar sobre los Humedales. También es relevante para la Directiva de la UE sobre las aves y la Red Esmeralda de la Convención de Berna.',
+    'geography': 'Geografía',
+    'taxonomy': 'Taxonomia',
+    'habitat': 'Habitat'
   },
 }

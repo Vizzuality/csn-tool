@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
 import AdvancedSearch from 'components/pages/AdvancedSearchPage';
+import { getSearchOptions } from 'actions/search';
 
 const mapStateToProps = (state) => ({
-  data: {}
+  options: state.search.options
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getData: () => console.info('TODO: get data')
+  getOptions: () => dispatch(getSearchOptions())
 });
 
 
