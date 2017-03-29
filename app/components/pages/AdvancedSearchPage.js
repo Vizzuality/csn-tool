@@ -26,6 +26,9 @@ class AdvancedSearchPage extends React.Component {
         family: null,
         genus: null,
         species: null
+      },
+      errors: {
+        empty: false
       }
     };
   }
@@ -37,12 +40,19 @@ class AdvancedSearchPage extends React.Component {
   }
 
   onSelectChange(section, value) {
-    this.setState((state) => ({
-      filters: {
+    this.setState((state) => {
+      const filters = {
         ...state.filters,
         [section]: value
-      }
-    }));
+      };
+      const hasValue = this.hasFilters(filters);
+      return {
+        filters,
+        errors: {
+          empty: !hasValue
+        }
+      };
+    });
   }
 
   onSearchClick() {
@@ -53,7 +63,23 @@ class AdvancedSearchPage extends React.Component {
         params += `${params ? '&' : '?'}${key}=${filters[key].value}`;
       }
     });
-    console.info(`TODO: search ${params}`);
+    if (params.length) {
+      console.info(`TODO: search ${params}`);
+    } else {
+      this.setState({
+        errors: {
+          empty: true
+        }
+      });
+    }
+  }
+
+  hasFilters(filters) {
+    const keys = Object.keys(filters);
+    for (let i = 0, kLength = keys.length; i < kLength; i++) {
+      if (filters[keys[i]]) return true;
+    }
+    return false;
   }
 
   render() {
@@ -89,17 +115,24 @@ class AdvancedSearchPage extends React.Component {
             </div>
           ))}
           <div className="row c-search-actions">
+            {this.state.errors.empty &&
+              <div className="column medium-offset-6 validation-error">
+                <span>{this.context.t('selectOneOption')}</span>
+              </div>
+            }
             <div className="column small-12 medium-2 medium-offset-6">
               <button
-                className={`btn -small -dark ${this.state.sites ? '-disabled' : ''}`}
-                onClick={() => this.onSearchClick('sites')}>
+                className={`btn -small -dark ${this.state.filters.site ? '-disabled' : ''}`}
+                onClick={() => { if (!this.state.filters.site) this.onSearchClick('sites'); }}
+              >
                 {this.context.t('searchSites')}
               </button>
             </div>
             <div className="column small-12 medium-2">
               <button
-                className={`btn -small -dark ${this.state.species ? '-disabled' : ''}`}
-                onClick={() => this.onSearchClick('species')}>
+                className={`btn -small -dark ${this.state.filters.species ? '-disabled' : ''}`}
+                onClick={() => { if (!this.state.filters.species) this.onSearchClick('species'); }}
+              >
                 {this.context.t('searchSpecies')}
               </button>
             </div>

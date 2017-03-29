@@ -2,6 +2,7 @@ export const translations = {
   en: {
     'country': 'Country',
     'countries': 'Countries',
+    'site': 'Site',
     'sites': 'Sites',
     'sitesOld': 'CSN',
     'sitesList': 'Sites list',
@@ -98,12 +99,13 @@ export const translations = {
     'introText2': 'The CSN Tool supports both AEWA and the Ramsar Convention on Wetlands. It is also relevant to the EU Birds Directive and the Bern Convention’s Emerald Network.',
     'geography': 'Geography',
     'taxonomy': 'Taxonomy',
-    'habitat': 'Habitat'
-
+    'habitat': 'Habitat',
+    'selectOneOption': 'Select at least one option'
   },
   es: {
     'country': 'Pais',
     'countries': 'Paises',
+    'site': 'Sitio',
     'sites': 'Sitios',
     'sitesOld': 'CSN',
     'sitesList': 'Lista de sitios',
@@ -201,6 +203,7 @@ export const translations = {
     'introText2': 'La herramienta CSN apoya tanto AEWA como la Convención de Ramsar sobre los Humedales. También es relevante para la Directiva de la UE sobre las aves y la Red Esmeralda de la Convención de Berna.',
     'geography': 'Geografía',
     'taxonomy': 'Taxonomia',
-    'habitat': 'Habitat'
+    'habitat': 'Habitat',
+    'selectOneOption': 'Selecciona al menos una opción'
   },
 }
