@@ -7,7 +7,7 @@
     "dev": "./node_modules/nodemon/bin/nodemon.js --ignore 'app/' --exec npm run start",
     "build": "webpack --config ./config/webpack.config.js --progress --profile --colors",
     "postinstall": "npm run build",
-    "lint": "./node_modules/.bin/eslint .",
+    "lint": "./node_modules/.bin/eslint . --quiet",
     "prepush": "npm run lint",
     "extract": "i18n_extract --source=./app --locales=./app/locales",
     "import": "i18n_import --locales=./app/locales --translations=./app/locales"

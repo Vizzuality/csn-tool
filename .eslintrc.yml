@@ -10,7 +10,7 @@ globals:
   topojson: true,
   config: true
 parserOptions:
-  ecmaVersion: 7
+  ecmaVersion: 8
   ecmaFeatures:
     jsx: true
     experimentalObjectRestSpread: true
