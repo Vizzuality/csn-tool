@@ -4,7 +4,7 @@ import Select from 'react-select';
 const rows = [
   {
     title: 'geography',
-    sections: ['countries', 'sites']
+    sections: ['country', 'site']
   },
   {
     title: 'taxonomy',
@@ -12,7 +12,7 @@ const rows = [
   },
   {
     title: 'habitat',
-    sections: ['habitats']
+    sections: ['habitat']
   }
 ];
 
@@ -20,13 +20,16 @@ class AdvancedSearchPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      country: null,
-      sites: null,
-      family: null,
-      genus: null,
-      species: null
+      filters: {
+        country: null,
+        site: null,
+        family: null,
+        genus: null,
+        species: null
+      }
     };
   }
+
   componentWillMount() {
     if (!this.props.options) {
       this.props.getOptions();
@@ -34,13 +37,23 @@ class AdvancedSearchPage extends React.Component {
   }
 
   onSelectChange(section, value) {
-    this.setState({
-      [section]: value
-    });
+    this.setState((state) => ({
+      filters: {
+        ...state.filters,
+        [section]: value
+      }
+    }));
   }
 
-  onSearchClick(section) {
-    console.info(`TODO: search ${section}`);
+  onSearchClick() {
+    const { filters } = this.state;
+    let params = '';
+    Object.keys(filters).forEach((key) => {
+      if (filters[key]) {
+        params += `${params ? '&' : '?'}${key}=${filters[key].value}`;
+      }
+    });
+    console.info(`TODO: search ${params}`);
   }
 
   render() {
@@ -58,7 +71,7 @@ class AdvancedSearchPage extends React.Component {
                 <h3 className="group-title">{this.context.t(row.title)}</h3>
               </div>
               {row.sections.map((section, index2) => {
-                const value = this.state[section] || null;
+                const value = this.state.filters[section] || null;
                 const options = this.props.options && this.props.options[section] || [];
                 return (
                   <div className="column small-12 medium-3 group-field" key={index2}>

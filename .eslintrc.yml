@@ -13,6 +13,7 @@ parserOptions:
   ecmaVersion: 7
   ecmaFeatures:
     jsx: true
+    experimentalObjectRestSpread: true
   sourceType: module
 plugins: [react]
 

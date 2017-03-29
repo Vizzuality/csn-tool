@@ -53,7 +53,7 @@ async function getSpecies() {
 
 async function getHabitats() {
   try {
-    const query = `SELECT habitat_name as label, habitat_id as value FROM sites_habitats`;
+    const query = `SELECT DISTINCT(habitat_name) as label, habitat_id as value FROM sites_habitats`;
     const data = await rp(CARTO_SQL + query);
     return JSON.parse(data).rows || [];
   } catch(err) {
@@ -72,12 +72,12 @@ async function getOptions(req, res) {
     queries.push(getHabitats());
     const options = await Promise.all(queries);
     res.json({
-      countries: options[0],
-      sites: options[1],
+      country: options[0],
+      site: options[1],
       family: options[2],
       genus: options[3],
       species: options[4],
-      habitats: options[5]
+      habitat: options[5]
     })
   } catch(err) {
     res.status(err.statusCode || 500);
