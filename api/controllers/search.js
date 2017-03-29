@@ -3,7 +3,7 @@ const CARTO_SQL = require('../constants').CARTO_SQL;
 
 async function getCountries() {
   try {
-    const query = `SELECT country as label, iso3 as value FROM countries`;
+    const query = `SELECT DISTINCT(country) as label, iso3 as value FROM countries`;
     const data = await rp(CARTO_SQL + query);
     return JSON.parse(data).rows || [];
   } catch(err) {
@@ -13,7 +13,7 @@ async function getCountries() {
 
 async function getSites() {
   try {
-    const query = `SELECT site_name as label, iso3 as value FROM sites`;
+    const query = `SELECT DISTINCT(site_name) as label, iso3 as value FROM sites`;
     const data = await rp(CARTO_SQL + query);
     return JSON.parse(data).rows || [];
   } catch(err) {
@@ -23,7 +23,7 @@ async function getSites() {
 
 async function getFamilies() {
   try {
-    const query = `SELECT family as label, family as value FROM species`;
+    const query = `SELECT DISTINCT(family) as label, family as value FROM species`;
     const data = await rp(CARTO_SQL + query);
     return JSON.parse(data).rows || [];
   } catch(err) {
@@ -33,7 +33,7 @@ async function getFamilies() {
 
 async function getGenus() {
   try {
-    const query = `SELECT genus as label, genus as value FROM species`;
+    const query = `SELECT DISTINCT(genus) as label, genus as value FROM species`;
     const data = await rp(CARTO_SQL + query);
     return JSON.parse(data).rows || [];
   } catch(err) {
@@ -43,7 +43,7 @@ async function getGenus() {
 
 async function getSpecies() {
   try {
-    const query = `SELECT scientific_name as label, species_id as value FROM species`;
+    const query = `SELECT DISTINCT(scientific_name) as label, species_id as value FROM species`;
     const data = await rp(CARTO_SQL + query);
     return JSON.parse(data).rows || [];
   } catch(err) {
@@ -74,7 +74,7 @@ async function getOptions(req, res) {
     res.json({
       countries: options[0],
       sites: options[1],
-      families: options[2],
+      family: options[2],
       genus: options[3],
       species: options[4],
       habitats: options[5]
