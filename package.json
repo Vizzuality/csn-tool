@@ -4,7 +4,7 @@
   "description": "Critical Sites Network Tool 2.0",
   "main": "server.js",
   "scripts": {
-    "dev": "./node_modules/nodemon/bin/nodemon.js --exec npm run start",
+    "dev": "./node_modules/nodemon/bin/nodemon.js --ignore 'app/' --exec npm run start",
     "build": "webpack --config ./config/webpack.config.js --progress --profile --colors",
     "postinstall": "npm run build",
     "lint": "./node_modules/.bin/eslint .",
