@@ -1,9 +1,21 @@
 .c-search-group {
-  padding: 20px 0;
   border-bottom: 1px solid rgba($bg-dark-color, 0.2);
+  padding: rem(28) 0;
 
-  h3 {
-    margin-bottom: 20px;
+  .group-title {
+    margin-bottom: rem(14);
+    font-family: $font-body;
+    font-size: $font-size;
+    font-weight: 700;
+  }
+
+  .group-field {
+    > .label {
+      margin-bottom: rem(7);
+      font-size: $font-size-xs;
+      font-family: $font-body;
+      font-weight: 500;
+    }
   }
 }
 
