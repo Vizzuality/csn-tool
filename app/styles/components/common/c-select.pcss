@@ -26,6 +26,32 @@
         }
       }
     }
+
+    &.Select--multi {
+      > .Select-control {
+        background: $white;
+        border-radius: 0;
+        .Select-value {
+          background-color: $main-color;
+          border: none;
+          border-radius: 0;
+
+          > .Select-value-icon {
+            color: rgba($font-main, 0.6);
+            border-right-color: rgba($font-main, 0.4);
+            &:hover {
+              color: $font-main;
+              background-color: rgba(0, 0, 0, 0.1);
+            }
+          }
+          > .Select-value-label {
+            font-weight: 500;
+            font-size: $font-size-s;
+            color: $font-main;
+          }
+        }
+      }
+    }
     .Select-menu-outer {
       background: $white;
       > .Select-menu > .Select-option {
