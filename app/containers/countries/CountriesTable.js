@@ -16,8 +16,8 @@ function getCountryColums(category) {
       return ['site_name', 'protection_status', 'iba', 'csn', 'iba_species',
         'csn_species', 'total_percentage'];
     case 'lookAlikeSpecies':
-      return ['original_species', 'populations', 'original_a', 'original_b',
-        'original_c', 'confusion_species'];
+      return ['original_species', 'population', 'original_a', 'original_b',
+        'original_c', 'confusion_species', 'confusion_species_as'];
     default:
       return ['site_name', 'protection_status', 'iba', 'iba_in_danger'];
   }
