@@ -1,6 +1,9 @@
 {
   "name": "csn-tool",
   "version": "1.0.0",
+  "engines": {
+    "node": "v7.7.1"
+  },
   "description": "Critical Sites Network Tool 2.0",
   "main": "server.js",
   "scripts": {
@@ -61,6 +64,7 @@
     "redux-thunk": "^2.1.0",
     "request": "^2.78.0",
     "request-promise": "^4.1.1",
+    "scroll-behavior": "^0.9.3",
     "smoothscroll": "^0.3.0",
     "style-loader": "^0.13.1",
     "stylelint": "7.2.0",
