@@ -86,6 +86,13 @@ async function getOptions(req, res) {
 }
 
 async function getSitesResults(req, res) {
+  // TODO: get sites search querying by
+  // countries='country_id1, country_id2'
+  // sites='site_id'
+  // family='familyName1,familyName2'
+  // genus='genusName1,genusName2'
+  // species='speciesId1,speciesId2'
+  // from req.query['paramName']
   try {
     const query = 'SELECT DISTINCT(site_name) as label, iso3 as value FROM sites ORDER by site_name ASC';
     const data = await rp(CARTO_SQL + query);

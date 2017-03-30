@@ -109,12 +109,15 @@ class AdvancedSearchPage extends React.Component {
   hasFilters(filters) {
     const keys = Object.keys(filters);
     for (let i = 0, kLength = keys.length; i < kLength; i++) {
-      if (filters[keys[i]]) return true;
+      if (filters[keys[i]] && filters[keys[i]].length > 0) return true;
     }
     return false;
   }
 
   render() {
+    const { filters } = this.state;
+    const hasSites = filters.site && filters.site.length > 0;
+    const hasSpecies = filters.species && filters.species.length > 0;
     return (
       <div className="l-page">
         <div className="l-container">
@@ -129,7 +132,7 @@ class AdvancedSearchPage extends React.Component {
                 <h3 className="group-title">{this.context.t(row.title)}</h3>
               </div>
               {row.sections.map((section, index2) => {
-                const value = this.state.filters[section] || null;
+                const value = filters[section] || null;
                 const options = this.props.options && this.getFilteredOptions(section, this.props.options[section]) || [];
                 return (
                   <div className="column small-12 medium-3 group-field" key={index2}>
@@ -155,16 +158,16 @@ class AdvancedSearchPage extends React.Component {
             </div>
             <div className="column small-12 medium-2 medium-offset-6">
               <button
-                className={`btn -small -dark ${this.state.filters.site ? '-disabled' : ''}`}
-                onClick={() => { if (!this.state.filters.site) this.onSearchClick('sites'); }}
+                className={`btn -small -dark ${hasSites ? '-disabled' : ''}`}
+                onClick={() => { if (!hasSites) this.onSearchClick('sites'); }}
               >
                 {this.context.t('searchSites')}
               </button>
             </div>
             <div className="column small-12 medium-2">
               <button
-                className={`btn -small -dark ${this.state.filters.species ? '-disabled' : ''}`}
-                onClick={() => { if (!this.state.filters.species) this.onSearchClick('species'); }}
+                className={`btn -small -dark ${hasSpecies ? '-disabled' : ''}`}
+                onClick={() => { if (!hasSpecies) this.onSearchClick('species'); }}
               >
                 {this.context.t('searchSpecies')}
               </button>

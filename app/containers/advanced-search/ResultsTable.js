@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
-import ResultsTable from 'components/advanced-search/ResultsTable';
+// import ResultsTable from 'components/advanced-search/ResultsTable';
+import ResultsTable from 'components/advanced-search/ResultsTableVirtualized';
 
 const mapStateToProps = (state) => ({
   data: state.search.results.rows,

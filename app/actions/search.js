@@ -27,7 +27,7 @@ export function getSearchResults(category, filters) {
     if (filters[key]) {
       params += `${params ? '&' : '?'}`;
       if (Array.isArray(filters[key]) && filters[key].length > 0) {
-        params += `${key}[]=`;
+        params += `${key}=`;
         filters[key].forEach((filter, index) => {
           params += `${index > 0 ? ',' : ''}${filter.value}`;
         });
