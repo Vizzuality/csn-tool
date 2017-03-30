@@ -1,6 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 import SearchResultsTable from 'containers/advanced-search/ResultsTable';
+// import ResultsTableVirtualized from 'components/advanced-search/ResultsTableVirtualized';
 
 const rows = [
   {
@@ -16,6 +17,26 @@ const rows = [
     sections: ['habitat']
   }
 ];
+
+function filterSitesByCountry(countries, sites) {
+  if (!countries) return sites;
+  const countryIds = countries.map((country) => country.value);
+  return sites.filter((site) => countryIds.indexOf(site.country_id) > -1);
+}
+function filterSpeciesByGenusAndFamily(genus, families, species) {
+  if (!genus && !families) return species;
+  if (!genus || !genus.length > 0) {
+    const familyValues = families.map((item) => item.value);
+    return species.filter((site) => familyValues.indexOf(site.family) > -1);
+  }
+  if (!families || !families.length > 0) {
+    const genusValues = genus.map((item) => item.value);
+    return species.filter((site) => genusValues.indexOf(site.genus) > -1);
+  }
+  const genusValues = genus.map((item) => item.value);
+  const familyValues = families.map((item) => item.value);
+  return species.filter((site) => genusValues.indexOf(site.genus) > -1 || familyValues.indexOf(site.family) > -1);
+}
 
 class AdvancedSearchPage extends React.Component {
   constructor() {
@@ -69,6 +90,22 @@ class AdvancedSearchPage extends React.Component {
     }
   }
 
+  getFilteredOptions(section, options) {
+    const { filters } = this.state;
+    switch (section) {
+      case 'site':
+        return filters.country && filters.country.length > 0
+          ? filterSitesByCountry(filters.country, options)
+          : options;
+      case 'species':
+        return filters.genus && filters.genus.length > 0 || filters.family && filters.family.length > 0
+          ? filterSpeciesByGenusAndFamily(filters.genus, filters.family, options)
+          : options;
+      default:
+        return options;
+    }
+  }
+
   hasFilters(filters) {
     const keys = Object.keys(filters);
     for (let i = 0, kLength = keys.length; i < kLength; i++) {
@@ -93,7 +130,7 @@ class AdvancedSearchPage extends React.Component {
               </div>
               {row.sections.map((section, index2) => {
                 const value = this.state.filters[section] || null;
-                const options = this.props.options && this.props.options[section] || [];
+                const options = this.props.options && this.getFilteredOptions(section, this.props.options[section]) || [];
                 return (
                   <div className="column small-12 medium-3 group-field" key={index2}>
                     <h4 className="label">{this.context.t(section)}</h4>

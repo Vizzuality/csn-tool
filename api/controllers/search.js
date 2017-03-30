@@ -13,7 +13,7 @@ async function getCountries() {
 
 async function getSites() {
   try {
-    const query = 'SELECT DISTINCT(site_name) as label, iso3 as value FROM sites ORDER by site_name ASC';
+    const query = 'SELECT DISTINCT(site_name) as label, iso3 as value, country_id FROM sites ORDER by site_name ASC';
     const data = await rp(CARTO_SQL + query);
     return JSON.parse(data).rows || [];
   } catch (err) {
@@ -43,7 +43,7 @@ async function getGenus() {
 
 async function getSpecies() {
   try {
-    const query = 'SELECT DISTINCT(scientific_name) as label, species_id as value FROM species ORDER by scientific_name ASC';
+    const query = 'SELECT DISTINCT(scientific_name) as label, species_id as value, family, genus FROM species ORDER by scientific_name ASC';
     const data = await rp(CARTO_SQL + query);
     return JSON.parse(data).rows || [];
   } catch (err) {
