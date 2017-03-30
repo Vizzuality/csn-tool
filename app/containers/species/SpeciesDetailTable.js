@@ -7,7 +7,9 @@ function getSpeciesDetailColums(category) {
     case 'habitats':
       return ['habitat_level_1', 'habitat_level_2'];
     case 'population':
-      return ['populations', 'a', 'b', 'c', 'flyway_range', 'year_start', 'year_end', 'size_min', 'size_max', 'ramsar_criterion'];
+      return ['population', 'iucn_category', 'a', 'b', 'c',
+        'caf_action_plan', 'eu_birds_directive', 'flyway_range', 'year_start',
+        'year_end', 'size_min', 'size_max', 'ramsar_criterion'];
     case 'threats':
       return ['threat_level_1', 'threat_level_2'];
     case 'lookAlikeSpecies':
