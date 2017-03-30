@@ -164,51 +164,40 @@ function getCountryPopulations(req, res) {
 }
 
 function getCountryPopsWithLookAlikeCounts(req, res) {
-  const query = `WITH get_pops AS (
-    SELECT species.species_id, scientific_name as original_species, p.populations,
-    p.a as original_a, p.b as original_b, p.c as original_c,
-    p.wpepopid as pop_id_origin, l.confusion_species_group
-    FROM species
-    INNER JOIN species_country sc
-    ON sc.species_id = species.species_id
-    INNER JOIN countries c
-    ON c.country_id = sc.country_id
-    AND c.iso3 = '${req.params.iso}'
-    INNER JOIN populations_species_no_geo p
-    ON species.species_id = p.sisrecid
-    INNER JOIN look_alike_species l
-    ON l.species_id = species.species_id
-    WHERE l.confusion_species_group <> ''),
-    confusion_species AS (
-    SELECT look_alike_species.species_name as confusion_species,
-    look_alike_species.not_aewa_species, look_alike_species.species_id as id,
-    get_pops.*
-    FROM look_alike_species
-    INNER JOIN get_pops
-    ON get_pops.confusion_species_group = look_alike_species.confusion_species_group
-    WHERE look_alike_species.species_id <> get_pops.species_id
-  ),
-  country_pops as (
-    SELECT ssis, wpepopid, wpesppid FROM
-    populationflyways_idcodesonly_dissolved
-    WHERE ST_Intersects(the_geom,
-    (SELECT the_geom FROM world_borders WHERE iso3 = '${req.params.iso}'))
-  ),
-  confusion_pops as (
-    SELECT confusion_species.*, pp.a, pp.b, pp.c,
-    pp.populations as confusion_population, pp.wpepopid as pop_id
-    FROM populations_species_no_geo pp
-    INNER JOIN confusion_species
-    ON confusion_species.confusion_species = pp.species
-  )
-  SELECT confusion_pops.pop_id_origin, confusion_pops.populations, confusion_pops.original_a,
-  confusion_pops.original_b, confusion_pops.original_c, confusion_pops.original_species, COUNT(confusion_pops.pop_id) AS confusion_species
-  FROM confusion_pops
-  WHERE pop_id_origin IN (SELECT wpepopid FROM country_pops)
-  AND pop_id IN (SELECT wpepopid FROM country_pops)
-  GROUP BY confusion_pops.pop_id_origin, confusion_pops.populations, confusion_pops.original_a,
-  confusion_pops.original_b, confusion_pops.original_c, confusion_pops.original_species
-  ORDER BY confusion_pops.populations`;
+  const query = `SELECT sq.scientific_name AS original_species,
+    sq.population_name AS population, sq.a AS original_a,
+    sq.b AS original_b, sq.c AS original_c,
+    COUNT(*) AS confusion_species,
+    COUNT(case when pi.a IS NOT NULL
+          AND pi.a != '' then pi.population_name end) AS confusion_species_as
+    FROM
+    (
+      SELECT confusion_group,
+      sm.species_id, sm.scientific_name,
+       pi.the_geom, pi.population_name, pi.a, pi.b, pi.c
+      FROM species_main AS sm
+      INNER JOIN species_country AS sc
+      ON sc.species_id = sm.species_id
+      AND sc.iso = '${req.params.iso}'
+      INNER JOIN world_borders AS wb ON
+      wb.iso3 = sc.iso
+      INNER JOIN populations_iba AS pi
+      ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
+      AND pi.species_main_id = sm.species_id
+      WHERE
+      sm.confusion_group IS NOT NULL
+    ) as sq
+
+    INNER JOIN species_main AS sm ON
+    (sq.confusion_group && sm.confusion_group)
+    AND sm.species_id != sq.species_id
+    INNER JOIN world_borders AS wb ON
+    wb.iso3 = '${req.params.iso}'
+    INNER JOIN populations_iba AS pi
+    ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
+    AND ST_INTERSECTS(pi.the_geom, sq.the_geom)
+    AND pi.species_main_id = sm.species_id
+    GROUP BY 1,2,3,4,5`;
 
   rp(CARTO_SQL + query)
     .then((data) => {
@@ -227,57 +216,34 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
 }
 
 function getCountryLookAlikeSpecies(req, res) {
-  const query = `WITH species AS (
-    SELECT species.species_id, scientific_name as original_species, p.populations,
-    p.a as original_a, p.b as original_b, p.c as original_c,
-    p.wpepopid as geo_id_original, l.confusion_species_group
-    FROM species
-    INNER JOIN species_country sc
-    ON sc.species_id = species.species_id
-    INNER JOIN countries c
-    ON c.country_id = sc.country_id
-    AND c.iso3 = '${req.params.iso}'
-    INNER JOIN populations_species_no_geo p
-    ON species.species_id = p.sisrecid
-    INNER JOIN look_alike_species l
-    ON l.species_id = species.species_id
-    WHERE l.confusion_species_group != ''
-		AND p.wpepopid = ${req.params.id}
-  ),
-
-  confusion_species AS (
-    SELECT look_alike_species.species_name as confusion_species,
-    look_alike_species.not_aewa_species, look_alike_species.species_id as id,
-    species.*
-    FROM look_alike_species
-    INNER JOIN species_main AS species
-    ON species.confusion_species_group = look_alike_species.confusion_species_group
-    WHERE look_alike_species.species_id <> species.species_id
-  ),
-
-  country_pops as (
-    SELECT ssis, wpepopid, wpesppid FROM
-      populationflyways_idcodesonly_dissolved
-    WHERE ST_Intersects(the_geom,
+  const query = `SELECT sq.*
+    FROM
     (
-      SELECT the_geom FROM world_borders WHERE iso3 = '${req.params.iso}')
-    )
-  ),
+      SELECT confusion_group,
+      sm.species_id, sm.scientific_name,
+       pi.the_geom, pi.population_name, pi.a, pi.b, pi.c
+       FROM species_main AS sm
+       INNER JOIN species_country AS sc
+       ON sc.species_id = sm.species_id
+       AND sc.iso = '${req.params.iso}'
+       INNER JOIN world_borders AS wb ON
+       wb.iso3 = sc.iso
+       INNER JOIN populations_iba AS pi
+       ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
+       AND pi.species_main_id = sm.species_id
+       WHERE
+       sm.confusion_group IS NOT NULL
+    ) as sq
 
-  confusion_pops as (
-  	SELECT confusion_species.*, pp.a, pp.b, pp.c, pp.populations as confusion_population, pp.wpepopid as geo_id
-  	FROM populations_species_no_geo pp
-  	INNER JOIN confusion_species
-  	ON confusion_species.confusion_species = pp.species
-  )
-
-  SELECT DISTINCT * from confusion_pops
-  WHERE geo_id_original IN (
-  	SELECT wpepopid FROM country_pops
-  ) AND geo_id IN (
-    SELECT wpepopid FROM country_pops
-  )
-  ORDER BY taxonomic_sequence`;
+    INNER JOIN species_main AS sm ON
+    sq.confusion_group && sm.confusion_group
+    AND sm.species_id != sq.species_id
+    INNER JOIN world_borders AS wb ON
+    wb.iso3 = '${req.params.iso}'
+    INNER JOIN populations_iba AS pi
+    ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
+    AND ST_INTERSECTS(pi.the_geom, sq.the_geom)
+    AND pi.species_main_id = sm.species_id`;
 
   rp(CARTO_SQL + query)
     .then((data) => {
