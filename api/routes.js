@@ -3,6 +3,7 @@ const CountriesCtrl = require('./controllers/countries');
 const SitesCtrl = require('./controllers/sites');
 const SpeciesCtrl = require('./controllers/species');
 const ThresholdCtrl = require('./controllers/threshold');
+const SearchCtrl = require('./controllers/search');
 
 const router = Express.Router(); // eslint-disable-line new-cap
 
@@ -33,5 +34,12 @@ router.route('/species/:id/look-alike-species').get(SpeciesCtrl.getSpeciesLookAl
 
 // Threshold
 router.route('/threshold/:lat/:lng/:zoom?').get(ThresholdCtrl.getSpeciesByPosition);
+
+// Advanced search
+router.route('/search/options').get(SearchCtrl.getOptions);
+router.route('/search/sites').get(SearchCtrl.getSitesResults);
+router.route('/search/species').get(SearchCtrl.getSpeciesResults);
+router.route('/search/populations').get(SearchCtrl.getPopulationsResults);
+
 
 module.exports = router;

@@ -25,7 +25,7 @@ function MainNav(props, context) {
               <NavLink to={"/threshold-lookup"} i18nText="thresholdLookup" parent />
             </li>
             <li>
-              <NavLink to={"/paco"} className="-disabled" i18nText="advancedSearch" parent />
+              <NavLink to={"/advanced-search"} i18nText="advancedSearch" parent />
             </li>
           </ul>
         </li>

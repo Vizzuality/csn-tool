@@ -2,6 +2,7 @@ export const translations = {
   en: {
     'country': 'Country',
     'countries': 'Countries',
+    'site': 'Site',
     'sites': 'Sites',
     'sitesOld': 'CSN',
     'sitesList': 'Sites list',
@@ -88,6 +89,9 @@ export const translations = {
     'qualifying_species': 'IBA qualifying species',
     'iba_in_danger': 'IBA in Danger',
     'toolUse': 'What can I use this tool for?',
+    'searchSites': 'Search sites',
+    'searchSpecies': 'Search species',
+    'searchPopulations': 'Search populations',
     'searchForCountry': 'Search for a country',
     'seeOccurringSpecies': 'and see all the occurring species',
     'seeTheData': 'See the data',
@@ -95,11 +99,16 @@ export const translations = {
     'searchForSpecies': 'Search for a species',
     'seeCriticalSites': 'and see its critical sites',
     'introText1': 'The tool makes it easy to obtain information on the sites critical for waterbird species by accessing several independent databases and analysing information at the biogeographical population level, so providing a comprehensive basis for management and decision making. It is designed to help a range of different users from site managers to national authorities and international organisations. The CSN Tool, one of the major achievements of the Wings Over Wetlands (WOW) project, is also an important example of the added value of cooperation between likeminded conservation organisations, international conventions and agreements, governments, UN agencies and other donors.',
-    'introText2': 'The CSN Tool supports both AEWA and the Ramsar Convention on Wetlands. It is also relevant to the EU Birds Directive and the Bern Convention’s Emerald Network.'
+    'introText2': 'The CSN Tool supports both AEWA and the Ramsar Convention on Wetlands. It is also relevant to the EU Birds Directive and the Bern Convention’s Emerald Network.',
+    'geography': 'Geography',
+    'taxonomy': 'Taxonomy',
+    'habitat': 'Habitat',
+    'selectOneOption': 'Select at least one option'
   },
   es: {
     'country': 'Pais',
     'countries': 'Paises',
+    'site': 'Sitio',
     'sites': 'Sitios',
     'sitesOld': 'CSN',
     'sitesList': 'Lista de sitios',
@@ -187,6 +196,9 @@ export const translations = {
     'filterBy': 'Filtrar por',
     'banner': 'La Herramienta de Red Crítica de Sitios (CSN) es un recurso en línea para la conservación de 294 especies de aves acuáticas y los sitios importantes de los cuales dependen en África y Eurasia Occidental.',
     'toolUse': '¿Para qué puedo utilizar esta herramienta?',
+    'searchSites': 'Buscar sitios',
+    'searchSpecies': 'Buscar especies',
+    'searchPopulations': 'Buscar poblaciones',
     'searchForCountry': 'Busca un pais y mira',
     'seeOccurringSpecies': 'todas las especies que se producen',
     'seeTheData': 'Vea los datos',
@@ -194,6 +206,10 @@ export const translations = {
     'searchForSpecies': 'Busca por especies',
     'seeCriticalSites': 'y mira sus sitios críticos',
     'introText1': 'La herramienta facilita la obtención de información sobre los sitios críticos para las especies de aves acuáticas mediante el acceso a varias bases de datos independientes y el análisis de la información a nivel de población biogeográfica, proporcionando así una base integral para la gestión y la toma de decisiones. Está diseñado para ayudar a una variedad de usuarios diferentes, desde los administradores de sitios a las autoridades nacionales y organizaciones internacionales. La Herramienta CSN, uno de los principales logros del proyecto Wings Over Wetlands, es también un ejemplo importante del valor añadido de la cooperación entre organizaciones de conservación afines, convenciones y acuerdos internacionales, gobiernos, agencias de la ONU y otros donantes.',
-    'introText2': 'La herramienta CSN apoya tanto AEWA como la Convención de Ramsar sobre los Humedales. También es relevante para la Directiva de la UE sobre las aves y la Red Esmeralda de la Convención de Berna.'
+    'introText2': 'La herramienta CSN apoya tanto AEWA como la Convención de Ramsar sobre los Humedales. También es relevante para la Directiva de la UE sobre las aves y la Red Esmeralda de la Convención de Berna.',
+    'geography': 'Geografía',
+    'taxonomy': 'Taxonomia',
+    'habitat': 'Habitat',
+    'selectOneOption': 'Selecciona al menos una opción'
   },
 }

@@ -12,8 +12,62 @@
     }
   }
 
-  &.-inv > .Select-control {
-    background: $bg-main-color;
+  &.-white {
+    &.Select--single,
+    &.has-value.Select--single {
+      > .Select-control {
+        background: $white;
+        border-radius: 0;
+
+        .Select-value > .Select-value-label {
+          font-weight: 500;
+          font-size: $font-size-s;
+          color: rgba($font-main, 0.6);
+        }
+      }
+    }
+
+    &.Select--multi {
+      > .Select-control {
+        background: $white;
+        border-radius: 0;
+        .Select-value {
+          background-color: $main-color;
+          border: none;
+          border-radius: 0;
+
+          > .Select-value-icon {
+            color: rgba($font-main, 0.6);
+            border-right-color: rgba($font-main, 0.4);
+            &:hover {
+              color: $font-main;
+              background-color: rgba(0, 0, 0, 0.1);
+            }
+          }
+          > .Select-value-label {
+            font-weight: 500;
+            font-size: $font-size-s;
+            color: $font-main;
+          }
+        }
+      }
+    }
+    .Select-menu-outer {
+      background: $white;
+      border: 1px solid #e6e6e6;
+      width: calc(100% - 1px);
+
+      > .Select-menu > .Select-option {
+        background: $white;
+        font-size: $font-size-s;
+        color: rgba($font-main, 0.6);
+        font-weight: 500;
+
+        &.is-focused {
+          background-color: rgba($main-color, 0.5);
+        }
+      }
+    }
   }
 
   &.-short {
@@ -89,6 +143,16 @@
       fill: $white;
       vertical-align: middle;
       margin-right: 6px;
+    }
+  }
+
+  .Select-clear-zone {
+    .Select-clear {
+      font-size: 17px;
+      line-height: 36px;
+    }
+    &:hover {
+      color: $bg-dark-color;
     }
   }
 }
