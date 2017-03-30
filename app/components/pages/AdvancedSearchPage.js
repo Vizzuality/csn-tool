@@ -136,7 +136,7 @@ class AdvancedSearchPage extends React.Component {
                     <h4 className="label">{this.context.t(section)}</h4>
                     <Select
                       multi
-                      className={`c-select -white ${value ? '-selected' : ''}`}
+                      className="c-select -white"
                       name={section}
                       value={value}
                       options={options}

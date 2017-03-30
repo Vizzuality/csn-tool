@@ -54,30 +54,18 @@
     }
     .Select-menu-outer {
       background: $white;
+      border: 1px solid #e6e6e6;
+      width: calc(100% - 1px);
+
       > .Select-menu > .Select-option {
         background: $white;
         font-size: $font-size-s;
         color: rgba($font-main, 0.6);
         font-weight: 500;
-      }
-    }
-    &.-selected {
-      &.Select--single,
-      &.has-value.Select--single {
-        > .Select-control {
-          background: $main-color;
-          .Select-value > .Select-value-label {
-            color: $font-main;
-          }
+
+        &.is-focused {
+          background-color: rgba($main-color, 0.5);
         }
-      }
-      .Select-arrow-zone {
-        > .Select-arrow {
-          border-top-color: rgba($bg-dark-color, 0.6);
-        }
-      }
-      .Select-clear-zone > .Select-clear {
-        color: rgba($bg-dark-color, 0.6);
       }
     }
   }
