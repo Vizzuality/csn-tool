@@ -19,7 +19,7 @@ function getCountryColums(category) {
       return ['original_species', 'population', 'original_a', 'original_b',
         'original_c', 'confusion_species', 'confusion_species_as'];
     default:
-      return ['site_name', 'protected', 'iba', 'iba_in_danger'];
+      return ['site_name', 'protected', 'iba_species', 'iba_in_danger'];
   }
 }
 
