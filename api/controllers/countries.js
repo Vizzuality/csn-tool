@@ -167,6 +167,7 @@ function getCountryPopulations(req, res) {
 
 function getCountryPopsWithLookAlikeCounts(req, res) {
   const query = `SELECT sq.scientific_name AS original_species,
+    sq.english_name,
     sq.population_name AS population, sq.a AS original_a,
     sq.b AS original_b, sq.c AS original_c, sq.wpepopid AS pop_id_origin,
     COUNT(*) AS confusion_species,
@@ -176,6 +177,7 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
     (
       SELECT confusion_group,
       sm.species_id, sm.scientific_name,
+      sm.english_name,
        pi.the_geom, pi.population_name, pi.a, pi.b, pi.c,
        pi.wpepopid
       FROM species_main AS sm
@@ -201,7 +203,8 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
     ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
     AND ST_INTERSECTS(pi.the_geom, sq.the_geom)
     AND pi.species_main_id = sm.species_id
-    GROUP BY sq.scientific_name, sq.population_name,
+    GROUP BY sq.scientific_name,
+    sq.english_name, sq.population_name,
     sq.a, sq.b, sq.c, sq.wpepopid`;
 
   rp(CARTO_SQL + query)
