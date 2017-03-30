@@ -9,9 +9,9 @@ function getCountryColums(category) {
       return ['scientific_name', 'english_name', 'iucn_category',
         'country_status', 'occurrence_status'];
     case 'populations':
-      return ['scientific_name', 'english_name', 'iucn_category', 'populations',
-        'a', 'b', 'c', 'flyway_range', 'year_start',
-        'year_end', 'size_min', 'size_max', 'ramsar_criterion'];
+      return ['scientific_name', 'english_name', 'iucn_category', 'population',
+        'a', 'b', 'c', 'caf_action_plan', 'eu_birds_directive', 'flyway_range',
+        'year_start', 'year_end', 'size_min', 'size_max', 'ramsar_criterion'];
     case 'sitesOld':
       return ['site_name', 'protected', 'iba', 'csn', 'iba_species',
         'csn_species', 'total_percentage'];

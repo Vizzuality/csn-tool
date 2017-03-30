@@ -135,10 +135,11 @@ function getCountryPopulations(req, res) {
     pi.wpepopid AS pop_id,
     s.species_id AS id,
     'http://wpe.wetlands.org/view/' || pi.wpepopid AS pop_hyperlink,
+    pi.caf_action_plan, pi.eu_birds_directive,
     pi.a, pi.b, pi.c, pi.flyway_range,
     pi.year_start, pi.year_end,
     pi.size_min, pi.size_max,
-    pi.population_name AS populations,
+    pi.population_name AS population,
     pi.ramsar_criterion_6 AS ramsar_criterion
     FROM populations_iba AS pi
     INNER JOIN species_country AS c ON c.iso = '${req.params.iso}' AND
