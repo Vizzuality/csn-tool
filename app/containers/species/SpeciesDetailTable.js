@@ -13,7 +13,8 @@ function getSpeciesDetailColums(category) {
     case 'lookAlikeSpecies':
       return ['original_popname', 'original_a', 'original_b', 'original_c', 'confusion_name', 'populationname', 'a', 'b', 'c'];
     default:
-      return ['site_name', 'iba', 'protected'];
+      return ['site_name', 'protected', 'season', 'start', 'end', 'minimum',
+        'maximum', 'geometric_mean', 'units', 'iba_criteria'];
   }
 }
 
