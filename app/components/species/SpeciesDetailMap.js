@@ -107,7 +107,7 @@ class SpeciesMap extends BasicMap {
       return L.divIcon({
         className: 'map-marker',
         iconSize: null,
-        html: `<span class='icon -${item.protection_status_slug}'</span>`
+        html: `<span class='icon -${item.protected_slug}'</span>`
       });
     }
 

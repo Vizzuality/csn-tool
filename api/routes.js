@@ -3,6 +3,7 @@ const CountriesCtrl = require('./controllers/countries');
 const SitesCtrl = require('./controllers/sites');
 const SpeciesCtrl = require('./controllers/species');
 const ThresholdCtrl = require('./controllers/threshold');
+const SearchCtrl = require('./controllers/search');
 
 const router = Express.Router(); // eslint-disable-line new-cap
 
@@ -14,7 +15,7 @@ router.route('/countries/:iso/sitesOld').get(CountriesCtrl.getCountrySitesOld);
 router.route('/countries/:iso/species').get(CountriesCtrl.getCountrySpecies);
 router.route('/countries/:iso/populations').get(CountriesCtrl.getCountryPopulations);
 router.route('/countries/:iso/look-alike-species').get(CountriesCtrl.getCountryPopsWithLookAlikeCounts);
-router.route('/countries/:iso/look-alike-species/:id').get(CountriesCtrl.getCountryLookAlikeSpecies);
+router.route('/countries/:iso/look-alike-species/:populationId').get(CountriesCtrl.getCountryLookAlikeSpecies);
 
 // Sites
 router.route('/sites').get(SitesCtrl.getSites);
@@ -33,5 +34,12 @@ router.route('/species/:id/look-alike-species').get(SpeciesCtrl.getSpeciesLookAl
 
 // Threshold
 router.route('/threshold/:lat/:lng/:zoom?').get(ThresholdCtrl.getSpeciesByPosition);
+
+// Advanced search
+router.route('/search/options').get(SearchCtrl.getOptions);
+router.route('/search/sites').get(SearchCtrl.getSitesResults);
+router.route('/search/species').get(SearchCtrl.getSpeciesResults);
+router.route('/search/populations').get(SearchCtrl.getPopulationsResults);
+
 
 module.exports = router;
