@@ -43,8 +43,8 @@ function getCountrySites(req, res) {
       SUM(case when iba_criteria = '' then 0 else 1 end) as iba
         from species_sites group by site_id)
     SELECT c.country, c.iso3,
-      s.protection_status, s.site_name, s.lat, s.lon, s.site_id as id,
-      stc.iba, s.hyperlink, s.iba_in_danger
+      s.protection_status AS protected, s.site_name, s.lat, s.lon,
+      s.site_id as id, stc.iba AS iba_species, s.hyperlink, s.iba_in_danger
     FROM sites s
   	INNER JOIN countries c ON s.country_id = c.country_id AND
     c.iso3 = '${req.params.iso}'
@@ -56,7 +56,7 @@ function getCountrySites(req, res) {
       if (results && results.length > 0) {
         results.map((item) => {
           const site = item;
-          site.protection_status_slug = normalizeSiteStatus(item.protection_status);
+          site.protection_status_slug = normalizeSiteStatus(item.protected);
           return site;
         });
         res.json(results);
@@ -73,7 +73,7 @@ function getCountrySites(req, res) {
 
 function getCountrySitesOld(req, res) {
   const query = `SELECT c.country, c.iso3,
-      s.protected as protection_status, s.site_name, s.iba,
+      s.protected, s.site_name, s.iba,
       CASE
         WHEN s.csn_species >= 0 THEN 'x'
         ELSE null
@@ -135,12 +135,15 @@ function getCountryPopulations(req, res) {
     pi.wpepopid AS pop_id,
     s.species_id AS id,
     'http://wpe.wetlands.org/view/' || pi.wpepopid AS pop_hyperlink,
+    pi.caf_action_plan, pi.eu_birds_directive,
     pi.a, pi.b, pi.c, pi.flyway_range,
     pi.year_start, pi.year_end,
     pi.size_min, pi.size_max,
-    pi.population_name AS populations,
+    pi.population_name AS population,
     pi.ramsar_criterion_6 AS ramsar_criterion
     FROM populations_iba AS pi
+    INNER JOIN species_country AS c ON c.iso = '${req.params.iso}' AND
+    c.species_id = pi.species_main_id AND c.country_status != 'Vagrant'
     INNER JOIN species_main AS s ON s.species_id = pi.species_main_id
     WHERE (
       ST_Intersects(pi.the_geom,(SELECT the_geom FROM world_borders WHERE iso3 = '${req.params.iso}'))
@@ -165,6 +168,7 @@ function getCountryPopulations(req, res) {
 
 function getCountryPopsWithLookAlikeCounts(req, res) {
   const query = `SELECT sq.scientific_name AS original_species,
+    sq.english_name,
     sq.population_name AS population, sq.a AS original_a,
     sq.b AS original_b, sq.c AS original_c, sq.wpepopid AS pop_id_origin,
     COUNT(*) AS confusion_species,
@@ -174,6 +178,7 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
     (
       SELECT confusion_group,
       sm.species_id, sm.scientific_name,
+      sm.english_name,
        pi.the_geom, pi.population_name, pi.a, pi.b, pi.c,
        pi.wpepopid
       FROM species_main AS sm
@@ -199,7 +204,8 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
     ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
     AND ST_INTERSECTS(pi.the_geom, sq.the_geom)
     AND pi.species_main_id = sm.species_id
-    GROUP BY sq.scientific_name, sq.population_name,
+    GROUP BY sq.scientific_name,
+    sq.english_name, sq.population_name,
     sq.a, sq.b, sq.c, sq.wpepopid`;
 
   rp(CARTO_SQL + query)

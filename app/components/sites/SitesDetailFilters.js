@@ -7,7 +7,7 @@ function SitesFilters(props) {
     <div className="row c-table-filters">
       <div className="column small-12 medium-8">
         <div className="tags">
-          <NavLink to={`/sites/${props.id}/species`} i18nText="qualifyingSpecies" className={props.category && props.category === 'species' ? 'is-active' : ''} />
+          <NavLink to={`/sites/${props.id}/species`} i18nText="qualifying_species" className={props.category && props.category === 'species' ? 'is-active' : ''} />
         </div>
       </div>
       <div className="column small-12 medium-4">

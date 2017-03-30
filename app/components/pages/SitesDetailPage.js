@@ -49,7 +49,7 @@ class SitesPage extends React.Component {
                               Protection status
                             </div>
                             <div className="value">
-                              {this.props.stats.site[0].protection_status}
+                              {this.props.stats.site[0].protected}
                             </div>
                           </div>
                           <div className="item">
