@@ -186,10 +186,11 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
       AND pi.species_main_id = sm.species_id
       WHERE
       sm.confusion_group IS NOT NULL
+      ORDER BY sm.taxonomic_sequence ASC
     ) as sq
 
     INNER JOIN species_main AS sm ON
-    (sq.confusion_group && sm.confusion_group)
+    (sq.confusion_group %26%26 sm.confusion_group)
     AND sm.species_id != sq.species_id
     INNER JOIN world_borders AS wb ON
     wb.iso3 = '${req.params.iso}'
@@ -197,7 +198,8 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
     ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
     AND ST_INTERSECTS(pi.the_geom, sq.the_geom)
     AND pi.species_main_id = sm.species_id
-    GROUP BY 1,2,3,4,5`;
+    GROUP BY sq.scientific_name, sq.population_name,
+    sq.a, sq.b, sq.c`;
 
   rp(CARTO_SQL + query)
     .then((data) => {
