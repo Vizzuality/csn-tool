@@ -166,7 +166,7 @@ function getCountryPopulations(req, res) {
 function getCountryPopsWithLookAlikeCounts(req, res) {
   const query = `SELECT sq.scientific_name AS original_species,
     sq.population_name AS population, sq.a AS original_a,
-    sq.b AS original_b, sq.c AS original_c,
+    sq.b AS original_b, sq.c AS original_c, sq.wpepopid AS pop_id_origin,
     COUNT(*) AS confusion_species,
     COUNT(case when pi.a IS NOT NULL
           AND pi.a != '' then pi.population_name end) AS confusion_species_as
@@ -174,7 +174,8 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
     (
       SELECT confusion_group,
       sm.species_id, sm.scientific_name,
-       pi.the_geom, pi.population_name, pi.a, pi.b, pi.c
+       pi.the_geom, pi.population_name, pi.a, pi.b, pi.c,
+       pi.wpepopid
       FROM species_main AS sm
       INNER JOIN species_country AS sc
       ON sc.species_id = sm.species_id
@@ -199,7 +200,7 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
     AND ST_INTERSECTS(pi.the_geom, sq.the_geom)
     AND pi.species_main_id = sm.species_id
     GROUP BY sq.scientific_name, sq.population_name,
-    sq.a, sq.b, sq.c`;
+    sq.a, sq.b, sq.c, sq.wpepopid`;
 
   rp(CARTO_SQL + query)
     .then((data) => {
@@ -218,11 +219,12 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
 }
 
 function getCountryLookAlikeSpecies(req, res) {
-  const query = `SELECT sq.*
+  const query = `SELECT sm.scientific_name AS confusion_species,
+    pi.population_name AS confusion_population, pi.a, pi.b, pi.c
     FROM
     (
       SELECT confusion_group,
-      sm.species_id, sm.scientific_name,
+       sm.species_id, sm.scientific_name,
        pi.the_geom, pi.population_name, pi.a, pi.b, pi.c
        FROM species_main AS sm
        INNER JOIN species_country AS sc
@@ -233,12 +235,12 @@ function getCountryLookAlikeSpecies(req, res) {
        INNER JOIN populations_iba AS pi
        ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
        AND pi.species_main_id = sm.species_id
-       WHERE
-       sm.confusion_group IS NOT NULL
+       AND pi.wpepopid = ${req.params.populationId}
+       WHERE sm.confusion_group IS NOT NULL
     ) as sq
 
     INNER JOIN species_main AS sm ON
-    sq.confusion_group && sm.confusion_group
+    (sq.confusion_group %26%26 sm.confusion_group)
     AND sm.species_id != sq.species_id
     INNER JOIN world_borders AS wb ON
     wb.iso3 = '${req.params.iso}'
@@ -246,7 +248,6 @@ function getCountryLookAlikeSpecies(req, res) {
     ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
     AND ST_INTERSECTS(pi.the_geom, sq.the_geom)
     AND pi.species_main_id = sm.species_id`;
-
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);
