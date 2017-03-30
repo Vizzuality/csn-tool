@@ -225,8 +225,9 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
 }
 
 function getCountryLookAlikeSpecies(req, res) {
-  const query = `SELECT sm.scientific_name AS confusion_species,
-    pi.population_name AS confusion_population, pi.a, pi.b, pi.c
+  const query = `SELECT sm.scientific_name AS scientific_name,
+    sm.english_name,
+    pi.population_name AS population, pi.a, pi.b, pi.c
     FROM
     (
       SELECT confusion_group,

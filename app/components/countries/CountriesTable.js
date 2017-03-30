@@ -5,7 +5,8 @@ import TableListHeader from 'containers/countries/TableListHeader';
 import TableList from 'components/tables/TableList';
 import { Sticky } from 'react-sticky';
 
-const expandedColumns = ['confusion_species', 'confusion_population', 'a', 'b', 'c'];
+const expandedColumns = ['scientific_name', 'english_name', 'population', 'a',
+  'b', 'c'];
 
 class CountriesTable extends React.Component {
   constructor(props) {
@@ -53,7 +54,7 @@ class CountriesTable extends React.Component {
           </div>
           <div>
             <span className="title">{this.context.t('population')}</span>
-            <span>{this.state.selectedItem.populations}</span>
+            <span>{this.state.selectedItem.population}</span>
           </div>
           <div>
             <span className="title">A</span>
