@@ -32,6 +32,7 @@ class TableListHeader extends React.Component {
     this.activeFilters = {};
     if (props.data) {
       this.filters = getFilters(props.columns, props.data);
+      this.pending = false;
     }
   }
 
@@ -91,7 +92,7 @@ class TableListHeader extends React.Component {
                     <div className="table-filter">
                       <select onChange={(event) => this.filterBy({ field: column, value: event.target.value })}>
                         <option value="reset">Reset filter</option>
-                        {this.filters[column] && this.filters[column].map((item, i) => (
+                        {this.filters && this.filters[column] && this.filters[column].map((item, i) => (
                           <option key={i} value={item}>{item}</option>
                         ))}
                       </select>
@@ -135,7 +136,7 @@ TableListHeader.defaultProps = {
 
 TableListHeader.propTypes = {
   detailLink: React.PropTypes.bool,
-  selectedCategory: React.PropTypes.string.isRequired,
+  selectedCategory: React.PropTypes.string,
   columns: React.PropTypes.array.isRequired,
   data: React.PropTypes.any.isRequired,
   includeSort: React.PropTypes.bool,

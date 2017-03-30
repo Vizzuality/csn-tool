@@ -20,7 +20,8 @@ function getSites(req, res) {
         end) as iba  from species_sites group by site_id
       ),
       p as (SELECT DISTINCT site_id FROM species_sites)
-    SELECT s.country, s.iso3, s.iso2, s.site_name, s.protection_status, s.site_id as id, s.lat, s.lon,
+    SELECT s.country, s.iso3, s.iso2, s.site_name, s.protection_status AS protected,
+    s.site_id as id, s.lat, s.lon,
     stc.csn, stc.iba, s.hyperlink, s.iba_in_danger
     FROM ${table} s
     INNER JOIN stc ON stc.site_id = s.site_id
@@ -44,7 +45,7 @@ function getSites(req, res) {
 }
 
 function getSitesDetails(req, res) {
-  const query = `SELECT sites.site_id AS id, protection_status,
+  const query = `SELECT sites.site_id AS id, protection_status AS protected,
     iso3 as country, site_name, lat, lon,
     hyperlink, csn, iba, COUNT(ss.species_id) AS qualifying_species,
     sites.iba_in_danger
@@ -64,7 +65,7 @@ function getSitesDetails(req, res) {
             name: row.site_name,
             id: row.id,
             country: row.country,
-            protection_status: row.protection_status,
+            protected: row.protected,
             lat: row.lat,
             lon: row.lon,
             hyperlink: row.hyperlink,
@@ -112,7 +113,7 @@ function getSitesSpecies(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.species_id AS id,
     s.iucn_category, si.lat, si.lon, si.site_name, s.hyperlink,
     ss._end AS end, ss.start, ss.minimum, ss.maximum, ss.season,
-    ss.units, ss.iba_criteria, ss.csn_criteria
+    ss.units, ss.iba_criteria
     FROM species_main AS s
     INNER JOIN species_sites AS ss ON ss.species_id = s.species_id
     INNER JOIN sites AS si ON si.site_id = ss.site_id
@@ -141,53 +142,9 @@ function getSitesSpecies(req, res) {
     });
 }
 
-function getSitesPopulations(req, res) {
-  const query = `WITH my_sites AS (
-      SELECT DISTINCT the_geom_webmercator, site_id, lat, lon, site_name
-      FROM sites
-      WHERE site_id = ${req.params.id}
-    )
-    SELECT s.scientific_name, s.english_name, s.species_id AS id,
-    my_sites.lat, my_sites.lon, my_sites.site_name, s.hyperlink,
-    dd.a, dd.b, dd.c, dd.table_1_status,
-    dd.populations,
-    'http://wpe.wetlands.org/view/' || dd.wpepopid AS pop_hyperlink
-    FROM species AS s
-    INNER JOIN species_and_flywaygroups AS flyway
-    ON flyway.ssid = s.species_id
-    INNER JOIN my_sites ON ST_CONTAINS(flyway.the_geom_webmercator,
-                                       my_sites.the_geom_webmercator)
-    INNER JOIN populations_species_no_geo AS dd ON
-    dd.wpepopid = flyway.wpepopid
-    ORDER BY s.scientific_name
-    LIMIT 400`;
-  rp(CARTO_SQL + query)
-    .then((data) => {
-      const result = JSON.parse(data);
-      if (result.rows && result.rows.length > 0) {
-        res.json({
-          site: [{
-            lat: result.rows[0].lat,
-            lon: result.rows[0].lon,
-            site_name: result.rows[0].site_name
-          }],
-          data: result.rows
-        });
-      } else {
-        res.status(404);
-        res.json({ site: [], data: [], error: 'No populations for site' });
-      }
-    })
-    .catch((err) => {
-      res.status(err.statusCode || 500);
-      res.json({ error: err.message });
-    });
-}
-
 module.exports = {
   getSites,
   getSitesDetails,
   getSitesLocations,
-  getSitesSpecies,
-  getSitesPopulations
+  getSitesSpecies
 };

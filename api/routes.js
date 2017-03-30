@@ -15,14 +15,13 @@ router.route('/countries/:iso/sitesOld').get(CountriesCtrl.getCountrySitesOld);
 router.route('/countries/:iso/species').get(CountriesCtrl.getCountrySpecies);
 router.route('/countries/:iso/populations').get(CountriesCtrl.getCountryPopulations);
 router.route('/countries/:iso/look-alike-species').get(CountriesCtrl.getCountryPopsWithLookAlikeCounts);
-router.route('/countries/:iso/look-alike-species/:id').get(CountriesCtrl.getCountryLookAlikeSpecies);
+router.route('/countries/:iso/look-alike-species/:populationId').get(CountriesCtrl.getCountryLookAlikeSpecies);
 
 // Sites
 router.route('/sites').get(SitesCtrl.getSites);
 router.route('/sites/locations/:type').get(SitesCtrl.getSitesLocations);
 router.route('/sites/:id').get(SitesCtrl.getSitesSpecies);
 router.route('/sites/:id/details').get(SitesCtrl.getSitesDetails);
-router.route('/sites/:id/populations').get(SitesCtrl.getSitesPopulations);
 
 // Species
 router.route('/species').get(SpeciesCtrl.getSpeciesList);
