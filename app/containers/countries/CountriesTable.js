@@ -22,6 +22,12 @@ function getCountryColums(category) {
   }
 }
 
+function matchSearch(searchFilter, value) {
+  if (!searchFilter) return false;
+  const match = value.toString().match(new RegExp(searchFilter, 'gi'));
+  return match && match.length > 0;
+}
+
 function getCountryData(countries, columns) {
   const data = countries[countries.selectedCategory] && countries[countries.selectedCategory][countries.selected]
     ? countries[countries.selectedCategory][countries.selected]
@@ -41,7 +47,7 @@ function getCountryData(countries, columns) {
       const searchFilter = countries.searchFilter.toLowerCase();
 
       for (let i = 0, cLength = columns.length; i < cLength; i++) {
-        if (typeof modItem[columns[i]] === 'string' && modItem[columns[i]].toLowerCase().indexOf(searchFilter) >= 0) {
+        if (matchSearch(searchFilter, modItem[columns[i]])) {
           modItem[columns[i]] = modItem[columns[i]].toLowerCase().replace(searchFilter, `<span class="filtered">${searchFilter}</span>`);
           match = true;
           break;
