@@ -24,6 +24,13 @@ function getFilters(columns, data) {
   return filters;
 }
 
+function getTitle(column) {
+  if (column === 'a' || column === 'b' || column === 'c') {
+    return 'AEWA Table 1 Column';
+  }
+  return '';
+}
+
 class TableListHeader extends React.Component {
   constructor(props) {
     super(props);
@@ -86,7 +93,7 @@ class TableListHeader extends React.Component {
                 alignClass = '-left';
               }
               return (
-                <div key={index} className={`text -title ${alignClass}`} style={{ width: `${colWidth}%` }}>
+                <div key={index} className={`text -title ${alignClass}`} style={{ width: `${colWidth}%` }} title={getTitle(column)}>
                   {this.context.t(column)}
                   {columnsWithFilter.indexOf(column) >= 0 &&
                     <div className="table-filter">
