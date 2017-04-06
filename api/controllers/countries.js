@@ -73,15 +73,17 @@ function getCountrySites(req, res) {
 
 function getCountrySitesOld(req, res) {
   const query = `SELECT c.country, c.iso3,
-      s.protected, s.site_name, s.iba,
+      s.protected, s.site_name,
       CASE
         WHEN s.csn_species >= 0 THEN 'x'
         ELSE null
       END AS csn,
-      s.csn_species, s.iba_species, s.total_percentage
+      s.csn_species, s.iba_species, s.total_percentage,
+      si.site_id as id
     FROM sites_from_csn_old s
   	INNER JOIN countries c ON s.country_id = c.country_id AND
     c.iso3 = '${req.params.iso}'
+    INNER JOIN sites si ON si.site_name = s.site_name
     ORDER BY s.site_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
