@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import CountriesTable from 'components/countries/CountriesTable';
 import { setSearchFilter } from 'actions/countries';
-import { filterData } from 'helpers/filters';
+import { filterByColumns, filterBySearch } from 'helpers/filters';
 
 function getCountryColums(category) {
   switch (category) {
@@ -22,12 +22,6 @@ function getCountryColums(category) {
   }
 }
 
-function matchSearch(searchFilter, value) {
-  if (!searchFilter) return false;
-  const match = value.toString().match(new RegExp(searchFilter, 'gi'));
-  return match && match.length > 0;
-}
-
 function getCountryData(countries, columns) {
   const data = countries[countries.selectedCategory] && countries[countries.selectedCategory][countries.selected]
     ? countries[countries.selectedCategory][countries.selected]
@@ -35,28 +29,14 @@ function getCountryData(countries, columns) {
 
   if (!data) return data;
 
+  const searchFilter = countries.searchFilter.toLowerCase();
   let filteredData = data;
   if (Object.keys(countries.columnFilter).length !== 0) {
-    filteredData = filterData(filteredData, countries.columnFilter);
+    filteredData = filterByColumns(filteredData, countries.columnFilter);
   }
-
-  if (countries.searchFilter) {
-    filteredData = data.filter((item) => {
-      let match = false;
-      const modItem = item;
-      const searchFilter = countries.searchFilter.toLowerCase();
-
-      for (let i = 0, cLength = columns.length; i < cLength; i++) {
-        if (matchSearch(searchFilter, modItem[columns[i]])) {
-          modItem[columns[i]] = modItem[columns[i]].toLowerCase().replace(searchFilter, `<span class="filtered">${searchFilter}</span>`);
-          match = true;
-          break;
-        }
-      }
-      return match;
-    });
+  if (searchFilter) {
+    filteredData = filterBySearch(data, searchFilter, columns);
   }
-
   return filteredData;
 }
 
