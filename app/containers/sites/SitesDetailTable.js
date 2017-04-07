@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import SitesDetailTable from 'components/sites/SitesDetailTable';
-import { filterData } from 'helpers/filters';
+import { filterByColumns } from 'helpers/filters';
 
 function getSitesData(sites, columns) {
   const data = sites[sites.selectedCategory] && sites[sites.selectedCategory][sites.selected]
@@ -11,7 +11,7 @@ function getSitesData(sites, columns) {
 
   let filteredData = data;
   if (Object.keys(sites.columnFilter).length !== 0) {
-    filteredData = filterData(filteredData, sites.columnFilter);
+    filteredData = filterByColumns(filteredData, sites.columnFilter);
   }
 
   if (sites.searchFilter) {

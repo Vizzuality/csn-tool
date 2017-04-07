@@ -1,25 +1,17 @@
 import { connect } from 'react-redux';
 import SpeciesTable from 'components/species/SpeciesTable';
+import { filterBySearch } from 'helpers/filters';
 
 function getSpeciesData(species, columns) {
   const data = species.list || false;
 
   if (!data || !species.searchFilter) return data;
 
-  const filteredData = data.filter((item) => {
-    let match = false;
-    const modItem = item;
-    const searchFilter = species.searchFilter.toLowerCase();
-
-    for (let i = 0, cLength = columns.length; i < cLength; i++) {
-      if (typeof modItem[columns[i]] === 'string' && modItem[columns[i]].toLowerCase().indexOf(searchFilter) >= 0) {
-        modItem[columns[i]] = modItem[columns[i]].toLowerCase().replace(searchFilter, `<span class="filtered">${searchFilter}</span>`);
-        match = true;
-        break;
-      }
-    }
-    return match;
-  });
+  let filteredData = data;
+  const searchFilter = species.searchFilter.toLowerCase();
+  if (searchFilter) {
+    filteredData = filterBySearch(data, searchFilter, columns);
+  }
 
   return filteredData;
 }

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import SpeciesDetailTable from 'components/species/SpeciesDetailTable';
-import { filterData } from 'helpers/filters';
+import { filterByColumns, filterBySearch } from 'helpers/filters';
 
 function getSpeciesDetailColums(category) {
   switch (category) {
@@ -29,24 +29,12 @@ function getSpeciesDetailData(species, columns) {
 
   let filteredData = data;
   if (Object.keys(species.columnFilter).length !== 0) {
-    filteredData = filterData(filteredData, species.columnFilter);
+    filteredData = filterByColumns(filteredData, species.columnFilter);
   }
 
-  if (species.searchFilter) {
-    filteredData = data.filter((item) => {
-      let match = false;
-      const modItem = item;
-      const searchFilter = species.searchFilter.toLowerCase();
-
-      for (let i = 0, cLength = columns.length; i < cLength; i++) {
-        if (typeof modItem[columns[i]] === 'string' && modItem[columns[i]].toLowerCase().indexOf(searchFilter) >= 0) {
-          modItem[columns[i]] = modItem[columns[i]].toLowerCase().replace(searchFilter, `<span class="filtered">${searchFilter}</span>`);
-          match = true;
-          break;
-        }
-      }
-      return match;
-    });
+  const searchFilter = species.searchFilter.toLowerCase();
+  if (searchFilter) {
+    filteredData = filterBySearch(data, searchFilter, columns);
   }
 
   return filteredData;
