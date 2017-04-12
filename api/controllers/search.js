@@ -110,7 +110,7 @@ async function getSitesResults(req, res) {
       ${params.species || params.genus || params.family
         ? `JOIN species_sites ss ON ss.site_id = s.site_id
           JOIN species ON ss.species_id = species.species_id AND (
-            ${params.species ? `species.id IN(${params.species.join()})` : false}
+            ${params.species ? `species.species_id IN(${params.species.join()})` : false}
             OR ${params.genus ? `species.genus IN('${params.genus.join('\',\'')}')` : false}
             OR ${params.family ? `species.family IN('${params.family.join('\',\'')}')` : false}
           )`
@@ -153,7 +153,6 @@ async function getSpeciesResults(req, res) {
       }
       GROUP BY s.scientific_name, s.english_name
       ORDER by english_name ASC`;
-    console.log(query);
     const data = await rp(CARTO_SQL + query);
     res.json(JSON.parse(data));
   } catch (err) {
