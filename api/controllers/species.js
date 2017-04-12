@@ -241,6 +241,37 @@ function getSpeciesLookAlikeSpecies(req, res) {
     });
 }
 
+function getPopulationsLookAlikeSpecies(req, res) {
+  const query = `SELECT p.population_name AS population, p.a, p.b, p.c,
+    s.iucn_category, p.caf_action_plan, p.eu_birds_directive,
+    table_1_status,
+    p.species, p.wpepopid, p.flyway_range, p.year_start, p.year_end, p.size_min,
+    p.size_max, p.ramsar_criterion_6 AS ramsar_criterion,
+    'http://wpe.wetlands.org/view/' || p.wpepopid AS pop_hyperlink
+    FROM species_main s
+    INNER JOIN populations_iba p on p.species_main_id = s.species_id
+    WHERE s.species_id = '${req.params.id}'`;
+
+  rp(encodeURI(CARTO_SQL + query))
+    .then((data) => {
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        const params = [
+          { columnName: 'confusion_name', field1: 'confusion_species', field2: 'english_name' }
+        ];
+        const dataParsed = mergeNames(results, params);
+        res.json(dataParsed);
+      } else {
+        res.status(404);
+        res.json({ error: 'There are no habitats for this Species' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
 module.exports = {
   getSpeciesList,
   getSpeciesDetails,
@@ -248,5 +279,6 @@ module.exports = {
   getSpeciesPopulation,
   getSpeciesThreats,
   getSpeciesHabitats,
-  getSpeciesLookAlikeSpecies
+  getSpeciesLookAlikeSpecies,
+  getPopulationsLookAlikeSpecies
 };

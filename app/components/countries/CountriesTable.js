@@ -3,6 +3,7 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 import CountriesFilters from 'components/countries/CountriesFilters';
 import TableListHeader from 'containers/countries/TableListHeader';
 import TableList from 'components/tables/TableList';
+import ScrollButton from 'components/common/ScrollButton';
 import { Sticky } from 'react-sticky';
 
 const expandedColumns = ['scientific_name', 'english_name', 'population', 'a',
@@ -112,6 +113,7 @@ class CountriesTable extends React.Component {
     const columns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? expandedColumns : this.props.columns;
     return (
       <div className="c-table">
+        <ScrollButton />
         <Sticky topOffset={-120} stickyClassName={'-sticky'}>
           <CountriesFilters country={this.props.country} category={this.props.category} />
           {isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0
