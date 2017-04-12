@@ -85,6 +85,16 @@ async function getOptions(req, res) {
   }
 }
 
+function parseParams(query) {
+  const params = {};
+  Object.keys(query).forEach((key) => {
+    if (query[key] && query[key] !== 'undefined') {
+      params[key] = query[key].split(',');
+    }
+  });
+  return params;
+}
+
 async function getSitesResults(req, res) {
   // TODO: get sites search querying by
   // countries='country_id1, country_id2'
@@ -94,7 +104,24 @@ async function getSitesResults(req, res) {
   // species='speciesId1,speciesId2'
   // from req.query['paramName']
   try {
-    const query = 'SELECT DISTINCT(site_name) as label, iso3 as value FROM sites ORDER by site_name ASC';
+    const params = parseParams(req.query);
+    const query = `SELECT s.site_name, s.country
+      FROM sites s
+      ${params.species || params.genus || params.family
+        ? `JOIN species_sites ss ON ss.site_id = s.site_id
+          JOIN species ON ss.species_id = species.species_id AND (
+            ${params.species ? `species.id IN(${params.species.join()})` : false}
+            OR ${params.genus ? `species.genus IN('${params.genus.join('\',\'')}')` : false}
+            OR ${params.family ? `species.family IN('${params.family.join('\',\'')}')` : false}
+          )`
+        : ''}
+      ${params.habitat
+        ? `JOIN sites_habitats sh ON sh.site_id = s.site_id AND habitat_id IN (${params.habitat.join()})`
+        : ''
+      }
+      ${params.country ? `WHERE country_id IN(${params.country.join()})` : ''}
+      GROUP BY s.site_name, s.country
+      ORDER by site_name ASC`;
     const data = await rp(CARTO_SQL + query);
     res.json(JSON.parse(data));
   } catch (err) {
