@@ -145,8 +145,9 @@ async function getSitesResults(req, res) {
 async function getSpeciesResults(req, res) {
   try {
     const params = parseParams(req.query);
-    const query = `SELECT s.scientific_name, s.english_name
-      FROM species s
+    const query = `SELECT s.scientific_name, s.english_name, s.family,
+      s.species_id AS id, s.iucn_category, s.hyperlink
+      FROM species_main s
       ${params.country && !params.site
         ? `JOIN species_sites ss ON ss.species_id = s.species_id
           JOIN sites ON ss.site_id = sites.site_id AND country_id IN(${params.country.join()})`
@@ -163,8 +164,9 @@ async function getSpeciesResults(req, res) {
           )`
         : ''
       }
-      GROUP BY s.scientific_name, s.english_name
-      ORDER by english_name ASC`;
+      GROUP BY s.scientific_name, s.family, s.english_name, s.species_id,
+      s.iucn_category, s.hyperlink, s.taxonomic_sequence
+      ORDER by taxonomic_sequence ASC`;
     const data = await rp(CARTO_SQL + query);
     res.json(JSON.parse(data));
   } catch (err) {
