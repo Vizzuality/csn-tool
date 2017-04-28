@@ -150,7 +150,10 @@ async function getSpeciesResults(req, res) {
       FROM species_main s
       ${params.country && !params.site
         ? `JOIN species_sites ss ON ss.species_id = s.species_id
-          JOIN sites ON ss.site_id = sites.site_id AND country_id IN(${params.country.join()})`
+          JOIN species_country AS sc ON sc.country_id IN(${params.country.join()}) AND
+          sc.country_status != 'Vagrant'
+          JOIN sites ON ss.site_id = sites.site_id AND sites.country_id = sc.country_id
+          `
         : ''}
       ${params.site
         ? `JOIN species_sites ss ON ss.species_id = s.species_id
@@ -176,8 +179,50 @@ async function getSpeciesResults(req, res) {
 }
 
 async function getPopulationsResults(req, res) {
+  // TODO: Add filtering by Habitat
   try {
-    const query = 'SELECT DISTINCT(site_name) as label, iso3 as value FROM sites ORDER by site_name ASC';
+    const params = parseParams(req.query);
+    const query = `SELECT
+      s.scientific_name,
+      s.english_name,
+      s.iucn_category,
+      pi.wpepopid AS pop_id,
+      s.species_id AS id,
+      'http://wpe.wetlands.org/view/' || pi.wpepopid AS pop_hyperlink,
+      pi.caf_action_plan, pi.eu_birds_directive,
+      pi.a, pi.b, pi.c, pi.flyway_range,
+      pi.year_start, pi.year_end,
+      pi.size_min, pi.size_max,
+      pi.population_name AS population,
+      pi.ramsar_criterion_6 AS ramsar_criterion
+      FROM populations_iba AS pi
+      JOIN species_main s ON pi.species_main_id = s.species_id
+      ${params.country && !params.site
+        ? `JOIN species_sites ss ON ss.species_id = s.species_id
+          JOIN species_country sc ON sc.country_id IN(${params.country.join()}) AND
+          sc.country_status != 'Vagrant'
+          JOIN sites ON ss.site_id = sites.site_id AND sites.country_id = sc.country_id
+          JOIN world_borders AS wb ON wb.iso3 = sc.iso
+          AND ST_INTERSECTS(pi.the_geom, wb.the_geom)
+          `
+        : ''}
+      ${params.site
+        ? `JOIN species_sites ss ON ss.species_id = s.species_id
+          JOIN sites ON ss.site_id = sites.site_id AND sites.site_id IN(${params.site.join()})`
+        : ''}
+      ${params.species || params.genus || params.family
+        ? `WHERE (
+            ${params.species ? `s.id IN(${params.species.join()})` : false}
+            OR ${params.genus ? `s.genus IN('${params.genus.join('\',\'')}')` : false}
+            OR ${params.family ? `s.family IN('${params.family.join('\',\'')}')` : false}
+          )`
+        : ''
+      }
+      GROUP by s.scientific_name, s.english_name, s.iucn_category, pi.wpepopid,
+      s.species_id, pi.caf_action_plan, pi.eu_birds_directive, pi.a, pi.b, pi.c,
+      pi.flyway_range, pi.year_start, pi.year_end, pi.size_min, pi.size_max,
+      pi.population_name, pi.ramsar_criterion_6, s.taxonomic_sequence
+      ORDER by s.taxonomic_sequence ASC`;
     const data = await rp(CARTO_SQL + query);
     res.json(JSON.parse(data));
   } catch (err) {

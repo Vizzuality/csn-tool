@@ -169,7 +169,7 @@ class AdvancedSearchPage extends React.Component {
           </div>
           <div className="column small-12 medium-2 ">
             <button
-              className="btn -small -dark -disabled"
+              className="btn -small -dark"
               onClick={() => this.onSearchClick('populations')}
             >
               {this.context.t('searchPopulations')}
