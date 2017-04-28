@@ -15,7 +15,7 @@ function getColumnSize(column) {
 
 function ResultsTable(props) {
   const { data, columns } = props;
-  if (!data || data && !data.length > 0) return null;
+  if (!data || data && !data.length > 0) return <p> There is no data for those combinations </p>;
   return (
     <AutoSizer disableHeight>
       {({ width }) => (

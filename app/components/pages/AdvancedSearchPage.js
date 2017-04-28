@@ -2,6 +2,7 @@ import React from 'react';
 import Select from 'react-select';
 import SearchResultsTable from 'containers/advanced-search/ResultsTable';
 // import ResultsTableVirtualized from 'components/advanced-search/ResultsTableVirtualized';
+import LoadingSpinner from 'components/common/LoadingSpinner';
 
 const rows = [
   {
@@ -114,10 +115,79 @@ class AdvancedSearchPage extends React.Component {
     return false;
   }
 
-  render() {
+  content() {
     const { filters } = this.state;
     const hasSites = filters.site && filters.site.length > 0;
     const hasSpecies = filters.species && filters.species.length > 0;
+    return (
+      <div>
+        {rows.map((row, index) => (
+          <div className="row c-search-group" key={index}>
+            <div className="column small-12">
+              <h3 className="group-title">{this.context.t(row.title)}</h3>
+            </div>
+            {row.sections.map((section, index2) => {
+              const value = filters[section] || null;
+              const options = this.props.options && this.getFilteredOptions(section, this.props.options[section]) || [];
+              return (
+                <div className="column small-12 medium-3 group-field" key={index2}>
+                  <h4 className="label">{this.context.t(section)}</h4>
+                  <Select
+                    multi
+                    className="c-select -white"
+                    name={section}
+                    value={value}
+                    options={options}
+                    onChange={(select) => this.onSelectChange(section, select)}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        ))}
+        <div className="row c-search-actions">
+          <div className="column medium-offset-6 validation-error">
+            {this.state.errors.empty &&
+              <span>{this.context.t('selectOneOption')}</span>
+            }
+          </div>
+          <div className="column small-12 medium-2 medium-offset-6">
+            <button
+              className={`btn -small -dark ${hasSites ? '-disabled' : ''}`}
+              onClick={() => { if (!hasSites) this.onSearchClick('sites'); }}
+            >
+              {this.context.t('searchSites')}
+            </button>
+          </div>
+          <div className="column small-12 medium-2">
+            <button
+              className={`btn -small -dark ${hasSpecies ? '-disabled' : ''}`}
+              onClick={() => { if (!hasSpecies) this.onSearchClick('species'); }}
+            >
+              {this.context.t('searchSpecies')}
+            </button>
+          </div>
+          <div className="column small-12 medium-2 ">
+            <button
+              className="btn -small -dark"
+              onClick={() => this.onSearchClick('populations')}
+            >
+              {this.context.t('searchPopulations')}
+            </button>
+          </div>
+        </div>
+        {this.props.hasResults &&
+          <div className="row">
+            <div className="column">
+              <SearchResultsTable />
+            </div>
+          </div>
+        }
+      </div>
+    );
+  }
+
+  render() {
     return (
       <div className="l-page">
         <div className="l-container">
@@ -126,67 +196,9 @@ class AdvancedSearchPage extends React.Component {
               <h2 className="title">{this.context.t('advancedSearch')}</h2>
             </div>
           </div>
-          {rows.map((row, index) => (
-            <div className="row c-search-group" key={index}>
-              <div className="column small-12">
-                <h3 className="group-title">{this.context.t(row.title)}</h3>
-              </div>
-              {row.sections.map((section, index2) => {
-                const value = filters[section] || null;
-                const options = this.props.options && this.getFilteredOptions(section, this.props.options[section]) || [];
-                return (
-                  <div className="column small-12 medium-3 group-field" key={index2}>
-                    <h4 className="label">{this.context.t(section)}</h4>
-                    <Select
-                      multi
-                      className="c-select -white"
-                      name={section}
-                      value={value}
-                      options={options}
-                      onChange={(select) => this.onSelectChange(section, select)}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          ))}
-          <div className="row c-search-actions">
-            <div className="column medium-offset-6 validation-error">
-              {this.state.errors.empty &&
-                <span>{this.context.t('selectOneOption')}</span>
-              }
-            </div>
-            <div className="column small-12 medium-2 medium-offset-6">
-              <button
-                className={`btn -small -dark ${hasSites ? '-disabled' : ''}`}
-                onClick={() => { if (!hasSites) this.onSearchClick('sites'); }}
-              >
-                {this.context.t('searchSites')}
-              </button>
-            </div>
-            <div className="column small-12 medium-2">
-              <button
-                className={`btn -small -dark ${hasSpecies ? '-disabled' : ''}`}
-                onClick={() => { if (!hasSpecies) this.onSearchClick('species'); }}
-              >
-                {this.context.t('searchSpecies')}
-              </button>
-            </div>
-            <div className="column small-12 medium-2">
-              <button
-                className="btn -small -dark"
-                onClick={() => this.onSearchClick('populations')}
-              >
-                {this.context.t('searchPopulations')}
-              </button>
-            </div>
-          </div>
-          {this.props.hasResults &&
-            <div className="row">
-              <div className="column">
-                <SearchResultsTable />
-              </div>
-            </div>
+          {this.props.options
+            ? this.content()
+            : <LoadingSpinner />
           }
         </div>
       </div>
