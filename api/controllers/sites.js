@@ -113,7 +113,7 @@ function getSitesSpecies(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.species_id AS id,
     s.iucn_category, si.lat, si.lon, si.site_name, s.hyperlink,
     ss._end AS end, ss.start, ss.minimum, ss.maximum, ss.season,
-    ss.units, ss.iba_criteria
+    ss.units, ss.iba_criteria, ss.geometric_mean
     FROM species_main AS s
     INNER JOIN species_sites AS ss ON ss.species_id = s.species_id
     INNER JOIN sites AS si ON si.site_id = ss.site_id

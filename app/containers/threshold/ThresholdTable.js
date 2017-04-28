@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import ThresholdTable from 'components/threshold/ThresholdTable';
 import { getSitesList } from 'actions/sites';
-import { filterData } from 'helpers/filters';
+import { filterByColumns } from 'helpers/filters';
 
 function getThresholdData(threshold, columns) {
   const data = threshold.data || false;
@@ -9,7 +9,7 @@ function getThresholdData(threshold, columns) {
 
   let filteredData = data;
   if (threshold.columnFilter && Object.keys(threshold.columnFilter).length !== 0) {
-    filteredData = filterData(filteredData, threshold.columnFilter);
+    filteredData = filterByColumns(filteredData, threshold.columnFilter);
   }
 
   if (threshold.searchFilter) {
