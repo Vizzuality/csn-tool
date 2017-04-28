@@ -105,8 +105,19 @@ async function getSitesResults(req, res) {
   // from req.query['paramName']
   try {
     const params = parseParams(req.query);
-    const query = `SELECT s.site_name, s.country
+    const query = `with stc as (select site_id,
+      SUM(case when iba_criteria = '' then 0 else 1 end) as iba
+      from species_sites group by site_id)
+      SELECT s.site_name, s.country,
+      s.protection_status as protected, stc.iba AS iba_species,
+      s.hyperlink,
+      CASE s.iba_in_danger
+        WHEN true THEN true
+        ELSE false
+      END AS iba_in_danger
+      , s.site_id AS id
       FROM sites s
+      LEFT JOIN stc ON stc.site_id = s.site_id
       ${params.species || params.genus || params.family
         ? `JOIN species_sites ss ON ss.site_id = s.site_id
           JOIN species ON ss.species_id = species.species_id AND (
@@ -120,8 +131,9 @@ async function getSitesResults(req, res) {
         : ''
       }
       ${params.country ? `WHERE country_id IN(${params.country.join()})` : ''}
-      GROUP BY s.site_name, s.country
-      ORDER by site_name ASC`;
+      GROUP BY s.site_name, s.country, s.protection_status, s.hyperlink,
+      s.iba_in_danger, s.site_id, stc.iba
+      ORDER by country ASC, site_name ASC`;
     const data = await rp(CARTO_SQL + query);
     res.json(JSON.parse(data));
   } catch (err) {
