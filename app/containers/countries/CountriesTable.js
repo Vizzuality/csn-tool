@@ -13,7 +13,7 @@ function getCountryColums(category) {
         'a', 'b', 'c', 'caf_action_plan', 'eu_birds_directive', 'flyway_range',
         'year_start', 'year_end', 'size_min', 'size_max', 'ramsar_criterion'];
     case 'sitesOld':
-      return ['site_name', 'protected', 'iba_species', 'total_percentage'];
+      return ['site_name', 'protected', 'csn_species', 'total_percentage'];
     case 'lookAlikeSpecies':
       return ['original_species', 'english_name', 'population', 'original_a', 'original_b',
         'original_c', 'confusion_species', 'confusion_species_as'];
