@@ -71,7 +71,7 @@ function getCountrySites(req, res) {
     });
 }
 
-function getCountrySitesOld(req, res) {
+function getCountryCriticalSites(req, res) {
   const query = `WITH stc AS (
       SELECT site_id, COUNT(*) csn
       FROM species_sites
@@ -275,7 +275,7 @@ module.exports = {
   getCountries,
   getCountryDetails,
   getCountrySites,
-  getCountrySitesOld,
+  getCountryCriticalSites,
   getCountrySpecies,
   getCountryPopulations,
   getCountryPopsWithLookAlikeCounts,
