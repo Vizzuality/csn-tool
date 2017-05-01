@@ -7,26 +7,45 @@ function getSites(req, res) {
   const table = req.query.filter === 'iba' ? 'sites' : 'sites_csn_points';
   const results = req.query.results || RESULTS_PER_PAGE;
   const search = req.query.search
-    ? `AND UPPER(s.country) like UPPER('%${req.query.search}%')
+    ? `${req.query.filter === 'iba' ? 'AND' : 'WHERE'} UPPER(s.country) like UPPER('%${req.query.search}%')
       OR UPPER(s.site_name) like UPPER('%${req.query.search}%')
       OR UPPER(s.protection_status) like UPPER('%${req.query.search}%')
       OR UPPER(s.csn) like UPPER('%${req.query.search}%')
       OR UPPER(s.iba) like UPPER('%${req.query.search}%')`
     : '';
 
-  const query = `with stc as (
-        select site_id, SUM(case when csn_criteria = ''
-        then 0 else 1 end) as csn, SUM(case when iba_criteria = '' then 0 else 1
-        end) as iba  from species_sites group by site_id
+  let query = '';
+
+  if (req.query.filter === 'iba') {
+    query = `with stc as (
+      select site_id, SUM(case when iba_criteria = '' then 0 else 1
+      end) as iba  from species_sites group by site_id
       ),
       p as (SELECT DISTINCT site_id FROM species_sites)
-    SELECT s.country, s.iso3, s.iso2, s.site_name, s.protection_status AS protected,
-    s.site_id as id, s.lat, s.lon,
-    stc.csn, stc.iba, s.hyperlink, s.iba_in_danger
+      SELECT s.country, s.iso3, s.iso2, s.site_name,
+      s.protection_status AS protected, s.site_id as id, s.lat, s.lon,
+      stc.iba AS iba_species, s.hyperlink,
+      CASE
+        WHEN s.iba_in_danger = true THEN true
+        ELSE false
+      END AS iba_in_danger
+      FROM ${table} s
+      INNER JOIN stc ON stc.site_id = s.site_id
+      WHERE s.site_id IN (SELECT * from p) ${search}
+      ORDER BY s.country ASC, s.site_name ASC`;
+  } else {
+    query = `WITH stc AS (
+      SELECT site_id, COUNT(*) csn
+      FROM species_sites
+      GROUP BY site_id
+    )
+    SELECT s.country, s.site_name AS csn_name, protection_status AS protected,
+    s.lat, s.lon, s.site_id AS id, stc.csn, s.iso3, s.iso2
     FROM ${table} s
     INNER JOIN stc ON stc.site_id = s.site_id
-    WHERE s.site_id IN (SELECT * from p) ${search}
+    ${search}
     ORDER BY s.country ASC, s.site_name ASC`;
+  }
 
   rp(encodeURI(`${CARTO_SQL}${query}&rows_per_page=${results}&page=${req.query.page}`))
     .then((data) => {

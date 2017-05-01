@@ -2,6 +2,16 @@ import { connect } from 'react-redux';
 import SitesTable from 'components/sites/SitesTable';
 import { getSitesList } from 'actions/sites';
 
+function getSitesColumns(filter) {
+  switch (filter) {
+    case 'csn':
+      return ['country', 'csn_name', 'protected', 'csn'];
+    default:
+      return ['country', 'site_name', 'protected', 'iba_species',
+        'iba_in_danger'];
+  }
+}
+
 function getSitesData(sites, columns) {
   const list = sites.list || false;
 
@@ -26,8 +36,7 @@ function getSitesData(sites, columns) {
 }
 
 const mapStateToProps = (state) => {
-  const columns = ['country', 'site_name', 'protected', 'csn', 'iba',
-    'qualifying_species', 'iba_in_danger'];
+  const columns = getSitesColumns(state.sites.filter);
 
   return {
     selected: state.sites.selected,
