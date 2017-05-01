@@ -52,7 +52,7 @@ class SitesPage extends React.Component {
                               {this.props.stats.site[0].protected}
                             </div>
                           </div>
-                          { this.props.type === 'iba' &&
+                          {this.props.type === 'iba' &&
                             <div className="item">
                               <div className="label">
                                 IBA in danger
