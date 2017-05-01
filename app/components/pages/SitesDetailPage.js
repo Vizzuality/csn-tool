@@ -52,14 +52,16 @@ class SitesPage extends React.Component {
                               {this.props.stats.site[0].protected}
                             </div>
                           </div>
-                          <div className="item">
-                            <div className="label">
-                              IBA in danger
+                          { this.props.type === 'iba' &&
+                            <div className="item">
+                              <div className="label">
+                                IBA in danger
+                              </div>
+                              <div className="value">
+                                {this.props.stats.site[0].iba_in_danger || '-'}
+                              </div>
                             </div>
-                            <div className="value">
-                              {this.props.stats.site[0].iba_in_danger || '-'}
-                            </div>
-                          </div>
+                          }
                           <div className="item">
                             <div className="label">
                               Qualifying Species
