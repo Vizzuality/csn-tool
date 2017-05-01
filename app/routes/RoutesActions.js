@@ -56,7 +56,8 @@ export function updateSitesPage(actualState, nextState, replace, done) {
 export function updateSitesDetailPage(actualState, replace, done) {
   const site = actualState.params.site || '';
   const cat = actualState.params.cat || 'species'; // default value
-  dispatch(setSiteParams(site, cat));
+  const type = actualState.params.type || 'iba';
+  dispatch(setSiteParams(site, cat, undefined, type));
   done();
 }
 

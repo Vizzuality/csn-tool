@@ -7,7 +7,8 @@ const mapStateToProps = (state) => ({
   category: state.sites.selectedCategory,
   locations: state.sites.locations.length >= 0,
   viewMode: state.sites.viewMode,
-  filter: state.sites.filter
+  filter: state.sites.filter,
+  type: state.sites.type
 });
 
 const mapDispatchToProps = (dispatch) => ({

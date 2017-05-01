@@ -20,8 +20,8 @@ router.route('/countries/:iso/look-alike-species/:populationId').get(CountriesCt
 // Sites
 router.route('/sites').get(SitesCtrl.getSites);
 router.route('/sites/locations/:type').get(SitesCtrl.getSitesLocations);
-router.route('/sites/:id').get(SitesCtrl.getSitesSpecies);
-router.route('/sites/:id/details').get(SitesCtrl.getSitesDetails);
+router.route('/sites/:type/:id').get(SitesCtrl.getSitesSpecies);
+router.route('/sites/:type/:id/details').get(SitesCtrl.getSitesDetails);
 
 // Species
 router.route('/species').get(SpeciesCtrl.getSpeciesList);

@@ -25,7 +25,8 @@ function getDetailLink(detailLink, item) {
 function TableList(props) {
   if (!props.data) return (<div className="c-table-list blank"><LoadingSpinner inner transparent /></div>);
   const colWidth = props.detailLink ? (97.5 / props.columns.length) : (100 / props.columns.length);
-  const colCenter = ['a', 'b', 'c', 'original_a', 'original_b', 'original_c', 'iba', 'csn', 'iba_species', 'csn_species'];
+  const colCenter = ['a', 'b', 'c', 'original_a', 'original_b', 'original_c',
+    'iba', 'csn', 'iba_species', 'csn_species'];
   return !props.data.length
   ? <div className="c-table-list"><div className="no-data"><p className="text -title"> No data </p></div></div>
   : <div id="table-rows" className="c-table-list">

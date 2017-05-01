@@ -14,7 +14,7 @@ function getSites(req, res) {
       OR UPPER(s.iba) like UPPER('%${req.query.search}%')`
     : '';
 
-  let query = '';
+  let query;
 
   if (req.query.filter === 'iba') {
     query = `with stc as (
@@ -64,7 +64,10 @@ function getSites(req, res) {
 }
 
 function getSitesDetails(req, res) {
-  const query = `SELECT sites.site_id AS id, protection_status AS protected,
+  let query;
+
+  if (req.params.type === 'iba') {
+    query = `SELECT sites.site_id AS id, protection_status AS protected,
     iso3 as country, site_name, lat, lon,
     hyperlink, csn, iba, COUNT(ss.species_id) AS qualifying_species,
     sites.iba_in_danger
@@ -74,6 +77,16 @@ function getSitesDetails(req, res) {
     GROUP BY sites.site_id, sites.protection_status, iso3, site_name, lat,
     lon, hyperlink, csn, iba, iba_in_danger
     `;
+  } else {
+    query = `SELECT s.site_id AS id, protected,
+      iso3 AS country, site_name, lat, lon,
+      COUNT(ss.species_id) AS qualifying_species
+      FROM sites_csn_points AS s
+      INNER JOIN species_sites AS ss ON ss.site_id = s.site_id
+      WHERE s.site_id = ${req.params.id}
+      GROUP BY s.site_id, protected, iso3, site_name, lat, lon`;
+  }
+
   rp(CARTO_SQL + query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
@@ -129,15 +142,30 @@ function getSitesLocations(req, res) {
 }
 
 function getSitesSpecies(req, res) {
-  const query = `SELECT s.scientific_name, s.english_name, s.species_id AS id,
-    s.iucn_category, si.lat, si.lon, si.site_name, s.hyperlink,
-    ss._end AS end, ss.start, ss.minimum, ss.maximum, ss.season,
-    ss.units, ss.iba_criteria, ss.geometric_mean
-    FROM species_main AS s
-    INNER JOIN species_sites AS ss ON ss.species_id = s.species_id
-    INNER JOIN sites AS si ON si.site_id = ss.site_id
-    WHERE si.site_id = ${req.params.id}
-    ORDER BY s.taxonomic_sequence`;
+  let query;
+
+  if (req.params.type === 'iba') {
+    query = `SELECT s.scientific_name, s.english_name, s.species_id AS id,
+      s.iucn_category, si.lat, si.lon, si.site_name, s.hyperlink,
+      ss._end AS end, ss.start, ss.minimum, ss.maximum, ss.season,
+      ss.units, ss.iba_criteria, ss.geometric_mean
+      FROM species_main AS s
+      INNER JOIN species_sites AS ss ON ss.species_id = s.species_id
+      INNER JOIN sites AS si ON si.site_id = ss.site_id
+      WHERE si.site_id = ${req.params.id}
+      ORDER BY s.taxonomic_sequence`;
+  } else {
+    query = `SELECT s.scientific_name, s.english_name, s.species_id AS id,
+      s.iucn_category, si.lat, si.lon, si.site_name, s.hyperlink,
+      ss._end AS end, ss.start, ss.minimum, ss.maximum, ss.season,
+      ss.units, ss.geometric_mean
+      FROM species_main AS s
+      INNER JOIN species_sites AS ss ON ss.species_id = s.species_id
+      INNER JOIN sites_csn_points AS si ON si.site_id = ss.site_id
+      WHERE si.site_id = ${req.params.id}
+      ORDER BY s.taxonomic_sequence`;
+  }
+
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);

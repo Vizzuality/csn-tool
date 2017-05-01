@@ -14,9 +14,7 @@ class SitesTable extends React.Component {
   }
 
   render() {
-    const detailLink = ['populations'].indexOf(this.props.category) < 0
-      ? 'sites'
-      : '';
+    const detailLink = `sites/${this.props.router.location.query.filter}`;
     return (
       <div className="c-paginated-table c-table">
         <InfiniteScroll

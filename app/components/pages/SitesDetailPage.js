@@ -6,7 +6,7 @@ import { StickyContainer } from 'react-sticky';
 
 class SitesPage extends React.Component {
   componentWillMount() {
-    this.props.getSitesStats(this.props.site);
+    this.props.getSitesStats(this.props.site, this.props.type);
     this.getData(this.props);
   }
 
@@ -16,7 +16,7 @@ class SitesPage extends React.Component {
 
   getData(props) {
     if (!props.data) {
-      props.getSitesData(props.site, props.category);
+      props.getSitesData(props.site, props.category, props.type);
     }
   }
 
@@ -89,6 +89,7 @@ class SitesPage extends React.Component {
                     data={this.props.data}
                     slug={this.props.site}
                     category={this.props.category}
+                    type={this.props.type}
                   />
                 </div>
               </div>
@@ -108,7 +109,8 @@ SitesPage.propTypes = {
   site: React.PropTypes.string,
   category: React.PropTypes.string,
   params: React.PropTypes.object,
-  lang: React.PropTypes.string
+  lang: React.PropTypes.string,
+  type: React.PropTypes.string
 };
 
 export default SitesPage;
