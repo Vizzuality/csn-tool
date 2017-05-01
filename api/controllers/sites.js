@@ -26,7 +26,7 @@ function getSites(req, res) {
     FROM ${table} s
     INNER JOIN stc ON stc.site_id = s.site_id
     WHERE s.site_id IN (SELECT * from p) ${search}
-    ORDER BY s.country`;
+    ORDER BY s.country ASC, s.site_name ASC`;
 
   rp(encodeURI(`${CARTO_SQL}${query}&rows_per_page=${results}&page=${req.query.page}`))
     .then((data) => {
