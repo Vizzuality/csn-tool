@@ -39,8 +39,8 @@ function getSites(req, res) {
       FROM species_sites
       GROUP BY site_id
     )
-    SELECT s.country, s.site_name AS csn_name, protection_status AS protected,
-    s.lat, s.lon, s.site_id AS id, stc.csn, s.iso3, s.iso2
+    SELECT s.country, s.site_name AS csn_name, protected,
+    s.lat, s.lon, s.site_id AS id, stc.csn, s.iso3, s.iso2, total_percentage
     FROM ${table} s
     INNER JOIN stc ON stc.site_id = s.site_id
     ${search}

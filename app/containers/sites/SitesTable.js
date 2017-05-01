@@ -5,7 +5,7 @@ import { getSitesList } from 'actions/sites';
 function getSitesColumns(filter) {
   switch (filter) {
     case 'csn':
-      return ['country', 'csn_name', 'protected', 'csn'];
+      return ['country', 'csn_name', 'protected', 'csn', 'total_percentage'];
     default:
       return ['country', 'site_name', 'protected', 'iba_species',
         'iba_in_danger'];
