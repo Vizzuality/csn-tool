@@ -169,7 +169,7 @@ function getSpeciesHabitats(req, res) {
 
 function getSpeciesLookAlikeSpecies(req, res) {
   const query = `SELECT sq.scientific_name AS original_species,
-    sq.english_name,
+    sq.species_id, sq.english_name,
     sq.population_name AS population, sq.a AS original_a,
     sq.b AS original_b, sq.c AS original_c, sq.wpepopid AS pop_id_origin,
     COUNT(*) AS confusion_species,
@@ -199,7 +199,7 @@ function getSpeciesLookAlikeSpecies(req, res) {
     ON pi.species_main_id = sm.species_id
     GROUP BY sq.scientific_name,
     sq.english_name, sq.population_name,
-    sq.a, sq.b, sq.c, sq.wpepopid
+    sq.a, sq.b, sq.c, sq.wpepopid, sq.species_id
     ORDER BY sq.population_name ASC`;
 
   rp(CARTO_SQL + query)
@@ -223,17 +223,24 @@ function getSpeciesLookAlikeSpecies(req, res) {
 }
 
 function getPopulationsLookAlikeSpecies(req, res) {
-  const query = `SELECT p.population_name AS population, p.a, p.b, p.c,
-    s.iucn_category, p.caf_action_plan, p.eu_birds_directive,
-    table_1_status,
-    p.species, p.wpepopid, p.flyway_range, p.year_start, p.year_end, p.size_min,
-    p.size_max, p.ramsar_criterion_6 AS ramsar_criterion,
-    'http://wpe.wetlands.org/view/' || p.wpepopid AS pop_hyperlink
-    FROM species_main s
-    INNER JOIN populations_iba p on p.species_main_id = s.species_id
-    WHERE s.species_id = '${req.params.id}'`;
+  const query = `SELECT sm.scientific_name AS scientific_name, sm.english_name,
+    pi.population_name AS population, pi.a, pi.b, pi.c
+    FROM ( SELECT confusion_group,
+       sm.species_id, sm.scientific_name,
+       pi.the_geom, pi.population_name, pi.a, pi.b, pi.c
+       FROM species_main AS sm
+       INNER JOIN populations_iba AS pi
+       ON pi.species_main_id = sm.species_id
+       WHERE sm.confusion_group IS NOT NULL
+       AND pi.wpepopid = ${req.params.populationId}
+       AND sm.species_id = ${req.params.id}
+    ) as sq
+    INNER JOIN species_main AS sm ON
+    (sq.confusion_group %26%26 sm.confusion_group)
+    AND sm.species_id != sq.species_id
+    INNER JOIN populations_iba AS pi ON pi.species_main_id = sm.species_id`;
 
-  rp(encodeURI(CARTO_SQL + query))
+  rp(CARTO_SQL + query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {

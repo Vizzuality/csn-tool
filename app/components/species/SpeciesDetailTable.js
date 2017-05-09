@@ -25,7 +25,8 @@ class SpeciesDetailTable extends React.Component {
     });
     // change the params to the species!
     // const url = `${config.apiHost}/countries/${species.species_id}/look-alike-species/${species.confusion_species}`;
-    const url = `${config.apiHost}/species/${species.species_id}/look-alike-species/${species.species_id}`;
+    const url = `${config.apiHost}/species/${species.species_id}/look-alike-species/${species.pop_id_origin}`;
+
     fetch(url)
       .then(res => {
         if (res.ok) return res.json();
@@ -45,7 +46,6 @@ class SpeciesDetailTable extends React.Component {
         <button onClick={this.clearSelection}>
           <span className="link">{this.context.t('backToSpecies')}</span>
         </button>
-        <h1>TODO</h1>
         <div className="nav">
           <div>
             <span className="title">{this.context.t('species')}</span>
