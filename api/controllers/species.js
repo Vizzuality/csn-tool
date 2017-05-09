@@ -104,7 +104,8 @@ function getSpeciesPopulation(req, res) {
     'http://wpe.wetlands.org/view/' || p.wpepopid AS pop_hyperlink
     FROM species_main s
     INNER JOIN populations_iba p on p.species_main_id = s.species_id
-    WHERE s.species_id = '${req.params.id}'`;
+    WHERE s.species_id = '${req.params.id}'
+    ORDER BY p.population_name`;
 
   rp(CARTO_SQL + query)
     .then((data) => {
@@ -183,9 +184,10 @@ function getSpeciesLookAlikeSpecies(req, res) {
        pi.wpepopid
       FROM species_main AS sm
       INNER JOIN populations_iba AS pi
-      AND pi.species_main_id = sm.species_id
+      ON pi.species_main_id = sm.species_id
       WHERE
       sm.species_id = ${req.params.id}
+      AND
       sm.confusion_group IS NOT NULL
       ORDER BY sm.taxonomic_sequence ASC
     ) as sq
@@ -194,10 +196,12 @@ function getSpeciesLookAlikeSpecies(req, res) {
     (sq.confusion_group %26%26 sm.confusion_group)
     AND sm.species_id != sq.species_id
     INNER JOIN populations_iba AS pi
-    AND pi.species_main_id = sm.species_id
+    ON pi.species_main_id = sm.species_id
     GROUP BY sq.scientific_name,
     sq.english_name, sq.population_name,
-    sq.a, sq.b, sq.c, sq.wpepopid`;
+    sq.a, sq.b, sq.c, sq.wpepopid
+    ORDER BY sq.population_name ASC`;
+
   rp(CARTO_SQL + query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
@@ -209,7 +213,7 @@ function getSpeciesLookAlikeSpecies(req, res) {
         res.json(dataParsed);
       } else {
         res.status(404);
-        res.json({ error: 'There are no habitats for this Species' });
+        res.json({ error: 'There are no confusion populations for this Species' });
       }
     })
     .catch((err) => {

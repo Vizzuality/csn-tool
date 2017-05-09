@@ -13,7 +13,7 @@ function getSpeciesDetailColums(category) {
     case 'threats':
       return ['threat_level_1', 'threat_level_2'];
     case 'lookAlikeSpecies':
-      return ['original_popname', 'original_a', 'original_b', 'original_c', 'confusion_name', 'populationname', 'a', 'b', 'c'];
+      return ['population', 'original_a', 'original_b', 'original_c', 'confusion_species', 'confusion_species_as'];
     default:
       return ['site_name', 'protected', 'season', 'start', 'end', 'minimum',
         'maximum', 'geometric_mean', 'units', 'iba_criteria'];
