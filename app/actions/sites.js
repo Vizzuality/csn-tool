@@ -14,7 +14,8 @@ export function setSiteParams(site, category, filter, type) {
 export function goSiteDetail(id, type) {
   return (dispatch, state) => {
     const lang = state().i18nState.lang;
-    dispatch(push(`/${lang}/sites/${type}⁄${id}`));
+    const filterType = type !== undefined ? type : 'iba';
+    dispatch(push(`/${lang}/sites/${filterType}/${id}`));
   };
 }
 
