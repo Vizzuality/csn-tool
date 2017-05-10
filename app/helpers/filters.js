@@ -3,7 +3,9 @@ export function filterByColumns(data, activeFilters) {
   const filters = Object.keys(activeFilters);
   filters.forEach((key) => {
     filteredData = filteredData.filter((item) => (
-      item[key] && item[key].toString().toUpperCase() === activeFilters[key].toUpperCase()
+      item[key] &&
+      item[key].toString().toUpperCase().split(' ').
+        indexOf(activeFilters[key].toUpperCase()) > -1
     ));
   });
 
