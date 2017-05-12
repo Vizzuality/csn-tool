@@ -79,13 +79,15 @@ class CountriesTable extends React.Component {
       case 'populations':
         return 'species';
       case 'criticalSites':
-        return 'sites';
+        return 'sites/csn';
       case 'lookAlikeSpecies':
         if (this.state.selectedItem) return 'species';
         return {
           type: 'action',
           action: this.getLookAlikeSpecies
         };
+      case 'sites':
+        return 'sites/iba';
       default:
         return category;
     }
