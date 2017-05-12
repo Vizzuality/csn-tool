@@ -224,7 +224,7 @@ function getSpeciesLookAlikeSpecies(req, res) {
 
 function getPopulationsLookAlikeSpecies(req, res) {
   const query = `SELECT sm.scientific_name AS scientific_name, sm.english_name,
-    pi.population_name AS population, pi.a, pi.b, pi.c
+    pi.population_name AS population, pi.a, pi.b, pi.c, sm.species_id AS id
     FROM ( SELECT confusion_group,
        sm.species_id, sm.scientific_name,
        pi.the_geom, pi.population_name, pi.a, pi.b, pi.c
