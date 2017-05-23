@@ -123,50 +123,6 @@ function getSpeciesPopulation(req, res) {
     });
 }
 
-function getSpeciesThreats(req, res) {
-  const query = `SELECT p.threat_level_1, p.threat_level_2
-    FROM species_main s
-    INNER JOIN species_threats p on p.species_id = s.species_id
-    WHERE s.species_id = '${req.params.id}'`;
-
-  rp(CARTO_SQL + query)
-    .then((data) => {
-      const results = JSON.parse(data).rows || [];
-      if (results && results.length > 0) {
-        res.json(results);
-      } else {
-        res.status(404);
-        res.json({ error: 'There are no threats for this Species' });
-      }
-    })
-    .catch((err) => {
-      res.status(err.statusCode || 500);
-      res.json({ error: err.message });
-    });
-}
-
-function getSpeciesHabitats(req, res) {
-  const query = `SELECT p.habitat_level_1, p.habitat_level_2
-    FROM species_main s
-    INNER JOIN species_habitat p on p.species_id = s.species_id
-    WHERE s.species_id = '${req.params.id}'`;
-
-  rp(CARTO_SQL + query)
-    .then((data) => {
-      const results = JSON.parse(data).rows || [];
-      if (results && results.length > 0) {
-        res.json(results);
-      } else {
-        res.status(404);
-        res.json({ error: 'There are no habitats for this Species' });
-      }
-    })
-    .catch((err) => {
-      res.status(err.statusCode || 500);
-      res.json({ error: err.message });
-    });
-}
-
 function getSpeciesLookAlikeSpecies(req, res) {
   const query = `SELECT sq.scientific_name AS original_species,
     sq.species_id, sq.english_name,
@@ -265,8 +221,6 @@ module.exports = {
   getSpeciesDetails,
   getSpeciesSites,
   getSpeciesPopulation,
-  getSpeciesThreats,
-  getSpeciesHabitats,
   getSpeciesLookAlikeSpecies,
   getPopulationsLookAlikeSpecies
 };
