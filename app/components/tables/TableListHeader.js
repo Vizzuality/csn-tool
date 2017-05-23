@@ -10,9 +10,13 @@ function getFilters(columns, data) {
       if (columnsWithFilter.indexOf(column) >= 0) {
         if (!filters[column]) filters[column] = [];
         data.forEach((item) => {
-          const newItem = item[column] && item[column].toString().replace('  ', ' ') || null;
-          if (newItem && filters[column].indexOf(newItem) === -1) {
-            filters[column].push(newItem);
+          if (item[column]) {
+            item[column].toString().split(' ').forEach((el) => {
+              const newItem = el.trim() || null;
+              if (newItem && filters[column].indexOf(newItem) === -1) {
+                filters[column].push(newItem);
+              }
+            });
           }
         });
       }

@@ -42,6 +42,7 @@ const mapStateToProps = (state) => {
     site: state.sites.selected,
     category: state.sites.selectedCategory,
     data: getSitesData(state.sites, columns),
+    type: state.sites.type,
     columns
   };
 };

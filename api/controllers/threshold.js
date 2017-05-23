@@ -11,7 +11,8 @@ function getSpeciesByPosition(req, res) {
     p.population_name AS population, p.a, p.b, p.c, p.table_1_status,
     sm.iucn_category, p.caf_action_plan, p.eu_birds_directive,
     p.species, p.wpepopid, p.flyway_range, p.year_start,
-    p.year_end, p.size_min, p.size_max, p.ramsar_criterion_6,
+    p.year_end, p.size_min, p.size_max,
+    p.ramsar_criterion_6 AS ramsar_criterion,
     'http://wpe.wetlands.org/view/' || p.wpepopid AS pop_hyperlink,
     c.name AS country_name
     FROM populations_iba AS p

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import CountriesPage from 'components/pages/CountriesPage';
-import { getCountryStats, getCountrySites, getCountrySitesOld, getCountrySpecies,
+import { getCountryStats, getCountrySites, getCountryCriticalSites, getCountrySpecies,
   getCountryPopulations, getCountryLookAlikeSpecies, getCountriesList } from 'actions/countries';
 
 function getCountryData(countries) {
@@ -30,8 +30,8 @@ const mapDispatchToProps = (dispatch) => ({
       case 'populations':
         dispatch(getCountryPopulations(country));
         break;
-      case 'sitesOld':
-        dispatch(getCountrySitesOld(country));
+      case 'criticalSites':
+        dispatch(getCountryCriticalSites(country));
         break;
       case 'lookAlikeSpecies':
         dispatch(getCountryLookAlikeSpecies(country));

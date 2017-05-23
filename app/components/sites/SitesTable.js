@@ -14,9 +14,7 @@ class SitesTable extends React.Component {
   }
 
   render() {
-    const detailLink = ['populations'].indexOf(this.props.category) < 0
-      ? 'sites'
-      : '';
+    const detailLink = `sites/${this.props.router.location.query.filter}`;
     return (
       <div className="c-paginated-table c-table">
         <InfiniteScroll
@@ -26,7 +24,7 @@ class SitesTable extends React.Component {
         >
           <div className="sticky-table">
             <div className="sticky-header column">
-              <SitesFilters category={this.props.category} />
+              <SitesFilters category={this.props.category} type={this.props.type} />
               <TableListHeader
                 includeSort={false}
                 data={this.props.list.data}
@@ -53,7 +51,8 @@ SitesTable.propTypes = {
   list: React.PropTypes.object.isRequired,
   category: React.PropTypes.string,
   columns: React.PropTypes.array.isRequired,
-  router: React.PropTypes.object
+  router: React.PropTypes.object,
+  type: React.PropTypes.string
 };
 
 export default withRouter(SitesTable);
