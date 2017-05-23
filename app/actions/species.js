@@ -1,5 +1,5 @@
 import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION,
-  GET_SPECIES_THREATS, GET_SPECIES_HABITATS, GET_SPECIES_LOOK_ALIKE_SPECIES,
+  GET_SPECIES_LOOK_ALIKE_SPECIES,
   SET_SPECIES_DETAIL_PARAMS, SET_SPECIES_SORT, SET_SPECIES_COLUMN_FILTER,
   SET_SPECIES_DETAIL_SEARCH, TOGGLE_SPECIES_LAYER } from 'constants';
 
@@ -81,38 +81,6 @@ export function getSpeciesPopulation(id) {
       .then(data => {
         dispatch({
           type: GET_SPECIES_POPULATION,
-          payload: {
-            id,
-            data
-          }
-        });
-      });
-  };
-}
-export function getSpeciesThreats(id) {
-  const url = `${config.apiHost}/species/${id}/threats`;
-  return dispatch => {
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        dispatch({
-          type: GET_SPECIES_THREATS,
-          payload: {
-            id,
-            data
-          }
-        });
-      });
-  };
-}
-export function getSpeciesHabitats(id) {
-  const url = `${config.apiHost}/species/${id}/habitats`;
-  return dispatch => {
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        dispatch({
-          type: GET_SPECIES_HABITATS,
           payload: {
             id,
             data

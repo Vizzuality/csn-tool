@@ -1,5 +1,5 @@
 import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION,
-  GET_SPECIES_THREATS, GET_SPECIES_HABITATS, GET_SPECIES_LOOK_ALIKE_SPECIES,
+  GET_SPECIES_LOOK_ALIKE_SPECIES,
   SET_SPECIES_DETAIL_PARAMS, SET_SPECIES_SORT, SET_SPECIES_COLUMN_FILTER,
   SET_SPECIES_DETAIL_SEARCH, TOGGLE_SPECIES_LAYER } from 'constants';
 
@@ -11,8 +11,6 @@ const initialState = {
   stats: {},
   sites: {},
   population: {},
-  threats: {},
-  habitats: {},
   lookAlikeSpecies: {},
   layers: {
     sites: true,
@@ -53,16 +51,6 @@ export default function (state = initialState, action) {
       const data = Object.assign({}, state.population, {});
       data[action.payload.id] = action.payload.data;
       return Object.assign({}, state, { population: data });
-    }
-    case GET_SPECIES_THREATS: {
-      const data = Object.assign({}, state.threats, {});
-      data[action.payload.id] = action.payload.data;
-      return Object.assign({}, state, { threats: data });
-    }
-    case GET_SPECIES_HABITATS: {
-      const data = Object.assign({}, state.habitats, {});
-      data[action.payload.id] = action.payload.data;
-      return Object.assign({}, state, { habitats: data });
     }
     case GET_SPECIES_LOOK_ALIKE_SPECIES: {
       const data = Object.assign({}, state.lookAlikeSpecies, {});
