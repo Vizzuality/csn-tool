@@ -11,7 +11,7 @@ function SitesDetailTable(props) {
     <div className="c-table" >
       <ScrollButton />
       <Sticky topOffset={-120} stickyClassName={'-sticky'}>
-        <SitesDetailFilters id={props.slug} category={props.category} />
+        <SitesDetailFilters id={props.slug} category={props.category} type={props.type} />
         <TableListHeader
           data={props.data}
           columns={props.columns}
@@ -31,7 +31,8 @@ SitesDetailTable.propTypes = {
   slug: React.PropTypes.string.isRequired,
   category: React.PropTypes.string.isRequired,
   data: React.PropTypes.any.isRequired,
-  columns: React.PropTypes.array.isRequired
+  columns: React.PropTypes.array.isRequired,
+  type: React.PropTypes.string.isRequired
 };
 
 export default SitesDetailTable;

@@ -108,7 +108,7 @@ const Routes = ({ history }) => (
       </Route>
       <Route path="sites">
         <IndexRoute component={SitesPage} onEnter={setSitesPage} onChange={updateSitesPage} />
-        <Route path=":site(/:cat)" component={SitesDetailPage} onEnter={updateSitesDetailPage} />
+        <Route path=":type/:site(/:cat)" component={SitesDetailPage} onEnter={updateSitesDetailPage} />
       </Route>
       <Route path="species">
         <IndexRoute component={SpeciesPage} />

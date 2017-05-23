@@ -1,5 +1,5 @@
 import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_SITES,
-        GET_COUNTRIES_STATS, GET_COUNTRIES_SITES_OLD, TOGGLE_COUNTRIES_LAYER,
+        GET_COUNTRIES_STATS, GET_COUNTRIES_CRITICAL_SITES, TOGGLE_COUNTRIES_LAYER,
         GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS, GET_COUNTRIES_SIMILAR_SPECIES,
         SET_COUNTRY_PARAMS, SET_COUNTRY_SEARCH, SET_COUNTRY_SORT, SET_COUNTRY_COLUMN_FILTER } from 'constants';
 import { push } from 'react-router-redux';
@@ -70,21 +70,21 @@ export function getCountrySites(iso) {
   };
 }
 
-export function getCountrySitesOld(iso) {
-  const url = `${config.apiHost}/countries/${iso}/sitesOld`;
+export function getCountryCriticalSites(iso) {
+  const url = `${config.apiHost}/countries/${iso}/criticalSites`;
   return dispatch => {
     try {
       fetch(url)
         .then(response => response.json())
         .then(data => {
           dispatch({
-            type: GET_COUNTRIES_SITES_OLD,
+            type: GET_COUNTRIES_CRITICAL_SITES,
             payload: { iso, data }
           });
         });
     } catch (err) {
       dispatch({
-        type: GET_COUNTRIES_SITES_OLD,
+        type: GET_COUNTRIES_CRITICAL_SITES,
         payload: { iso, data: [] }
       });
     }

@@ -1,20 +1,21 @@
 import { CLEAR_SITES_LIST, GET_SITES_STATS, GET_SITES_LIST, GET_SITES_SPECIES,
-         GET_SITES_POPULATIONS, SET_SITES_PARAMS, SET_SITES_SORT, SET_SITES_COLUMN_FILTER,
+         SET_SITES_PARAMS, SET_SITES_SORT, SET_SITES_COLUMN_FILTER,
          SET_SITES_SEARCH, SET_VIEW_MODE, GET_SITES_LOCATIONS } from 'constants';
 import { RESULTS_PER_PAGE } from 'constants/config';
 import { push } from 'react-router-redux';
 
-export function setSiteParams(site, category, filter) {
+export function setSiteParams(site, category, filter, type) {
   return {
     type: SET_SITES_PARAMS,
-    payload: { site, category, filter }
+    payload: { site, category, filter, type }
   };
 }
 
-export function goSiteDetail(id) {
+export function goSiteDetail(id, type) {
   return (dispatch, state) => {
     const lang = state().i18nState.lang;
-    dispatch(push(`/${lang}/sites/${id}`));
+    const filterType = type !== undefined ? type : 'iba';
+    dispatch(push(`/${lang}/sites/${filterType}/${id}`));
   };
 }
 
@@ -25,8 +26,8 @@ export function clearSites() {
   };
 }
 
-export function getSitesStats(id) {
-  const url = `${config.apiHost}/sites/${id}/details`;
+export function getSitesStats(id, type) {
+  const url = `${config.apiHost}/sites/${type}/${id}/details`;
   return dispatch => {
     fetch(url)
       .then(response => response.json())
@@ -71,8 +72,8 @@ export function getSitesLocations(type) {
   };
 }
 
-export function getSitesSpecies(id) {
-  const url = `${config.apiHost}/sites/${id}`;
+export function getSitesSpecies(id, type) {
+  const url = `${config.apiHost}/sites/${type}/${id}`;
   return dispatch => {
     try {
       fetch(url)
@@ -86,27 +87,6 @@ export function getSitesSpecies(id) {
     } catch (err) {
       dispatch({
         type: GET_SITES_SPECIES,
-        payload: { id, data: [] }
-      });
-    }
-  };
-}
-
-export function getSitesPopulations(id) {
-  const url = `${config.apiHost}/sites/${id}/populations`;
-  return dispatch => {
-    try {
-      fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          dispatch({
-            type: GET_SITES_POPULATIONS,
-            payload: { id, data }
-          });
-        });
-    } catch (err) {
-      dispatch({
-        type: GET_SITES_POPULATIONS,
         payload: { id, data: [] }
       });
     }

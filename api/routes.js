@@ -11,7 +11,7 @@ const router = Express.Router(); // eslint-disable-line new-cap
 router.route('/countries').get(CountriesCtrl.getCountries);
 router.route('/countries/:iso').get(CountriesCtrl.getCountryDetails);
 router.route('/countries/:iso/sites').get(CountriesCtrl.getCountrySites);
-router.route('/countries/:iso/sitesOld').get(CountriesCtrl.getCountrySitesOld);
+router.route('/countries/:iso/criticalSites').get(CountriesCtrl.getCountryCriticalSites);
 router.route('/countries/:iso/species').get(CountriesCtrl.getCountrySpecies);
 router.route('/countries/:iso/populations').get(CountriesCtrl.getCountryPopulations);
 router.route('/countries/:iso/look-alike-species').get(CountriesCtrl.getCountryPopsWithLookAlikeCounts);
@@ -20,8 +20,8 @@ router.route('/countries/:iso/look-alike-species/:populationId').get(CountriesCt
 // Sites
 router.route('/sites').get(SitesCtrl.getSites);
 router.route('/sites/locations/:type').get(SitesCtrl.getSitesLocations);
-router.route('/sites/:id').get(SitesCtrl.getSitesSpecies);
-router.route('/sites/:id/details').get(SitesCtrl.getSitesDetails);
+router.route('/sites/:type/:id').get(SitesCtrl.getSitesSpecies);
+router.route('/sites/:type/:id/details').get(SitesCtrl.getSitesDetails);
 
 // Species
 router.route('/species').get(SpeciesCtrl.getSpeciesList);

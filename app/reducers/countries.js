@@ -1,5 +1,5 @@
 import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_SITES,
-         GET_COUNTRIES_STATS, GET_COUNTRIES_SITES_OLD, TOGGLE_COUNTRIES_LAYER,
+         GET_COUNTRIES_STATS, GET_COUNTRIES_CRITICAL_SITES, TOGGLE_COUNTRIES_LAYER,
          GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS, GET_COUNTRIES_SIMILAR_SPECIES,
          SET_COUNTRY_PARAMS, SET_COUNTRY_SEARCH, SET_COUNTRY_SORT, SET_COUNTRY_COLUMN_FILTER } from 'constants';
 
@@ -12,7 +12,7 @@ const initialState = {
   filter: '',
   stats: {},
   sites: {},
-  sitesOld: {},
+  criticalSites: {},
   species: {},
   populations: {},
   lookAlikeSpecies: {},
@@ -54,10 +54,10 @@ export default function (state = initialState, action) {
       sites[action.payload.iso] = action.payload.data;
       return Object.assign({}, state, { sites });
     }
-    case GET_COUNTRIES_SITES_OLD: {
-      const sitesOld = Object.assign({}, state.sitesOld, {});
-      sitesOld[action.payload.iso] = action.payload.data;
-      return Object.assign({}, state, { sitesOld });
+    case GET_COUNTRIES_CRITICAL_SITES: {
+      const criticalSites = Object.assign({}, state.criticalSites, {});
+      criticalSites[action.payload.iso] = action.payload.data;
+      return Object.assign({}, state, { criticalSites });
     }
     case GET_COUNTRIES_SPECIES: {
       const species = Object.assign({}, state.species, {});

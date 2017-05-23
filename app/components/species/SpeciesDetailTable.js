@@ -76,14 +76,16 @@ class SpeciesDetailTable extends React.Component {
     switch (category) {
       case 'populations':
         return 'species';
-      case 'sitesOld':
-        return 'sites';
+      case 'criticalSites':
+        return 'sites/csn';
       case 'lookAlikeSpecies':
         if (this.state.selectedItem) return 'species';
         return {
           type: 'action',
           action: this.getLookAlikeSpecies
         };
+      case 'sites':
+        return 'sites/iba';
       default:
         return category;
     }

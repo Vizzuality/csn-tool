@@ -7,8 +7,8 @@ import Select from 'react-select';
 import { withRouter } from 'react-router';
 
 const FILTER_OPTIONS = [
-  { value: 'iba', label: 'IBA' },
-  { value: 'csn', label: 'CSN' }
+  { value: 'iba', label: 'Important Bird Areas' },
+  { value: 'csn', label: 'Critical Sites' }
 ];
 
 class SitesPage extends React.Component {
