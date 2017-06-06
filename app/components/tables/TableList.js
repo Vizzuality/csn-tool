@@ -42,6 +42,20 @@ function TableList(props) {
             } else {
               alignClass = '-left';
             }
+
+            if (typeof item[column] === 'boolean') {
+              const value = item[column] ? (
+                <svg className="icon -small -grey">
+                  <use xlinkHref="#icon-tick"></use>
+                </svg>
+              ) : null;
+              return (
+                <div key={index2} style={{ width: `${colWidth}%` }}>
+                  <div className={`text ${column} ${alignClass}`}>{value}</div>
+                </div>
+              );
+            }
+
             if (['scientific_name', 'site_name'].indexOf(column) >= 0 && item.hyperlink) {
               return (<div key={index2} style={{ width: `${colWidth}%` }}><div className={`text ${column} ${alignClass}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
                 <a className="external-link" target="_blank" href={item.hyperlink}>
