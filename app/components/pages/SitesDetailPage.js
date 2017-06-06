@@ -26,7 +26,7 @@ class SitesPage extends React.Component {
         <div className="l-navigation">
           <div className="row">
             <div className="column">
-              {this.props.stats.site &&
+              {this.props.stats && this.props.stats.site && this.props.stats.site[0] &&
                 <div className="navigation-wrapper">
                   <div className="c-navigation">
                     <div className="content">
@@ -70,6 +70,19 @@ class SitesPage extends React.Component {
                               {this.props.stats.site[0].qualifying_species}
                             </div>
                           </div>
+                          <div id="birdlife-factsheet-link" className="item">
+                            <div className="label">
+                              Birdlife Factsheet
+                            </div>
+                            <div className="value">
+                              <a className="external-link" target="_blank" href={this.props.stats.site[0].hyperlink}>
+                                <svg className="icon -small -white">
+                                  <use xlinkHref="#icon-open_in_new"></use>
+                                </svg>
+                              </a>
+                            </div>
+                          </div>
+
                         </div>
                       </div>
                     </div>

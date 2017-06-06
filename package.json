@@ -7,6 +7,11 @@
   "description": "Critical Sites Network Tool 2.0",
   "main": "server.js",
   "scripts": {
+<<<<<<< HEAD
+=======
+    "test": "NODE_PATH=./app jest",
+    "test --watch": "NODE_PATH=./app jest --watch",
+>>>>>>> 0f52ba8... Birdlife factsheet link on species and site detail pages"
     "dev": "./node_modules/nodemon/bin/nodemon.js --ignore 'app/' --exec npm run start",
     "build": "webpack --config ./config/webpack.config.js --progress --profile --colors",
     "postinstall": "npm run build",
