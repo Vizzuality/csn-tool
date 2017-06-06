@@ -43,7 +43,7 @@ class SpeciesDetailTable extends React.Component {
   getSelectedHeader() {
     return (
       <div className="table-navigation">
-        <button onClick={this.clearSelection}>
+        <button className="btn -back" onClick={this.clearSelection}>
           <span className="link">{this.context.t('backToSpecies')}</span>
         </button>
         <div className="nav">
