@@ -3,6 +3,19 @@ import React from 'react';
 // Filters only for columns a, b and c
 const columnsWithFilter = ['a', 'b', 'c', 'original_a', 'original_b', 'original_c'];
 
+const DETAIL_LINK_WIDTH_PERCENT = 2.5;
+const OVERHEADER = 'AEWA Table 1 Column A';
+const OVERHEADER_LIST = [
+  {
+    title: OVERHEADER,
+    columns: ['a', 'b', 'c']
+  },
+  {
+    title: OVERHEADER,
+    columns: ['original_a', 'original_b', 'original_c']
+  }
+];
+
 function getFilters(columns, data) {
   const filters = {};
   if (columns && columns.length) {
@@ -58,6 +71,20 @@ class TableListHeader extends React.Component {
     }
   }
 
+  getAlignClass(column) {
+    const colCenter = ['a', 'b', 'c', 'original_a', 'original_b', 'original_c', 'iba', 'csn', 'iba_species', 'csn_species'];
+
+    let alignClass = '';
+    if (colCenter.indexOf(column) > -1) {
+      alignClass = '-center';
+    } else if (this.props.data[0] && typeof this.props.data[0][column] === 'number') {
+      alignClass = '-right';
+    } else {
+      alignClass = '-left';
+    }
+    return alignClass;
+  }
+
   filterBy(filter) {
     if (this.props.filterBy) {
       if (filter.value === 'reset' && filter.field === 'all') {
@@ -77,62 +104,149 @@ class TableListHeader extends React.Component {
     }
   }
 
-  render() {
-    if (!this.props.columns || !this.props.data) return null;
-
-    const colWidth = this.props.detailLink ? (97.5 / this.props.columns.length) : (100 / this.props.columns.length);
-    const colCenter = ['a', 'b', 'c', 'original_a', 'original_b', 'original_c', 'iba', 'csn', 'iba_species', 'csn_species'];
-
+  renderHeader(children) {
     return (
       <div id="table-rows-header" className="c-table-list">
         <ul>
-          <li className="header">
-            {this.props.columns.map((column, index) => {
-              let alignClass = '';
-              if (colCenter.indexOf(column) > -1) {
-                alignClass = '-center';
-              } else if (this.props.data[0] && typeof this.props.data[0][column] === 'number') {
-                alignClass = '-right';
-              } else {
-                alignClass = '-left';
-              }
-              return (
-                <div key={index} className={`text -title ${alignClass}`} style={{ width: `${colWidth}%` }} title={getTitle(column)}>
-                  {this.context.t(column)}
-                  {columnsWithFilter.indexOf(column) >= 0 &&
-                    <div className="table-filter">
-                      <select onChange={(event) => this.filterBy({ field: column, value: event.target.value })}>
-                        <option value="reset">Reset filter</option>
-                        {this.filters && this.filters[column] && this.filters[column].map((item, i) => (
-                          <option key={i} value={item}>{item}</option>
-                        ))}
-                      </select>
-                    </div>
-                  }
-                  {this.props.includeSort &&
-                    <div className="sort">
-                      <button
-                        className={`arrow -asc ${this.props.sort.field === column && this.props.sort.order === 'asc' ? '-active' : ''}`}
-                        onClick={() => this.sortBy({ field: column, order: 'asc' })}
-                      />
-                      <button
-                        className={`arrow -desc ${this.props.sort.field === column && this.props.sort.order === 'desc' ? '-active' : ''}`}
-                        onClick={() => this.sortBy({ field: column, order: 'desc' })}
-                      />
-                    </div>
-                }
-                </div>
-              );
-            })}
-            {this.props.detailLink &&
-              <div className="text -title link" style={{ width: '2.5%' }}>
-                ...
-              </div>
-            }
-          </li>
+          {children}
         </ul>
       </div>
     );
+  }
+
+  renderHeaderColumn({ children, index, colWidth, extraClass, column, style }) {
+    return (
+      <div
+        key={index}
+        className={`text -title ${extraClass}`}
+        style={{ width: `${colWidth}%`, ...style }}
+        title={column && getTitle(column)}
+      >
+        {children}
+      </div>
+    );
+  }
+
+  renderFilter(column) {
+    return (
+      <div key={`${column}Filter`} className="table-filter">
+        <select onChange={(event) => this.filterBy({ field: column, value: event.target.value })}>
+          <option value="reset">Reset filter</option>
+          {this.filters && this.filters[column] && this.filters[column].map((item, i) => (
+            <option key={i} value={item}>{item}</option>
+          ))}
+        </select>
+      </div>
+    );
+  }
+
+  renderSort(column) {
+    return (
+      <div key={`${column}Sort`} className="sort">
+        <button
+          className={`arrow -asc ${this.props.sort.field === column && this.props.sort.order === 'asc' ? '-active' : ''}`}
+          onClick={() => this.sortBy({ field: column, order: 'asc' })}
+        />
+        <button
+          className={`arrow -desc ${this.props.sort.field === column && this.props.sort.order === 'desc' ? '-active' : ''}`}
+          onClick={() => this.sortBy({ field: column, order: 'desc' })}
+        />
+      </div>
+    );
+  }
+
+  renderHeaderColumnInner(column) {
+    const blockChildren = [
+      this.context.t(column)
+    ];
+
+    if (columnsWithFilter.indexOf(column) >= 0) {
+      blockChildren.push(this.renderFilter(column));
+    }
+
+    if (this.props.includeSort) {
+      blockChildren.push(this.renderSort(column));
+    }
+
+    return blockChildren;
+  }
+
+  render() {
+    if (!this.props.columns || !this.props.data) return null;
+
+    const colWidth = this.props.detailLink ?
+      ((100 - DETAIL_LINK_WIDTH_PERCENT) / this.props.columns.length) : (100 / this.props.columns.length);
+
+    // Finding column sets that need overheaders
+    const columnChunks = this.props.columns.reduce((previous, col, colIndex) => {
+      // Prevents double-adding a previously added column
+      if (previous.length > 0 && previous.reduce((a, b) => (
+        (typeof b === 'object') ? a.concat(b.columns) : a.concat(b)
+      ), []).length >= colIndex + 1) {
+        return previous;
+      }
+
+      const foundList = OVERHEADER_LIST.filter((item) => (
+        this.props.columns.slice(colIndex, colIndex + item.columns.length).toString() === item.columns.toString()
+      ))[0];
+
+      previous.push(
+        (foundList && foundList.columns.length > 0) ? foundList : col
+      );
+
+      return previous;
+    }, []);
+
+    const header = (
+      <li className="header">
+        {columnChunks.map((item, index) => {
+          let columnInner = null;
+          let thisColWidth = colWidth;
+          const style = {};
+
+          if (typeof item === 'string') { // Normal column
+            columnInner = this.renderHeaderColumnInner(item);
+          } else { // Column sets that need overheader
+            thisColWidth = colWidth * item.columns.length;
+            style.display = 'block';
+            style.paddingRight = 0;
+
+            columnInner = [
+              <div key={`${index}Overheader`} className="overheader">{item.title}</div>,
+              <div key={`${index}OverheaderCols`}>{item.columns.map((col) =>
+                this.renderHeaderColumn({
+                  children: this.renderHeaderColumnInner(col),
+                  index: `${index}${col}`,
+                  colWidth: (item.columns.length > 0) ? 100 / item.columns.length : 0,
+                  extraClass: `${this.getAlignClass(col)} inner-column`,
+                  column: item
+                })
+              )}</div>
+            ];
+          }
+
+          return (
+            this.renderHeaderColumn({
+              children: columnInner,
+              index,
+              colWidth: thisColWidth,
+              extraClass: this.getAlignClass(item),
+              style,
+              column: item
+            })
+          );
+        })
+      }
+
+      {this.props.detailLink &&
+        <div className="text -title link" style={{ width: `${DETAIL_LINK_WIDTH_PERCENT}%` }}>
+          ...
+        </div>
+      }
+      </li>
+    );
+
+    return this.renderHeader(header);
   }
 }
 
