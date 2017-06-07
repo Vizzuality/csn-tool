@@ -2,6 +2,7 @@ import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_SITES,
          GET_COUNTRIES_STATS, GET_COUNTRIES_CRITICAL_SITES, TOGGLE_COUNTRIES_LAYER,
          GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS, GET_COUNTRIES_SIMILAR_SPECIES,
          SET_COUNTRY_PARAMS, SET_COUNTRY_SEARCH, SET_COUNTRY_SORT, SET_COUNTRY_COLUMN_FILTER } from 'constants';
+import { commonSort } from './common.js';
 
 const initialState = {
   selected: '',
@@ -89,14 +90,7 @@ export default function (state = initialState, action) {
       } else {
         list = [...state.list];
       }
-      const sortOrder = action.payload.order === 'desc' ? -1 : 1;
-      list.sort((a, b) => {
-        const itemA = a[action.payload.field] ? a[action.payload.field].toString().trim().toUpperCase() : '';
-        const itemB = b[action.payload.field] ? b[action.payload.field].toString().trim().toUpperCase() : '';
-        if (itemA < itemB) return -1 * sortOrder;
-        if (itemA > itemB) return 1 * sortOrder;
-        return 0;
-      });
+      list.sort(commonSort(action.payload.field, action.payload.order));
 
       if (isResource) {
         const data = Object.assign({}, state[state.selectedCategory], { [state.selected]: list });
