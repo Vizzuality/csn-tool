@@ -60,6 +60,18 @@ class SpeciesDetailPage extends React.Component {
                           {this.props.stats.species[0].family}
                         </div>
                       </div>
+                      <div id="birdlife-factsheet-link" className="item">
+                        <div className="label">
+                          Birdlife Factsheet
+                        </div>
+                        <div className="value">
+                          <a className="external-link" target="_blank" href={this.props.stats.species[0].hyperlink}>
+                            <svg className="icon -small -white">
+                              <use xlinkHref="#icon-open_in_new"></use>
+                            </svg>
+                          </a>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
