@@ -75,7 +75,7 @@ class CountriesPage extends React.Component {
                     <h2>{this.context.t('countries')} <span>({this.props.countriesLength || ''})</span></h2>
                   </div>
                   <div className="filter">
-                    <h4 className="text -input-label -light">Filter by</h4>
+                    <h4 className="text -input-label -light">{this.context.t('groupBy')}</h4>
                     <Select
                       name="filter-countries"
                       className="c-select -plain"
@@ -88,7 +88,12 @@ class CountriesPage extends React.Component {
                     />
                   </div>
                   <div className="filter">
-                    <CountriesSearch placeholder="countriesFilter" />
+                    <CountriesSearch
+                      placeholder="countriesNameSearch"
+                      label="searchBy"
+                      labelType="light"
+                      searchType="dark"
+                    />
                   </div>
                 </div>
               }
