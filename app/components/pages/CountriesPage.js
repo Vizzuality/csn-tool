@@ -6,6 +6,7 @@ import Select from 'react-select';
 import { replaceUrlParams } from 'helpers/router';
 import { translations } from 'locales/translations';
 import { StickyContainer } from 'react-sticky';
+import CountriesSearch from 'containers/countries/CountriesSearch';
 
 const FILTER_OPTIONS = [
   { value: 'all', label: 'ALL' },
@@ -86,13 +87,20 @@ class CountriesPage extends React.Component {
                       arrowRenderer={() => <svg className="icon"><use xlinkHref="#icon-dropdown_arrow_down"></use></svg>}
                     />
                   </div>
+                  <div className="filter">
+                    <CountriesSearch placeholder="countriesFilter" />
+                  </div>
                 </div>
               }
             </div>
           </div>
         </div>
         <div className={`l-map ${this.props.country ? '-short -header' : '-header'}`}>
-          <CountriesMap id="countries-map" filter={this.props.filter} countries={this.props.countries} />
+          <CountriesMap
+            id="countries-map"
+            filter={this.props.filter}
+            countries={this.props.countries}
+          />
         </div>
         <StickyContainer>
           <div className={`row l-content ${this.props.country ? '-short' : ''}`}>
@@ -120,6 +128,7 @@ CountriesPage.propTypes = {
   countriesLength: React.PropTypes.number,
   countries: React.PropTypes.array,
   filter: React.PropTypes.string,
+  searchFilter: React.PropTypes.string,
   router: React.PropTypes.object,
   params: React.PropTypes.object,
   lang: React.PropTypes.string

@@ -31,7 +31,7 @@ class CountriesMap extends BasicMap {
     this.topoLayer = new L.TopoJSON();
 
     if (this.props.geoms) {
-      this.drawGeo(this.props.geoms, this.props.countries);
+      this.drawGeo(this.props.geoms, this.props.countries, this.props.searchFilter);
     }
 
     if (this.props.data && this.props.data.length) {
@@ -42,7 +42,7 @@ class CountriesMap extends BasicMap {
   componentWillReceiveProps(newProps) {
     this.setActiveLayer();
     this.handleMapScroll(newProps.country);
-    this.drawGeo(newProps.geoms, newProps.countries);
+    this.drawGeo(newProps.geoms, newProps.countries, newProps.searchFilter);
 
     if (newProps.country && newProps.router.location.search === '') {
       this.fitBounds(this.activeLayer);
@@ -176,32 +176,49 @@ class CountriesMap extends BasicMap {
     return countryData;
   }
 
-  getLayerStyle(filter, countries, iso, isoParam) {
-    if (this.props.country === '') {
-      if (filter === 'aewa' || filter === 'ramsar') {
-        const countryData = this.getCountryData(countries, iso);
-        if (filter === 'aewa' && countryData.aewa_member) {
-          return this.styles.base;
-        } else if (filter === 'ramsar' && countryData.ramsar_member) {
-          return this.styles.base;
-        }
-        return this.styles.hide;
-      }
-      return this.styles.base;
+  getLayerStyle(filter, searchFilter, countries, iso, isoParam) {
+    const SHOW_STYLE = this.styles.base;
+    const HIDE_STYLE = this.styles.hide;
+    const AEWA = 'aewa';
+    const RAMSAR = 'ramsar';
+    const ALL = 'all';
+
+    // If selected country
+    if (isoParam.length > 0) {
+      return (iso === isoParam) ? SHOW_STYLE : HIDE_STYLE;
     }
-    if (iso === isoParam) {
-      return this.styles.base;
+
+    // Big map
+    const hasFilter = (filter === AEWA || filter === RAMSAR || filter === ALL);
+    const hasSearchFilter = searchFilter.length > 0;
+
+    let trueFilter = false;
+    let trueSearchFilter = false;
+
+    // Filter in play
+    if (hasFilter || hasSearchFilter) {
+      const countryData = this.getCountryData(countries, iso);
+
+      trueFilter = !hasFilter ||
+        (filter === ALL) ||
+        (filter === AEWA && countryData.aewa_member) ||
+        (filter === RAMSAR && countryData.ramsar_member);
+
+      trueSearchFilter = !hasSearchFilter || countryData.country.toLowerCase().indexOf(searchFilter.toLowerCase()) > -1;
+
+      return trueFilter && trueSearchFilter ? SHOW_STYLE : HIDE_STYLE;
     }
-    return this.styles.hide;
+
+    return SHOW_STYLE; // Unfiltered, tastes great.
   }
 
-  drawGeo(geo, countries) {
+  drawGeo(geo, countries, searchFilter = null) {
     const onEachFeature = (layer) => {
       const properties = layer.feature.properties;
       const filter = this.props.filter;
       const iso = properties.iso3;
       const isoParam = this.props.country;
-      const layerStyle = this.getLayerStyle(filter, countries, iso, isoParam);
+      const layerStyle = this.getLayerStyle(filter, searchFilter, countries, iso, isoParam);
       layer.setStyle(layerStyle);
 
       if (properties && properties.name) {
