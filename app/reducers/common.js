@@ -1,14 +1,15 @@
 const PROTECTION_LEVELS = ['Little/none', 'Some', 'Most', 'Whole'];
 
 const formatSortItem = (item = '') => {
-  const protectionIndex = PROTECTION_LEVELS.map((level) => level.toLowerCase()).indexOf(item.toLowerCase());
-  if (protectionIndex > -1) {
-    return protectionIndex;
-  }
-
   switch (typeof item) {
-    case 'string':
+    case 'string': {
+      const protectionIndex = PROTECTION_LEVELS.map((level) => level.toLowerCase()).indexOf(item.toLowerCase());
+      if (protectionIndex > -1) {
+        return protectionIndex;
+      }
+
       return item.toString().trim().toUpperCase();
+    }
     default:
       return item;
   }
