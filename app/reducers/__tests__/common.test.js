@@ -5,17 +5,21 @@ const DESC = 'desc';
 const ASC = 'asc';
 const NUMBER = 'number';
 const STRING = 'string';
+const PROTECTION = 'protection';
 
 function setup() {
   const sortArray = [
     { number: 1,
-      string: 'a'
+      string: 'a',
+      protection: 'Little/none'
     },
     { number: 10,
-      string: 'c'
+      string: 'c',
+      protection: 'Some'
     },
     { number: 9,
-      string: 'b'
+      string: 'b',
+      protection: 'Most'
     }
   ];
   return { sortArray };
@@ -39,6 +43,15 @@ describe('reducers', () => {
       expect(sortArray[0][STRING]).toEqual('c');
       expect(sortArray[1][STRING]).toEqual('b');
       expect(sortArray[2][STRING]).toEqual('a');
+    });
+
+    it('should sort protection levels', () => {
+      const { sortArray } = setup();
+      sortArray.sort(commonSort(PROTECTION, DESC));
+
+      expect(sortArray[2][PROTECTION]).toEqual('Little/none');
+      expect(sortArray[1][PROTECTION]).toEqual('Some');
+      expect(sortArray[0][PROTECTION]).toEqual('Most');
     });
   });
 });
