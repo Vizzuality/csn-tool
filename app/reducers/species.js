@@ -2,6 +2,7 @@ import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POP
   GET_SPECIES_LOOK_ALIKE_SPECIES,
   SET_SPECIES_DETAIL_PARAMS, SET_SPECIES_SORT, SET_SPECIES_COLUMN_FILTER,
   SET_SPECIES_DETAIL_SEARCH, TOGGLE_SPECIES_LAYER } from 'constants';
+import { commonSort } from './common.js';
 
 const initialState = {
   list: false,
@@ -71,14 +72,7 @@ export default function (state = initialState, action) {
       } else {
         list = [...state.list];
       }
-      const sortOrder = action.payload.order === 'desc' ? -1 : 1;
-      list.sort((a, b) => {
-        const itemA = a[action.payload.field] ? a[action.payload.field].toString().trim().toUpperCase() : '';
-        const itemB = b[action.payload.field] ? b[action.payload.field].toString().trim().toUpperCase() : '';
-        if (itemA < itemB) return -1 * sortOrder;
-        if (itemA > itemB) return 1 * sortOrder;
-        return 0;
-      });
+      list.sort(commonSort(action.payload.field, action.payload.order));
 
       if (isResource) {
         const data = Object.assign({}, state[state.selectedCategory], { [state.selected]: list });

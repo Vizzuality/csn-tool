@@ -52,28 +52,25 @@ class SitesPage extends React.Component {
       <div className="l-page">
         <div className={`l-navigation ${this.props.viewMode === 'list' ? '-dark' : ''} `}>
           <div className="row">
-            <div className="column">
-              <div className="navigation-wrapper">
-                <div className="c-navigation -filters">
-                  <div className="content">
-                    <div className="title">
-                      <h2>{this.context.t('sites')}</h2>
-                    </div>
-                  </div>
-                  <div className="filter">
-                    <Select
-                      name="filter-sites"
-                      className="c-select -plain"
-                      clearable={false}
-                      searchable={false}
-                      value={this.props.router.location.query.filter}
-                      options={FILTER_OPTIONS}
-                      onChange={this.onSelectChange}
-                      arrowRenderer={() => <svg className="icon"><use xlinkHref="#icon-dropdown_arrow_down"></use></svg>}
-                    />
-                  </div>
-                  <ViewToggler viewMode={this.props.viewMode} />
+            <div className="column c-navigation">
+              <div className="content -filters">
+                <div className="title">
+                  <h2>{this.context.t('sites')}</h2>
                 </div>
+                <div className="filter">
+                  <h4 className="text -input-label -light">Type of Site</h4>
+                  <Select
+                    name="filter-sites"
+                    className="c-select -long"
+                    clearable={false}
+                    searchable={false}
+                    value={this.props.router.location.query.filter}
+                    options={FILTER_OPTIONS}
+                    onChange={this.onSelectChange}
+                    arrowRenderer={() => <svg className="icon"><use xlinkHref="#icon-dropdown_arrow_down"></use></svg>}
+                  />
+                </div>
+                <ViewToggler viewMode={this.props.viewMode} />
               </div>
             </div>
           </div>

@@ -130,9 +130,8 @@
     }
   }
 
-  &.-plain {
-    width: 160px;
-
+  &.-plain,
+  &.-long {
     .Select-control {
       background-color: rgba(#2a2823, 0.7);
     }
@@ -144,6 +143,14 @@
       vertical-align: middle;
       margin-right: 6px;
     }
+  }
+
+  &.-plain {
+    width: 160px;
+  }
+
+  &.-long {
+    width: 200px;
   }
 
   .Select-clear-zone {
