@@ -62,7 +62,7 @@ function getSpeciesDetails(req, res) {
 function getSpeciesSites(req, res) {
   const query = `SELECT s.species_id,
       ss.iba_criteria, ss.maximum, ss.minimum, ss.season, ss.units,
-      si.site_name, si.lat, si.lon, si.iso2, si.protection_status AS protected,
+      si.site_name, si.lat, si.lon, si.country, si.iso2, si.protection_status AS protected,
       string_agg(p.populations, ', ') as population,
       si.hyperlink, si.site_id AS id, ss.geometric_mean
     FROM species_main s
@@ -71,7 +71,7 @@ function getSpeciesSites(req, res) {
     INNER JOIN sites si ON ss.site_id = si.site_id
     WHERE s.species_id = '${req.params.id}'
     GROUP BY ss.iba_criteria, ss.maximum, ss.minimum, ss.units,
-    ss.season, si.iso2, si.protection_status ,si.site_name, si.lat, si.lon,
+    ss.season, si.country, si.iso2, si.protection_status ,si.site_name, si.lat, si.lon,
     si.hyperlink, si.site_id, 1, ss.geometric_mean
     ORDER BY si.site_name`;
   rp(CARTO_SQL + query)

@@ -41,4 +41,3 @@ export function filterBySearch(data, searchFilter, columns) {
     return modItem;
   });
 }
-

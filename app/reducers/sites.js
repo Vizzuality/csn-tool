@@ -2,6 +2,7 @@ import { CLEAR_SITES_LIST, SET_SITES_PARAMS, GET_SITES_STATS, GET_SITES_LIST,
          GET_SITES_SPECIES, SET_SITES_SORT,
          SET_SITES_SEARCH, SET_VIEW_MODE, GET_SITES_LOCATIONS, SET_SITES_COLUMN_FILTER } from 'constants';
 import { RESULTS_PER_PAGE } from 'constants/config';
+import { commonSort } from './common.js';
 
 const initialState = {
   selected: '',
@@ -84,14 +85,7 @@ export default function (state = initialState, action) {
       } else {
         list = [...state.list.data];
       }
-      const sortOrder = action.payload.order === 'desc' ? -1 : 1;
-      list.sort((a, b) => {
-        const itemA = a[action.payload.field] ? a[action.payload.field].toString().trim().toUpperCase() : '';
-        const itemB = b[action.payload.field] ? b[action.payload.field].toString().trim().toUpperCase() : '';
-        if (itemA < itemB) return -1 * sortOrder;
-        if (itemA > itemB) return 1 * sortOrder;
-        return 0;
-      });
+      list.sort(commonSort(action.payload.field, action.payload.order));
 
       if (isResource) {
         const newData = {
