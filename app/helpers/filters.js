@@ -1,13 +1,15 @@
 export function filterByColumns(data, activeFilters) {
-  let filteredData = data;
   const filters = Object.keys(activeFilters);
-  filters.forEach((key) => {
-    filteredData = filteredData.filter((item) => (
+
+  const filteredData = data.filter((item) => (
+    filters.every((key) => ( // "Every" does AND connection, while "Some" does OR
       item[key] &&
-      item[key].toString().toUpperCase().split(' ').
-        indexOf(activeFilters[key].toUpperCase()) > -1
-    ));
-  });
+      (typeof item[key] === 'string') &&
+      JSON.parse(activeFilters[key]).some((filter) => (
+        item[key].split(' ').some((col) => col.toUpperCase() === filter.toUpperCase())
+      ))
+    ))
+  ));
 
   return filteredData;
 }

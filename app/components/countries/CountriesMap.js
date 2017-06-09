@@ -24,7 +24,6 @@ class CountriesMap extends BasicMap {
     // Map initialization
     this.initMap();
     this.initPopup();
-    this.handleMapScroll(this.props.country);
 
     // Adds suppport to topojson
     this.addTopoJSONLayer();
@@ -41,7 +40,6 @@ class CountriesMap extends BasicMap {
 
   componentWillReceiveProps(newProps) {
     this.setActiveLayer();
-    this.handleMapScroll(newProps.country);
     this.drawGeo(newProps.geoms, newProps.countries, newProps.searchFilter);
 
     if (newProps.country && newProps.router.location.search === '') {
@@ -105,14 +103,6 @@ class CountriesMap extends BasicMap {
       closeButton: false,
       offset: L.point(0, -6)
     }).setContent('');
-  }
-
-  handleMapScroll(country) {
-    if (country) {
-      this.map.scrollWheelZoom.disable();
-    } else {
-      this.map.scrollWheelZoom.enable();
-    }
   }
 
   addLayer() {
