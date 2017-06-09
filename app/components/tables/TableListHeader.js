@@ -1,6 +1,7 @@
 import React from 'react';
 
 // Filters only for columns a, b and c
+const PROTECTION_HIERARCHY_FILTER = 'abc';
 const columnsWithFilter = [
   { column: 'a',
     type: 'abc' },
