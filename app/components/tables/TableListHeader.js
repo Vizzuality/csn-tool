@@ -51,7 +51,7 @@ class HeaderFilter {
 
 function getFilters(columns, data) {
   const filters = {};
-  const INDENT = ' - ';
+  const INDENT = ' > ';
   if (columns && columns.length) {
     columns.forEach((column) => {
       const columnFilter = columnsWithFilter.filter((col) => col.column === column)[0];
