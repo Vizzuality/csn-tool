@@ -87,17 +87,18 @@ function getFilters(columns, data) {
 
             if (currentNumeral !== previousNumeral) { // Parent doesn't exist
               const parentFilterObject = new HeaderFilter(currentNumeral);
-              parentFilterObject.clearFilter();
               prev.push(parentFilterObject);
             }
 
-            // Adding current to parent
-            const parentFilter = prev.filter((item) => item.label === currentNumeral)[0];
-            parentFilter.addFilter(current);
+            if (currentNumeral !== current.label) {
+              // Adding current to parent
+              const parentFilter = prev.filter((item) => item.label === currentNumeral)[0];
+              parentFilter.addFilter(current);
 
-            // Changing formatting and adding to list
-            current.prefixLabel(INDENT);
-            prev.push(current);
+              // Changing formatting and adding to list
+              current.prefixLabel(INDENT);
+              prev.push(current);
+            }
 
             return prev;
           }, []);

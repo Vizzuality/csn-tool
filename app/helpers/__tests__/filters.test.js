@@ -27,7 +27,7 @@ describe('helpers', () => {
 
     it('should filter by multiple filters on a single column', () => {
       const { data, activeFilters } = setup();
-      activeFilters.a = JSON.stringify(['1a', '1c']);
+      activeFilters.a = JSON.stringify(['1', '1a', '1c']);
       expect(filterByColumns(data, activeFilters)).toEqual(data);
     });
   });

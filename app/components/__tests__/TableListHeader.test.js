@@ -17,6 +17,9 @@ const setup = () => {
       },
       {
         original_a: '1a'
+      },
+      {
+        original_a: '3'
       }
     ],
     columns: ['species', 'populations', 'original_a', 'original_b', 'original_c', 'csn'],
@@ -80,13 +83,19 @@ describe('components', () => {
         .at(1)
         .get(0)
         .value
-      ).toEqual(JSON.stringify(['1a', '1b']));
+      ).toEqual(JSON.stringify(['1', '1a', '1b']));
 
       expect(enzymeWrapper.find('.table-filter').first()
         .find('option')
         .at(4)
         .text()
       ).toEqual('2');
+    });
+
+    it('should not create a subcolumn if the original column is a parent', () => {
+      // i.e. 2 should not yield " - 2"
+      const { enzymeWrapper } = setup();
+      expect(enzymeWrapper.find('.table-filter').first().find('option').length).toBe(7);
     });
   });
 });

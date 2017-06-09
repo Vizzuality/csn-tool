@@ -4,6 +4,7 @@ export function filterByColumns(data, activeFilters) {
   const filteredData = data.filter((item) => (
     filters.some((key) => (
       item[key] &&
+      (typeof item[key] === 'string') &&
       JSON.parse(activeFilters[key]).some((filter) => (
         item[key].toUpperCase() === filter.toUpperCase()
       ))
