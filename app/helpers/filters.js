@@ -6,7 +6,7 @@ export function filterByColumns(data, activeFilters) {
       item[key] &&
       (typeof item[key] === 'string') &&
       JSON.parse(activeFilters[key]).some((filter) => (
-        item[key].toUpperCase() === filter.toUpperCase()
+        item[key].split(' ').some((col) => col.toUpperCase() === filter.toUpperCase())
       ))
     ))
   ));
