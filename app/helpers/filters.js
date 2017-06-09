@@ -1,13 +1,14 @@
 export function filterByColumns(data, activeFilters) {
-  let filteredData = data;
   const filters = Object.keys(activeFilters);
-  filters.forEach((key) => {
-    filteredData = filteredData.filter((item) => (
+
+  const filteredData = data.filter((item) => (
+    filters.some((key) => (
       item[key] &&
-      item[key].toString().toUpperCase().split(' ').
-        indexOf(activeFilters[key].toUpperCase()) > -1
-    ));
-  });
+      JSON.parse(activeFilters[key]).some((filter) => (
+        item[key].toUpperCase() === filter.toUpperCase()
+      ))
+    ))
+  ));
 
   return filteredData;
 }

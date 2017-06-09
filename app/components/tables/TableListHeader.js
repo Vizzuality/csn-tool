@@ -1,7 +1,20 @@
 import React from 'react';
 
 // Filters only for columns a, b and c
-const columnsWithFilter = ['a', 'b', 'c', 'original_a', 'original_b', 'original_c'];
+const columnsWithFilter = [
+  { column: 'a',
+    type: 'abc' },
+  { column: 'b',
+    type: 'abc' },
+  { column: 'c',
+    type: 'abc' },
+  { column: 'original_a',
+    type: 'abc' },
+  { column: 'original_b',
+    type: 'abc' },
+  { column: 'original_c',
+    type: 'abc' }
+];
 
 const DETAIL_LINK_WIDTH_PERCENT = 2.5;
 const OVERHEADER = 'AEWA Table 1 Column A';
@@ -16,28 +29,84 @@ const OVERHEADER_LIST = [
   }
 ];
 
+class HeaderFilter {
+  constructor(label, filter) {
+    this.label = this.formattedLabel = label;
+    const thisFilter = filter || label;
+    this.filter = [thisFilter];
+  }
+
+  clearFilter() {
+    this.filter = [];
+  }
+
+  addFilter(filterAddition) {
+    this.filter = this.filter.concat(filterAddition.filter);
+  }
+
+  prefixLabel(prefix) {
+    this.formattedLabel = prefix + this.formattedLabel;
+  }
+}
+
 function getFilters(columns, data) {
   const filters = {};
+  const INDENT = ' - ';
   if (columns && columns.length) {
     columns.forEach((column) => {
-      if (columnsWithFilter.indexOf(column) >= 0) {
-        if (!filters[column]) filters[column] = [];
+      const columnFilter = columnsWithFilter.filter((col) => col.column === column)[0];
+      if (columnFilter) {
+        const col = columnFilter.column;
+        if (!filters[col]) {
+          filters[col] = [];
+        }
+
+        let foundFilters = [];
         data.forEach((item) => {
-          if (item[column]) {
-            item[column].toString().split(' ').forEach((el) => {
+          if (item[col]) {
+            item[col].toString().split(' ').forEach((el) => {
               const newItem = el.trim() || null;
-              if (newItem && filters[column].indexOf(newItem) === -1) {
-                filters[column].push(newItem);
+              const foundFilter = foundFilters.filter((filter) => filter.label === newItem)[0];
+              const label = foundFilter && foundFilter.label || null;
+              if (newItem && label !== newItem) {
+                const filterObject = new HeaderFilter(newItem);
+                foundFilters.push(filterObject);
               }
             });
           }
         });
+
+        foundFilters.sort((a, b) => a.label > b.label);
+
+        // Creating hierarchy filter for 'abc'
+        if (columnFilter.type && columnFilter.type === 'abc') {
+          foundFilters = foundFilters.reduce((prev, current) => {
+            const previousItem = prev[prev.length - 1];
+            const previousNumeral = previousItem && previousItem.label[0] || '';
+            const currentNumeral = current.label[0];
+
+            if (currentNumeral !== previousNumeral) { // Parent doesn't exist
+              const parentFilterObject = new HeaderFilter(currentNumeral);
+              parentFilterObject.clearFilter();
+              prev.push(parentFilterObject);
+            }
+
+            // Adding current to parent
+            const parentFilter = prev.filter((item) => item.label === currentNumeral)[0];
+            parentFilter.addFilter(current);
+
+            // Changing formatting and adding to list
+            current.prefixLabel(INDENT);
+            prev.push(current);
+
+            return prev;
+          }, []);
+        }
+        filters[columnFilter.column] = foundFilters;
       }
     });
   }
-  Object.keys(filters).forEach(function (key) { // eslint-disable-line
-    filters[key].sort();
-  });
+
   return filters;
 }
 
@@ -132,9 +201,9 @@ class TableListHeader extends React.Component {
       <div key={`${column}Filter`} className="table-filter">
         <select onChange={(event) => this.filterBy({ field: column, value: event.target.value })}>
           <option value="reset">Reset filter</option>
-          {this.filters && this.filters[column] && this.filters[column].map((item, i) => (
-            <option key={i} value={item}>{item}</option>
-          ))}
+          {this.filters && this.filters[column] && this.filters[column].map((item, i) =>
+            <option key={i} value={JSON.stringify(item.filter)}>{item.formattedLabel}</option>
+          )}
         </select>
       </div>
     );
@@ -160,7 +229,7 @@ class TableListHeader extends React.Component {
       this.context.t(column)
     ];
 
-    if (columnsWithFilter.indexOf(column) >= 0) {
+    if (columnsWithFilter.some((col) => col.column === column)) {
       blockChildren.push(this.renderFilter(column));
     }
 
