@@ -4,17 +4,17 @@ import React from 'react';
 const PROTECTION_HIERARCHY_FILTER = 'abc';
 const columnsWithFilter = [
   { column: 'a',
-    type: 'abc' },
+    type: PROTECTION_HIERARCHY_FILTER },
   { column: 'b',
-    type: 'abc' },
+    type: PROTECTION_HIERARCHY_FILTER },
   { column: 'c',
-    type: 'abc' },
+    type: PROTECTION_HIERARCHY_FILTER },
   { column: 'original_a',
-    type: 'abc' },
+    type: PROTECTION_HIERARCHY_FILTER },
   { column: 'original_b',
-    type: 'abc' },
+    type: PROTECTION_HIERARCHY_FILTER },
   { column: 'original_c',
-    type: 'abc' }
+    type: PROTECTION_HIERARCHY_FILTER }
 ];
 
 const DETAIL_LINK_WIDTH_PERCENT = 2.5;
@@ -79,8 +79,8 @@ function getFilters(columns, data) {
 
         foundFilters.sort((a, b) => a.label > b.label);
 
-        // Creating hierarchy filter for 'abc'
-        if (columnFilter.type && columnFilter.type === 'abc') {
+        // Creating hierarchy filter for PROTECTION_HIERARCHY_FILTER
+        if (columnFilter.type && columnFilter.type === PROTECTION_HIERARCHY_FILTER) {
           foundFilters = foundFilters.reduce((prev, current) => {
             const previousItem = prev[prev.length - 1];
             const previousNumeral = previousItem && previousItem.label[0] || '';
