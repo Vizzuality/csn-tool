@@ -7,6 +7,7 @@ class ThresholdMap extends BasicMap {
   constructor(props) {
     super(props);
     this.marker = null;
+    this.popupVisible = false;
     this.drawMarker = this.drawMarker.bind(this);
     this.updateCoords = this.updateCoords.bind(this);
     if (props.coordinates) {
@@ -31,13 +32,20 @@ class ThresholdMap extends BasicMap {
 
   componentDidMount() {
     this.initMap();
+    this.initPopup();
     this.map.on('click', this.updateCoords);
+    this.map.on('mouseover', this.showPopup.bind(this));
+    this.map.on('mousemove', this.setPopupPosition.bind(this));
+    this.map.on('mouseout', this.hidePopup.bind(this));
     // this.boundsLayer = new L.geoJson();
   }
 
   componentWillUnmount() {
     this.remove();
     this.map.off('click', this.updateCoords);
+    this.map.off('mouseover', this.showPopup.bind(this));
+    this.map.off('mousemove', this.setPopupPosition.bind(this));
+    this.map.off('mouseout', this.hidePopup.bind(this));
   }
 
   updateCoords(e) {
@@ -47,6 +55,7 @@ class ThresholdMap extends BasicMap {
     const route = this.props.router.getCurrentLocation();
     const url = replaceUrlParams(route.pathname + route.search, params);
     this.props.router.replace(url);
+    this.popupVisible = false;
   }
 
 
@@ -82,6 +91,35 @@ class ThresholdMap extends BasicMap {
     }
   }
 
+  initPopup() {
+    this.popup = L.popup({
+      closeButton: false,
+      offset: L.point(0, -3)
+    }).setContent('');
+  }
+
+  showPopup(e) {
+    const html = '<p class="text -light">Click on the map to reveal relevant species</p>';
+
+    this.popup.setLatLng(e.latlng)
+      .setContent(html)
+      .openOn(this.map);
+
+    this.popupVisible = true;
+  }
+
+  setPopupPosition(e) {
+    if (this.popupVisible) {
+      this.popup.setLatLng(e.latlng);
+    } else {
+      this.showPopup(e);
+    }
+  }
+
+  hidePopup() {
+    this.map.closePopup();
+    this.popupVisible = false;
+  }
 
   render() {
     return (
