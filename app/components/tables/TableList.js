@@ -83,7 +83,7 @@ function TableList(props) {
               </div>);
             } else if (column === 'country') {
               return (<div className="country-column" key={index2} style={{ width: `${colWidth}%` }}>
-                <span className={`flag ${(item.iso2).toLowerCase()}`}></span>
+                <span className={`flag ${item.iso2 && (item.iso2).toLowerCase()}`}></span>
                 <div className={`text ${column} ${alignClass}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
               </div>);
             }

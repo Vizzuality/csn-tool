@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter, Link } from 'react-router';
 
 function NavLink(props, context) {
-  let search = props.router.location.search;
+  let search = props.router && props.router.location && props.router.location.search;
   if (props.parent) {
     search = '';
   }

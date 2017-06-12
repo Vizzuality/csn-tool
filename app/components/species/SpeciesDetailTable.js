@@ -106,6 +106,23 @@ class SpeciesDetailTable extends React.Component {
     });
   }
 
+  renderTableHeader(isLookAlikeSpecies, data, columns) {
+    return (
+      <div>
+        <SpeciesDetailFilters isSearch={this.props.isSearch} id={this.props.id} category={this.props.category} />
+        {isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0
+          ? this.getSelectedHeader()
+          : null
+        }
+        <TableListHeader
+          data={data}
+          columns={columns}
+          detailLink
+        />
+      </div>
+    );
+  }
+
   render() {
     const detailLink = this.getDetailLink(this.props.category);
     const isLookAlikeSpecies = this.props.category === 'lookAlikeSpecies';
@@ -113,19 +130,15 @@ class SpeciesDetailTable extends React.Component {
     const columns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? expandedColumns : this.props.columns;
     return (
       <div className="c-table" >
-        <ScrollButton />
-        <Sticky topOffset={-120} stickyClassName={'-sticky'}>
-          <SpeciesDetailFilters id={this.props.id} category={this.props.category} />
-          {isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0
-            ? this.getSelectedHeader()
-            : null
-          }
-          <TableListHeader
-            data={data}
-            columns={columns}
-            detailLink
-          />
-        </Sticky>
+        {!this.props.isSearch && <ScrollButton />}
+        {this.props.isSearch ?
+          <div>
+            {this.renderTableHeader(isLookAlikeSpecies, data, columns)}
+          </div> :
+          <Sticky topOffset={-120} stickyClassName={'-sticky'}>
+            {this.renderTableHeader(isLookAlikeSpecies, data, columns)}
+          </Sticky>
+        }
         <TableList
           data={data}
           columns={columns}
@@ -142,6 +155,7 @@ SpeciesDetailTable.contextTypes = {
 
 SpeciesDetailTable.propTypes = {
   id: React.PropTypes.string.isRequired,
+  isSearch: React.PropTypes.bool.isRequired,
   category: React.PropTypes.string.isRequired,
   data: React.PropTypes.any.isRequired,
   columns: React.PropTypes.array.isRequired

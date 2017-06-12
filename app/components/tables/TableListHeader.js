@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 // Filters only for columns a, b and c
 const PROTECTION_HIERARCHY_FILTER = 'abc';
@@ -122,23 +123,28 @@ function getTitle(column) {
 class TableListHeader extends React.Component {
   constructor(props) {
     super(props);
-    this.pending = true;
     this.filters = null;
     this.activeFilters = {};
-    if (props.data) {
+    this.hasProducedFilters = false;
+
+    if (props.data && props.data.length > 0) {
       this.filters = getFilters(props.columns, props.data);
-      this.pending = false;
+      this.hasProducedFilters = true;
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.selectedCategory !== nextProps.selectedCategory) {
-      this.pending = true;
+    const isNewCategory = this.props.selectedCategory !== nextProps.selectedCategory;
+    const isDataDifferent = nextProps.data.length && this.props.data.length !== nextProps.data.length;
+    const areColsDifferent = nextProps.columns.length && this.props.columns.length !== nextProps.columns.length;
+
+    if (isNewCategory) {
       this.filterBy({ field: 'all', value: 'reset' });
     }
-    if (this.pending && nextProps.data.length && this.props.data.length !== nextProps.data.length) {
-      this.pending = false;
+
+    if (!this.hasProducedFilters || (areColsDifferent && isDataDifferent)) {
       this.filters = getFilters(nextProps.columns, nextProps.data);
+      this.hasProducedFilters = true;
     }
   }
 
@@ -170,7 +176,8 @@ class TableListHeader extends React.Component {
   }
 
   sortBy(sort) {
-    if (this.props.sort.field !== sort.field || this.props.sort.order !== sort.order) {
+    const hasPreviousSort = this.props.sort && this.props.sort.field && this.props.sort.order;
+    if (!hasPreviousSort || (this.props.sort.field !== sort.field || this.props.sort.order !== sort.order)) {
       this.props.sortBy(sort);
     }
   }
@@ -215,11 +222,11 @@ class TableListHeader extends React.Component {
     return (
       <div key={`${column}Sort`} className="sort">
         <button
-          className={`arrow -asc ${this.props.sort.field === column && this.props.sort.order === 'asc' ? '-active' : ''}`}
+          className={`arrow -asc ${this.props.sort && this.props.sort.field === column && this.props.sort.order === 'asc' ? '-active' : ''}`}
           onClick={() => this.sortBy({ field: column, order: 'asc' })}
         />
         <button
-          className={`arrow -desc ${this.props.sort.field === column && this.props.sort.order === 'desc' ? '-active' : ''}`}
+          className={`arrow -desc ${this.props.sort && this.props.sort.field === column && this.props.sort.order === 'desc' ? '-active' : ''}`}
           onClick={() => this.sortBy({ field: column, order: 'desc' })}
         />
       </div>
@@ -323,7 +330,7 @@ class TableListHeader extends React.Component {
 
 TableListHeader.contextTypes = {
   // Define function to get the translations
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 TableListHeader.defaultProps = {
@@ -331,14 +338,14 @@ TableListHeader.defaultProps = {
 };
 
 TableListHeader.propTypes = {
-  detailLink: React.PropTypes.bool,
-  selectedCategory: React.PropTypes.string,
-  columns: React.PropTypes.array.isRequired,
-  data: React.PropTypes.any.isRequired,
-  includeSort: React.PropTypes.bool,
-  sort: React.PropTypes.object.isRequired,
-  sortBy: React.PropTypes.func.isRequired,
-  filterBy: React.PropTypes.func
+  detailLink: PropTypes.bool,
+  selectedCategory: PropTypes.string,
+  columns: PropTypes.array.isRequired,
+  data: PropTypes.any.isRequired,
+  includeSort: PropTypes.bool,
+  sort: PropTypes.object,
+  sortBy: PropTypes.func.isRequired,
+  filterBy: PropTypes.func
 };
 
 export default TableListHeader;

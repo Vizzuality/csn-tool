@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import GoBackLink from 'containers/common/GoBackLink';
 import SpeciesDetailMap from 'containers/species/SpeciesDetailMap';
 import SpeciesDetailTable from 'containers/species/SpeciesDetailTable';
@@ -96,19 +97,19 @@ class SpeciesDetailPage extends React.Component {
 }
 
 SpeciesDetailPage.contextTypes = {
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 
 SpeciesDetailPage.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  category: React.PropTypes.string.isRequired,
-  getSpeciesStats: React.PropTypes.func.isRequired,
-  getSpeciesData: React.PropTypes.func.isRequired,
-  stats: React.PropTypes.any.isRequired,
-  data: React.PropTypes.any,
-  params: React.PropTypes.object,
-  lang: React.PropTypes.string
+  id: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
+  getSpeciesStats: PropTypes.func.isRequired,
+  getSpeciesData: PropTypes.func.isRequired,
+  stats: PropTypes.any.isRequired,
+  data: PropTypes.any,
+  params: PropTypes.object,
+  lang: PropTypes.string
 };
 
 export default SpeciesDetailPage;

@@ -23,7 +23,8 @@ const setup = () => {
       }
     ],
     columns: ['species', 'populations', 'original_a', 'original_b', 'original_c', 'csn'],
-    sort: ''
+    sort: {},
+    sortBy: jest.fn()
   };
   const enzymeWrapper = mount(<TableListHeader {...props} />,
     { context: { t: jest.fn() } }
