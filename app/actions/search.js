@@ -1,4 +1,11 @@
-import { GET_SEARCH_OPTIONS, GET_SEARCH_RESULTS } from 'constants';
+import { GET_SEARCH_OPTIONS, GET_SEARCH_RESULTS, SET_SEARCH_FILTER } from 'constants';
+
+export function setSearchFilter(search, filter) {
+  return {
+    type: SET_SEARCH_FILTER,
+    payload: { search, filter }
+  };
+}
 
 export function getSearchOptions() {
   const url = `${config.apiHost}/search/options`;

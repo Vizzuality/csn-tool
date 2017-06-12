@@ -4,9 +4,8 @@ export function filterByColumns(data, activeFilters) {
   const filteredData = data.filter((item) => (
     filters.every((key) => ( // "Every" does AND connection, while "Some" does OR
       item[key] &&
-      (typeof item[key] === 'string') &&
       JSON.parse(activeFilters[key]).some((filter) => (
-        item[key].split(' ').some((col) => col.toUpperCase() === filter.toUpperCase())
+        item[key].toString().split(' ').some((col) => col.toUpperCase() === filter.toUpperCase())
       ))
     ))
   ));

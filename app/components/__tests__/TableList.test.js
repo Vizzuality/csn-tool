@@ -1,4 +1,4 @@
-/* global expect */
+/* global expect, jest */
 import { mount } from 'enzyme';
 import React from 'react';
 import TableList from 'components/tables/TableList';
@@ -14,7 +14,9 @@ const setup = () => {
     ],
     columns: ['testTrue', 'testFalse', 'testTextTrue']
   };
-  const enzymeWrapper = mount(<TableList {...props} />);
+  const enzymeWrapper = mount(<TableList {...props} />,
+    { context: { t: jest.fn() } }
+  );
 
   return {
     props,

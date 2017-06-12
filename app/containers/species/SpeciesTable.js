@@ -2,13 +2,13 @@ import { connect } from 'react-redux';
 import SpeciesTable from 'components/species/SpeciesTable';
 import { filterBySearch } from 'helpers/filters';
 
-function getSpeciesData(species, columns) {
-  const data = species.list || false;
+function getSpeciesData(rows, filter, columns) {
+  if (!rows) return [];
+  const data = rows.slice();
 
-  if (!data || !species.searchFilter) return data;
+  const searchFilter = (typeof filter === 'string') && filter.toLowerCase();
 
   let filteredData = data;
-  const searchFilter = species.searchFilter.toLowerCase();
   if (searchFilter) {
     filteredData = filterBySearch(data, searchFilter, columns);
   }
@@ -18,10 +18,15 @@ function getSpeciesData(species, columns) {
 
 const mapStateToProps = (state) => {
   const columns = ['scientific_name', 'english_name', 'population', 'genus', 'family'];
+  const data = state.search.results ?
+    getSpeciesData(state.search.results.rows, state.search.search, columns) :
+    getSpeciesData(state.species.list, state.species.searchFilter, columns);
+
   return {
     species: state.species.selected,
     category: state.species.selectedCategory,
-    data: getSpeciesData(state.species, columns),
+    isSearch: state.search.results && state.search.results.rows.length > 0 || false,
+    data,
     columns
   };
 };

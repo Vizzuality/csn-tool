@@ -4,24 +4,44 @@ import TableList from 'components/tables/TableList';
 import SpeciesFilters from 'components/species/SpeciesFilters';
 import { Sticky } from 'react-sticky';
 
-function SpeciesTable(props) {
-  return (
-    <div>
-      <Sticky topOffset={-50} stickyClassName={'-sticky -small'}>
-        <SpeciesFilters />
+
+class SpeciesTable extends React.Component {
+
+  renderCommonTableHeader() {
+    const { data, columns, isSearch } = this.props;
+
+    return (
+      <div>
+        <SpeciesFilters isSearch={isSearch} />
         <TableListHeader
-          data={props.data}
-          columns={props.columns}
+          data={data}
+          columns={columns}
           detailLink
         />
-      </Sticky>
-      <TableList
-        data={props.data}
-        columns={props.columns}
-        detailLink="species"
-      />
-    </div>
-  );
+      </div>
+    );
+  }
+
+  render() {
+    const { data, columns, isSearch } = this.props;
+    return (
+      <div id="speciesTable">
+        {!isSearch ?
+          <Sticky topOffset={-50} stickyClassName="-sticky -small">
+            {this.renderCommonTableHeader()}
+          </Sticky> :
+          <div>
+            {this.renderCommonTableHeader()}
+          </div>
+        }
+        <TableList
+          data={data}
+          columns={columns}
+          detailLink="species"
+        />
+      </div>
+    );
+  }
 }
 
 SpeciesTable.contextTypes = {
@@ -30,7 +50,8 @@ SpeciesTable.contextTypes = {
 
 SpeciesTable.propTypes = {
   data: React.PropTypes.any.isRequired,
-  columns: React.PropTypes.array.isRequired
+  columns: React.PropTypes.array.isRequired,
+  isSearch: React.PropTypes.bool.isRequired
 };
 
 export default SpeciesTable;

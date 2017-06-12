@@ -5,6 +5,8 @@ import SpeciesDetailPage from 'components/pages/SpeciesDetailPage';
 
 const setup = () => {
   const props = {
+    id: 'speciesDetail',
+    category: 'population',
     getSpeciesStats: jest.fn(),
     getSpeciesData: jest.fn(),
     stats: {
