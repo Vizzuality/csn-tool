@@ -1,8 +1,11 @@
 import React from 'react';
 import Select from 'react-select';
-import SearchResultsTable from 'containers/advanced-search/ResultsTable';
-// import ResultsTableVirtualized from 'components/advanced-search/ResultsTableVirtualized';
+
+import SitesTable from 'containers/sites/SitesTable';
+import SpeciesTable from 'containers/species/SpeciesTable';
+import PopulationsTable from 'containers/species/SpeciesDetailTable';
 import LoadingSpinner from 'components/common/LoadingSpinner';
+import { StickyContainer } from 'react-sticky';
 
 const rows = [
   {
@@ -43,6 +46,7 @@ class AdvancedSearchPage extends React.Component {
   constructor() {
     super();
     this.state = {
+      searchType: '',
       filters: {
         country: null,
         site: null,
@@ -80,6 +84,9 @@ class AdvancedSearchPage extends React.Component {
 
   onSearchClick(category) {
     const { filters } = this.state;
+    this.setState({
+      searchType: category
+    });
     if (this.hasFilters(filters)) {
       this.props.onSearch(category, filters);
     } else {
@@ -119,6 +126,23 @@ class AdvancedSearchPage extends React.Component {
     const { filters } = this.state;
     const hasSites = filters.site && filters.site.length > 0;
     const hasSpecies = filters.species && filters.species.length > 0;
+
+    let resultsTable = null;
+    switch (this.state.searchType) {
+      case 'sites':
+        resultsTable = <SitesTable />;
+        break;
+      case 'species':
+        resultsTable = <StickyContainer><SpeciesTable /></StickyContainer>;
+        break;
+      case 'populations':
+        resultsTable = <StickyContainer><PopulationsTable id={'PopulationsTable'} /></StickyContainer>;
+        break;
+      default:
+        resultsTable = [];
+        break;
+    }
+
     return (
       <div>
         {rows.map((row, index) => (
@@ -153,6 +177,7 @@ class AdvancedSearchPage extends React.Component {
           </div>
           <div className="column small-12 medium-2 medium-offset-6">
             <button
+              id="searchSitesButton"
               className={`btn -small -dark ${hasSites ? '-disabled' : ''}`}
               onClick={() => { if (!hasSites) this.onSearchClick('sites'); }}
             >
@@ -161,6 +186,7 @@ class AdvancedSearchPage extends React.Component {
           </div>
           <div className="column small-12 medium-2">
             <button
+              id="searchSpeciesButton"
               className={`btn -small -dark ${hasSpecies ? '-disabled' : ''}`}
               onClick={() => { if (!hasSpecies) this.onSearchClick('species'); }}
             >
@@ -169,6 +195,7 @@ class AdvancedSearchPage extends React.Component {
           </div>
           <div className="column small-12 medium-2 ">
             <button
+              id="searchPopulationsButton"
               className="btn -small -dark"
               onClick={() => this.onSearchClick('populations')}
             >
@@ -179,7 +206,7 @@ class AdvancedSearchPage extends React.Component {
         {this.props.hasResults &&
           <div className="row">
             <div className="column">
-              <SearchResultsTable />
+              {resultsTable}
             </div>
           </div>
         }

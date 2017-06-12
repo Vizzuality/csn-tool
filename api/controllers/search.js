@@ -108,7 +108,7 @@ async function getSitesResults(req, res) {
     const query = `with stc as (select site_id,
       SUM(case when iba_criteria = '' then 0 else 1 end) as iba
       from species_sites group by site_id)
-      SELECT s.site_name, s.country,
+      SELECT s.site_name, s.country, s.iso2,
       s.protection_status as protected, stc.iba AS iba_species,
       s.hyperlink,
       CASE s.iba_in_danger
@@ -131,7 +131,7 @@ async function getSitesResults(req, res) {
         : ''
       }
       ${params.country ? `WHERE country_id IN(${params.country.join()})` : ''}
-      GROUP BY s.site_name, s.country, s.protection_status, s.hyperlink,
+      GROUP BY s.site_name, s.country, s.iso2, s.protection_status, s.hyperlink,
       s.iba_in_danger, s.site_id, stc.iba
       ORDER by country ASC, site_name ASC`;
     const data = await rp(CARTO_SQL + query);
@@ -145,11 +145,13 @@ async function getSitesResults(req, res) {
 async function getSpeciesResults(req, res) {
   try {
     const params = parseParams(req.query);
-    const query = `SELECT s.scientific_name, s.english_name, s.family,
-      s.species_id AS id, s.iucn_category, s.hyperlink
+    const query = `SELECT s.scientific_name, s.genus, s.english_name, s.family,
+      s.species_id AS id, string_agg(DISTINCT p.populations, ', ') as population, s.iucn_category, s.hyperlink
       FROM species_main s
+      INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
       ${params.country && !params.site
-        ? `JOIN species_sites ss ON ss.species_id = s.species_id
+        ? `
+          JOIN species_sites ss ON ss.species_id = s.species_id
           JOIN species_country AS sc ON sc.country_id IN(${params.country.join()}) AND
           sc.country_status != 'Vagrant'
           JOIN sites ON ss.site_id = sites.site_id AND sites.country_id = sc.country_id
@@ -167,7 +169,7 @@ async function getSpeciesResults(req, res) {
           )`
         : ''
       }
-      GROUP BY s.scientific_name, s.family, s.english_name, s.species_id,
+      GROUP BY s.scientific_name, s.family, s.genus, s.english_name, s.species_id,
       s.iucn_category, s.hyperlink, s.taxonomic_sequence
       ORDER by taxonomic_sequence ASC`;
     const data = await rp(CARTO_SQL + query);

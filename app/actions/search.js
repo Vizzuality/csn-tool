@@ -1,4 +1,11 @@
-import { GET_SEARCH_OPTIONS, GET_SEARCH_RESULTS } from 'constants';
+import { GET_SEARCH_OPTIONS, GET_SEARCH_RESULTS, SET_SEARCH_FILTER, BEFORE_GET_SEARCH_RESULTS } from 'constants';
+
+export function setSearchFilter(search, filter) {
+  return {
+    type: SET_SEARCH_FILTER,
+    payload: { search, filter }
+  };
+}
 
 export function getSearchOptions() {
   const url = `${config.apiHost}/search/options`;
@@ -37,9 +44,13 @@ export function getSearchResults(category, filters) {
     }
   });
 
+
   const url = `${config.apiHost}/search/${category}${params}`;
   return dispatch => {
     try {
+      dispatch({
+        type: BEFORE_GET_SEARCH_RESULTS
+      });
       fetch(url)
         .then(response => response.json())
         .then(data => {

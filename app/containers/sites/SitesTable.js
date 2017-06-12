@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import SitesTable from 'components/sites/SitesTable';
 import { getSitesList } from 'actions/sites';
+import { filterBySearch } from 'helpers/filters';
 
 function getSitesColumns(filter) {
   switch (filter) {
@@ -12,36 +13,33 @@ function getSitesColumns(filter) {
   }
 }
 
-function getSitesData(sites, columns) {
-  const list = sites.list || false;
+function getSitesData(rows, filter, columns) {
+  if (!rows) return [];
+  const data = rows.slice();
 
-  if (!list.data || !sites.searchFilter) return list;
+  const searchFilter = (typeof filter === 'string') && filter.toLowerCase();
 
-  const filteredData = sites.filter((item) => {
-    let match = false;
-    const modItem = item;
-    const searchFilter = sites.searchFilter.toLowerCase();
-
-    for (let i = 0, cLength = columns.length; i < cLength; i++) {
-      if (typeof modItem[columns[i]] === 'string' && modItem[columns[i]].toLowerCase().indexOf(searchFilter) >= 0) {
-        modItem[columns[i]] = modItem[columns[i]].toLowerCase().replace(searchFilter, `<span class="filtered">${searchFilter}</span>`);
-        match = true;
-        break;
-      }
-    }
-    return match;
-  });
+  let filteredData = data;
+  if (searchFilter) {
+    filteredData = filterBySearch(data, searchFilter, columns);
+  }
 
   return filteredData;
 }
 
 const mapStateToProps = (state) => {
   const columns = getSitesColumns(state.sites.filter);
+
+  const data = state.search.results ?
+    { data: getSitesData(state.search.results.rows, state.search.search, columns), hasMore: false } :
+    state.sites.list;
+
   return {
     selected: state.sites.selected,
     category: state.sites.selectedCategory,
     type: state.sites.type,
-    list: getSitesData(state.sites, columns),
+    isSearch: state.search.results && state.search.results.rows && state.search.results.rows.length > 0 || false,
+    list: data,
     columns
   };
 };
