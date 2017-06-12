@@ -123,23 +123,28 @@ function getTitle(column) {
 class TableListHeader extends React.Component {
   constructor(props) {
     super(props);
-    this.pending = true;
     this.filters = null;
     this.activeFilters = {};
+    this.hasProducedFilters = false;
+
     if (props.data && props.data.length > 0) {
       this.filters = getFilters(props.columns, props.data);
-      this.pending = false;
+      this.hasProducedFilters = true;
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.selectedCategory !== nextProps.selectedCategory) {
-      this.pending = true;
+    const isNewCategory = this.props.selectedCategory !== nextProps.selectedCategory;
+    const isDataDifferent = nextProps.data.length && this.props.data.length !== nextProps.data.length;
+    const areColsDifferent = nextProps.columns.length && this.props.columns.length !== nextProps.columns.length;
+
+    if (isNewCategory) {
       this.filterBy({ field: 'all', value: 'reset' });
     }
-    if (this.pending && nextProps.data.length && this.props.data.length !== nextProps.data.length) {
-      this.pending = false;
+
+    if (!this.hasProducedFilters || (areColsDifferent && isDataDifferent)) {
       this.filters = getFilters(nextProps.columns, nextProps.data);
+      this.hasProducedFilters = true;
     }
   }
 
