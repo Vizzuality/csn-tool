@@ -3,25 +3,6 @@ import CountriesTable from 'components/countries/CountriesTable';
 import { setSearchFilter } from 'actions/countries';
 import { filterByColumns, filterBySearch } from 'helpers/filters';
 
-function getCountryColums(category) {
-  switch (category) {
-    case 'species':
-      return ['scientific_name', 'english_name', 'iucn_category',
-        'country_status', 'occurrence_status'];
-    case 'populations':
-      return ['scientific_name', 'english_name', 'iucn_category', 'population',
-        'a', 'b', 'c', 'caf_action_plan', 'eu_birds_directive', 'flyway_range',
-        'year_start', 'year_end', 'size_min', 'size_max', 'ramsar_criterion'];
-    case 'criticalSites':
-      return ['csn_name', 'protected', 'csn_species', 'total_percentage'];
-    case 'lookAlikeSpecies':
-      return ['original_species', 'english_name', 'population', 'original_a', 'original_b',
-        'original_c', 'confusion_species', 'confusion_species_as'];
-    default:
-      return ['site_name', 'protected', 'iba_species', 'iba_in_danger'];
-  }
-}
-
 function getCountryData(countries, columns) {
   const data = countries[countries.selectedCategory] && countries[countries.selectedCategory][countries.selected]
     ? countries[countries.selectedCategory][countries.selected]
@@ -41,8 +22,8 @@ function getCountryData(countries, columns) {
 }
 
 const mapStateToProps = (state) => {
-  console.log("state", state);
-  const columns = state.countries.columns; // getCountryColums(state.countries.selectedCategory);
+  const columns = state.countries.columns;
+
   return {
     country: state.countries.selected,
     category: state.countries.selectedCategory,
