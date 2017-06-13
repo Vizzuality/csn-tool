@@ -1,7 +1,7 @@
 import dispatch from '../main';
 import { setLanguage } from 'redux-i18n';
 import { setCountryParams } from 'actions/countries';
-import { setSpeciesDetailParams } from 'actions/species';
+import { setSpeciesParams, setSpeciesDetailParams } from 'actions/species';
 import { setViewMode, setSiteParams } from 'actions/sites';
 import { setLocation } from 'actions/threshold';
 
@@ -27,6 +27,12 @@ export function setSitesParams(state) {
   dispatch(setSiteParams(site, cat, filter));
 }
 
+export function setupSpeciesParams(state) {
+  const id = state.params.id || '';
+  const cat = state.params.cat || 'over';
+  dispatch(setSpeciesParams(id, cat));// , filter));
+}
+
 export function setCountriesPage(actualState, replace, done) {
   dispatch(setCountryParams(getCountriesParams(actualState)));
   done();
@@ -48,6 +54,12 @@ export function setSitesPage(actualState, replace, done) {
   setSitesParams(actualState);
   done();
 }
+
+export function setSpeciesPage(actualState, replace, done) {
+  setupSpeciesParams(actualState);
+  done();
+}
+
 export function updateSitesPage(actualState, nextState, replace, done) {
   setSitesParams(nextState);
   done();
