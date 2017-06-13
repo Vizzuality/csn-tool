@@ -22,9 +22,12 @@ const setup = () => {
         original_a: '3'
       }
     ],
+    allColumns: ['species', 'populations', 'original_a', 'original_b', 'original_c', 'csn'],
     columns: ['species', 'populations', 'original_a', 'original_b', 'original_c', 'csn'],
     sort: {},
-    sortBy: jest.fn()
+    sortBy: jest.fn(),
+    changeColumnActivation: jest.fn(),
+    detailLink: 'species'
   };
   const enzymeWrapper = mount(<TableListHeader {...props} />,
     { context: { t: jest.fn() } }
@@ -45,7 +48,13 @@ describe('components', () => {
 
     it('should render columns', () => {
       const { enzymeWrapper, props } = setup();
-      expect(enzymeWrapper.find('.text').length).toEqual(props.columns.length + 1);
+      expect(enzymeWrapper.find('.text').length).toEqual(props.columns.length + 2);
+    });
+
+    it('should change column activation', () => {
+      const { enzymeWrapper, props } = setup();
+      enzymeWrapper.find('.dropdown-link').first().simulate('click');
+      expect(props.changeColumnActivation).toHaveBeenCalledWith('species');
     });
 
     it('should center a, b, c', () => {

@@ -14,6 +14,7 @@ function ThresholdTable(props) {
         <TableListHeader
           data={props.data}
           columns={props.columns}
+          allColumns={props.allColumns}
         />
       </Sticky>
       <TableList
@@ -25,6 +26,7 @@ function ThresholdTable(props) {
 }
 
 ThresholdTable.propTypes = {
+  allColumns: React.PropTypes.array.isRequired,
   data: React.PropTypes.array.isRequired,
   columns: React.PropTypes.array.isRequired
 };

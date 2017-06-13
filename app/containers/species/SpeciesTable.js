@@ -17,7 +17,8 @@ function getSpeciesData(rows, filter, columns) {
 }
 
 const mapStateToProps = (state) => {
-  const columns = ['scientific_name', 'english_name', 'population', 'genus', 'family'];
+  const columns = state.species.columns;
+
   const data = state.search.results ?
     getSpeciesData(state.search.results.rows, state.search.search, columns) :
     getSpeciesData(state.species.list, state.species.searchFilter, columns);
@@ -27,7 +28,8 @@ const mapStateToProps = (state) => {
     category: state.species.selectedCategory,
     isSearch: state.search.results && state.search.results.rows.length > 0 || false,
     data,
-    columns
+    columns,
+    allColumns: state.species.allColumns
   };
 };
 
