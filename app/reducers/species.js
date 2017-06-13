@@ -1,5 +1,5 @@
 import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION,
-  GET_SPECIES_LOOK_ALIKE_SPECIES,
+  GET_SPECIES_LOOK_ALIKE_SPECIES, SET_SPECIES_PARAMS,
   SET_SPECIES_DETAIL_PARAMS, SET_SPECIES_SORT, SET_SPECIES_COLUMN_FILTER,
   SET_SPECIES_DETAIL_SEARCH, TOGGLE_SPECIES_LAYER, CHANGE_COLUMN_ACTIVATION } from 'constants/index.js';
 import { commonSort } from './common.js';
@@ -38,6 +38,15 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case SET_SPECIES_PARAMS: {
+      const params = {
+        selected: action.payload.id,
+        selectedCategory: action.payload.category,
+        columns: SPECIES_COLUMNS[action.payload.category],
+        allColumns: SPECIES_COLUMNS[action.payload.category]
+      };
+      return Object.assign({}, state, params);
+    }
     case SET_SPECIES_DETAIL_PARAMS: {
       const params = {
         selected: action.payload.id,
