@@ -35,7 +35,7 @@ function getSitesData(sites, columns) {
 }
 
 const mapStateToProps = (state) => {
-  const columns = state.species.columns; /* ['scientific_name', 'english_name', 'iucn_category', 'season', 'start',
+  const columns = state.sites.columns; /* ['scientific_name', 'english_name', 'iucn_category', 'season', 'start',
     'end', 'minimum', 'maximum', 'geometric_mean', 'units', 'iba_criteria']; */
 
   return {
@@ -44,7 +44,7 @@ const mapStateToProps = (state) => {
     data: getSitesData(state.sites, columns),
     type: state.sites.type,
     columns,
-    allColumns: state.species.allColumns
+    allColumns: state.sites.allColumns
   };
 };
 

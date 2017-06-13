@@ -63,7 +63,6 @@ export default function (state = initialState, action) {
         type: action.payload.type,
         columns: SITES_COLUMNS[action.payload.filter || action.payload.category],
         allColumns: SITES_COLUMNS[action.payload.filter || action.payload.category]
-
       };
       return Object.assign({}, state, params);
     }
