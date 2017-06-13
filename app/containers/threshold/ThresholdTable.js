@@ -33,13 +33,14 @@ function getThresholdData(threshold, columns) {
 }
 
 const mapStateToProps = (state) => {
-  const columns = ['scientific_name', 'english_name', 'iucn_category',
+  const columns = state.threshold.columns; /* ['scientific_name', 'english_name', 'iucn_category',
     'population', 'a', 'b', 'c', 'caf_action_plan', 'eu_birds_directive',
     'flyway_range', 'year_start', 'year_end', 'size_min', 'size_max',
-    'ramsar_criterion'];
+    'ramsar_criterion']; */ 
   return {
     data: getThresholdData(state.threshold, columns),
-    columns
+    columns,
+    allColumns: state.threshold.allColumns
   };
 };
 

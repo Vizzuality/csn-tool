@@ -11,6 +11,7 @@ import { StickyContainer } from 'react-sticky';
 const setup = (newStore) => {
   const standard = {
     filter: {},
+    columns: ['scientific_name', 'english_name', 'population', 'genus', 'family'],
     list: {
       data: [
         { scientific_name: 'Albania' },
@@ -66,6 +67,17 @@ describe('containers', () => {
     it('should render', () => {
       const { enzymeWrapper } = setup();
       expect(enzymeWrapper.find('#speciesTable').length).toBeGreaterThan(0);
+    });
+
+    it('should display columns', () => {
+      const { enzymeWrapper, standard } = setup();
+      const col = 3;
+
+      expect(enzymeWrapper.find('#table-rows').first()
+        .find('.text')
+        .at(col)
+        .hasClass(standard.columns[col])
+      ).toBe(true);
     });
 
     it('should filter search results when the filter is empty', () => {

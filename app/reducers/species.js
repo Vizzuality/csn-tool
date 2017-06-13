@@ -1,10 +1,22 @@
 import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION,
   GET_SPECIES_LOOK_ALIKE_SPECIES,
   SET_SPECIES_DETAIL_PARAMS, SET_SPECIES_SORT, SET_SPECIES_COLUMN_FILTER,
-  SET_SPECIES_DETAIL_SEARCH, TOGGLE_SPECIES_LAYER } from 'constants';
+  SET_SPECIES_DETAIL_SEARCH, TOGGLE_SPECIES_LAYER, CHANGE_COLUMN_ACTIVATION } from 'constants/index.js';
 import { commonSort } from './common.js';
 
+const SPECIES_COLUMNS = {
+  over: ['scientific_name', 'english_name', 'population', 'genus', 'family'],
+  population: ['population', 'iucn_category', 'a', 'b', 'c',
+    'caf_action_plan', 'eu_birds_directive', 'flyway_range', 'year_start',
+    'year_end', 'size_min', 'size_max', 'ramsar_criterion'],
+  lookAlikeSpecies: ['population', 'original_a', 'original_b', 'original_c', 'confusion_species', 'confusion_species_as'],
+  sites: ['country', 'site_name', 'protected', 'season', 'start', 'end', 'minimum',
+    'maximum', 'geometric_mean', 'units', 'iba_criteria']
+};
+
 const initialState = {
+  allColumns: SPECIES_COLUMNS.over,
+  columns: SPECIES_COLUMNS.over,
   list: false,
   selected: '',
   selectedCategory: 'sites',
@@ -27,11 +39,28 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case SET_SPECIES_DETAIL_PARAMS: {
+      console.log('set_species_detail_params', action);
       const params = {
         selected: action.payload.id,
-        selectedCategory: action.payload.category
+        selectedCategory: action.payload.category,
+        columns: SPECIES_COLUMNS[action.payload.category],
+        allColumns: SPECIES_COLUMNS[action.payload.category]
       };
       return Object.assign({}, state, params);
+    }
+    case CHANGE_COLUMN_ACTIVATION: {
+      const columns = state.columns.slice();
+      let newColumns = columns.filter((col) => col !== action.payload);
+      if (columns.length === newColumns.length) {
+        newColumns.push(action.payload);
+        const prevColumns = state.allColumns.slice();
+        newColumns = prevColumns.reduce((previous, currentItem) => {
+          const isIn = newColumns.some((newCol) => newCol === currentItem);
+          if (isIn) previous.push(currentItem);
+          return previous;
+        }, []);
+      }
+      return Object.assign({}, state, { columns: newColumns });
     }
     case SET_SPECIES_COLUMN_FILTER:
       return Object.assign({}, state, { columnFilter: action.payload });

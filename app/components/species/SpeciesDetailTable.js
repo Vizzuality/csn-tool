@@ -106,7 +106,7 @@ class SpeciesDetailTable extends React.Component {
     });
   }
 
-  renderTableHeader(isLookAlikeSpecies, data, columns) {
+  renderTableHeader(isLookAlikeSpecies, data, columns, allColumns) {
     return (
       <div>
         <SpeciesDetailFilters isSearch={this.props.isSearch} id={this.props.id} category={this.props.category} />
@@ -117,6 +117,7 @@ class SpeciesDetailTable extends React.Component {
         <TableListHeader
           data={data}
           columns={columns}
+          allColumns={allColumns}
           detailLink
         />
       </div>
@@ -133,10 +134,10 @@ class SpeciesDetailTable extends React.Component {
         {!this.props.isSearch && <ScrollButton />}
         {this.props.isSearch ?
           <div>
-            {this.renderTableHeader(isLookAlikeSpecies, data, columns)}
+            {this.renderTableHeader(isLookAlikeSpecies, data, columns, this.props.allColumns)}
           </div> :
           <Sticky topOffset={-120} stickyClassName={'-sticky'}>
-            {this.renderTableHeader(isLookAlikeSpecies, data, columns)}
+            {this.renderTableHeader(isLookAlikeSpecies, data, columns, this.props.allColumns)}
           </Sticky>
         }
         <TableList
@@ -154,6 +155,7 @@ SpeciesDetailTable.contextTypes = {
 };
 
 SpeciesDetailTable.propTypes = {
+  allColumns: React.PropTypes.array.isRequired,
   id: React.PropTypes.string.isRequired,
   isSearch: React.PropTypes.bool.isRequired,
   category: React.PropTypes.string.isRequired,

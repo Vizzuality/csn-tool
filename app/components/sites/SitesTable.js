@@ -30,6 +30,7 @@ class SitesTable extends React.Component {
                 includeSort={false}
                 data={this.props.list.data}
                 columns={this.props.columns}
+                allColumns={this.props.allColumns}
                 detailLink
               />
             </div>
@@ -48,6 +49,7 @@ class SitesTable extends React.Component {
 }
 
 SitesTable.propTypes = {
+  allColumns: React.PropTypes.array.isRequired,
   getSitesList: React.PropTypes.func.isRequired,
   list: React.PropTypes.object.isRequired,
   category: React.PropTypes.string,

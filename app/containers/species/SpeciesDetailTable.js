@@ -37,7 +37,7 @@ function getSpeciesDetailData(rows, columns, filter, columnFilter) {
 }
 
 const mapStateToProps = (state) => {
-  const columns = getSpeciesDetailColumns(state.search.results ? 'population' : state.species.selectedCategory);
+  const columns = state.species.columns; // getSpeciesDetailColumns(state.search.results ? 'population' : state.species.selectedCategory);
 
   const species = state.species;
   const detailList = species[species.selectedCategory] && species[species.selectedCategory][species.selected]
@@ -53,7 +53,8 @@ const mapStateToProps = (state) => {
     category: state.search.results ? 'population' : state.species.selectedCategory,
     isSearch: state.search.results && state.search.results.rows.length > 0 || false,
     data,
-    columns
+    columns,
+    allColumns: state.species.allColumns
   };
 };
 

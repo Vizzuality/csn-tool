@@ -28,7 +28,7 @@ function getSitesData(rows, filter, columns) {
 }
 
 const mapStateToProps = (state) => {
-  const columns = getSitesColumns(state.sites.filter);
+  const columns = state.sites.columns; // getSitesColumns(state.sites.filter);
 
   const data = state.search.results ?
     { data: getSitesData(state.search.results.rows, state.search.search, columns), hasMore: false } :
@@ -40,7 +40,8 @@ const mapStateToProps = (state) => {
     type: state.sites.type,
     isSearch: state.search.results && state.search.results.rows && state.search.results.rows.length > 0 || false,
     list: data,
-    columns
+    columns,
+    allColumns: state.sites.allColumns
   };
 };
 

@@ -41,12 +41,14 @@ function getCountryData(countries, columns) {
 }
 
 const mapStateToProps = (state) => {
-  const columns = getCountryColums(state.countries.selectedCategory);
+  console.log("state", state);
+  const columns = state.countries.columns; // getCountryColums(state.countries.selectedCategory);
   return {
     country: state.countries.selected,
     category: state.countries.selectedCategory,
     data: getCountryData(state.countries, columns),
-    columns
+    columns,
+    allColumns: state.countries.allColumns
   };
 };
 
