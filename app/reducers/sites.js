@@ -61,8 +61,8 @@ export default function (state = initialState, action) {
         selectedCategory: action.payload.category,
         filter: action.payload.filter,
         type: action.payload.type,
-        columns: SITES_COLUMNS[action.payload.filter],
-        allColumns: SITES_COLUMNS[action.payload.filter]
+        columns: SITES_COLUMNS[action.payload.filter || action.payload.category],
+        allColumns: SITES_COLUMNS[action.payload.filter || action.payload.category]
 
       };
       return Object.assign({}, state, params);
