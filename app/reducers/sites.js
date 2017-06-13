@@ -54,8 +54,6 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { columns: newColumns });
     }
     case SET_SITES_PARAMS: {
-      console.log(action);
-
       const params = {
         selected: action.payload.site,
         selectedCategory: action.payload.category,

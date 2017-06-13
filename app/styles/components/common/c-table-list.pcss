@@ -236,21 +236,20 @@
 }
 
 .dropbtn {
-  color: black;
-  padding: 16px 0px 8px;
+  color: $black;
+  padding: 5px 5px 8px 5px;
   font-size: 16px;
   border: none;
   cursor: pointer;
+  margin: 11px 0px 0px;
 }
 
-/* The container <div> - needed to position the dropdown content */
 .dropdown {
     position: relative;
     display: inline-block;
-    z-index: 999
+    z-index: 10
 }
 
-/* Dropdown Content (Hidden by Default) */
 .dropdown-content {
     display: none;
     position: absolute;
@@ -258,10 +257,9 @@
     min-width: 250px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 3;
-    right: 0;
+    right: -10px;
 }
 
-/* Links inside the dropdown */
 .dropdown-content .dropdown-link {
     color: black;
     padding: 12px 16px;
@@ -269,6 +267,7 @@
     display: block;
     border-bottom: 1px solid #ededed;
     width: 250px;
+    cursor: pointer;
 }
 
 .dropdown-content .inactive-link {
@@ -291,14 +290,55 @@
   width: 190px;
 }
 
-/* Change color of dropdown links on hover */
-.dropdown-content .dropdown-link:hover {}
+.dropdown-content .dropdown-link:hover {
+  background-color: #dddddd;
+}
 
-/* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
     display: block;
 }
 
-/* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
+  background-color: #f9f9f9
+}
+
+.popup-link {
+  cursor: pointer
+}
+
+.popup {
+    position: relative;
+    display: inline-block;
+    z-index: 10;  
+}
+
+.popup-content {
+    display: none;
+    position: absolute;
+    background-color: rgba($dark, 1);
+    color: $white;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 3;
+    padding: 10px;
+    bottom: 20px;
+    left: 6px;
+    white-space: nowrap;
+}
+
+/* .popup-content .dropdown-link {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    border-bottom: 1px solid #ededed;
+    width: 250px;
+    cursor: pointer;
+} */
+
+.popup:hover .popup-content {
+    display: block;
+}
+
+.popup:hover .popup-link {
+  background-color: #f9f9f9
 }
