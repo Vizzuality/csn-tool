@@ -222,9 +222,7 @@ class CountriesMap extends BasicMap {
           this.setPopupPosition(e.latlng);
         });
         layer.on('mouseout', () => {
-          console.log("mouseout", this.props.country, layerStyle)
           if (!this.props.country) {
-            console.log('inside');
             this.hidePopup();
 
             layer.setStyle(layerStyle);
