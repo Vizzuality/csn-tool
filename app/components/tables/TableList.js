@@ -58,19 +58,25 @@ function TableList(props) {
 
             if (['scientific_name', 'site_name'].indexOf(column) >= 0 && item.hyperlink) {
               return (<div key={index2} style={{ width: `${colWidth}%` }}><div className={`text ${column} ${alignClass}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
-                <a className="external-link" target="_blank" href={item.hyperlink}>
-                  <svg className="icon -small -grey">
-                    <use xlinkHref="#icon-open_in_new"></use>
-                  </svg>
-                </a>
+                <span className="popup">
+                  <div className="popup-content">BirdLife Factsheet</div>
+                  <a className="popup-link external-link" target="_blank" href={item.hyperlink}>
+                    <svg className="icon -small -grey">
+                      <use xlinkHref="#icon-open_in_new"></use>
+                    </svg>
+                  </a>
+                </span>
               </div>);
             } else if (column === 'populations' && item.pop_hyperlink) {
               return (<div key={index2} style={{ width: `${colWidth}%` }}><div className={`text ${column} ${alignClass}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
-                <a className="external-link" target="_blank" href={item.pop_hyperlink} title="View on Waterbird Population Estimates Portal">
-                  <svg className="icon -small -grey">
-                    <use xlinkHref="#icon-open_in_new"></use>
-                  </svg>
-                </a>
+                <span className="popup">
+                  <div className="popup-content">Waterbird Population Estimates Portal</div>
+                  <a className="popup-link external-link" target="_blank" href={item.pop_hyperlink} title="View on Waterbird Population Estimates Portal">
+                    <svg className="icon -small -grey">
+                      <use xlinkHref="#icon-open_in_new"></use>
+                    </svg>
+                  </a>
+                </span>
               </div>);
             } else if (column === 'site_name') {
               return (<div key={index2} style={{ width: `${colWidth}%` }}>

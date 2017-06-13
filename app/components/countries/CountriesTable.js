@@ -126,6 +126,7 @@ class CountriesTable extends React.Component {
             selectedCategory={this.state.selectedItem ? 'expanded' : null}
             data={data}
             columns={columns}
+            allColumns={this.props.allColumns}
             detailLink
           />
         </Sticky>
@@ -147,6 +148,7 @@ CountriesTable.contextTypes = {
 };
 
 CountriesTable.propTypes = {
+  allColumns: React.PropTypes.array.isRequired,
   country: React.PropTypes.string.isRequired,
   category: React.PropTypes.string.isRequired,
   columns: React.PropTypes.array.isRequired,

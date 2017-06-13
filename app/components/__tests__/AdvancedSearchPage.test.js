@@ -19,6 +19,8 @@ const setup = () => {
 
   const standard = {
     filter: {},
+    allColumns: ['scientific_name', 'english_name', 'population', 'genus', 'family'],
+    columns: ['scientific_name', 'english_name', 'population', 'genus', 'family'],
     list: {
       data: [
         { csn: 'a' }

@@ -162,6 +162,10 @@ class TableListHeader extends React.Component {
     return alignClass;
   }
 
+  changeColumnActivation(column) {
+    this.props.changeColumnActivation(column);
+  }
+
   filterBy(filter) {
     if (this.props.filterBy) {
       if (filter.value === 'reset' && filter.field === 'all') {
@@ -318,7 +322,30 @@ class TableListHeader extends React.Component {
 
       {this.props.detailLink &&
         <div className="text -title link" style={{ width: `${DETAIL_LINK_WIDTH_PERCENT}%` }}>
-          ...
+          <div className="dropdown">
+            <div className="dropbtn">...</div>
+            <div className="dropdown-content">
+              {this.props.allColumns && this.props.allColumns.map((col, index) => {
+                const linkActive = this.props.columns.some((thisCol) => thisCol === col);
+                const rowClass = linkActive ? 'dropdown-link' : 'dropdown-link inactive-link';
+                const iconClass = linkActive ? 'icon -small -dark' : 'icon -small -grey';
+                return (
+                  <div
+                    onClick={() => this.changeColumnActivation(col)}
+                    className={rowClass}
+                    key={index}
+                  >
+                    <div className="dropdown-link-title">{this.context.t(col)}</div>
+                    <div style={{ display: 'inline-block', textAlign: 'right', width: 18, height: 14 }}>
+                      <svg className={iconClass}>
+                        <use xlinkHref="#icon-tick"></use>
+                      </svg>
+                    </div>
+                  </div>
+                ); }
+              )}
+            </div>
+          </div>
         </div>
       }
       </li>
@@ -338,9 +365,11 @@ TableListHeader.defaultProps = {
 };
 
 TableListHeader.propTypes = {
+  allColumns: PropTypes.array,
   detailLink: PropTypes.bool,
   selectedCategory: PropTypes.string,
   columns: PropTypes.array.isRequired,
+  changeColumnActivation: PropTypes.func,
   data: PropTypes.any.isRequired,
   includeSort: PropTypes.bool,
   sort: PropTypes.object,

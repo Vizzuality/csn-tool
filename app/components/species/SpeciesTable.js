@@ -8,7 +8,7 @@ import { Sticky } from 'react-sticky';
 class SpeciesTable extends React.Component {
 
   renderCommonTableHeader() {
-    const { data, columns, isSearch } = this.props;
+    const { data, columns, allColumns, isSearch } = this.props;
 
     return (
       <div>
@@ -16,6 +16,7 @@ class SpeciesTable extends React.Component {
         <TableListHeader
           data={data}
           columns={columns}
+          allColumns={allColumns}
           detailLink
         />
       </div>
@@ -49,6 +50,7 @@ SpeciesTable.contextTypes = {
 };
 
 SpeciesTable.propTypes = {
+  allColumns: React.PropTypes.array.isRequired,
   data: React.PropTypes.any.isRequired,
   columns: React.PropTypes.array.isRequired,
   isSearch: React.PropTypes.bool.isRequired

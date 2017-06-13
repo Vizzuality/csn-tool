@@ -15,6 +15,7 @@ function SitesDetailTable(props) {
         <TableListHeader
           data={props.data}
           columns={props.columns}
+          allColumns={props.allColumns}
           detailLink
         />
       </Sticky>
@@ -28,6 +29,7 @@ function SitesDetailTable(props) {
 }
 
 SitesDetailTable.propTypes = {
+  allColumns: React.PropTypes.array.isRequired,
   slug: React.PropTypes.string.isRequired,
   category: React.PropTypes.string.isRequired,
   data: React.PropTypes.any.isRequired,
