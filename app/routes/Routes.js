@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useScroll } from 'react-router-scroll';
 import { IndexRoute, Router, Route, applyRouterMiddleware, Redirect } from 'react-router';
 import { updateLanguage, setCountriesPage, updateCountriesPage, setSitesPage, setThresholdPosition, updateThresholdPosition,
-        updateSitesPage, updateSitesDetailPage, updateSpeciesDetailPage } from './RoutesActions';
+        updateSitesPage, updateSitesDetailPage, setSpeciesPage, updateSpeciesDetailPage } from './RoutesActions';
 import ReactGA from 'react-ga';
 
 import ContainerPage from 'components/pages/ContainerPage';
@@ -111,7 +111,7 @@ const Routes = ({ history }) => (
         <Route path=":type/:site(/:cat)" component={SitesDetailPage} onEnter={updateSitesDetailPage} />
       </Route>
       <Route path="species">
-        <IndexRoute component={SpeciesPage} />
+        <IndexRoute component={SpeciesPage} onEnter={setSpeciesPage} />
         <Route path=":id(/:cat)" component={SpeciesDetailPage} onEnter={updateSpeciesDetailPage} />
       </Route>
       <Route path="threshold-lookup" component={ThersholdLookup} onEnter={setThresholdPosition} onChange={updateThresholdPosition} />
