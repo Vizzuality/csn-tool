@@ -9,7 +9,7 @@ class CountriesMap extends BasicMap {
   constructor() {
     super();
     this.styles = {
-      hide: { color: 'transparent', opacity: 0 },
+      hide: { fillColor: 'white', color: 'transparent', opacity: 0, fillOpacity: 1 },
       base: { fillColor: '#efd783', fillOpacity: 0.5, color: 'transparent', opacity: 0 },
       highlight: { fillColor: '#ffc500', fillOpacity: 1, color: 'transparent', opacity: 0 }
     };
@@ -222,8 +222,11 @@ class CountriesMap extends BasicMap {
           this.setPopupPosition(e.latlng);
         });
         layer.on('mouseout', () => {
+          console.log("mouseout", this.props.country, layerStyle)
           if (!this.props.country) {
+            console.log('inside');
             this.hidePopup();
+
             layer.setStyle(layerStyle);
           }
         });
