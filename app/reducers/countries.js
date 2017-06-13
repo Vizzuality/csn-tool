@@ -43,7 +43,6 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case SET_COUNTRY_PARAMS: {
-      console.log('SET_COUNTRY_PARAMS', action);
       const params = {
         selected: action.payload.country,
         selectedCategory: action.payload.category,

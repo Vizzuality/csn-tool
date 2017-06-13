@@ -22,6 +22,7 @@ const setup = () => {
         original_a: '3'
       }
     ],
+    allColumns: ['species', 'populations', 'original_a', 'original_b', 'original_c', 'csn'],
     columns: ['species', 'populations', 'original_a', 'original_b', 'original_c', 'csn'],
     sort: {},
     sortBy: jest.fn(),

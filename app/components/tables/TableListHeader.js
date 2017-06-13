@@ -325,7 +325,7 @@ class TableListHeader extends React.Component {
           <div className="dropdown">
             <div className="dropbtn">...</div>
             <div className="dropdown-content">
-              {this.props.allColumns && this.props.allColumns.map((col) => {
+              {this.props.allColumns && this.props.allColumns.map((col, index) => {
                 const linkActive = this.props.columns.some((thisCol) => thisCol === col);
                 const rowClass = linkActive ? 'dropdown-link' : 'dropdown-link inactive-link';
                 const iconClass = linkActive ? 'icon -small -dark' : 'icon -small -grey';
@@ -333,6 +333,7 @@ class TableListHeader extends React.Component {
                   <div
                     onClick={() => this.changeColumnActivation(col)}
                     className={rowClass}
+                    key={index}
                   >
                     <div className="dropdown-link-title">{this.context.t(col)}</div>
                     <div style={{ display: 'inline-block', textAlign: 'right', width: 18, height: 14 }}>
@@ -340,8 +341,8 @@ class TableListHeader extends React.Component {
                         <use xlinkHref="#icon-tick"></use>
                       </svg>
                     </div>
-                </div>)
-                }
+                  </div>
+                ); }
               )}
             </div>
           </div>

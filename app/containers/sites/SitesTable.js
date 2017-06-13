@@ -3,16 +3,6 @@ import SitesTable from 'components/sites/SitesTable';
 import { getSitesList } from 'actions/sites';
 import { filterBySearch } from 'helpers/filters';
 
-function getSitesColumns(filter) {
-  switch (filter) {
-    case 'csn':
-      return ['country', 'csn_name', 'protected', 'csn', 'total_percentage'];
-    default:
-      return ['country', 'site_name', 'protected', 'iba_species',
-        'iba_in_danger'];
-  }
-}
-
 function getSitesData(rows, filter, columns) {
   if (!rows) return [];
   const data = rows.slice();
@@ -28,7 +18,7 @@ function getSitesData(rows, filter, columns) {
 }
 
 const mapStateToProps = (state) => {
-  const columns = state.sites.columns; // getSitesColumns(state.sites.filter);
+  const columns = state.sites.columns;
 
   const data = state.search.results ?
     { data: getSitesData(state.search.results.rows, state.search.search, columns), hasMore: false } :

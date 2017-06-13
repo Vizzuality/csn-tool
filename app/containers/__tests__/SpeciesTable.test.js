@@ -11,6 +11,7 @@ import { StickyContainer } from 'react-sticky';
 const setup = (newStore) => {
   const standard = {
     filter: {},
+    allColumns: ['scientific_name', 'english_name', 'population', 'genus', 'family'],
     columns: ['scientific_name', 'english_name', 'population', 'genus', 'family'],
     list: {
       data: [

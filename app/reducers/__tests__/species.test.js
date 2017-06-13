@@ -1,9 +1,9 @@
 /* global expect, jest */
 import reducer from 'reducers/species';
 import { CHANGE_COLUMN_ACTIVATION } from 'constants/index.js';
-//import * as types from '../../constants/ActionTypes'
 
 const initialState = {
+  allColumns: ['scientific_name', 'english_name', 'population', 'genus', 'family'],
   columns: ['scientific_name', 'english_name', 'population', 'genus', 'family'],
   list: false,
   selected: '',

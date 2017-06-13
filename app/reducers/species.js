@@ -39,7 +39,6 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case SET_SPECIES_DETAIL_PARAMS: {
-      console.log('set_species_detail_params', action);
       const params = {
         selected: action.payload.id,
         selectedCategory: action.payload.category,

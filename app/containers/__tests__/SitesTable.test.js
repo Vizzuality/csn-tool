@@ -10,6 +10,8 @@ import SitesTableComponent from 'components/sites/SitesTable';
 const setup = () => {
   const standard = {
     filter: {},
+    allColumns: ['country', 'english_name', 'population', 'genus', 'family'],
+    columns: ['country', 'english_name', 'population', 'genus', 'family'],
     list: {
       data: [
         { country: 'Albania' },
