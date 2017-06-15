@@ -18,6 +18,7 @@ const columnsWithFilter = [
     type: PROTECTION_HIERARCHY_FILTER }
 ];
 
+const DROPDOWN_MAX_LENGTH = 8;
 const DETAIL_LINK_WIDTH_PERCENT = 2.5;
 const OVERHEADER = 'AEWA Table 1 Column A';
 const OVERHEADER_LIST = [
@@ -259,6 +260,16 @@ class TableListHeader extends React.Component {
     const colWidth = this.props.detailLink ?
       ((100 - DETAIL_LINK_WIDTH_PERCENT) / this.props.columns.length) : (100 / this.props.columns.length);
 
+    const allColumnChunks = this.props.allColumns && this.props.allColumns.reduce((previous, col) => {
+      if (previous[previous.length - 1].length < DROPDOWN_MAX_LENGTH) {
+        previous[previous.length - 1].push(col);
+      } else {
+        previous.push([col]);
+      }
+
+      return previous;
+    }, [[]]);
+
     // Finding column sets that need overheaders
     const columnChunks = this.props.columns.reduce((previous, col, colIndex) => {
       // Prevents double-adding a previously added column
@@ -325,25 +336,31 @@ class TableListHeader extends React.Component {
           <div className="dropdown">
             <div className="dropbtn">...</div>
             <div className="dropdown-content">
-              {this.props.allColumns && this.props.allColumns.map((col, index) => {
-                const linkActive = this.props.columns.some((thisCol) => thisCol === col);
-                const rowClass = linkActive ? 'dropdown-link' : 'dropdown-link inactive-link';
-                const iconClass = linkActive ? 'icon -small -dark' : 'icon -small -grey';
-                return (
-                  <div
-                    onClick={() => this.changeColumnActivation(col)}
-                    className={rowClass}
-                    key={index}
-                  >
-                    <div className="dropdown-link-title">{this.context.t(col)}</div>
-                    <div style={{ display: 'inline-block', textAlign: 'right', width: 18, height: 14 }}>
-                      <svg className={iconClass}>
-                        <use xlinkHref="#icon-tick"></use>
-                      </svg>
-                    </div>
+              {
+                allColumnChunks && allColumnChunks.map((chunk, chunkIndex) => (
+                  <div key={`chunk${chunkIndex}`} className="dropdown-chunk">
+                    {chunk.map((col, index) => {
+                      const linkActive = this.props.columns.some((thisCol) => thisCol === col);
+                      const rowClass = linkActive ? 'dropdown-link' : 'dropdown-link inactive-link';
+                      const iconClass = linkActive ? 'icon -small -dark' : 'icon -small -grey';
+                      return (
+                        <div
+                          onClick={() => this.changeColumnActivation(col)}
+                          className={rowClass}
+                          key={index}
+                        >
+                          <div className="dropdown-link-title">{this.context.t(col)}</div>
+                          <div style={{ display: 'inline-block', textAlign: 'right', width: 18, height: 14 }}>
+                            <svg className={iconClass}>
+                              <use xlinkHref="#icon-tick"></use>
+                            </svg>
+                          </div>
+                        </div>
+                      ); })
+                    }
                   </div>
-                ); }
-              )}
+                ))
+              }
             </div>
           </div>
         </div>
