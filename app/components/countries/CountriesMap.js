@@ -224,7 +224,6 @@ class CountriesMap extends BasicMap {
         layer.on('mouseout', () => {
           if (!this.props.country) {
             this.hidePopup();
-
             layer.setStyle(layerStyle);
           }
         });
