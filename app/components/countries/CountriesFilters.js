@@ -1,4 +1,5 @@
 import React from 'react';
+import CSVButton from 'components/tables/CSVButton.js';
 import NavLink from 'containers/common/NavLink';
 import CountriesSearch from 'containers/countries/CountriesSearch';
 
@@ -13,6 +14,7 @@ function TableFilters(props) {
           <NavLink to={`/countries/${props.country}/populations`} i18nText="populations" className={props.category && props.category === 'populations' ? 'is-active' : ''} />
           <NavLink to={`/countries/${props.country}/lookAlikeSpecies`} i18nText="lookAlikeSpecies" className={props.category && props.category === 'lookAlikeSpecies' ? 'is-active' : ''} />
         </div>
+        <CSVButton data={props.data} columns={props.columns} />
       </div>
       <div className="column small-12 medium-4">
         <CountriesSearch placeholder="countriesFilter" />
@@ -28,7 +30,9 @@ TableFilters.contextTypes = {
 
 TableFilters.propTypes = {
   country: React.PropTypes.string.isRequired,
-  category: React.PropTypes.string
+  category: React.PropTypes.string,
+  data: React.PropTypes.array,
+  columns: React.PropTypes.array
 };
 
 export default TableFilters;

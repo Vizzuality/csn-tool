@@ -7,7 +7,7 @@ import SitesTable from 'containers/sites/SitesTable';
 import SpeciesTable from 'containers/species/SpeciesTable';
 import PopulationsTable from 'containers/species/SpeciesDetailTable';
 
-// jest.mock('react-sticky');
+jest.mock('../tables/CSVButton.js', () => 'csvbutton');
 
 const setup = () => {
   const props = {

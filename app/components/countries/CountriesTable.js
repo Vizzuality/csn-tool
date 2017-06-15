@@ -113,11 +113,14 @@ class CountriesTable extends React.Component {
     const isLookAlikeSpecies = this.props.category === 'lookAlikeSpecies';
     const data = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? this.state.data : this.props.data;
     const columns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? expandedColumns : this.props.columns;
+
+    const downloadData = (typeof data !== 'boolean') && data || [];
+
     return (
       <div id="countriesTable" className="c-table">
         <ScrollButton />
         <Sticky topOffset={-120} stickyClassName={'-sticky'}>
-          <CountriesFilters country={this.props.country} category={this.props.category} />
+          <CountriesFilters data={downloadData} columns={this.props.columns} country={this.props.country} category={this.props.category} />
           {isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0
             ? this.getSelectedHeader()
             : null
