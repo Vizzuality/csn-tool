@@ -337,8 +337,8 @@ class TableListHeader extends React.Component {
             <div className="dropbtn">...</div>
             <div className="dropdown-content">
               {
-                allColumnChunks && allColumnChunks.map((chunk) => (
-                  <div className="dropdown-chunk">
+                allColumnChunks && allColumnChunks.map((chunk, chunkIndex) => (
+                  <div key={`chunk${chunkIndex}`} className="dropdown-chunk">
                     {chunk.map((col, index) => {
                       const linkActive = this.props.columns.some((thisCol) => thisCol === col);
                       const rowClass = linkActive ? 'dropdown-link' : 'dropdown-link inactive-link';

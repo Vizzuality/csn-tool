@@ -6,18 +6,25 @@ import { numberToThousands } from 'helpers/data';
 const columnsWithYears = ['year', 'start', 'end', 'year_end', 'year_start'];
 
 function getDetailLink(detailLink, item) {
+  const popupContent = typeof detailLink === 'string' && detailLink.indexOf('species') > -1 ? 'species' : 'sites';
   if (detailLink && detailLink.type === 'action') {
     return (
       <div className="link">
-        <button onClick={() => detailLink.action(item)} icon="icon-table_arrow_right" >
-          <svg><use xlinkHref="#icon-table_arrow_right"></use></svg>
-        </button>
+        <div className="popup">
+          <div className="popup-content">View species details</div>
+          <button className="popup-link" onClick={() => detailLink.action(item)} icon="icon-table_arrow_right" >
+            <svg><use xlinkHref="#icon-table_arrow_right"></use></svg>
+          </button>
+        </div>
       </div>
     );
   }
   return (
     <div className="link">
-      <NavLink to={`/${detailLink}/${item.id}`} icon="icon-table_arrow_right" parent />
+      <div className="popup">
+        <div className="popup-content">View {popupContent} details</div>
+        <NavLink className="popup-link" to={`/${detailLink}/${item.id}`} icon="icon-table_arrow_right" parent />
+      </div>
     </div>
   );
 }

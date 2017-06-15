@@ -312,8 +312,6 @@
 
 .popup {
   position: relative;
-  display: inline-block;
-  z-index: 10;
 }
 
 .popup-content {
@@ -322,11 +320,17 @@
   background-color: rgba($dark, 1);
   color: $white;
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-  z-index: 3;
+  z-index: 10;
   padding: 10px;
   bottom: 20px;
   left: 6px;
   white-space: nowrap;
+}
+
+.link .popup-content {
+  bottom: 2px;
+  right: -3px;
+  left: initial;
 }
 
 .popup:hover .popup-content {
