@@ -5,8 +5,6 @@ import { Provider } from 'react-redux';
 import SitesTable from 'containers/sites/SitesTable';
 import SitesTableComponent from 'components/sites/SitesTable';
 
-// jest.mock('react-sticky');
-
 const setup = () => {
   const standard = {
     filter: {},

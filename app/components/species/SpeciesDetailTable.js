@@ -109,7 +109,7 @@ class SpeciesDetailTable extends React.Component {
   renderTableHeader(isLookAlikeSpecies, data, columns, allColumns) {
     return (
       <div>
-        <SpeciesDetailFilters isSearch={this.props.isSearch} id={this.props.id} category={this.props.category} />
+        <SpeciesDetailFilters data={data} columns={columns} isSearch={this.props.isSearch} id={this.props.id} category={this.props.category} />
         {isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0
           ? this.getSelectedHeader()
           : null
@@ -151,6 +151,10 @@ class SpeciesDetailTable extends React.Component {
 }
 
 SpeciesDetailTable.contextTypes = {
+  t: React.PropTypes.func.isRequired
+};
+
+SpeciesDetailTable.childContextTypes = {
   t: React.PropTypes.func.isRequired
 };
 

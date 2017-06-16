@@ -6,8 +6,6 @@ import SpeciesTable from 'containers/species/SpeciesTable';
 import SpeciesTableComponent from 'components/species/SpeciesTable';
 import { StickyContainer } from 'react-sticky';
 
-// jest.mock('react-sticky');
-
 const setup = (newStore) => {
   const standard = {
     filter: {},

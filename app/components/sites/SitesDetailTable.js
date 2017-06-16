@@ -11,7 +11,7 @@ function SitesDetailTable(props) {
     <div className="c-table" >
       <ScrollButton />
       <Sticky topOffset={-120} stickyClassName={'-sticky'}>
-        <SitesDetailFilters id={props.slug} category={props.category} type={props.type} />
+        <SitesDetailFilters id={props.slug} data={props.data} columns={props.columns} category={props.category} type={props.type} />
         <TableListHeader
           data={props.data}
           columns={props.columns}
