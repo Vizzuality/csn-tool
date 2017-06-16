@@ -1,4 +1,5 @@
 import React from 'react';
+import CSVButton from 'components/tables/CSVButton.js';
 import NavLink from 'containers/common/NavLink';
 import SitesDetailSearch from 'containers/sites/SitesDetailSearch';
 
@@ -9,6 +10,7 @@ function SitesFilters(props) {
         <div className="tags">
           <NavLink to={`/sites/${props.type}/${props.id}/species`} i18nText={`${props.type}_qualifying_species`} className={props.category && props.category === 'species' ? 'is-active' : ''} />
         </div>
+        <CSVButton data={props.data} columns={props.columns} />
       </div>
       <div className="column small-12 medium-4">
         <SitesDetailSearch placeholder="sitesFilter" />
@@ -18,6 +20,8 @@ function SitesFilters(props) {
 }
 
 SitesFilters.propTypes = {
+  columns: React.PropTypes.array,
+  data: React.PropTypes.array,
   id: React.PropTypes.string,
   category: React.PropTypes.string,
   type: React.PropTypes.string

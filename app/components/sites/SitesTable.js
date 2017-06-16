@@ -15,6 +15,7 @@ class SitesTable extends React.Component {
 
   render() {
     const detailLink = 'sites/iba';
+    const downloadData = (typeof this.props.list.data !== 'boolean') && this.props.list.data || [];
 
     return (
       <div id="sitesTable" className="c-paginated-table c-table">
@@ -25,7 +26,7 @@ class SitesTable extends React.Component {
         >
           <div className={!this.props.isSearch && 'sticky-table'}>
             <div className={!this.props.isSearch ? 'sticky-header column' : 'column'} >
-              <SitesFilters isSearch={this.props.isSearch} category={this.props.category} type={this.props.type} />
+              <SitesFilters data={downloadData} columns={this.props.columns} isSearch={this.props.isSearch} category={this.props.category} type={this.props.type} />
               <TableListHeader
                 includeSort={false}
                 data={this.props.list.data}

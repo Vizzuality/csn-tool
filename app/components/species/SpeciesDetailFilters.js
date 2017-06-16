@@ -1,4 +1,5 @@
 import React from 'react';
+import CSVButton from 'components/tables/CSVButton.js';
 import NavLink from 'containers/common/NavLink';
 import SpeciesDetailSearch from 'containers/species/SpeciesDetailSearch';
 import Filter from 'containers/advanced-search/Filter';
@@ -14,6 +15,7 @@ function SpeciesDetailFilters(props) {
             <NavLink to={`/species/${props.id}/lookAlikeSpecies`} i18nText="lookAlikeSpecies" className={props.category && props.category === 'lookAlikeSpecies' ? 'is-active' : ''} />
           </div>
         }
+        <CSVButton data={props.data} columns={props.columns} />
       </div>
       <div className="column small-12 medium-4">
         {props.isSearch ?
@@ -33,7 +35,9 @@ SpeciesDetailFilters.contextTypes = {
 SpeciesDetailFilters.propTypes = {
   id: React.PropTypes.string,
   category: React.PropTypes.string,
-  isSearch: React.PropTypes.bool
+  isSearch: React.PropTypes.bool,
+  data: React.PropTypes.array,
+  columns: React.PropTypes.array
 };
 
 export default SpeciesDetailFilters;
