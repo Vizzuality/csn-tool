@@ -13,6 +13,7 @@ class SpeciesMap extends BasicMap {
     this.layers = [];
     this.boundaryColorsToPop = [];
     this.activeBoundary = false;
+    this.activeLayers = [];
   }
 
   componentDidMount() {
@@ -47,13 +48,16 @@ class SpeciesMap extends BasicMap {
     }
 
     if (!newProps.layers.population) {
-      this.layers.forEach((layer) => {
-        this.map.removeLayer(layer);
+      this.layers.concat(this.activeLayers).forEach((layer) => {
+        layer.setOpacity(0);
       });
-      this.layers = [];
     } else {
       if (this.layers.length === 0) {
         this.getBounds(this.props.id);
+      } else {
+        this.layers.forEach((layer) => {
+          layer.setOpacity(1);
+        });
       }
 
       const differences = newProps.activeBounds.filter((newBound) => {
@@ -62,13 +66,34 @@ class SpeciesMap extends BasicMap {
       });
 
       differences.forEach((difference) => {
-        this.addLayer(newProps.id, difference.id, difference.active);
+        this.changeLayerActivication(difference.id, difference.active);
       });
     }
   }
 
   componentWillUnmount() {
     this.remove();
+  }
+
+  changeLayerActivication(layerId, active) {
+    this.activeLayers.forEach((layer) => {
+      if (layer.options.id === layerId) {
+        if (active) {
+          layer.setOpacity(1);
+        } else {
+          layer.setOpacity(0);
+        }
+      }
+    });
+    this.layers.forEach((layer) => {
+      if (layer.options.id === layerId) {
+        if (!active) {
+          layer.setOpacity(1);
+        } else {
+          layer.setOpacity(0);
+        }
+      }
+    });
   }
 
   getBounds(id) {
@@ -96,43 +121,57 @@ class SpeciesMap extends BasicMap {
 
     if (this.props.population) {
       this.props.population.forEach((pop) => {
-        this.addLayer(this.props.id, pop.wpepopid, false);
+        this.addLayer(this.props.id, pop.wpepopid);
       });
     }
   }
 
-  addLayer(id, popId, active) {
-    const opacity = active ? '1' : '0';
+  addLayer(id, popId) {
     const color = this.boundaryColorsToPop[popId];
 
     const query = `SELECT f.the_geom_webmercator,
       f.colour_index
       FROM species_and_flywaygroups f WHERE f.wpepopid = ${popId} LIMIT 1`;
 
-    const cartoCSS = `#species_and_flywaygroups{
-      line-opacity: 1;
-      line-width: 3;
-      line-dasharray: 1, 7;
-      line-cap: round;
-      line-color: ${color};
-      polygon-fill: ${color};
-      polygon-opacity: ${opacity}
-    }`;
+    [{
+      opacity: '0',
+      active: false,
+      layerGroup: this.layers
+    }, {
+      opacity: '0.5',
+      active: true,
+      layerGroup: this.activeLayers
+    }].forEach(({ opacity, active }) => {
+      const cartoCSS = `#species_and_flywaygroups{
+        line-opacity: 1;
+        line-width: 3;
+        line-dasharray: 1, 7;
+        line-cap: round;
+        line-color: ${color};
+        polygon-fill: ${color};
+        polygon-opacity: ${opacity}
+      }`;
 
-    createLayer({
-      sql: query,
-      cartocss: cartoCSS
-    }, this.addTile.bind(this, popId));
+      createLayer({
+        sql: query,
+        cartocss: cartoCSS
+      }, this.addTile.bind(this, popId, active));
+    });
   }
 
-  addTile(id, url) {
-    if (this.layers.some((layer) => layer.options.id === id)) {
-      this.layers = this.layers.map((layer) => {
+  addTile(id, active, url) {
+    let layers = this.layers;
+
+    if (active) {
+      layers = this.activeLayers;
+    }
+    if (layers.length > 0 && layers.some((layer) => layer.options.id === id)) {
+      /* layers = layers.map((layer) => {
         if (layer.options.id === id) {
           layer.setUrl(url);
         }
         return layer;
-      });
+      }); */
     } else {
       const layer = L.tileLayer(url, {
         id,
@@ -140,9 +179,13 @@ class SpeciesMap extends BasicMap {
         attribution: BASEMAP_ATTRIBUTION_CARTO
       }).setZIndex(2);
 
+      if (active) {
+        layer.setOpacity(0);
+      }
       layer.addTo(this.map);
       layer.getContainer().classList.add('-layer-blending');
-      this.layers.push(layer);
+
+      layers.push(layer);
     }
   }
 
