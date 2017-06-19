@@ -1,5 +1,5 @@
 import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION,
-  GET_SPECIES_LOOK_ALIKE_SPECIES, SET_SPECIES_PARAMS,
+  GET_SPECIES_LOOK_ALIKE_SPECIES, SET_SPECIES_PARAMS, TOGGLE_LEGEND_ITEM,
   SET_SPECIES_DETAIL_PARAMS, SET_SPECIES_SORT, SET_SPECIES_COLUMN_FILTER,
   SET_SPECIES_DETAIL_SEARCH, TOGGLE_SPECIES_LAYER, CHANGE_COLUMN_ACTIVATION } from 'constants/index.js';
 import { commonSort } from './common.js';
@@ -25,6 +25,7 @@ const initialState = {
   sites: {},
   population: {},
   lookAlikeSpecies: {},
+  activeBounds: [],
   layers: {
     sites: true,
     population: true
@@ -99,6 +100,25 @@ export default function (state = initialState, action) {
       const layers = Object.assign({}, state.layers);
       layers[action.payload] = !layers[action.payload];
       return Object.assign({}, state, { layers });
+    }
+    case TOGGLE_LEGEND_ITEM: {
+      const activeBounds = state.activeBounds.slice(0);
+      const id = action.payload.id;
+      const active = action.payload.active;
+
+      const foundBound = activeBounds.filter((bound) => bound.id === id)[0];
+      if (!foundBound) {
+        activeBounds.push({ id, active });
+      }
+
+      const newState = Object.assign({}, state, {
+        activeBounds: activeBounds.map((bound) =>
+          Object.assign({}, bound, {
+            active: (bound.id === id) && active
+          })
+      ) });
+
+      return newState;
     }
     case SET_SPECIES_SORT: {
       let list = null;

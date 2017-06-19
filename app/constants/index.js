@@ -38,8 +38,22 @@ export const SET_SPECIES_PARAMS = 'SET_SPECIES_PARAMS';
 export const SET_SPECIES_DETAIL_PARAMS = 'SET_SPECIES_DETAIL_PARAMS';
 export const SET_SPECIES_DETAIL_SEARCH = 'SET_SPECIES_DETAIL_SEARCH';
 export const TOGGLE_SPECIES_LAYER = 'TOGGLE_SPECIES_LAYER';
+export const TOGGLE_LEGEND_ITEM = 'TOGGLE_LEGEND_ITEM';
 export const SET_SPECIES_SORT = 'SET_SPECIES_SORT';
 export const SET_SPECIES_COLUMN_FILTER = 'SET_SPECIES_COLUMN_FILTER';
+export const BOUNDARY_COLORS = [
+  '#a6cee3',
+  '#1f78b4',
+  '#b2df8a',
+  '#33a02c',
+  '#fb9a99',
+  '#e31a1c',
+  '#fdbf6f',
+  '#ff7f00',
+  '#cab2d6',
+  '#6a3d9a',
+  '#ffff99'
+];
 
 // THRESHOLD
 export const SET_THRESHOLD_DATA = 'SET_THRESHOLD_DATA';

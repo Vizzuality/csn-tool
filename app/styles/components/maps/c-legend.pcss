@@ -1,6 +1,15 @@
 .c-legend {
   padding: 1rem;
-  > .item {
+
+  > div .legend-line {
+    height: 1px;
+    width: 100%;
+    background-color: $white;
+    opacity: 0.1;
+    margin: 9px 0;
+  }
+
+  > div .item {
     position: relative;
     padding-right: 24px;
 
@@ -15,6 +24,11 @@
       position: absolute;
       top: 4px;
       right: 0;
+    }
+
+    > .sub-item:hover p {
+      opacity: 1;
+      font-weight: bold;
     }
 
     > .sub-item {

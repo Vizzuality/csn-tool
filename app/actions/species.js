@@ -1,7 +1,7 @@
 import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION,
   GET_SPECIES_LOOK_ALIKE_SPECIES, SET_SPECIES_PARAMS,
   SET_SPECIES_DETAIL_PARAMS, SET_SPECIES_SORT, SET_SPECIES_COLUMN_FILTER,
-  SET_SPECIES_DETAIL_SEARCH, TOGGLE_SPECIES_LAYER } from 'constants/index.js';
+  SET_SPECIES_DETAIL_SEARCH, TOGGLE_SPECIES_LAYER, TOGGLE_LEGEND_ITEM } from 'constants/index.js';
 
 export function getSpeciesStats(id) {
   const url = `${config.apiHost}/species/${id}`;
@@ -146,6 +146,13 @@ export function toggleLayer(layer) {
   return {
     type: TOGGLE_SPECIES_LAYER,
     payload: layer
+  };
+}
+
+export function toggleLegendItem(item, active) {
+  return {
+    type: TOGGLE_LEGEND_ITEM,
+    payload: { id: item.id, active }
   };
 }
 
