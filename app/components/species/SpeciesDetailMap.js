@@ -4,8 +4,17 @@ import BasicMap from 'components/maps/BasicMap';
 import { BASEMAP_ATTRIBUTION_CARTO } from 'constants/map';
 import { createLayer, getSqlQuery } from 'helpers/map';
 import SpeciesDetailLegend from 'containers/species/SpeciesDetailLegend';
+import { BOUNDARY_COLORS } from 'constants';
 
 class SpeciesMap extends BasicMap {
+
+  constructor(props) {
+    super(props);
+    this.layers = [];
+    this.boundaryColorsToPop = [];
+    this.activeBoundary = false;
+  }
+
   componentDidMount() {
     this.initMap();
 
@@ -13,8 +22,6 @@ class SpeciesMap extends BasicMap {
     if (this.props.sites && this.props.sites.length) {
       this.drawMarkers(this.props.sites);
     }
-
-    this.getBounds(this.props.id);
   }
 
   componentWillReceiveProps(newProps) {
@@ -25,6 +32,38 @@ class SpeciesMap extends BasicMap {
       }
     } else {
       this.clearMarkers();
+    }
+
+    if (this.boundaryColorsToPop.length === 0) {
+      if (this.props.population) {
+        let i = 0;
+        this.boundaryColorsToPop = this.props.population.reduce((all, pop) => {
+          const newAll = Object.assign({}, all);
+          newAll[pop.wpepopid] = BOUNDARY_COLORS[i];
+          i++;
+          return newAll;
+        }, []);
+      }
+    }
+
+    if (!newProps.layers.population) {
+      this.layers.forEach((layer) => {
+        this.map.removeLayer(layer);
+      });
+      this.layers = [];
+    } else {
+      if (this.layers.length === 0) {
+        this.getBounds(this.props.id);
+      }
+
+      const differences = newProps.activeBounds.filter((newBound) => {
+        const oldBound = this.props.activeBounds.filter((bound) => bound.id === newBound.id)[0];
+        return !oldBound || oldBound.active !== newBound.active;
+      });
+
+      differences.forEach((difference) => {
+        this.addLayer(newProps.id, difference.id, difference.active);
+      });
     }
   }
 
@@ -55,50 +94,55 @@ class SpeciesMap extends BasicMap {
       }
     }
 
-    this.addLayer(this.props.id);
+    if (this.props.population) {
+      this.props.population.forEach((pop) => {
+        this.addLayer(this.props.id, pop.wpepopid, false);
+      });
+    }
   }
 
-  addLayer(id) {
-    const query = `SELECT f.the_geom_webmercator, f.colour_index FROM species_main s
-      INNER JOIN species_and_flywaygroups f on f.ssid = s.species_id
-      WHERE s.species_id = ${id}`;
+  addLayer(id, popId, active) {
+    const opacity = active ? '1' : '0';
+    const color = this.boundaryColorsToPop[popId];
+
+    const query = `SELECT f.the_geom_webmercator,
+      f.colour_index
+      FROM species_and_flywaygroups f WHERE f.wpepopid = ${popId} LIMIT 1`;
 
     const cartoCSS = `#species_and_flywaygroups{
-      polygon-opacity: 0;
       line-opacity: 1;
       line-width: 3;
       line-dasharray: 1, 7;
       line-cap: round;
-    }
-    #species_and_flywaygroups[colour_index=1]{ line-color: #a6cee3;}
-    #species_and_flywaygroups[colour_index=2]{ line-color: #1f78b4;}
-    #species_and_flywaygroups[colour_index=3]{ line-color: #b2df8a;}
-    #species_and_flywaygroups[colour_index=4]{ line-color: #33a02c;}
-    #species_and_flywaygroups[colour_index=5]{ line-color: #fb9a99;}
-    #species_and_flywaygroups[colour_index=6]{ line-color: #e31a1c;}
-    #species_and_flywaygroups[colour_index=7]{ line-color: #fdbf6f;}
-    #species_and_flywaygroups[colour_index=8]{ line-color: #ff7f00;}
-    #species_and_flywaygroups[colour_index=9]{ line-color: #cab2d6;}
-    #species_and_flywaygroups[colour_index=10]{ line-color: #6a3d9a;}
-    #species_and_flywaygroups[colour_index=11]{ line-color: #ffff99;}`;
-
+      line-color: ${color};
+      polygon-fill: ${color};
+      polygon-opacity: ${opacity}
+    }`;
 
     createLayer({
       sql: query,
       cartocss: cartoCSS
-    }, this.addTile.bind(this));
+    }, this.addTile.bind(this, popId));
   }
 
-  addTile(url) {
-    if (this.layer) {
-      this.layer.setUrl(url);
+  addTile(id, url) {
+    if (this.layers.some((layer) => layer.options.id === id)) {
+      this.layers = this.layers.map((layer) => {
+        if (layer.options.id === id) {
+          layer.setUrl(url);
+        }
+        return layer;
+      });
     } else {
-      this.layer = L.tileLayer(url, {
+      const layer = L.tileLayer(url, {
+        id,
         noWrap: true,
         attribution: BASEMAP_ATTRIBUTION_CARTO
       }).setZIndex(2);
-      this.layer.addTo(this.map);
-      this.layer.getContainer().classList.add('-layer-blending');
+
+      layer.addTo(this.map);
+      layer.getContainer().classList.add('-layer-blending');
+      this.layers.push(layer);
     }
   }
 
@@ -148,7 +192,7 @@ class SpeciesMap extends BasicMap {
       <div className="l-maps-container">
         <div id={this.props.id} className="c-map -full"></div>
         <div className="l-legend">
-          <SpeciesDetailLegend />
+          <SpeciesDetailLegend boundaryColorsToPop={this.boundaryColorsToPop} />
         </div>
       </div>
     );

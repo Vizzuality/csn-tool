@@ -1,11 +1,13 @@
 import { connect } from 'react-redux';
-import { toggleLayer } from 'actions/species';
+import { toggleLayer, toggleLegendItem } from 'actions/species';
 import Legend from 'components/maps/Legend';
 
-function getLegendData(species) {
+function getLegendData(species, ownProps) {
   const legend = [];
   if (species.sites[species.selected]) {
     const sites = species.sites[species.selected];
+    const populations = species.population[species.selected];
+
     const unique = {};
     const distinct = [];
     sites.forEach((site) => {
@@ -19,25 +21,39 @@ function getLegendData(species) {
       }
     });
 
+    const distinctPop = [];
+    populations.forEach((pop) => {
+      distinctPop.push({
+        icon: 'dots',
+        id: pop.wpepopid,
+        name: pop.population,
+        color: ownProps.boundaryColorsToPop[pop.wpepopid]
+      });
+    });
+
     legend.push({
-      name: 'Critical sites',
+      name: 'Critical Sites',
       active: species.layers.sites,
       layer: 'sites',
       data: distinct
     });
+    legend.push({
+      name: 'Population Boundaries',
+      active: species.layers.population,
+      layer: 'population',
+      data: distinctPop.sort((a, b) => a.name.toString() > b.name.toString())
+    });
   }
-  // if (species.population[species.selected]) {
-  //   legend.push(species.population[species.selected]);
-  // }
   return legend;
 }
 
-const mapStateToProps = (state) => ({
-  data: getLegendData(state.species)
+const mapStateToProps = (state, ownProps) => ({
+  data: getLegendData(state.species, ownProps)
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onSwitchChange: (layer) => dispatch(toggleLayer(layer))
+  onSwitchChange: (layer) => dispatch(toggleLayer(layer)),
+  onLegendItemHover: (item, active) => dispatch(toggleLegendItem(item, active))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Legend);
