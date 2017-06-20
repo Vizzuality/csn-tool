@@ -10,15 +10,16 @@ import { StickyContainer } from 'react-sticky';
 const rows = [
   {
     title: 'geography',
-    sections: ['country', 'site']
+    sections: ['country', 'aewa_region', 'ramsar_region', 'site', 'protection', 'site_threat', 'site_habitat']
   },
   {
     title: 'taxonomy',
-    sections: ['family', 'genus', 'species']
+    sections: ['family', 'genus', 'species', 'red_list_status', 'aewa_annex_2',
+      'species_threat', 'species_habitat_association']
   },
   {
-    title: 'habitat',
-    sections: ['habitat']
+    title: 'population',
+    sections: ['aewa_table_1_status', 'eu_birds_directive', 'cms_caf_action_plan', 'multispecies_flyway', 'population_trend']
   }
 ];
 

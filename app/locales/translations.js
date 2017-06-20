@@ -104,7 +104,21 @@ export const translations = {
     'geography': 'Geography',
     'taxonomy': 'Taxonomy',
     'habitat': 'Habitat',
-    'selectOneOption': 'Select at least one option'
+    'selectOneOption': 'Select at least one option',
+    'ramsar_region': 'Ramsar region',
+    'aewa_region': 'AEWA region',
+    'protection': 'Protection',
+    'site_threat': 'Site threat',
+    'site_habitat': 'Site habitat',
+    'red_list_status': 'Red list status',
+    'aewa_annex_2': 'AEWA annex 2',
+    'species_threat': 'Species threat',
+    'species_habitat_association': 'Species habitat association',
+    'aewa_table_1_status': 'AEWA table 1 status',
+    'eu_birds_directive': 'EU birds directive',
+    'cms_caf_action_plan': 'CMS CAF action plan',
+    'multispecies_flyway': 'Multispecies flyway',
+    'population_trend': 'Population trend'
   },
   es: {
     'country': 'Pais',
