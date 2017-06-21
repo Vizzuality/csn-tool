@@ -19,6 +19,14 @@ class SpeciesDetailTable extends React.Component {
     this.getLookAlikeSpecies = this.getLookAlikeSpecies.bind(this);
   }
 
+  componentWillReceiveProps(newProps) {
+    if (newProps.category !== 'lookAlikeSpecies') {
+      this.setState({
+        selectedItem: null
+      });
+    }
+  }
+
   getLookAlikeSpecies(species) {
     this.setState({
       selectedItem: species
@@ -76,6 +84,8 @@ class SpeciesDetailTable extends React.Component {
     switch (category) {
       case 'populations':
         return 'species';
+      case 'population':
+        return null; // no display
       case 'criticalSites':
         return 'sites/csn';
       case 'lookAlikeSpecies':
