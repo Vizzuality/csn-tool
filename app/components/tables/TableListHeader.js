@@ -136,16 +136,18 @@ class TableListHeader extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const isNewCategory = this.props.selectedCategory !== nextProps.selectedCategory;
-    const isDataDifferent = nextProps.data.length && this.props.data.length !== nextProps.data.length;
     const areColsDifferent = nextProps.columns.length && this.props.columns.length !== nextProps.columns.length;
 
     if (isNewCategory) {
       this.filterBy({ field: 'all', value: 'reset' });
+      this.hasProducedFilters = false;
     }
 
-    if (!this.hasProducedFilters || (areColsDifferent && isDataDifferent)) {
-      this.filters = getFilters(nextProps.columns, nextProps.data);
-      this.hasProducedFilters = true;
+    if (!this.hasProducedFilters || (areColsDifferent)) {
+      if (nextProps.data.length) {
+        this.filters = getFilters(nextProps.columns, nextProps.data);
+        this.hasProducedFilters = true;
+      }
     }
   }
 
