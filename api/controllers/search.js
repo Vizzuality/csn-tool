@@ -25,7 +25,7 @@ const optionQueries = [
   { name: 'aewa_region', query: '' },
   { name: 'site', query: queryProducer('sites', 'site_name', 'site_id') },
   { name: 'protection', query: queryProducer('sites', 'protection_status') },
-  { name: 'site_threat', query: '' },
+  { name: 'site_threat', query: queryProducer('sites_threats', 'threat_name') },
   { name: 'site_habitat', query: queryProducer('sites_habitats', 'habitat_name', 'habitat_id') },
   // species attributes
   { name: 'family', query: queryProducer('species', 'family') },
