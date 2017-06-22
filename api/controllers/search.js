@@ -35,7 +35,7 @@ const optionQueries = [
   { name: 'red_list_status', query: queryProducer('species_main', 'iucn_category') },
   { name: 'aewa_annex_2', query: '' },
   { name: 'species_threat', query: queryProducer('species_threats', 'threat_level_1') },
-  { name: 'species_habitat_association', query: queryProducer('species_habitats', 'habitat_level_1') },
+  { name: 'species_habitat_association', query: queryProducer('species_habitat', 'habitat_level_1') },
   // population
   { name: 'aewa_table_1_status', query: queryProducer('populations_iba', 'a') },
   { name: 'eu_birds_directive', query: queryProducer('populations_iba', 'eu_birds_directive') },
