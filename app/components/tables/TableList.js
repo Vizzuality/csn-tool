@@ -5,33 +5,38 @@ import { numberToThousands } from 'helpers/data';
 
 const columnsWithYears = ['year', 'start', 'end', 'year_end', 'year_start'];
 
-function getDetailLink(detailLink, item) {
-  const popupContent = typeof detailLink === 'string' && detailLink.indexOf('species') > -1 ? 'species' : 'sites';
-  if (detailLink && detailLink.type === 'action') {
-    return (
-      <div className="link">
-        <div className="popup">
-          <div className="popup-content">View species details</div>
-          <button className="popup-link" onClick={() => detailLink.action(item)} icon="icon-table_arrow_right" >
-            <svg><use xlinkHref="#icon-table_arrow_right"></use></svg>
-          </button>
-        </div>
-      </div>
-    );
-  }
+function detailLinkFrame(label, link) {
   return (
     <div className="link">
       <div className="popup">
-        <div className="popup-content">View {popupContent} details</div>
-        <NavLink className="popup-link" to={`/${detailLink}/${item.id}`} icon="icon-table_arrow_right" parent />
+        <div className="popup-content">{label}</div>
+        {link}
       </div>
     </div>
   );
 }
 
+function getDetailLink(detailLink, item) {
+  const popupContent = typeof detailLink === 'string' && detailLink.indexOf('species') > -1 ? 'species' : 'sites';
+  if (detailLink && detailLink.type === 'action') {
+    return (
+      detailLinkFrame('View species details', (
+        <button className="popup-link" onClick={() => detailLink.action(item)} icon="icon-table_arrow_right" >
+          <svg><use xlinkHref="#icon-table_arrow_right"></use></svg>
+        </button>
+      ))
+    );
+  }
+  return (
+    detailLinkFrame(`View ${popupContent} details`, (
+      <NavLink className="popup-link" to={`/${detailLink}/${item.id}`} icon="icon-table_arrow_right" parent />
+    ))
+  );
+}
+
 function TableList(props) {
   if (!props.data) return (<div className="c-table-list blank"><LoadingSpinner inner transparent /></div>);
-  const colWidth = props.detailLink ? (97.5 / props.columns.length) : (100 / props.columns.length);
+  const colWidth = 97.5 / props.columns.length; // still need empty category
   const colCenter = ['a', 'b', 'c', 'original_a', 'original_b', 'original_c',
     'iba', 'csn', 'iba_species', 'csn_species'];
   return !props.data.length
@@ -103,9 +108,12 @@ function TableList(props) {
             const colVal = (typeof item[column] === 'number' && columnsWithYears.indexOf(column) === -1) ? numberToThousands(item[column]) : item[column];
             return (<div key={index2} className={`text ${column} ${alignClass}`} style={{ width: `${colWidth}%` }} dangerouslySetInnerHTML={{ __html: colVal }}></div>);
           })}
-
           {props.detailLink &&
-            getDetailLink(props.detailLink, item)
+            getDetailLink(props.detailLink, item) ||
+            <div className="link">
+              <div className="popup">
+              </div>
+            </div>
           }
         </li>
       ))}

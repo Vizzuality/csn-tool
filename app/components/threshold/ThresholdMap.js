@@ -94,12 +94,13 @@ class ThresholdMap extends BasicMap {
   initPopup() {
     this.popup = L.popup({
       closeButton: false,
-      offset: L.point(0, -3)
+      offset: L.point(0, -3),
+      autoPan: false
     }).setContent('');
   }
 
   showPopup(e) {
-    const html = '<p class="text -light">Click on the map to reveal relevant species</p>';
+    const html = '<p style={{ float: "left"}} class="text -light">Click on the map to reveal relevant species</p>';
 
     this.popup.setLatLng(e.latlng)
       .setContent(html)
@@ -109,10 +110,17 @@ class ThresholdMap extends BasicMap {
   }
 
   setPopupPosition(e) {
-    if (this.popupVisible) {
-      this.popup.setLatLng(e.latlng);
+    const bounds = this.map.getBounds();
+    const totalWidth = (bounds.getEast() - bounds.getWest());
+    const noFlyWidth = totalWidth / 10;
+    if (e.latlng.lng > (bounds.getEast() - noFlyWidth) || e.latlng.lng < (bounds.getWest() + noFlyWidth)) {
+      if (this.popupVisible) this.hidePopup();
     } else {
-      this.showPopup(e);
+      if (this.popupVisible) {
+        this.popup.setLatLng(e.latlng);
+      } else {
+        this.showPopup(e);
+      }
     }
   }
 

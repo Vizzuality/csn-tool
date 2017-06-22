@@ -1,9 +1,8 @@
 const rp = require('request-promise');
 const CARTO_SQL = require('../constants').CARTO_SQL;
 
-async function getCountries() {
+async function getGeneral(query) {
   try {
-    const query = 'SELECT DISTINCT(country) as label, country_id as value FROM countries ORDER by country ASC';
     const data = await rp(CARTO_SQL + query);
     return JSON.parse(data).rows || [];
   } catch (err) {
@@ -11,74 +10,49 @@ async function getCountries() {
   }
 }
 
-async function getSites() {
-  try {
-    const query = 'SELECT DISTINCT(site_name) as label, site_id as value, country_id FROM sites ORDER by site_name ASC';
-    const data = await rp(CARTO_SQL + query);
-    return JSON.parse(data).rows || [];
-  } catch (err) {
-    return [];
+const queryProducer = (table, label, value) => {
+  let formattedLabel = label;
+  if (label === 'eu_birds_directive' || label === 'caf_action_plan') {
+    formattedLabel = `CAST(${label} as CHAR(50))`;
   }
-}
+  return `SELECT DISTINCT(${formattedLabel}) as label, ${value || label} as value FROM ${table} ORDER BY ${label} ASC`;
+};
 
-async function getFamilies() {
-  try {
-    const query = 'SELECT DISTINCT(family) as label, family as value FROM species ORDER by family ASC';
-    const data = await rp(CARTO_SQL + query);
-    return JSON.parse(data).rows || [];
-  } catch (err) {
-    return [];
-  }
-}
-
-async function getGenus() {
-  try {
-    const query = 'SELECT DISTINCT(genus) as label, genus as value FROM species ORDER by genus ASC';
-    const data = await rp(CARTO_SQL + query);
-    return JSON.parse(data).rows || [];
-  } catch (err) {
-    return [];
-  }
-}
-
-async function getSpecies() {
-  try {
-    const query = 'SELECT DISTINCT(scientific_name) as label, species_id as value, family, genus FROM species ORDER by scientific_name ASC';
-    const data = await rp(CARTO_SQL + query);
-    return JSON.parse(data).rows || [];
-  } catch (err) {
-    return [];
-  }
-}
-
-async function getHabitats() {
-  try {
-    const query = 'SELECT DISTINCT(habitat_name) as label, habitat_id as value FROM sites_habitats ORDER by habitat_name ASC';
-    const data = await rp(CARTO_SQL + query);
-    return JSON.parse(data).rows || [];
-  } catch (err) {
-    return [];
-  }
-}
+const optionQueries = [
+  // geography
+  { name: 'country', query: queryProducer('countries', 'country', 'country_id') },
+  { name: 'ramsar_region', query: queryProducer('populations_iba', 'ramsar_criterion_6') },
+  { name: 'aewa_region', query: '' },
+  { name: 'site', query: queryProducer('sites', 'site_name', 'site_id') },
+  { name: 'protection', query: queryProducer('sites', 'protection_status') },
+  { name: 'site_threat', query: queryProducer('sites_threats', 'threat_name') },
+  { name: 'site_habitat', query: queryProducer('sites_habitats', 'habitat_name', 'habitat_id') },
+  // species attributes
+  { name: 'family', query: queryProducer('species', 'family') },
+  { name: 'genus', query: queryProducer('species', 'genus') },
+  { name: 'species',
+    query: 'SELECT DISTINCT(scientific_name) as label, species_id as value, family, genus FROM species ORDER by scientific_name ASC' },
+  { name: 'red_list_status', query: queryProducer('species_main', 'iucn_category') },
+  { name: 'aewa_annex_2', query: '' },
+  { name: 'species_threat', query: queryProducer('species_threats', 'threat_level_1') },
+  { name: 'species_habitat_association', query: queryProducer('species_habitats', 'habitat_level_1') },
+  // population
+  { name: 'aewa_table_1_status', query: queryProducer('populations_iba', 'a') },
+  { name: 'eu_birds_directive', query: queryProducer('populations_iba', 'eu_birds_directive') },
+  { name: 'cms_caf_action_plan', query: queryProducer('populations_iba', 'caf_action_plan') },
+  { name: 'multispecies_flyway', query: queryProducer('populations_iba', 'flyway_range') },
+  { name: 'population_trend', query: '' }
+];
 
 async function getOptions(req, res) {
   try {
-    const queries = [];
-    queries.push(getCountries());
-    queries.push(getSites());
-    queries.push(getFamilies());
-    queries.push(getGenus());
-    queries.push(getSpecies());
-    queries.push(getHabitats());
+    const queries = optionQueries.map(({ query }) => getGeneral(query));
     const options = await Promise.all(queries);
-    res.json({
-      country: options[0],
-      site: options[1],
-      family: options[2],
-      genus: options[3],
-      species: options[4],
-      habitat: options[5]
+    const queryReturns = {};
+    optionQueries.forEach(({ name }, index) => {
+      queryReturns[name] = options[index];
     });
+    res.json(queryReturns);
   } catch (err) {
     res.status(err.statusCode || 500);
     res.json({ error: err.message });
@@ -105,6 +79,14 @@ async function getSitesResults(req, res) {
   // from req.query['paramName']
   try {
     const params = parseParams(req.query);
+    const where = [];
+    if (params.country) {
+      where.push(`country_id IN(${params.country.join()})`);
+    }
+    if (params.protection) {
+      where.push(`protection_status = '${params.protection}'`);
+    }
+
     const query = `with stc as (select site_id,
       SUM(case when iba_criteria = '' then 0 else 1 end) as iba
       from species_sites group by site_id)
@@ -118,19 +100,16 @@ async function getSitesResults(req, res) {
       , s.site_id AS id
       FROM sites s
       LEFT JOIN stc ON stc.site_id = s.site_id
-      ${params.species || params.genus || params.family
-        ? `JOIN species_sites ss ON ss.site_id = s.site_id
+      ${(params.species || params.genus || params.family) &&
+        `JOIN species_sites ss ON ss.site_id = s.site_id
           JOIN species ON ss.species_id = species.species_id AND (
             ${params.species ? `species.species_id IN(${params.species.join()})` : false}
             OR ${params.genus ? `species.genus IN('${params.genus.join('\',\'')}')` : false}
             OR ${params.family ? `species.family IN('${params.family.join('\',\'')}')` : false}
-          )`
-        : ''}
-      ${params.habitat
-        ? `JOIN sites_habitats sh ON sh.site_id = s.site_id AND habitat_id IN (${params.habitat.join()})`
-        : ''
-      }
-      ${params.country ? `WHERE country_id IN(${params.country.join()})` : ''}
+          )` || ''}
+      ${params.habitat &&
+        `JOIN sites_habitats sh ON sh.site_id = s.site_id AND habitat_id IN (${params.habitat.join()})` || ''}
+      ${where.length > 0 && `WHERE ${where.join(' AND ')}` || ''}
       GROUP BY s.site_name, s.country, s.iso2, s.protection_status, s.hyperlink,
       s.iba_in_danger, s.site_id, stc.iba
       ORDER by country ASC, site_name ASC`;

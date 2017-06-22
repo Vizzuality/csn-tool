@@ -15,7 +15,6 @@ function getSites(req, res) {
     : '';
 
   let query;
-
   if (req.query.filter === 'iba') {
     query = `with stc as (
       select site_id, SUM(case when iba_criteria = '' then 0 else 1

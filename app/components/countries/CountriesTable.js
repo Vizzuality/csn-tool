@@ -24,6 +24,14 @@ class CountriesTable extends React.Component {
     this.props.cleanSearchFilter('');
   }
 
+  componentWillReceiveProps(newProps) {
+    if (newProps.category !== 'lookAlikeSpecies') {
+      this.setState({
+        selectedItem: null
+      });
+    }
+  }
+
   getLookAlikeSpecies(species) {
     this.setState({
       selectedItem: species
