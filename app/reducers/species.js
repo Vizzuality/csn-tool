@@ -1,7 +1,8 @@
 import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION,
-  GET_SPECIES_LOOK_ALIKE_SPECIES, SET_SPECIES_PARAMS, TOGGLE_LEGEND_ITEM,
-  SET_SPECIES_DETAIL_PARAMS, SET_SPECIES_SORT, SET_SPECIES_COLUMN_FILTER,
-  SET_SPECIES_DETAIL_SEARCH, TOGGLE_SPECIES_LAYER, CHANGE_COLUMN_ACTIVATION } from 'constants/index.js';
+  GET_SPECIES_CRITICAL_SITES, GET_SPECIES_LOOK_ALIKE_SPECIES, SET_SPECIES_PARAMS,
+  TOGGLE_LEGEND_ITEM, SET_SPECIES_DETAIL_PARAMS, SET_SPECIES_SORT,
+  SET_SPECIES_COLUMN_FILTER, SET_SPECIES_DETAIL_SEARCH, TOGGLE_SPECIES_LAYER,
+  CHANGE_COLUMN_ACTIVATION } from 'constants/index.js';
 import { commonSort } from './common.js';
 
 const SPECIES_COLUMNS = {
@@ -10,6 +11,8 @@ const SPECIES_COLUMNS = {
     'caf_action_plan', 'eu_birds_directive', 'flyway_range', 'year_start',
     'year_end', 'size_min', 'size_max', 'ramsar_criterion'],
   lookAlikeSpecies: ['population', 'original_a', 'original_b', 'original_c', 'confusion_species', 'confusion_species_as'],
+  criticalSites: ['country', 'site_name', 'protected', 'season', 'start', 'end', 'minimum',
+    'maximum', 'geometric_mean', 'units', 'iba_criteria'],
   sites: ['country', 'site_name', 'protected', 'season', 'start', 'end', 'minimum',
     'maximum', 'geometric_mean', 'units', 'iba_criteria']
 };
@@ -23,6 +26,7 @@ const initialState = {
   searchFilter: '',
   stats: {},
   sites: {},
+  criticalSites: {},
   population: {},
   lookAlikeSpecies: {},
   activeBounds: [],
@@ -79,6 +83,13 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { stats: action.payload });
     case GET_SPECIES_LIST:
       return Object.assign({}, state, { list: action.payload });
+    case GET_SPECIES_CRITICAL_SITES: {
+      const data = Object.assign({}, state.criticalSites, {});
+      data[action.payload.id] = action.payload.data.error
+        ? []
+        : action.payload.data;
+      return Object.assign({}, state, { criticalSites: data });
+    }
     case GET_SPECIES_SITES: {
       const data = Object.assign({}, state.sites, {});
       data[action.payload.id] = action.payload.data.error

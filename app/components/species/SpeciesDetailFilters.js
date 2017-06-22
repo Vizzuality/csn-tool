@@ -11,6 +11,7 @@ function SpeciesDetailFilters(props) {
         {!props.isSearch &&
           <div className="tags">
             <NavLink to={`/species/${props.id}/sites`} i18nText="IBA" className={props.category && props.category === 'sites' ? 'is-active' : ''} />
+            <NavLink to={`/species/${props.id}/criticalSites`} i18nText="CSN" className={props.category && props.category === 'criticalSites' ? 'is-active' : ''} />
             <NavLink to={`/species/${props.id}/population`} i18nText="population" className={props.category && props.category === 'population' ? 'is-active' : ''} />
             <NavLink to={`/species/${props.id}/lookAlikeSpecies`} i18nText="lookAlikeSpecies" className={props.category && props.category === 'lookAlikeSpecies' ? 'is-active' : ''} />
           </div>

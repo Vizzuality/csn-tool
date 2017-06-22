@@ -1,4 +1,5 @@
-import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION,
+import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES,
+  GET_SPECIES_CRITICAL_SITES, GET_SPECIES_POPULATION,
   GET_SPECIES_LOOK_ALIKE_SPECIES, SET_SPECIES_PARAMS,
   SET_SPECIES_DETAIL_PARAMS, SET_SPECIES_SORT, SET_SPECIES_COLUMN_FILTER,
   SET_SPECIES_DETAIL_SEARCH, TOGGLE_SPECIES_LAYER, TOGGLE_LEGEND_ITEM } from 'constants/index.js';
@@ -70,6 +71,23 @@ export function getSpeciesSites(id) {
         }
       });
     }
+  };
+}
+
+export function getSpeciesCriticalSites(id) {
+  const url = `${config.apiHost}/species/${id}/criticalSites`;
+  return dispatch => {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        dispatch({
+          type: GET_SPECIES_CRITICAL_SITES,
+          payload: {
+            id,
+            data
+          }
+        });
+      });
   };
 }
 

@@ -86,6 +86,43 @@ function getSpeciesSites(req, res) {
         res.json(results);
       } else {
         res.status(404);
+        res.json({ error: 'No IBA sites for this species' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
+function getSpeciesCriticalSites(req, res) {
+  const query = `SELECT s.species_id,
+      ss.iba_criteria, ss.maximum, ss.minimum, ss.season, ss.units,
+      si.site_name, si.lat, si.lon, si.country, si.iso2, si.protected,
+      string_agg(p.populations, ', ') as population,
+      si.hyperlink, si.site_id AS id, ss.geometric_mean
+    FROM species_main s
+    INNER JOIN species_sites ss ON s.species_id = ss.species_id
+    INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
+    INNER JOIN sites_csn_points si ON ss.site_id = si.site_id
+    WHERE s.species_id = '${req.params.id}'
+    GROUP BY ss.iba_criteria, ss.maximum, ss.minimum, ss.units,
+    ss.season, si.country, si.iso2, si.protected, si.site_name, si.lat, si.lon,
+    si.hyperlink, si.site_id, 1, ss.geometric_mean
+    ORDER BY si.site_name`;
+
+  rp(CARTO_SQL + query)
+    .then((data) => {
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        results.map((item) => {
+          const site = item;
+          site.protected_slug = normalizeSiteStatus(item.protected);
+          return site;
+        });
+        res.json(results);
+      } else {
+        res.status(404);
         res.json({ error: 'No species' });
       }
     })
@@ -220,6 +257,7 @@ module.exports = {
   getSpeciesList,
   getSpeciesDetails,
   getSpeciesSites,
+  getSpeciesCriticalSites,
   getSpeciesPopulation,
   getSpeciesLookAlikeSpecies,
   getPopulationsLookAlikeSpecies
