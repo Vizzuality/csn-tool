@@ -22,7 +22,7 @@ const optionQueries = [
   // geography
   { name: 'country', query: queryProducer('countries', 'country', 'country_id') },
   { name: 'ramsar_region', query: queryProducer('countries', 'ramsar_region') },
-  { name: 'aewa_region', query: '' },
+  { name: 'aewa_region', query: queryProducer('countries', 'aewa_region') },
   { name: 'site', query: queryProducer('sites', 'site_name', 'site_id') },
   { name: 'protection', query: queryProducer('sites', 'protection_status') },
   { name: 'site_threat', query: queryProducer('sites_threats', 'threat_name') },
