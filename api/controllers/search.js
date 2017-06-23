@@ -21,7 +21,7 @@ const queryProducer = (table, label, value) => {
 const optionQueries = [
   // geography
   { name: 'country', query: queryProducer('countries', 'country', 'country_id') },
-  { name: 'ramsar_region', query: queryProducer('populations_iba', 'ramsar_criterion_6') },
+  { name: 'ramsar_region', query: queryProducer('countries', 'ramsar_region') },
   { name: 'aewa_region', query: '' },
   { name: 'site', query: queryProducer('sites', 'site_name', 'site_id') },
   { name: 'protection', query: queryProducer('sites', 'protection_status') },
