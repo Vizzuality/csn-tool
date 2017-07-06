@@ -48,6 +48,14 @@ class Header extends React.Component {
               options={this.languages}
               onChange={this.onSelectChange}
             />
+            <a
+              className="typeform-share button"
+              href="https://simaobelchior.typeform.com/to/qOLcRu"
+              data-mode="popup"
+              target="_blank"
+            >
+              Feedback
+            </a>
           </div>
         </div>
       </header>
