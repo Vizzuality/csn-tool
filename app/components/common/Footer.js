@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router';
-import StayUpdate from 'containers/common/StayUpdate';
 import SecondaryNav from 'components/common/SecondaryNav';
 
 function Footer(props) {
@@ -8,7 +7,6 @@ function Footer(props) {
     <footer className="l-footer">
       <div className="row align-middle c-footer">
         <div className="column small-12 medium-6">
-          <StayUpdate />
         </div>
         <div className="column small-12 medium-6 secondary-menu">
           <SecondaryNav />
