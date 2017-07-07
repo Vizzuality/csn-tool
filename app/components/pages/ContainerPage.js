@@ -1,6 +1,7 @@
 import React from 'react';
 import I18n from 'redux-i18n';
 import Header from 'containers/common/Header';
+import FeedbackForm from 'components/common/Feedback';
 import Footer from 'containers/common/Footer';
 
 import { translations } from 'locales/translations';
@@ -33,6 +34,7 @@ class ContainerPage extends React.Component {
       <I18n translations={translations}>
         <div>
           <Header />
+          <FeedbackForm />
           <div className="l-main">
             {this.props.children}
           </div>
