@@ -172,17 +172,13 @@ function getSpeciesLookAlikeSpecies(req, res) {
     (
       SELECT confusion_group,
       sm.species_id, sm.scientific_name,
-      sm.english_name,
-       pi.the_geom, pi.population_name, pi.a, pi.b, pi.c,
-       pi.wpepopid
+      sm.english_name, pi.the_geom,
+      pi.population_name, pi.a, pi.b, pi.c, pi.wpepopid
       FROM species_main AS sm
       INNER JOIN populations_iba AS pi
       ON pi.species_main_id = sm.species_id
-      WHERE
-      sm.species_id = ${req.params.id}
-      AND
-      sm.confusion_group IS NOT NULL
-      ORDER BY sm.taxonomic_sequence ASC
+      WHERE sm.species_id = ${req.params.id}
+      AND sm.confusion_group IS NOT NULL
     ) as sq
 
     INNER JOIN species_main AS sm ON

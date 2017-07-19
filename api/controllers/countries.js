@@ -56,7 +56,7 @@ function getCountrySites(req, res) {
       if (results && results.length > 0) {
         results.map((item) => {
           const site = item;
-          site.protection_status_slug = normalizeSiteStatus(item.protected);
+          site.protected_slug = normalizeSiteStatus(item.protected);
           return site;
         });
         res.json(results);
@@ -178,9 +178,8 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
     (
       SELECT confusion_group,
       sm.species_id, sm.scientific_name,
-      sm.english_name,
-       pi.the_geom, pi.population_name, pi.a, pi.b, pi.c,
-       pi.wpepopid
+      sm.english_name, pi.the_geom, pi.population_name,
+      pi.a, pi.b, pi.c, pi.wpepopid, sm.taxonomic_sequence
       FROM species_main AS sm
       INNER JOIN species_country AS sc
       ON sc.species_id = sm.species_id
@@ -192,7 +191,6 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
       AND pi.species_main_id = sm.species_id
       WHERE
       sm.confusion_group IS NOT NULL
-      ORDER BY sm.taxonomic_sequence ASC
     ) as sq
 
     INNER JOIN species_main AS sm ON
@@ -206,7 +204,8 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
     AND pi.species_main_id = sm.species_id
     GROUP BY sq.scientific_name,
     sq.english_name, sq.population_name,
-    sq.a, sq.b, sq.c, sq.wpepopid`;
+    sq.a, sq.b, sq.c, sq.wpepopid, sq.taxonomic_sequence
+    ORDER BY sq.taxonomic_sequence ASC`;
 
   rp(CARTO_SQL + query)
     .then((data) => {
@@ -232,6 +231,7 @@ function getCountryLookAlikeSpecies(req, res) {
     (
       SELECT confusion_group,
        sm.species_id, sm.scientific_name,
+       sm.taxonomic_sequence,
        pi.the_geom, pi.population_name, pi.a, pi.b, pi.c
        FROM species_main AS sm
        INNER JOIN species_country AS sc
@@ -254,7 +254,9 @@ function getCountryLookAlikeSpecies(req, res) {
     INNER JOIN populations_iba AS pi
     ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
     AND ST_INTERSECTS(pi.the_geom, sq.the_geom)
-    AND pi.species_main_id = sm.species_id`;
+    AND pi.species_main_id = sm.species_id
+    ORDER BY sm.taxonomic_sequence ASC`;
+
   rp(CARTO_SQL + query)
     .then((data) => {
       const result = JSON.parse(data);
