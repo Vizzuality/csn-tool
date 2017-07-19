@@ -79,7 +79,7 @@ function TableList(props) {
                   </a>
                 </span>
               </div>);
-            } else if (column === 'populations' && item.pop_hyperlink) {
+            } else if (column === 'population' && item.pop_hyperlink) {
               return (<div key={index2} style={{ width: `${colWidth}%` }}><div className={`text ${column} ${alignClass}`} dangerouslySetInnerHTML={{ __html: item[column] }} ></div>
                 <span className="popup">
                   <div className="popup-content">Waterbird Population Estimates Portal</div>
