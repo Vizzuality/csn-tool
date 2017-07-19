@@ -56,7 +56,7 @@ function getCountrySites(req, res) {
       if (results && results.length > 0) {
         results.map((item) => {
           const site = item;
-          site.protection_status_slug = normalizeSiteStatus(item.protected);
+          site.protected_slug = normalizeSiteStatus(item.protected);
           return site;
         });
         res.json(results);
