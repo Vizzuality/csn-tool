@@ -73,7 +73,7 @@ function getCountrySites(req, res) {
 
 function getCountryCriticalSites(req, res) {
   const query = `
-    SELECT s.site_name AS csn_name, protected,
+    SELECT s.site_name_clean AS csn_name, protected,
     s.site_id AS id, 0 AS csn_species, total_percentage
     FROM sites_csn_points s
     WHERE s.iso3 = '${req.params.iso}'
