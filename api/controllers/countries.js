@@ -85,9 +85,14 @@ function getCountryCriticalSites(req, res) {
     ORDER BY s.site_name ASC`;
   rp(CARTO_SQL + query)
     .then((data) => {
-      const result = JSON.parse(data);
-      if (result.rows && result.rows.length > 0) {
-        res.json(result.rows);
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        results.map((item) => {
+          const site = item;
+          site.protected_slug = normalizeSiteStatus(item.protected);
+          return site;
+        });
+        res.json(results);
       } else {
         res.status(404);
         res.json({ error: 'No sites found' });
