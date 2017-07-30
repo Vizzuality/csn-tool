@@ -16,7 +16,7 @@ function MainNav() {
           <NavLink to={"/species"} i18nText="species" parent />
         </li>
         <li>
-          <NavLink to={"/threshold-lookup"} i18nText="thresholdLookup" parent />
+          <NavLink to={"/threshold-lookup"} i18nText="ramsarCriterionTool" parent />
         </li>
       </ul>
     </nav>

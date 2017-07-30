@@ -22,7 +22,7 @@ function MainNav(props, context) {
           <span className={isTool ? '-current' : ''}>{context.t('tools')}</span>
           <ul>
             <li>
-              <NavLink to={"/threshold-lookup"} i18nText="thresholdLookup" parent />
+              <NavLink to={"/threshold-lookup"} i18nText="ramsarCriterionTool" parent />
             </li>
             <li>
               <NavLink to={"/advanced-search"} i18nText="advancedSearch" parent />
