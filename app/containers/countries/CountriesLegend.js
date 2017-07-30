@@ -2,6 +2,8 @@ import { connect } from 'react-redux';
 import { toggleLayer } from 'actions/countries';
 import Legend from 'components/maps/Legend';
 
+const PROTECTION_LEVELS = ['Little/none', 'Some', 'Most', 'Whole'];
+
 function getLegendData(countries) {
   const legend = [];
   if (countries.sites[countries.selected]) {
@@ -17,6 +19,11 @@ function getLegendData(countries) {
         });
         unique[site.protected_slug] = true;
       }
+    });
+    distinct.sort((a, b) => {
+      const aIndex = PROTECTION_LEVELS.indexOf(a.name);
+      const bIndex = PROTECTION_LEVELS.indexOf(b.name);
+      return aIndex - bIndex;
     });
     legend.push({
       name: 'Protection level',

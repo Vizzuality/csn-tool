@@ -70,7 +70,7 @@ describe('components', () => {
       expect(enzymeWrapper.find('.overheader').html())
         .toEqual(
           '<div class="overheader">' +
-          'AEWA Table 1 Column A' +
+          'AEWA Table 1 Column' +
           '</div>');
     });
 
