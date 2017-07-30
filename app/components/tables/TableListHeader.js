@@ -20,7 +20,7 @@ const columnsWithFilter = [
 
 const DROPDOWN_MAX_LENGTH = 8;
 const DETAIL_LINK_WIDTH_PERCENT = 2.5;
-const OVERHEADER = 'AEWA Table 1 Column A';
+const OVERHEADER = 'AEWA Table 1 Column';
 const OVERHEADER_LIST = [
   {
     title: OVERHEADER,
