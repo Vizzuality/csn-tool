@@ -19,7 +19,7 @@ function getLegendData(countries) {
       }
     });
     legend.push({
-      name: 'Critical sites',
+      name: 'Protection level',
       active: countries.layers.sites,
       layer: 'sites',
       data: distinct
