@@ -4,8 +4,8 @@ const normalizeSiteStatus = require('../helpers/index').normalizeSiteStatus;
 const mergeNames = require('../helpers/index').mergeNames;
 
 function getSpeciesList(req, res) {
-  const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family, s.species_id as id,
-      string_agg(p.populations, ', ') as population, s.hyperlink
+  const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family,
+    s.species_id as id, s.hyperlink
     FROM species_main s
     INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
     GROUP BY s.scientific_name, s.english_name, s.genus, s.family, s.species_id, 1,

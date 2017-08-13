@@ -6,7 +6,7 @@ import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POP
 import { commonSort } from './common.js';
 
 const SPECIES_COLUMNS = {
-  over: ['scientific_name', 'english_name', 'population', 'genus', 'family'],
+  over: ['scientific_name', 'english_name', 'genus', 'family'],
   population: ['population', 'iucn_category', 'a', 'b', 'c',
     'caf_action_plan', 'eu_birds_directive', 'flyway_range', 'year_start',
     'year_end', 'size_min', 'size_max', 'ramsar_criterion'],
