@@ -34,7 +34,6 @@ function getThresholdData(threshold, columns) {
 
 const mapStateToProps = (state) => {
   const columns = state.threshold.columns;
-
   return {
     data: getThresholdData(state.threshold, columns),
     columns,
