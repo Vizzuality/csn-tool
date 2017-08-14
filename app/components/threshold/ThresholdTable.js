@@ -15,11 +15,13 @@ function ThresholdTable(props) {
           data={props.data}
           columns={props.columns}
           allColumns={props.allColumns}
+          detailLink
         />
       </Sticky>
       <TableList
         data={props.data}
         columns={props.columns}
+        detailLink="species"
       />
     </div>
   );
