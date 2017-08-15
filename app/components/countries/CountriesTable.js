@@ -121,6 +121,7 @@ class CountriesTable extends React.Component {
     const isLookAlikeSpecies = this.props.category === 'lookAlikeSpecies';
     const data = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? this.state.data : this.props.data;
     const columns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? expandedColumns : this.props.columns;
+    const allColumns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? expandedColumns : this.props.allColumns;
 
     const downloadData = (typeof data !== 'boolean') && data || [];
 
@@ -137,7 +138,7 @@ class CountriesTable extends React.Component {
             selectedCategory={this.state.selectedItem ? 'expanded' : null}
             data={data}
             columns={columns}
-            allColumns={this.props.allColumns}
+            allColumns={allColumns}
             detailLink
           />
         </Sticky>
