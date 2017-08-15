@@ -188,6 +188,7 @@ function getSpeciesLookAlikeSpecies(req, res) {
     AND sm.species_id != sq.species_id
     INNER JOIN populations_iba AS pi
     ON pi.species_main_id = sm.species_id
+    AND ST_INTERSECTS(sq.the_geom, pi.the_geom)
     GROUP BY sq.scientific_name,
     sq.english_name, sq.population_name,
     sq.a, sq.b, sq.c, sq.wpepopid, sq.species_id
@@ -229,7 +230,9 @@ function getPopulationsLookAlikeSpecies(req, res) {
     INNER JOIN species_main AS sm ON
     (sq.confusion_group %26%26 sm.confusion_group)
     AND sm.species_id != sq.species_id
-    INNER JOIN populations_iba AS pi ON pi.species_main_id = sm.species_id`;
+    INNER JOIN populations_iba AS pi ON pi.species_main_id = sm.species_id
+    AND ST_INTERSECTS(sq.the_geom, pi.the_geom)
+    ORDER BY sm.taxonomic_sequence ASC, pi.population_name ASC`;
 
   rp(CARTO_SQL + query)
     .then((data) => {
