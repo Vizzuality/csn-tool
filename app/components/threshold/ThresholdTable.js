@@ -10,7 +10,10 @@ function ThresholdTable(props) {
     <div className="c-table">
       <ScrollButton />
       <Sticky topOffset={-120} stickyClassName={'-sticky'}>
-        <ThresholdFilters />
+        <ThresholdFilters
+          data={props.data}
+          columns={props.columns}
+        />
         <TableListHeader
           data={props.data}
           columns={props.columns}
