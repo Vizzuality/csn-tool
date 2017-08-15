@@ -128,7 +128,7 @@ class CountriesTable extends React.Component {
       <div id="countriesTable" className="c-table">
         <ScrollButton />
         <Sticky topOffset={-120} stickyClassName={'-sticky'}>
-          <CountriesFilters data={downloadData} columns={this.props.columns} country={this.props.country} category={this.props.category} />
+          <CountriesFilters data={downloadData} columns={columns} country={this.props.country} category={this.props.category} />
           {isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0
             ? this.getSelectedHeader()
             : null

@@ -61,18 +61,20 @@ function getSpeciesDetails(req, res) {
 
 function getSpeciesSites(req, res) {
   const query = `SELECT s.species_id,
-      ss.iba_criteria, ss.maximum, ss.minimum, ss.season, ss.units,
-      si.site_name, si.lat, si.lon, si.country, si.iso2, si.protection_status AS protected,
-      string_agg(p.populations, ', ') as population,
-      si.hyperlink, si.site_id AS id, ss.geometric_mean
+      ss.iba_criteria, p.size_max AS maximum, p.size_min AS minimum,
+      ss.season, ss.units, si.site_name, si.lat, si.lon, si.country, si.iso2,
+      si.protection_status AS protected,
+      string_agg(p.population_name, ', ') as population,
+      si.hyperlink, si.site_id AS id, ss.geometric_mean,
+      p.year_start AS start, p.year_end as end
     FROM species_main s
     INNER JOIN species_sites ss ON s.species_id = ss.species_id
-    INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
+    INNER JOIN populations_iba p on p.species_main_id = s.species_id
     INNER JOIN sites si ON ss.site_id = si.site_id
     WHERE s.species_id = '${req.params.id}'
-    GROUP BY ss.iba_criteria, ss.maximum, ss.minimum, ss.units,
+    GROUP BY ss.iba_criteria, p.size_max, p.size_min, ss.units,
     ss.season, si.country, si.iso2, si.protection_status ,si.site_name, si.lat, si.lon,
-    si.hyperlink, si.site_id, 1, ss.geometric_mean
+    si.hyperlink, si.site_id, 1, ss.geometric_mean, p.year_start, p.year_end
     ORDER BY si.site_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
