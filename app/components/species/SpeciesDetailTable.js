@@ -145,15 +145,17 @@ class SpeciesDetailTable extends React.Component {
     const isLookAlikeSpecies = this.props.category === 'lookAlikeSpecies';
     const data = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? this.state.data : this.props.data;
     const columns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? expandedColumns : this.props.columns;
+    const allColumns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? expandedColumns : this.props.allColumns;
+
     return (
       <div className="c-table" >
         {!this.props.isSearch && <ScrollButton />}
         {this.props.isSearch ?
           <div>
-            {this.renderTableHeader(isLookAlikeSpecies, data, columns, this.props.allColumns)}
+            {this.renderTableHeader(isLookAlikeSpecies, data, columns, allColumns)}
           </div> :
           <Sticky topOffset={-120} stickyClassName={'-sticky'}>
-            {this.renderTableHeader(isLookAlikeSpecies, data, columns, this.props.allColumns)}
+            {this.renderTableHeader(isLookAlikeSpecies, data, columns, allColumns)}
           </Sticky>
         }
         <TableList
