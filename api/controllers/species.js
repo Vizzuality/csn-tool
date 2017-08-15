@@ -72,9 +72,9 @@ function getSpeciesSites(req, res) {
     INNER JOIN populations_iba p on p.species_main_id = s.species_id
     INNER JOIN sites si ON ss.site_id = si.site_id
     WHERE s.species_id = '${req.params.id}'
-    GROUP BY ss.iba_criteria, p.size_max, p.size_min, ss.units,
+    GROUP BY ss.iba_criteria, ss.maximum, ss.minimum, ss.units,
     ss.season, si.country, si.iso2, si.protection_status ,si.site_name, si.lat, si.lon,
-    si.hyperlink, si.site_id, 1, ss.geometric_mean, p.year_start, p.year_end
+    si.hyperlink, si.site_id, 1, ss.geometric_mean, ss.start, ss._end
     ORDER BY si.site_name`;
   rp(CARTO_SQL + query)
     .then((data) => {
