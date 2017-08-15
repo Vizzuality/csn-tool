@@ -61,12 +61,12 @@ function getSpeciesDetails(req, res) {
 
 function getSpeciesSites(req, res) {
   const query = `SELECT s.species_id,
-      ss.iba_criteria, p.size_max AS maximum, p.size_min AS minimum,
+      ss.iba_criteria, ss.maximum, ss.minimum,
       ss.season, ss.units, si.site_name, si.lat, si.lon, si.country, si.iso2,
       si.protection_status AS protected,
       string_agg(p.population_name, ', ') as population,
       si.hyperlink, si.site_id AS id, ss.geometric_mean,
-      p.year_start AS start, p.year_end as end
+      ss.start, ss._end as end
     FROM species_main s
     INNER JOIN species_sites ss ON s.species_id = ss.species_id
     INNER JOIN populations_iba p on p.species_main_id = s.species_id
