@@ -78,7 +78,7 @@ function getSitesDetails(req, res) {
     `;
   } else {
     query = `SELECT s.site_id AS id, protected,
-      iso3 AS country, site_name, lat, lon,
+      iso3 AS country, site_name_clean, lat, lon,
       COUNT(ss.species_id) AS qualifying_species
       FROM sites_csn_points AS s
       INNER JOIN species_sites AS ss ON ss.site_id = s.site_id
@@ -120,7 +120,7 @@ function getSitesDetails(req, res) {
 function getSitesLocations(req, res) {
   let query;
   if (req.params.type === 'csn') {
-    query = `SELECT s.site_name, s.site_id as id, s.lat, s.lon,
+    query = `SELECT s.site_name_clean, s.site_id as id, s.lat, s.lon,
     'csn' AS site_type  FROM sites_csn_points s`;
   } else {
     query = `SELECT s.site_name, s.site_id as id, s.lat, s.lon,
@@ -157,7 +157,7 @@ function getSitesSpecies(req, res) {
       ORDER BY s.taxonomic_sequence`;
   } else {
     query = `SELECT s.scientific_name, s.english_name, s.species_id AS id,
-      s.iucn_category, si.lat, si.lon, si.site_name, s.hyperlink,
+      s.iucn_category, si.lat, si.lon, si.site_name_clean, s.hyperlink,
       ss._end AS end, ss.start, ss.minimum, ss.maximum, ss.season,
       ss.units, ss.geometric_mean
       FROM species_main AS s
