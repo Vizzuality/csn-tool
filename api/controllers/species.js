@@ -100,7 +100,7 @@ function getSpeciesSites(req, res) {
 function getSpeciesCriticalSites(req, res) {
   const query = `SELECT s.species_id,
       ss.iba_criteria, ss.maximum, ss.minimum, ss.season, ss.units,
-      si.site_name, si.lat, si.lon, si.country, si.iso2, si.protected,
+      si.site_name_clean, si.lat, si.lon, si.country, si.iso2, si.protected,
       string_agg(p.populations, ', ') as population,
       si.hyperlink, si.site_id AS id, ss.geometric_mean
     FROM species_main s
