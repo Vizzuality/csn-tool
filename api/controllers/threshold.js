@@ -20,7 +20,9 @@ function getSpeciesByPosition(req, res) {
     ST_CONTAINS(c.the_geom_webmercator, ST_Transform(ST_SetSRID(ST_MakePoint(${req.params.lng},${req.params.lat}), 4326), 3857))
     INNER JOIN species_main AS sm ON
     sm.species_id = p.species_main_id
+    INNER JOIN species_country AS sc ON sc.iso = c.iso3 AND sc.species_id = sm.species_id
     WHERE ST_CONTAINS(p.the_geom_webmercator,ST_Transform(ST_SetSRID(ST_MakePoint(${req.params.lng},${req.params.lat}), 4326), 3857))
+    AND sc.country_status != 'Vagrant'
     ORDER BY sm.taxonomic_sequence ASC`;
   rp(CARTO_SQL + query)
     .then((data) => {
