@@ -2,11 +2,20 @@
 
 Critical Sites Network Tool 2.0
 
+
+## Data Management
+
+This project uses a series of tables kept on a [CARTO](https://www.carto.com)
+as its data source. There are some tasks required to turn the source dataset
+into the format that is required to make the application valid.
+
+Details of this can be found on [DATA_README](DATA_README.md).
+
 ## Install
 
 Requirements:
 
-* NodeJs 5.2+ [How to install](https://nodejs.org/download/)
+* NodeJs 7.7.1 [How to install](https://nodejs.org/download/)
 * Heroku toolbet [How to install](https://toolbelt.heroku.com)
 
 To install run this command:
