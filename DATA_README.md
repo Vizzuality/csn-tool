@@ -45,3 +45,5 @@ We then need to replace the occurrences of the three original country_ids
 on the **species_country** table, with the _1000_ country_id. To keep the
 historical information we kept the original information on a column named
 _original_country_id_.
+
+The same process is required for the **sites** table.
