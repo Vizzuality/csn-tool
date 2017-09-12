@@ -20,7 +20,7 @@ const DEFAULT_COUNTRY_COLUMNS = {
   populations: ['scientific_name', 'iucn_category', 'population',
         'a', 'b', 'c', 'ramsar_criterion'],
   criticalSites: ['csn_name', 'protected', 'csn_species', 'total_percentage'],
-  lookAlikeSpecies: ['original_species', 'english_name', 'population', 'original_a', 'original_b',
+  lookAlikeSpecies: ['original_species', 'population', 'original_a', 'original_b',
         'original_c', 'confusion_species', 'confusion_species_as'],
   sites: ['site_name', 'protected', 'iba_species', 'iba_in_danger']
 };
