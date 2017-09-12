@@ -24,8 +24,7 @@ const DEFAULT_SPECIES_COLUMNS = {
   lookAlikeSpecies: ['population', 'original_a', 'original_b', 'original_c', 'confusion_species', 'confusion_species_as'],
   criticalSites: ['country', 'site_name', 'protected', 'season', 'start', 'end', 'minimum',
     'maximum', 'geometric_mean', 'units', 'iba_criteria'],
-  sites: ['country', 'site_name', 'protected', 'season', 'start', 'end', 'minimum',
-    'maximum', 'geometric_mean', 'units', 'iba_criteria']
+  sites: ['country', 'site_name', 'season', 'geometric_mean', 'units', 'iba_criteria']
 };
 
 const initialState = {
