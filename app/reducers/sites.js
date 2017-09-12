@@ -4,16 +4,22 @@ import { CLEAR_SITES_LIST, SET_SITES_PARAMS, GET_SITES_STATS, GET_SITES_LIST,
 import { RESULTS_PER_PAGE } from 'constants/config';
 import { commonSort } from './common.js';
 
-const SITES_COLUMNS = {
+const ALL_SITES_COLUMNS = {
   csn: ['country', 'csn_name', 'protected', 'csn', 'total_percentage'],
   iba: ['country', 'site_name', 'protected', 'iba_species', 'iba_in_danger'],
   species: ['scientific_name', 'english_name', 'iucn_category', 'season', 'start',
     'end', 'minimum', 'maximum', 'geometric_mean', 'units', 'iba_criteria']
 };
 
+const DEFAULT_SITES_COLUMNS = {
+  csn: ['country', 'csn_name', 'protected', 'csn', 'total_percentage'],
+  iba: ['country', 'site_name', 'protected', 'iba_species', 'iba_in_danger'],
+  species: ['scientific_name', 'season', 'geometric_mean', 'units', 'iba_criteria']
+};
+
 const initialState = {
-  columns: SITES_COLUMNS.iba,
-  allColumns: SITES_COLUMNS.iba,
+  columns: DEFAULT_SITES_COLUMNS.iba,
+  allColumns: ALL_SITES_COLUMNS.iba,
   selected: '',
   selectedCategory: 'species',
   locations: false,
@@ -59,8 +65,8 @@ export default function (state = initialState, action) {
         selectedCategory: action.payload.category,
         filter: action.payload.filter,
         type: action.payload.type,
-        columns: SITES_COLUMNS[action.payload.filter || action.payload.category],
-        allColumns: SITES_COLUMNS[action.payload.filter || action.payload.category]
+        columns: DEFAULT_SITES_COLUMNS[action.payload.filter || action.payload.category],
+        allColumns: ALL_SITES_COLUMNS[action.payload.filter || action.payload.category]
       };
       return Object.assign({}, state, params);
     }
