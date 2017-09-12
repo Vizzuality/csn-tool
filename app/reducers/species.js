@@ -5,8 +5,9 @@ import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POP
   CHANGE_COLUMN_ACTIVATION } from 'constants/index.js';
 import { commonSort } from './common.js';
 
-const SPECIES_COLUMNS = {
-  over: ['scientific_name', 'english_name', 'genus', 'family'],
+const ALL_SPECIES_COLUMNS = {
+  over: ['scientific_name', 'english_name', 'genus', 'family', 'iucn_category',
+    'aewa_annex_2'],
   population: ['population', 'iucn_category', 'a', 'b', 'c',
     'caf_action_plan', 'eu_birds_directive', 'flyway_range', 'year_start',
     'year_end', 'size_min', 'size_max', 'ramsar_criterion'],
@@ -17,9 +18,18 @@ const SPECIES_COLUMNS = {
     'maximum', 'geometric_mean', 'units', 'iba_criteria']
 };
 
+const DEFAULT_SPECIES_COLUMNS = {
+  over: ['scientific_name', 'genus', 'family', 'iucn_category', 'aewa_annex_2'],
+  population: ['population', 'iucn_category', 'a', 'b', 'c', 'ramsar_criterion'],
+  lookAlikeSpecies: ['population', 'original_a', 'original_b', 'original_c', 'confusion_species', 'confusion_species_as'],
+  criticalSites: ['country', 'site_name', 'protected', 'season', 'start', 'end', 'minimum',
+    'maximum', 'geometric_mean', 'units', 'iba_criteria'],
+  sites: ['country', 'site_name', 'season', 'geometric_mean', 'units', 'iba_criteria']
+};
+
 const initialState = {
-  allColumns: SPECIES_COLUMNS.over,
-  columns: SPECIES_COLUMNS.over,
+  allColumns: ALL_SPECIES_COLUMNS.over,
+  columns: DEFAULT_SPECIES_COLUMNS.over,
   list: false,
   selected: '',
   selectedCategory: 'sites',
@@ -47,8 +57,8 @@ export default function (state = initialState, action) {
       const params = {
         selected: action.payload.id,
         selectedCategory: action.payload.category,
-        columns: SPECIES_COLUMNS[action.payload.category],
-        allColumns: SPECIES_COLUMNS[action.payload.category]
+        columns: DEFAULT_SPECIES_COLUMNS[action.payload.category],
+        allColumns: ALL_SPECIES_COLUMNS[action.payload.category]
       };
       return Object.assign({}, state, params);
     }
@@ -56,8 +66,8 @@ export default function (state = initialState, action) {
       const params = {
         selected: action.payload.id,
         selectedCategory: action.payload.category,
-        columns: SPECIES_COLUMNS[action.payload.category],
-        allColumns: SPECIES_COLUMNS[action.payload.category]
+        columns: DEFAULT_SPECIES_COLUMNS[action.payload.category],
+        allColumns: ALL_SPECIES_COLUMNS[action.payload.category]
       };
       return Object.assign({}, state, params);
     }

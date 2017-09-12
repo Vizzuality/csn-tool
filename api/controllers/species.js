@@ -5,11 +5,8 @@ const mergeNames = require('../helpers/index').mergeNames;
 
 function getSpeciesList(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family,
-    s.species_id as id, s.hyperlink
+    s.species_id as id, s.hyperlink, s.iucn_category, aewa_annex_2
     FROM species_main s
-    INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
-    GROUP BY s.scientific_name, s.english_name, s.genus, s.family, s.species_id, 1,
-    s.hyperlink, s.taxonomic_sequence
     ORDER BY s.taxonomic_sequence`;
   rp(CARTO_SQL + query)
     .then((data) => {
