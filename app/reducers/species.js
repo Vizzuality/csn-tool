@@ -6,7 +6,8 @@ import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POP
 import { commonSort } from './common.js';
 
 const ALL_SPECIES_COLUMNS = {
-  over: ['scientific_name', 'english_name', 'genus', 'family'],
+  over: ['scientific_name', 'english_name', 'genus', 'family', 'iucn_category',
+    'aewa_annex_2'],
   population: ['population', 'iucn_category', 'a', 'b', 'c',
     'caf_action_plan', 'eu_birds_directive', 'flyway_range', 'year_start',
     'year_end', 'size_min', 'size_max', 'ramsar_criterion'],
@@ -18,7 +19,7 @@ const ALL_SPECIES_COLUMNS = {
 };
 
 const DEFAULT_SPECIES_COLUMNS = {
-  over: ['scientific_name', 'english_name', 'genus', 'family'],
+  over: ['scientific_name', 'genus', 'family', 'iucn_category', 'aewa_annex_2'],
   population: ['population', 'iucn_category', 'a', 'b', 'c', 'ramsar_criterion'],
   lookAlikeSpecies: ['population', 'original_a', 'original_b', 'original_c', 'confusion_species', 'confusion_species_as'],
   criticalSites: ['country', 'site_name', 'protected', 'season', 'start', 'end', 'minimum',
