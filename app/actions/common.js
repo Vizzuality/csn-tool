@@ -1,8 +1,9 @@
 import { CHANGE_COLUMN_ACTIVATION } from 'constants';
 
-export function changeColumnActivation(column) {
+export function changeColumnActivation(column, expanded) {
   return {
     type: CHANGE_COLUMN_ACTIVATION,
-    payload: column
+    payload: column,
+    expanded
   };
 }

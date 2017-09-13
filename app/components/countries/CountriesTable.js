@@ -6,9 +6,6 @@ import TableList from 'components/tables/TableList';
 import ScrollButton from 'components/common/ScrollButton';
 import { Sticky } from 'react-sticky';
 
-const expandedColumns = ['scientific_name', 'english_name', 'population', 'a',
-  'b', 'c'];
-
 class CountriesTable extends React.Component {
   constructor(props) {
     super(props);
@@ -120,11 +117,10 @@ class CountriesTable extends React.Component {
     const detailLink = this.getDetailLink(this.props.category);
     const isLookAlikeSpecies = this.props.category === 'lookAlikeSpecies';
     const data = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? this.state.data : this.props.data;
-    const columns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? expandedColumns : this.props.columns;
-    const allColumns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? expandedColumns : this.props.allColumns;
+    const columns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? this.props.expandedColumns : this.props.columns;
+    const allColumns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? this.props.allExpandedColumns : this.props.allColumns;
 
     const downloadData = (typeof data !== 'boolean') && data || [];
-
     return (
       <div id="countriesTable" className="c-table">
         <ScrollButton />
@@ -135,6 +131,7 @@ class CountriesTable extends React.Component {
             : null
           }
           <TableListHeader
+            expanded={isLookAlikeSpecies}
             selectedCategory={this.state.selectedItem ? 'expanded' : null}
             data={data}
             columns={columns}
@@ -161,9 +158,11 @@ CountriesTable.contextTypes = {
 
 CountriesTable.propTypes = {
   allColumns: React.PropTypes.array.isRequired,
+  allExpandedColumns: React.PropTypes.array.isRequired,
   country: React.PropTypes.string.isRequired,
   category: React.PropTypes.string.isRequired,
   columns: React.PropTypes.array.isRequired,
+  expandedColumns: React.PropTypes.array.isRequired,
   data: React.PropTypes.any,
   cleanSearchFilter: React.PropTypes.func
 };

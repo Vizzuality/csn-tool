@@ -12,7 +12,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch) => ({
   sortBy: (sort) => dispatch(setCountriesTableSort(sort)),
   filterBy: (filter) => dispatch(setCountriesTableFilter(filter)),
-  changeColumnActivation: (column) => dispatch(changeColumnActivation(column))
+  changeColumnActivation: (column, expanded) => dispatch(changeColumnActivation(column, expanded))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableListHeader);
