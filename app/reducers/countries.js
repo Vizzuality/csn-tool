@@ -25,9 +25,13 @@ const DEFAULT_COUNTRY_COLUMNS = {
   sites: ['site_name', 'protected', 'iba_species', 'iba_in_danger']
 };
 
+const DEFAULT_EXPANDED_COLUMNS = ['scientific_name', 'english_name', 'population', 'a', 'b', 'c'];
+
 const initialState = {
   columns: DEFAULT_COUNTRY_COLUMNS.sites,
+  expandedColumns: DEFAULT_EXPANDED_COLUMNS,
   allColumns: ALL_COUNTRY_COLUMNS.sites,
+  allExpandedColumns: DEFAULT_EXPANDED_COLUMNS,
   selected: '',
   selectedCategory: 'sites',
   searchFilter: '',
@@ -63,18 +67,24 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, params);
     }
     case CHANGE_COLUMN_ACTIVATION: {
-      const columns = state.columns.slice();
+      const columns = action.expanded
+        ? state.expandedColumns.slice()
+        : state.columns.slice();
       let newColumns = columns.filter((col) => col !== action.payload);
       if (columns.length === newColumns.length) {
         newColumns.push(action.payload);
-        const prevColumns = state.allColumns.slice();
+        const prevColumns = action.expanded
+        ? state.allExpandedColumns.slice()
+        : state.allColumns.slice();
         newColumns = prevColumns.reduce((previous, currentItem) => {
           const isIn = newColumns.some((newCol) => newCol === currentItem);
           if (isIn) previous.push(currentItem);
           return previous;
         }, []);
       }
-      return Object.assign({}, state, { columns: newColumns });
+      return action.expanded
+       ? Object.assign({}, state, { expandedColumns: newColumns })
+       : Object.assign({}, state, { columns: newColumns });
     }
     case SET_COUNTRY_SEARCH:
       return Object.assign({}, state, { searchFilter: action.payload });

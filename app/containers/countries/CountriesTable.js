@@ -29,6 +29,8 @@ const mapStateToProps = (state) => {
     category: state.countries.selectedCategory,
     data: getCountryData(state.countries, columns),
     columns,
+    expandedColumns: state.countries.expandedColumns,
+    allExpandedColumns: state.countries.allExpandedColumns,
     allColumns: state.countries.allColumns
   };
 };
