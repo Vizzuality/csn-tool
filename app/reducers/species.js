@@ -12,7 +12,7 @@ const ALL_SPECIES_COLUMNS = {
     'caf_action_plan', 'eu_birds_directive', 'flyway_range', 'year_start',
     'year_end', 'size_min', 'size_max', 'ramsar_criterion'],
   lookAlikeSpecies: ['population', 'original_a', 'original_b', 'original_c', 'confusion_species', 'confusion_species_as'],
-  criticalSites: ['country', 'csn_site_name', 'protection_index', 'population',
+  criticalSites: ['country', 'csn_site_name', 'protected', 'population',
     'season', 'start', 'end', 'minimum', 'maximum', 'geometric_mean',
     'units', 'percentfly', 'csn1', 'csn2'],
   sites: ['country', 'csn_site_name', 'protected', 'season', 'start', 'end', 'minimum',
