@@ -96,18 +96,26 @@ function getSpeciesSites(req, res) {
 
 function getSpeciesCriticalSites(req, res) {
   const query = `SELECT s.species_id,
-      ss.iba_criteria, ss.maximum, ss.minimum, ss.season, ss.units,
-      si.site_name_clean, si.lat, si.lon, si.country, si.iso2, si.protected,
-      string_agg(p.populations, ', ') as population,
-      si.hyperlink, si.site_id AS id, ss.geometric_mean
+      ss.popmax as maximum, ss.popmin as minimum, ss.season, ss.units,
+      ss.yearstart AS start, ss.yearend AS end, ss.percentfly,
+      si.site_name_clean AS csn_site_name, si.lat, si.lon, si.country, si.iso2,
+      ss.protected AS protection_index, p.population_name AS population,
+      si.hyperlink, si.site_id AS id, ss.geometric_mean,
+      CASE
+       WHEN ss.csn1 = 1 THEN true
+       WHEN ss.csn1 = 0 THEN false
+       ELSE null
+      END as csn1,
+      CASE
+        WHEN ss.csn2 = 1 THEN true
+        WHEN ss.csn2 = 0 THEN false
+        ELSE null
+      END AS csn2
     FROM species_main s
-    INNER JOIN species_sites ss ON s.species_id = ss.species_id
-    INNER JOIN populations_species_no_geo p on p.sisrecid = s.species_id
+    INNER JOIN populations_iba p on p.species_main_id = s.species_id
+    INNER JOIN csn_species_sites ss ON p.wpepopid = ss.wpepopid
     INNER JOIN sites_csn_points si ON ss.site_id = si.site_id
     WHERE s.species_id = '${req.params.id}'
-    GROUP BY ss.iba_criteria, ss.maximum, ss.minimum, ss.units,
-    ss.season, si.country, si.iso2, si.protected, si.site_name, si.lat, si.lon,
-    si.hyperlink, si.site_id, 1, ss.geometric_mean
     ORDER BY si.site_name`;
 
   rp(CARTO_SQL + query)
