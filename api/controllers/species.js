@@ -99,7 +99,7 @@ function getSpeciesCriticalSites(req, res) {
       ss.popmax as maximum, ss.popmin as minimum, ss.season, ss.units,
       ss.yearstart AS start, ss.yearend AS end, ss.percentfly,
       si.site_name_clean AS csn_site_name, si.lat, si.lon, si.country, si.iso2,
-      ss.protected AS protection_index, p.population_name AS population,
+      si.protected, p.population_name AS population,
       si.hyperlink, si.site_id AS id, ss.geometric_mean,
       CASE
        WHEN ss.csn1 = 1 THEN true
