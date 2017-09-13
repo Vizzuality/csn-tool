@@ -7,14 +7,19 @@ import { commonSort } from './common.js';
 const ALL_SITES_COLUMNS = {
   csn: ['country', 'csn_name', 'protected', 'csn', 'total_percentage'],
   iba: ['country', 'site_name', 'protected', 'iba_species', 'iba_in_danger'],
-  species: ['scientific_name', 'english_name', 'iucn_category', 'season', 'start',
-    'end', 'minimum', 'maximum', 'geometric_mean', 'units', 'iba_criteria']
+  ibaSpecies: ['scientific_name', 'english_name', 'iucn_category', 'season', 'start',
+    'end', 'minimum', 'maximum', 'geometric_mean', 'units', 'iba_criteria'],
+  csnSpecies: ['scientific_name', 'english_name', 'iucn_category', 'population',
+  'season', 'start', 'end', 'minimum', 'maximum', 'geometric_mean', 'units',
+  'percentfly', 'csn1', 'csn2']
 };
 
 const DEFAULT_SITES_COLUMNS = {
   csn: ['country', 'csn_name', 'protected', 'csn', 'total_percentage'],
   iba: ['country', 'site_name', 'protected', 'iba_species', 'iba_in_danger'],
-  species: ['scientific_name', 'season', 'geometric_mean', 'units', 'iba_criteria']
+  ibaSpecies: ['scientific_name', 'season', 'geometric_mean', 'units', 'iba_criteria'],
+  csnSpecies: ['scientific_name', 'population', 'season', 'geometric_mean', 'units',
+  'percentfly']
 };
 
 const initialState = {
@@ -60,13 +65,14 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { columns: newColumns });
     }
     case SET_SITES_PARAMS: {
+      const columnsSelector = action.payload.category === 'species' ? `${action.payload.type}Species` : action.payload.category;
       const params = {
         selected: action.payload.site,
         selectedCategory: action.payload.category,
         filter: action.payload.filter,
         type: action.payload.type,
-        columns: DEFAULT_SITES_COLUMNS[action.payload.filter || action.payload.category],
-        allColumns: ALL_SITES_COLUMNS[action.payload.filter || action.payload.category]
+        columns: DEFAULT_SITES_COLUMNS[action.payload.filter || columnsSelector],
+        allColumns: ALL_SITES_COLUMNS[action.payload.filter || columnsSelector]
       };
       return Object.assign({}, state, params);
     }

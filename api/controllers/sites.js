@@ -156,15 +156,29 @@ function getSitesSpecies(req, res) {
       WHERE si.site_id = ${req.params.id}
       ORDER BY s.taxonomic_sequence`;
   } else {
-    query = `SELECT s.scientific_name, s.english_name, s.species_id AS id,
-      s.iucn_category, si.lat, si.lon, si.site_name_clean, s.hyperlink,
-      ss._end AS end, ss.start, ss.minimum, ss.maximum, ss.season,
-      ss.units, ss.geometric_mean
-      FROM species_main AS s
-      INNER JOIN species_sites AS ss ON ss.species_id = s.species_id
-      INNER JOIN sites_csn_points AS si ON si.site_id = ss.site_id
-      WHERE si.site_id = ${req.params.id}
-      ORDER BY s.taxonomic_sequence`;
+    query = `SELECT s.species_id AS id,
+      ss.popmax as maximum, ss.popmin as minimum, ss.season, ss.units,
+      ss.yearstart AS start, ss.yearend AS end, ss.percentfly,
+      si.site_name_clean AS csn_site_name, si.lat, si.lon, si.country, si.iso2,
+      si.protected, p.population_name AS population, s.iucn_category,
+      s.english_name, s.scientific_name,
+      s.hyperlink, ss.geometric_mean,
+      CASE
+       WHEN ss.csn1 = 1 THEN true
+       WHEN ss.csn1 = 0 THEN false
+       ELSE null
+      END as csn1,
+      CASE
+        WHEN ss.csn2 = 1 THEN true
+        WHEN ss.csn2 = 0 THEN false
+        ELSE null
+      END AS csn2
+    FROM sites_csn_points AS si
+    INNER JOIN csn_species_sites ss ON ss.site_id = si.site_id
+    INNER JOIN populations_iba p on p.wpepopid = ss.wpepopid
+    INNER JOIN species_main s ON s.species_id = p.species_main_id
+    WHERE si.site_id = '${req.params.id}'
+    ORDER BY s.taxonomic_sequence`;
   }
 
   rp(CARTO_SQL + query)
