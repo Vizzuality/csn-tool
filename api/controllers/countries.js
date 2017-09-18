@@ -73,9 +73,15 @@ function getCountrySites(req, res) {
 
 function getCountryCriticalSites(req, res) {
   const query = `
+    WITH csn_species_count AS (
+      SELECT COUNT(*) AS csn_species, site_id
+      FROM csn_species_sites
+      GROUP BY site_id
+    )
     SELECT s.site_name_clean AS csn_name, protected,
-    s.site_id AS id, 0 AS csn_species, total_percentage
+    s.site_id AS id, csc.csn_species AS csn_species, total_percentage
     FROM sites_csn_points s
+    INNER JOIN csn_species_count AS csc ON csc.site_id = s.site_id
     WHERE s.iso3 = '${req.params.iso}'
     ORDER BY s.site_name ASC`;
   rp(CARTO_SQL + query)
