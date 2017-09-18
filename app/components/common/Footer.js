@@ -7,6 +7,12 @@ function Footer(props) {
     <footer className="l-footer">
       <div className="row align-middle c-footer">
         <div className="column small-12 medium-6">
+          <a className="birdlife-logo" href="http://www.birdlife.org/" target="_blank" rel="noopener noreferrer">
+            <img src="/img/birdlife@2x.png" alt="Bird life logo" />
+          </a>
+          <a className="wetlands-logo" href="https://www.wetlands.org/" target="_blank" rel="noopener noreferrer">
+            <img src="/img/wetlands@2x.png" alt="Wet land logo" />
+          </a>
         </div>
         <div className="column small-12 medium-6 secondary-menu">
           <SecondaryNav />
