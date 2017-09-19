@@ -22,14 +22,16 @@ function getLegendData(species, ownProps) {
     });
 
     const distinctPop = [];
-    populations.forEach((pop) => {
-      distinctPop.push({
-        icon: 'dots',
-        id: pop.wpepopid,
-        name: pop.population,
-        color: ownProps.boundaryColorsToPop[pop.wpepopid]
+    if (populations) {
+      populations.forEach((pop) => {
+        distinctPop.push({
+          icon: 'dots',
+          id: pop.wpepopid,
+          name: pop.population,
+          color: ownProps.boundaryColorsToPop[pop.wpepopid]
+        });
       });
-    });
+    }
 
     legend.push({
       name: 'Critical Sites',

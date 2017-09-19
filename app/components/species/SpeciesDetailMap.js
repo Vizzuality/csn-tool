@@ -20,16 +20,27 @@ class SpeciesMap extends BasicMap {
     this.initMap();
 
     this.markers = [];
-    if (this.props.sites && this.props.sites.length) {
-      this.drawMarkers(this.props.sites);
+    const sitesToDraw = this.props.selectedCategory === 'sites'
+      ? this.props.sites
+      : this.props.criticalSites;
+    if (sitesToDraw && sitesToDraw.length) {
+      this.drawMarkers(sitesToDraw);
     }
   }
 
   componentWillReceiveProps(newProps) {
     if (newProps.layers.sites) {
-      if (!this.markers.length && newProps.sites && newProps.sites.length) {
-        this.drawMarkers(newProps.sites);
-        this.fitMarkersBounds();
+      if (this.props.selectedCategory !== newProps.selectedCategory) {
+        this.clearMarkers();
+      }
+      if (['sites', 'criticalSites'].indexOf(newProps.selectedCategory) > -1) {
+        const sitesToDraw = newProps.selectedCategory === 'sites'
+          ? newProps.sites
+          : newProps.criticalSites;
+        if (!this.markers.length && sitesToDraw && sitesToDraw.length) {
+          this.drawMarkers(sitesToDraw);
+          this.fitMarkersBounds();
+        }
       }
     } else {
       this.clearMarkers();
@@ -197,7 +208,6 @@ class SpeciesMap extends BasicMap {
         html: `<span class='icon -${item.protected_slug}'</span>`
       });
     }
-
     speciesSites.forEach((item) => {
       if (item.lat && item.lon) {
         const marker = L.marker([item.lat, item.lon], { icon: getMarkerIcon(item) }).addTo(this.map);
@@ -252,7 +262,9 @@ SpeciesMap.propTypes = {
   router: React.PropTypes.object.isRequired,
   id: React.PropTypes.string.isRequired,
   sites: React.PropTypes.any.isRequired,
-  population: React.PropTypes.any.isRequired
+  criticalSites: React.PropTypes.any.isRequired,
+  population: React.PropTypes.any.isRequired,
+  selectedCategory: React.PropTypes.string.isRequired
 };
 
 export default withRouter(SpeciesMap);
