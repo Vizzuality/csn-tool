@@ -6,8 +6,6 @@ import TableListHeader from 'containers/species/TableListHeader';
 import ScrollButton from 'components/common/ScrollButton';
 import { Sticky } from 'react-sticky';
 
-const expandedColumns = ['scientific_name', 'english_name', 'population', 'a', 'b', 'c'];
-
 class SpeciesDetailTable extends React.Component {
   constructor(props) {
     super(props);
@@ -131,6 +129,7 @@ class SpeciesDetailTable extends React.Component {
           : null
         }
         <TableListHeader
+          expanded={isLookAlikeSpecies}
           data={data}
           columns={columns}
           allColumns={allColumns}
@@ -144,8 +143,8 @@ class SpeciesDetailTable extends React.Component {
     const detailLink = this.getDetailLink(this.props.category);
     const isLookAlikeSpecies = this.props.category === 'lookAlikeSpecies';
     const data = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? this.state.data : this.props.data;
-    const columns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? expandedColumns : this.props.columns;
-    const allColumns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? expandedColumns : this.props.allColumns;
+    const columns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? this.props.expandedColumns : this.props.columns;
+    const allColumns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? this.props.allExpandedColumns : this.props.allColumns;
 
     return (
       <div className="c-table" >
@@ -178,11 +177,13 @@ SpeciesDetailTable.childContextTypes = {
 
 SpeciesDetailTable.propTypes = {
   allColumns: React.PropTypes.array.isRequired,
+  allExpandedColumns: React.PropTypes.array.isRequired,
   id: React.PropTypes.string.isRequired,
   isSearch: React.PropTypes.bool.isRequired,
   category: React.PropTypes.string.isRequired,
   data: React.PropTypes.any.isRequired,
-  columns: React.PropTypes.array.isRequired
+  columns: React.PropTypes.array.isRequired,
+  expandedColumns: React.PropTypes.array.isRequired
 };
 
 export default SpeciesDetailTable;
