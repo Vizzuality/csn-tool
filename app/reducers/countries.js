@@ -25,13 +25,14 @@ const DEFAULT_COUNTRY_COLUMNS = {
   sites: ['site_name', 'protected', 'iba_species', 'iba_in_danger']
 };
 
-const DEFAULT_EXPANDED_COLUMNS = ['scientific_name', 'english_name', 'population', 'a', 'b', 'c'];
+const ALL_EXPANDED_COLUMNS = ['scientific_name', 'english_name', 'population', 'a', 'b', 'c'];
+const DEFAULT_EXPANDED_COLUMNS = ['scientific_name', 'population', 'a', 'b', 'c'];
 
 const initialState = {
   columns: DEFAULT_COUNTRY_COLUMNS.sites,
   expandedColumns: DEFAULT_EXPANDED_COLUMNS,
   allColumns: ALL_COUNTRY_COLUMNS.sites,
-  allExpandedColumns: DEFAULT_EXPANDED_COLUMNS,
+  allExpandedColumns: ALL_EXPANDED_COLUMNS,
   selected: '',
   selectedCategory: 'sites',
   searchFilter: '',
