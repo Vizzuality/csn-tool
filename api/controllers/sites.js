@@ -122,7 +122,7 @@ function getSitesDetails(req, res) {
 function getSitesLocations(req, res) {
   let query;
   if (req.params.type === 'csn') {
-    query = `SELECT s.site_name_clean, s.site_id as id, s.lat, s.lon,
+    query = `SELECT s.site_name_clean AS site_name, s.site_id as id, s.lat, s.lon,
     'csn' AS site_type  FROM sites_csn_points s`;
   } else {
     query = `SELECT s.site_name, s.site_id as id, s.lat, s.lon,
