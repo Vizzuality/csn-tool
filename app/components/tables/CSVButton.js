@@ -63,7 +63,7 @@ CSVButton.contextTypes = {
 
 CSVButton.propTypes = {
   columns: PropTypes.array.isRequired,
-  data: PropTypes.array
+  data: PropTypes.any
 };
 
 export default CSVButton;

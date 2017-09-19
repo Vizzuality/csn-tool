@@ -38,7 +38,8 @@ function getSites(req, res) {
       FROM species_sites
       GROUP BY site_id
     )
-    SELECT s.country, s.site_name AS csn_name, protected,
+    SELECT s.country, s.site_name_clean AS csn_name, protected,
+    s.site_name_clean AS site_name,
     s.lat, s.lon, s.site_id AS id, stc.csn, s.iso3, s.iso2, total_percentage
     FROM ${table} s
     INNER JOIN stc ON stc.site_id = s.site_id
@@ -77,13 +78,14 @@ function getSitesDetails(req, res) {
     lon, hyperlink, csn, iba, iba_in_danger
     `;
   } else {
-    query = `SELECT s.site_id AS id, protected,
-      iso3 AS country, site_name_clean, lat, lon,
-      COUNT(ss.species_id) AS qualifying_species
+    query = `SELECT s.site_id AS id, s.protected,
+      iso3 AS country, site_name_clean AS site_name, lat, lon,
+      COUNT(ss.species_rec_id) AS qualifying_species
       FROM sites_csn_points AS s
-      INNER JOIN species_sites AS ss ON ss.site_id = s.site_id
+      INNER JOIN csn_species_sites AS ss ON ss.site_id = s.site_id
       WHERE s.site_id = ${req.params.id}
-      GROUP BY s.site_id, protected, iso3, site_name, lat, lon`;
+      GROUP BY s.site_id, s.protected, iso3, lat, lon,
+      s.site_name_clean`;
   }
 
   rp(CARTO_SQL + query)
@@ -161,7 +163,7 @@ function getSitesSpecies(req, res) {
       ss.yearstart AS start, ss.yearend AS end, ss.percentfly,
       si.site_name_clean AS csn_site_name, si.lat, si.lon, si.country, si.iso2,
       si.protected, p.population_name AS population, s.iucn_category,
-      s.english_name, s.scientific_name,
+      s.english_name, s.scientific_name, si.site_name_clean AS site_name,
       s.hyperlink, ss.geometric_mean,
       CASE
        WHEN ss.csn1 = 1 THEN true
