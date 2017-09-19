@@ -28,13 +28,14 @@ const DEFAULT_SPECIES_COLUMNS = {
   sites: ['country', 'site_name', 'season', 'geometric_mean', 'units', 'iba_criteria']
 };
 
-const DEFAULT_EXPANDED_COLUMNS = ['scientific_name', 'english_name', 'population', 'a', 'b', 'c'];
+const ALL_EXPANDED_COLUMNS = ['scientific_name', 'english_name', 'population', 'a', 'b', 'c'];
+const DEFAULT_EXPANDED_COLUMNS = ['scientific_name', 'population', 'a', 'b', 'c'];
 
 const initialState = {
   columns: DEFAULT_SPECIES_COLUMNS.over,
   allColumns: ALL_SPECIES_COLUMNS.over,
   expandedColumns: DEFAULT_EXPANDED_COLUMNS,
-  allExpandedColumns: DEFAULT_EXPANDED_COLUMNS,
+  allExpandedColumns: ALL_EXPANDED_COLUMNS,
   list: false,
   selected: '',
   selectedCategory: 'sites',
