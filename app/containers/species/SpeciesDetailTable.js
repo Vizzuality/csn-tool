@@ -23,7 +23,9 @@ function getSpeciesDetailData(rows, columns, filter, columnFilter) {
 }
 
 const mapStateToProps = (state) => {
-  const columns = state.species.columns;
+  // if it comes from search, show fields instead of species columns
+  const columns = state.search.results ?
+    Object.keys(state.search.results.fields) : state.species.columns;
 
   const species = state.species;
   const detailList = species[species.selectedCategory] && species[species.selectedCategory][species.selected]
