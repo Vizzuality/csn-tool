@@ -1,4 +1,4 @@
-const PROTECTION_LEVELS = ['Little/none', 'Some', 'Most', 'Whole'];
+const PROTECTION_LEVELS = ['Little/none', 'Some', 'Most', 'Whole', 'Unknown'];
 
 const formatSortItem = (item = '') => {
   switch (typeof item) {
