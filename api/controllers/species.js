@@ -98,7 +98,8 @@ function getSpeciesCriticalSites(req, res) {
   const query = `SELECT s.species_id,
       ss.popmax as maximum, ss.popmin as minimum, ss.season, ss.units,
       ss.yearstart AS start, ss.yearend AS end, ss.percentfly,
-      si.site_name_clean AS csn_site_name, si.lat, si.lon, si.country, si.iso2,
+      si.site_name_clean AS csn_site_name, si.site_name_clean AS site_name,
+      si.lat, si.lon, si.country, si.iso2,
       si.protected, p.population_name AS population,
       si.hyperlink, si.site_id AS id, ss.geometric_mean,
       CASE

@@ -21,7 +21,7 @@ function SitesFilters(props) {
 
 SitesFilters.propTypes = {
   columns: React.PropTypes.array,
-  data: React.PropTypes.array,
+  data: React.PropTypes.any,
   id: React.PropTypes.string,
   category: React.PropTypes.string,
   type: React.PropTypes.string
