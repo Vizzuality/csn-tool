@@ -28,9 +28,13 @@ const DEFAULT_SPECIES_COLUMNS = {
   sites: ['country', 'site_name', 'season', 'geometric_mean', 'units', 'iba_criteria']
 };
 
+const DEFAULT_EXPANDED_COLUMNS = ['scientific_name', 'english_name', 'population', 'a', 'b', 'c'];
+
 const initialState = {
-  allColumns: ALL_SPECIES_COLUMNS.over,
   columns: DEFAULT_SPECIES_COLUMNS.over,
+  allColumns: ALL_SPECIES_COLUMNS.over,
+  expandedColumns: DEFAULT_EXPANDED_COLUMNS,
+  allExpandedColumns: DEFAULT_EXPANDED_COLUMNS,
   list: false,
   selected: '',
   selectedCategory: 'sites',
@@ -73,18 +77,24 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, params);
     }
     case CHANGE_COLUMN_ACTIVATION: {
-      const columns = state.columns.slice();
+      const columns = action.expanded
+        ? state.expandedColumns.slice()
+        : state.columns.slice();
       let newColumns = columns.filter((col) => col !== action.payload);
       if (columns.length === newColumns.length) {
         newColumns.push(action.payload);
-        const prevColumns = state.allColumns.slice();
+        const prevColumns = action.expanded
+          ? state.allExpandedColumns.slice()
+          : state.allColumns.slice();
         newColumns = prevColumns.reduce((previous, currentItem) => {
           const isIn = newColumns.some((newCol) => newCol === currentItem);
           if (isIn) previous.push(currentItem);
           return previous;
         }, []);
       }
-      return Object.assign({}, state, { columns: newColumns });
+      return action.expanded
+        ? Object.assign({}, state, { expandedColumns: newColumns })
+        : Object.assign({}, state, { columns: newColumns });
     }
     case SET_SPECIES_COLUMN_FILTER:
       return Object.assign({}, state, { columnFilter: action.payload });

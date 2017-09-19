@@ -42,7 +42,9 @@ const mapStateToProps = (state) => {
     isSearch: state.search.results && state.search.results.rows.length > 0 || false,
     data,
     columns,
-    allColumns: state.species.allColumns
+    allColumns: state.species.allColumns,
+    expandedColumns: state.species.expandedColumns,
+    allExpandedColumns: state.species.allExpandedColumns
   };
 };
 
