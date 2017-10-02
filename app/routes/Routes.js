@@ -115,7 +115,7 @@ const Routes = ({ history }) => (
         <Route path=":id(/:cat)" component={SpeciesDetailPage} onEnter={updateSpeciesDetailPage} />
       </Route>
       <Route path="threshold-lookup" component={ThersholdLookup} onEnter={setThresholdPosition} onChange={updateThresholdPosition} />
-      <Route path="advanced-search" component={AdvancedSearch} />
+      {/*<Route path="advanced-search" component={AdvancedSearch} />*/}
     </Route>
     <Redirect from="*" to="en" />
   </Router>
