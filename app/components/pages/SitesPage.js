@@ -7,7 +7,7 @@ import Select from 'react-select';
 import { withRouter } from 'react-router';
 
 const FILTER_OPTIONS = [
-  { value: 'iba', label: 'Important Bird Areas' },
+  { value: 'iba', label: 'IBA' },
   { value: 'csn', label: 'Critical Sites' }
 ];
 
