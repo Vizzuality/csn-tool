@@ -15,7 +15,7 @@ const ALL_SPECIES_COLUMNS = {
   criticalSites: ['country', 'csn_site_name', 'protected', 'population',
     'season', 'start', 'end', 'minimum', 'maximum', 'geometric_mean',
     'units', 'percentfly', 'csn1', 'csn2'],
-  sites: ['country', 'csn_site_name', 'protected', 'season', 'start', 'end', 'minimum',
+  sites: ['country', 'site_name', 'protected', 'season', 'start', 'end', 'minimum',
     'maximum', 'geometric_mean', 'units', 'iba_criteria']
 };
 
