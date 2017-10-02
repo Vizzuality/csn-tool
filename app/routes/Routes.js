@@ -14,7 +14,7 @@ import SitesDetailPage from 'containers/pages/SitesDetailPage';
 import SpeciesPage from 'containers/pages/SpeciesPage';
 import SpeciesDetailPage from 'containers/pages/SpeciesDetailPage';
 import ThersholdLookup from 'containers/pages/ThersholdLookup';
-import AdvancedSearch from 'containers/pages/AdvancedSearch';
+/* import AdvancedSearch from 'containers/pages/AdvancedSearch'; */
 
 function shouldUpdateScroll(prevRouterProps, { location }) {
   /**
@@ -115,7 +115,7 @@ const Routes = ({ history }) => (
         <Route path=":id(/:cat)" component={SpeciesDetailPage} onEnter={updateSpeciesDetailPage} />
       </Route>
       <Route path="threshold-lookup" component={ThersholdLookup} onEnter={setThresholdPosition} onChange={updateThresholdPosition} />
-      {/*<Route path="advanced-search" component={AdvancedSearch} />*/}
+      {/* <Route path="advanced-search" component={AdvancedSearch} /> */}
     </Route>
     <Redirect from="*" to="en" />
   </Router>
