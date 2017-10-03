@@ -2,17 +2,9 @@ import React from 'react';
 import GoBackLink from 'containers/common/GoBackLink';
 import CountriesMap from 'containers/countries/CountriesMap';
 import CountriesTable from 'containers/countries/CountriesTable';
-import Select from 'react-select';
-import { replaceUrlParams } from 'helpers/router';
 import { translations } from 'locales/translations';
 import { StickyContainer } from 'react-sticky';
 import CountriesSearch from 'containers/countries/CountriesSearch';
-
-const FILTER_OPTIONS = [
-  { value: 'all', label: 'ALL' },
-  { value: 'aewa', label: 'AEWA' },
-  { value: 'ramsar', label: 'RAMSAR' }
-];
 
 class CountriesPage extends React.Component {
   constructor() {
@@ -20,7 +12,6 @@ class CountriesPage extends React.Component {
     this.languages = Object.keys(translations).map((lang) => (
       { value: lang, label: lang.toUpperCase() }
     ));
-    this.onSelectChange = this.onSelectChange.bind(this);
   }
 
   componentWillMount() {
@@ -31,15 +22,6 @@ class CountriesPage extends React.Component {
     if (newProps.country && this.hasNewParams(newProps)) {
       this.getData(newProps);
     }
-  }
-
-  onSelectChange(filter) {
-    const params = {
-      filter: filter.value
-    };
-    const route = this.props.router.getCurrentLocation();
-    const url = replaceUrlParams(route.pathname + route.search, params);
-    this.props.router.push(url);
   }
 
   getData(props) {
@@ -75,19 +57,6 @@ class CountriesPage extends React.Component {
                     <h2>{this.context.t('countries')} <span>({this.props.countriesLength || ''})</span></h2>
                   </div>
                   <div className="filter">
-                    <h4 className="text -input-label -light">{this.context.t('groupBy')}</h4>
-                    <Select
-                      name="filter-countries"
-                      className="c-select -plain"
-                      clearable={false}
-                      searchable={false}
-                      value={this.props.filter ? this.props.filter : 'all'}
-                      options={FILTER_OPTIONS}
-                      onChange={this.onSelectChange}
-                      arrowRenderer={() => <svg className="icon"><use xlinkHref="#icon-dropdown_arrow_down"></use></svg>}
-                    />
-                  </div>
-                  <div className="filter">
                     <CountriesSearch
                       placeholder="countriesNameSearch"
                       label="searchBy"
@@ -103,7 +72,6 @@ class CountriesPage extends React.Component {
         <div className={`l-map ${this.props.country ? '-short -header' : '-header'}`}>
           <CountriesMap
             id="countries-map"
-            filter={this.props.filter}
             countries={this.props.countries}
           />
         </div>
@@ -132,7 +100,6 @@ CountriesPage.propTypes = {
   getCountryData: React.PropTypes.func.isRequired,
   countriesLength: React.PropTypes.number,
   countries: React.PropTypes.array,
-  filter: React.PropTypes.string,
   searchFilter: React.PropTypes.string,
   router: React.PropTypes.object,
   params: React.PropTypes.object,
