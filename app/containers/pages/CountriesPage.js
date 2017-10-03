@@ -12,7 +12,6 @@ function getCountryData(countries) {
 const mapStateToProps = (state) => ({
   country: state.countries.selected,
   category: state.countries.selectedCategory,
-  filter: state.countries.filter,
   countries: state.countries.countries,
   countryStats: state.countries.stats[state.countries.selected] || false,
   countryData: getCountryData(state.countries),
