@@ -14,7 +14,7 @@ class SitesTable extends React.Component {
   }
 
   render() {
-    const detailLink = `sites/${this.props.router.location.query.filter}`;
+    const detailLink = this.props.router ? `sites/${this.props.router.location.query.filter}` : 'sites/iba';
     const downloadData = (typeof this.props.list.data !== 'boolean') && this.props.list.data || [];
 
     return (
