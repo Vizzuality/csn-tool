@@ -27,7 +27,7 @@ const setup = () => {
     sort: {},
     sortBy: jest.fn(),
     changeColumnActivation: jest.fn(),
-    detailLink: 'species'
+    detailLink: true
   };
   const enzymeWrapper = mount(<TableListHeader {...props} />,
     { context: { t: jest.fn() } }

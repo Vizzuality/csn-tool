@@ -3,14 +3,18 @@ import reducer from 'reducers/species';
 import { CHANGE_COLUMN_ACTIVATION } from 'constants/index.js';
 
 const initialState = {
-  allColumns: ['scientific_name', 'english_name', 'population', 'genus', 'family'],
-  columns: ['scientific_name', 'english_name', 'population', 'genus', 'family'],
+  activeBounds: [],
+  allColumns: ['scientific_name', 'english_name', 'genus', 'family', 'iucn_category', 'aewa_annex_2'],
+  columns: ['scientific_name', 'genus', 'family', 'iucn_category', 'aewa_annex_2'],
+  expandedColumns: ['scientific_name', 'population', 'a', 'b', 'c'],
+  allExpandedColumns: ['scientific_name', 'english_name', 'population', 'a', 'b', 'c'],
   list: false,
   selected: '',
   selectedCategory: 'sites',
   searchFilter: '',
   stats: {},
   sites: {},
+  criticalSites: {},
   population: {},
   lookAlikeSpecies: {},
   layers: {
