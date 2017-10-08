@@ -1,9 +1,11 @@
 const PROTECTION_LEVELS = ['Little/none', 'Some', 'Most', 'Whole', 'Unknown'];
+const IUCN_CATEGORIES = ['CR', 'EN', 'VU', 'NT', 'DD', 'LC'];
 
-const formatSortItem = (item = '') => {
+const formatSortItem = (column, item = '') => {
   switch (typeof item) {
     case 'string': {
-      const protectionIndex = PROTECTION_LEVELS.map((level) => level.toLowerCase()).indexOf(item.toLowerCase());
+      const arr = column === 'iucn_category' ? IUCN_CATEGORIES : PROTECTION_LEVELS;
+      const protectionIndex = arr.map((level) => level.toLowerCase()).indexOf(item.toLowerCase());
       if (protectionIndex > -1) {
         return protectionIndex;
       }
@@ -18,8 +20,8 @@ const formatSortItem = (item = '') => {
 export const commonSort = (field, order) => {
   const sortOrder = order === 'desc' ? -1 : 1;
   return (a, b) => {
-    const itemA = formatSortItem(a[field]);
-    const itemB = formatSortItem(b[field]);
+    const itemA = formatSortItem(field, a[field]);
+    const itemB = formatSortItem(field, b[field]);
 
     if (itemA < itemB) return -1 * sortOrder;
     if (itemA > itemB) return 1 * sortOrder;
