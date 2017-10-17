@@ -2,7 +2,7 @@ export function filterByColumns(data, activeFilters) {
   const filters = Object.keys(activeFilters);
 
   const filteredData = data.filter((item) => (
-    filters.every((key) => ( // "Every" does AND connection, while "Some" does OR
+    filters.some((key) => ( // "Every" does AND connection, while "Some" does OR
       item[key] &&
       JSON.parse(activeFilters[key]).some((filter) => (
         item[key].toString().split(' ').some((col) => col.toUpperCase() === filter.toUpperCase())
