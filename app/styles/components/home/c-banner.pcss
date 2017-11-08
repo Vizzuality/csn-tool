@@ -1,9 +1,13 @@
 .c-banner {
   position: fixed;
-  top: 50px;
+  top: 30px;
   height: calc(100vh - $header-height - $content-peek);
   width: 100%;
   z-index: -200;
+
+  svg.banner-logo {
+    width: 30%;
+  }
 
   > .content {
     position: absolute;
@@ -19,8 +23,21 @@
 
     > .text {
       max-width: 650px;
-      margin-bottom: 40px;
+      margin-bottom: 10px;
       text-align: center;
+    }
+
+    > .banner-logos {
+      .wetlands-logo {
+        display: inline-block;
+        width: 120px;
+      }
+
+      .birdlife-logo {
+        display: inline-block;
+        width: 60px;
+        margin-right: 40px;
+      }
     }
   }
 }
