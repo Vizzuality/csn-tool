@@ -6,7 +6,7 @@ function Banner(props, context) {
     <div className="c-banner">
       <BasicMap id="home-map" urlSync={false} shareControl={false} />
       <div className="content">
-        <svg>
+        <svg className="banner-logo">
           <use xlinkHref="#logo-big"></use>
         </svg>
         <h3 className="text -light -intro">
