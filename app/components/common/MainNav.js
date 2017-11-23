@@ -31,7 +31,7 @@ function MainNav(props, context) {
           <NavLink className="-disabled" to="" i18nText="guidelines" parent />
         </li>
         <li>
-          <NavLink className="-disabled" to="" i18nText="about" parent />
+          <NavLink to="/about" i18nText="about" parent />
         </li>
       </ul>
     </nav>
