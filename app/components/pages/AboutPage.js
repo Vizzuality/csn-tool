@@ -60,7 +60,7 @@ class AboutPage extends React.Component {
                         Cambridge<br/>
                         CB2 3QZ<br/>
                         United Kingdom<br/>
-                        <a target="_blank" href="mailto:Lammert.Hilarides@wetlands.org">Lammert.Hilarides@wetlands.org</a>
+                        <a target="_blank" href="mailto:science@birdlife.org">science@birdlife.org</a>
                       </address>
                     </div>
                   </div>
