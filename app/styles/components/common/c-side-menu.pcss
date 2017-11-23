@@ -1,0 +1,22 @@
+.c-side-menu {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  font-size: $font-size-xs;
+  font-family: $font-heading;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  color: $font-main;
+  text-transform: uppercase;
+  padding-top: 20px;
+  display: none;
+
+  a {
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+
+  @media (--medium-viewport) {
+    display: flex;
+  }
+}
