@@ -11,6 +11,7 @@ import HomePage from 'components/pages/HomePage';
 import CountriesPage from 'containers/pages/CountriesPage';
 import SitesPage from 'containers/pages/SitesPage';
 import AboutPage from 'components/pages/AboutPage';
+import GuidancePage from 'components/pages/GuidancePage';
 import SitesDetailPage from 'containers/pages/SitesDetailPage';
 import SpeciesPage from 'containers/pages/SpeciesPage';
 import SpeciesDetailPage from 'containers/pages/SpeciesDetailPage';
@@ -116,6 +117,7 @@ const Routes = ({ history }) => (
         <Route path=":id(/:cat)" component={SpeciesDetailPage} onEnter={updateSpeciesDetailPage} />
       </Route>
       <Route path="threshold-lookup" component={ThersholdLookup} onEnter={setThresholdPosition} onChange={updateThresholdPosition} />
+      <Route path="guidance" component={GuidancePage} />
       <Route path="about" component={AboutPage} />
       {/* <Route path="advanced-search" component={AdvancedSearch} /> */}
     </Route>
