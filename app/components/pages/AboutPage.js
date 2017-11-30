@@ -23,9 +23,6 @@ class AboutPage extends React.Component {
                   <Link activeClass="active" to="data" spy={true} smooth={true} offset={-70} duration={500}>
                     Data
                   </Link>
-                  <Link activeClass="active" to="guidance" spy={true} smooth={true} offset={-70} duration={500}>
-                    Guidance
-                  </Link>
                 </div>
               </Sticky>
             </div>
@@ -89,79 +86,8 @@ class AboutPage extends React.Component {
                     Species data from December 2016 are provided by BirdLife International as the global IUCN Red List authority for birds.The most recent Red List data are available  on the <a target="_blank" href="http://datazone.birdlife.org/home">BirdLife Data Zone</a>. 
                   </p>
                   <p>
-                    <b>Population data</b> are provided by Wetlands International. In the case of waterbird species listed on Annex 2 of the African-Eurasian Migratory Waterbird Agreement, the data presented here are based on the <a target="_blank" href="http://wpe.wetlands.org/search?form%5Bspecies%5D=&form%5Bpopulation%5D=&form%5Bpublication%5D=8">6th edition of the AEWA Conservation Status Report</a>, for other species they are based on the <a target="_blank" href="http://wpe.wetlands.org/search?form%5Bspecies%5D=&form%5Bpopulation%5D=&form%5Bpublication%5D=5">5th edition of the Waterbird Population Estimates</a>.  
+                    <b>Population data</b> are provided by Wetlands International. In the case of waterbird species listed on Annex 2 of the African-Eurasian Migratory Waterbird Agreement, the data presented here are based on the <a target="_blank" href="http://wpe.wetlands.org/search?form%5Bspecies%5D=&form%5Bpopulation%5D=&form%5Bpublication%5D=8">6th edition of the AEWA Conservation Status Report</a>, for other species they are based on the <a target="_blank" href="http://wpe.wetlands.org/search?form%5Bspecies%5D=&form%5Bpopulation%5D=&form%5Bpublication%5D=5">5th edition of the Waterbird Population Estimates</a>.
                   </p>
-                </div>
-              </div>
-              <div name="guidance" className="about-section">
-                <h2>Guidance</h2>
-                <div className="text">
-                  <h3>Species specific management guidelines</h3>
-                  <p>
-                    Information on the ecology (behaviour throughout the species’ annual cycle, its habitat requirements, diet, breeding sites and management) as well as on threats affecting the species are available on the ‘Text account’ tab of the BirdLife Species Fact Sheets. These can be accessed either by clicking on the link box following the species name on CSN Tool 2.0 or directly on the BirdLife International <a target="_blank" href="http://datazone.birdlife.org/species/search">Data Zone</a>.
-                  </p>
-                  <p>
-                    Flyway species action or management plans are available on the <a target="_blank" href="http://www.unep-aewa.org/en/species/other_species_info">AEWA website</a> which also provides access to the International Species Working Groups and International Species Expert Groups.
-                  </p>
-                  <p>
-                    The European Union website also provides access to <a target="_blank" href="http://ec.europa.eu/environment/nature/conservation/wildbirds/action_plans/index_en.htm">species action plans</a> and <a target="_blank" href="http://ec.europa.eu/environment/nature/conservation/wildbirds/hunting/managt_plans_en.htm">management plans</a>. 
-                  </p>                    
-                  <p>
-                    Information on action plans under development and on the implementation of existing action plans in Europe can be found on the <a target="_blank" href="http://www.trackingactionplans.org/SAPTT/main_guest">Species Action Plan Tracking Tool</a>.
-                  </p>
-                  <p>
-                    Expert advice on additional species can be obtained from the <a target="_blank" href="https://www.wetlands.org/our-network/specialist-groups/">Species Specialist Groups</a> associated with Wetlands International and the IUCN Species Survival Commission.
-                  </p>
-                </div>
-                <div className="text -with-links">
-                  <h3>Generic guidance for wetland and waterbird management</h3>
-                  <p className="links">
-                    <a target="_blank" href="http://www.unep-aewa.org/publications/technical-publications?field_publication_type_tid=369">
-                      AEWA Conservation Guidelines series
-                    </a>
-                    <a target="_blank" href="https://www.ramsar.org/resources/ramsar-handbooks">
-                      Ramsar Handbooks
-                    </a>
-                    <a target="_blank" href="https://www.ramsar.org/resources/ramsar-policy-briefs">
-                      Ramsar Policy Briefs
-                    </a>
-                    <a target="_blank" href="http://www.ramsar.org/resources/ramsar-briefing-notes">
-                      Ramsar Briefing Notes
-                    </a>
-                    <a className="no-break" target="_blank" href="http://ec.europa.eu/environment/nature/conservation/wildbirds/action_plans/guidance_en.htm">
-                      EU Guidance under the Birds Directive
-                    </a>
-                    &nbsp;and on&nbsp;
-                    <a className="no-break" target="_blank" href="http://ec.europa.eu/environment/nature/natura2000/management/guidance_en.htm">
-                      management of Natura 2000 sites
-                    </a>
-                  </p>
-                </div>
-                <div className="text -with-links">
-                  <h3>Guidance on climate change adaptation</h3>
-                  <p className="links">
-                    <a target="_blank" href="http://www.unep-aewa.org/en/document/updated-advice-climate-change-adaptation-measures-waterbirds-0">
-                      AEWA Advice on Climate Change Adaptation Measures for Waterbirds
-                    </a>
-                    <a target="_blank" href="https://portals.iucn.org/library/sites/library/files/documents/SSC-OP-059.pdf">
-                      IUCN SSC Guidelines for Assessing Species’ Vulnerability to Climate Change
-                    </a>
-                    <a target="_blank" href="https://www.nwf.org/-/media/PDFs/Global-Warming/2014/Climate-Smart-Conservation-Final_06-06-2014.ashx">
-                      Climate-Smart Conservation: Putting Adaptation Principles into Practice
-                    </a>
-                    <a target="_blank" href="https://www.cbd.int/climate/">
-                      CBD Climate Change Resources
-                    </a>
-                  </p>
-                </div>
-                <div className="text -with-links">
-                  <h3>User Guide - Examples for AEWA and Ramsar National Focal Points</h3>
-                  <div>
-                    <h4>What are the AEWA waterbird populations in this country?</h4>
-                    <p>
-                      Go to the Countries menu, select the country you are interested in. Select the Populations tab.  Download the table. Double click or import the csv file you downloaded into Excel. (To import, open a new workbook in Excel, Data \ Get external data \ Import text file … \ Delimited \ Tick the checkbox next to Comma \ Click Finish \ Click OK. Insert a column into Column E. Type “Table 1” in Cell E1. Type in the following function into cell E2: =IF(AND(ISBLANK(F2), ISBLANK(G2), ISBLANK(H2)),"Not on Table1", "On Table 1"). Copy this function into all other cells of column E. Select Data \ Filter or use the Filter icon in row 1. Open the filter in Column E and select “On Table 1”. 
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>
