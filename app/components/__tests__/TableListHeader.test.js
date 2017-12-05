@@ -79,33 +79,26 @@ describe('components', () => {
       expect(enzymeWrapper.find('.table-filter').length).toBeGreaterThan(0);
     });
 
+    it('should render "any" filter', () => {
+      const { enzymeWrapper } = setup();
+      const option = enzymeWrapper.find('.table-filter').first().find('option');
+      expect(option.at(1).text()).toEqual('Any value');
+      expect(option.at(1).get(0).value).toEqual('any');
+    });
+
     it('should render a,b,c filters in hierarchy', () => {
       const { enzymeWrapper } = setup();
+      const option = enzymeWrapper.find('.table-filter').first().find('option');
 
-      expect(enzymeWrapper.find('.table-filter').first()
-        .find('option')
-        .at(1)
-        .text()
-      ).toEqual('1');
-
-      expect(enzymeWrapper.find('.table-filter').first()
-        .find('option')
-        .at(1)
-        .get(0)
-        .value
-      ).toEqual(JSON.stringify(['1', '1a', '1b']));
-
-      expect(enzymeWrapper.find('.table-filter').first()
-        .find('option')
-        .at(4)
-        .text()
-      ).toEqual('2');
+      expect(option.at(2).text()).toEqual('1');
+      expect(option.at(2).get(0).value).toEqual(JSON.stringify(['1', '1a', '1b']));
+      expect(option.at(5).text()).toEqual('2');
     });
 
     it('should not create a subcolumn if the original column is a parent', () => {
       // i.e. 2 should not yield " - 2"
       const { enzymeWrapper } = setup();
-      expect(enzymeWrapper.find('.table-filter').first().find('option').length).toBe(7);
+      expect(enzymeWrapper.find('.table-filter').first().find('option').length).toBe(8);
     });
   });
 });
