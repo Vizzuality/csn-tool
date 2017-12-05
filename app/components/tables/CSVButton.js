@@ -9,12 +9,37 @@ class CSVButton extends React.Component {
     this.state = {
       csv: this.renderCSV(props.columns, props.data)
     };
+
+    this.handleOnClick = this.handleOnClick.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
       csv: this.renderCSV(nextProps.columns, nextProps.data)
     });
+  }
+
+  handleOnClick(e) {
+    if (this.state.dataLoaded) {
+      this.setState({
+        dataLoaded: false
+      });
+      return;
+    }
+    if (this.props.data) return;
+    if (!this.props.loadData) return;
+
+    e.preventDefault();
+
+    this.props.loadData()
+      .then((loadedData) => {
+        this.setState({
+          csv: this.renderCSV(this.props.columns, loadedData),
+          dataLoaded: true,
+          isLoading: false
+        });
+        this.linkElement.click();
+      });
   }
 
   renderCSV(columns, data) {
@@ -24,7 +49,7 @@ class CSVButton extends React.Component {
     if (columns) {
       csvArray.push(columns.map((col) => this.context.t(col)).join(','));
     }
-    if (data) {
+    if (data && data.length) {
       csvArray.push(
         data.map((row) => (
           columns.map((col) => {
@@ -43,12 +68,18 @@ class CSVButton extends React.Component {
   }
 
   render() {
-    if (!this.props.columns || !this.props.data) return null;
+    if (!this.props.columns) return null;
 
     const downloadCSV = this.state.csv;
 
     return (
-      <a className="icon-over-circle" href={downloadCSV} download="download.csv">
+      <a
+        className="icon-over-circle"
+        href={downloadCSV}
+        download="download.csv"
+        ref={(link) => { this.linkElement = link; }}
+        onClick={this.handleOnClick}
+      >
         <svg className="icon -small -dark">
           <use xlinkHref="#icon-download"></use>
         </svg>
@@ -63,6 +94,7 @@ CSVButton.contextTypes = {
 
 CSVButton.propTypes = {
   columns: PropTypes.array.isRequired,
+  loadData: PropTypes.func,
   data: PropTypes.any
 };
 
