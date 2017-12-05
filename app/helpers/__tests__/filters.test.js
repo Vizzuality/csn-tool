@@ -39,5 +39,23 @@ describe('helpers', () => {
       };
       expect(filterByColumns(data, activeFilters)).toEqual([{ a: '1a 1b', b: '', c: null }]);
     });
+
+    it('should filter any values', () => {
+      const data = [
+        { a: '', b: '1', c: '' },
+        { a: '', b: null, c: null },
+        { a: '1a', b: '', c: null }
+      ];
+      const expectedData = [
+        { a: '', b: '1', c: '' },
+        { a: '1a', b: '', c: null }
+      ];
+      const activeFilters = {
+        a: 'any',
+        b: 'any',
+        c: 'any'
+      };
+      expect(filterByColumns(data, activeFilters)).toEqual(expectedData);
+    });
   });
 });

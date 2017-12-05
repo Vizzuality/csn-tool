@@ -221,6 +221,7 @@ class TableListHeader extends React.Component {
       <div key={`${column}Filter`} className="table-filter">
         <select onChange={(event) => this.filterBy({ field: column, value: event.target.value })}>
           <option value="reset">Reset filter</option>
+          <option value="any">Any value</option>
           {this.filters && this.filters[column] && this.filters[column].map((item, i) =>
             <option key={i} value={JSON.stringify(item.filter)}>{item.formattedLabel}</option>
           )}
