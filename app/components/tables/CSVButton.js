@@ -73,7 +73,7 @@ class CSVButton extends React.Component {
   }
 
   render() {
-    if (!this.props.columns) return null;
+    if (!this.props.columns || !this.props.data) return null;
 
     const downloadCSV = this.state.csv || '#';
 
