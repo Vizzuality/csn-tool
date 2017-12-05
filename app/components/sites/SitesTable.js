@@ -3,13 +3,12 @@ import SitesFilters from 'components/sites/SitesFilters';
 import InfiniteScroll from 'components/common/InfiniteScroll';
 import TableList from 'components/tables/TableList';
 import TableListHeader from 'containers/sites/TableListHeader';
-import { withRouter } from 'react-router';
 
 class SitesTable extends React.Component {
 
   componentWillMount() {
     if (!this.props.list.data) {
-      this.props.getSitesList(this.props.list.page, null, this.props.router.location.query.filter);
+      this.props.getSitesList(this.props.list.page, null, this.props.filter);
     }
   }
 
@@ -20,9 +19,9 @@ class SitesTable extends React.Component {
   }
 
   render() {
-    const filter = this.props.router.location.query.filter;
+    const filter = this.props.filter;
     const search = this.props.list.search;
-    const detailLink = this.props.router ? `sites/${filter}` : 'sites/iba';
+    const detailLink = `sites/${filter}`;
 
     return (
       <div id="sitesTable" className="c-paginated-table c-table">
@@ -61,11 +60,11 @@ SitesTable.propTypes = {
   getSitesList: React.PropTypes.func.isRequired,
   list: React.PropTypes.object.isRequired,
   category: React.PropTypes.string,
+  filter: React.PropTypes.string,
   columns: React.PropTypes.array.isRequired,
   isSearch: React.PropTypes.bool.isRequired,
-  router: React.PropTypes.object,
   sticky: React.PropTypes.bool,
   type: React.PropTypes.string
 };
 
-export default withRouter(SitesTable);
+export default SitesTable;
