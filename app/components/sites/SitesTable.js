@@ -32,7 +32,7 @@ class SitesTable extends React.Component {
         >
           <div className={!this.props.isSearch && 'sticky-table'}>
             <div className={!this.props.isSearch ? 'sticky-header column' : 'column'} >
-              <SitesFilters loadData={() => this.getAllSites(search, filter)} columns={this.props.columns} isSearch={this.props.isSearch} category={this.props.category} type={this.props.type} />
+              <SitesFilters csvData={() => this.getAllSites(search, filter)} columns={this.props.columns} isSearch={this.props.isSearch} category={this.props.category} type={this.props.type} />
               <TableListHeader
                 includeSort={false}
                 data={this.props.list.data}

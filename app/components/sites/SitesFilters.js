@@ -8,7 +8,7 @@ function SitesFilters(props) {
     <div className="row c-table-filters">
       <div className="column small-12 medium-8">
         <div style={{ display: 'inline-block', marginTop: 14, verticalAlign: 'top' }}>
-          <CSVButton loadData={props.loadData} columns={props.columns} />
+          <CSVButton data={props.csvData} columns={props.columns} />
         </div>
       </div>
       <div className="column small-12 medium-4">
@@ -27,8 +27,10 @@ SitesFilters.contextTypes = {
 };
 
 SitesFilters.propTypes = {
-  data: React.PropTypes.array,
-  loadData: React.PropTypes.func,
+  csvData: React.PropTypes.oneOfType([
+    React.PropTypes.array,
+    React.PropTypes.func
+  ]),
   columns: React.PropTypes.array,
   id: React.PropTypes.any,
   isSearch: React.PropTypes.bool.isRequired,

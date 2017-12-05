@@ -19,30 +19,35 @@ class CSVButton extends React.Component {
     });
   }
 
+  componentDidUpdate() {
+    // retrigger click when csv data has been loaded
+    if (this.state.dataLoadedOnDemand) {
+      this.linkElement.click();
+    }
+  }
+
   handleOnClick(e) {
-    if (this.state.dataLoaded) {
-      this.setState({
-        dataLoaded: false
-      });
+    if (this.state.dataLoadedOnDemand) {
+      this.setState({ dataLoadedOnDemand: false });
       return;
     }
-    if (this.props.data) return;
-    if (!this.props.loadData) return;
+    // if data is not a function, don't need to load it, continue with default behaviour
+    if (typeof this.props.data !== 'function') return;
 
     e.preventDefault();
 
-    this.props.loadData()
+    this.props.data()
       .then((loadedData) => {
         this.setState({
           csv: this.renderCSV(this.props.columns, loadedData),
-          dataLoaded: true,
-          isLoading: false
+          dataLoadedOnDemand: true
         });
-        this.linkElement.click();
       });
   }
 
   renderCSV(columns, data) {
+    if (typeof data === 'function') return null;
+
     const NEW_LINE_CHAR = '\n';
     const COMMA_CHAR = ',';
     const csvArray = []; // ['data:'];
@@ -70,7 +75,7 @@ class CSVButton extends React.Component {
   render() {
     if (!this.props.columns) return null;
 
-    const downloadCSV = this.state.csv;
+    const downloadCSV = this.state.csv || '#';
 
     return (
       <a
