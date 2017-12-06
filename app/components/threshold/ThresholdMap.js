@@ -141,7 +141,7 @@ class ThresholdMap extends BasicMap {
 
 ThresholdMap.contextTypes = {
   t: PropTypes.func.isRequired
-}
+};
 
 ThresholdMap.propTypes = {
   coordinates: PropTypes.object

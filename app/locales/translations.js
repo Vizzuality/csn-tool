@@ -129,7 +129,8 @@ export const translations = {
     'population_trend': 'Population trend',
     'tools': 'Tools',
     'feedback': 'Feedback',
-    'scrollText': 'Scroll down to see the data'
+    'scrollText': 'Scroll down to see the data',
+    'coordinates': 'Coordinates'
   },
   es: {
     'country': 'Pais',
@@ -245,7 +246,8 @@ export const translations = {
     'selectOneOption': 'Selecciona al menos una opción',
     'tools': 'Herramientas',
     'feedback': 'Comentarios',
-    'scrollText': 'Desplácese hacia abajo para ver los datos'
+    'scrollText': 'Desplácese hacia abajo para ver los datos',
+    'coordinates': 'Coordenadas'
   },
   fr: {
     'country': 'Pays',
@@ -378,6 +380,7 @@ export const translations = {
     'population_trend': 'Tendance de la population',
     'tools': 'Outils',
     'feedback': 'Commentaires',
-    'scrollText': 'Faites défiler vers le bas pour voir les données'
+    'scrollText': 'Faites défiler vers le bas pour voir les données',
+    'coordinates': 'Coordonnées'
   },
 }
