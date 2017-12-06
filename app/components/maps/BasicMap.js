@@ -1,6 +1,12 @@
 import React from 'react';
-import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, MAP_MIN_ZOOM,
-  MAP_CENTER, MAP_INITIAL_ZOOM } from 'constants/map';
+import {
+  BASEMAP_ATTRIBUTION_MAPBOX,
+  BASEMAP_TILE_MAP,
+  BASEMAP_TILE_SATELLITE,
+  MAP_CENTER,
+  MAP_INITIAL_ZOOM,
+  MAP_MIN_ZOOM
+} from 'constants/map';
 import { render } from 'react-dom';
 import Share from 'components/maps/Share';
 import { replaceUrlParams } from 'helpers/router';
@@ -81,7 +87,14 @@ class Map extends React.Component {
     this.map.attributionControl.addAttribution(BASEMAP_ATTRIBUTION_MAPBOX);
     this.map.zoomControl.setPosition('topright');
     this.map.scrollWheelZoom.disable();
-    this.tileLayer = L.tileLayer(BASEMAP_TILE).addTo(this.map).setZIndex(0);
+    const mapLayer = L.tileLayer(BASEMAP_TILE_MAP);
+    const satelliteLayer = L.tileLayer(BASEMAP_TILE_SATELLITE);
+    const baseLayers = {
+      [this.context.t('map')]: mapLayer,
+      [this.context.t('satellite')]: satelliteLayer
+    };
+    L.control.layers(baseLayers).addTo(this.map);
+    mapLayer.addTo(this.map).setZIndex(0);
 
     if (this.props.shareControl) this.addShareControl();
     if (this.props.urlSync) this.setUrlSyncListeners();
@@ -125,6 +138,10 @@ class Map extends React.Component {
     );
   }
 }
+
+Map.contextTypes = {
+  t: React.PropTypes.func.isRequired
+};
 
 Map.defaultProps = {
   urlSync: true,

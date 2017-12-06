@@ -125,7 +125,8 @@ export const translations = {
     'cms_caf_action_plan': 'CMS CAF action plan',
     'multispecies_flyway': 'Multispecies flyway',
     'population_trend': 'Population trend',
-    'tools': 'Tools'
+    'tools': 'Tools',
+    'satellite': 'Satellite'
   },
   es: {
     'country': 'Pais',
@@ -237,7 +238,8 @@ export const translations = {
     'taxonomy': 'Taxonomia',
     'habitat': 'Habitat',
     'selectOneOption': 'Selecciona al menos una opción',
-    'tools': 'Herramientas'
+    'tools': 'Herramientas',
+    'satellite': 'Satélite'
   },
   fr: {
     'country': 'Pays',
@@ -366,6 +368,7 @@ export const translations = {
     'cms_caf_action_plan': "Plan d'action CMS CAF",
     'multispecies_flyway': 'Voie de migration plurispécifique',
     'population_trend': 'Tendance de la population',
-    'tools': 'Outils'
+    'tools': 'Outils',
+    'satellite': 'Satellite'
   },
 }
