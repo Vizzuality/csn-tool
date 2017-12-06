@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Sticky } from 'react-sticky';
 import TableList from 'components/tables/TableList';
 import TableListHeader from 'containers/threshold/TableListHeader';
@@ -31,9 +32,9 @@ function ThresholdTable(props) {
 }
 
 ThresholdTable.propTypes = {
-  allColumns: React.PropTypes.array.isRequired,
-  data: React.PropTypes.array.isRequired,
-  columns: React.PropTypes.array.isRequired
+  allColumns: PropTypes.array.isRequired,
+  data: PropTypes.array.isRequired,
+  columns: PropTypes.array.isRequired
 };
 
 export default ThresholdTable;

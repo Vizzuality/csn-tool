@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TableList from 'components/tables/TableList';
 
 function ResultsTable(props) {
@@ -11,8 +12,8 @@ function ResultsTable(props) {
 }
 
 ResultsTable.propTypes = {
-  data: React.PropTypes.any.isRequired,
-  columns: React.PropTypes.array.isRequired
+  data: PropTypes.any.isRequired,
+  columns: PropTypes.array.isRequired
 };
 
 export default ResultsTable;

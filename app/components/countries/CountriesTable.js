@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import CountriesFilters from 'components/countries/CountriesFilters';
 import TableListHeader from 'containers/countries/TableListHeader';
@@ -153,18 +154,18 @@ class CountriesTable extends React.Component {
 }
 
 CountriesTable.contextTypes = {
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 CountriesTable.propTypes = {
-  allColumns: React.PropTypes.array.isRequired,
-  allExpandedColumns: React.PropTypes.array.isRequired,
-  country: React.PropTypes.string.isRequired,
-  category: React.PropTypes.string.isRequired,
-  columns: React.PropTypes.array.isRequired,
-  expandedColumns: React.PropTypes.array.isRequired,
-  data: React.PropTypes.any,
-  cleanSearchFilter: React.PropTypes.func
+  allColumns: PropTypes.array.isRequired,
+  allExpandedColumns: PropTypes.array.isRequired,
+  country: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
+  columns: PropTypes.array.isRequired,
+  expandedColumns: PropTypes.array.isRequired,
+  data: PropTypes.any,
+  cleanSearchFilter: PropTypes.func
 };
 
 export default CountriesTable;

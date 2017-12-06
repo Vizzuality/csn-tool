@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import CSVButton from 'components/tables/CSVButton.js';
 import SpeciesSearch from 'containers/species/SpeciesSearch';
 import Filter from 'containers/advanced-search/Filter';
@@ -23,13 +24,13 @@ function SpeciesFilters(props, context) {
 }
 
 SpeciesFilters.propTypes = {
-  data: React.PropTypes.array,
-  columns: React.PropTypes.array,
-  isSearch: React.PropTypes.bool.isRequired
+  data: PropTypes.array,
+  columns: PropTypes.array,
+  isSearch: PropTypes.bool.isRequired
 };
 
 SpeciesFilters.contextTypes = {
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 export default SpeciesFilters;

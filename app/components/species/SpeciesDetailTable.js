@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import SpeciesDetailFilters from 'components/species/SpeciesDetailFilters';
 import TableList from 'components/tables/TableList';
@@ -168,22 +169,22 @@ class SpeciesDetailTable extends React.Component {
 }
 
 SpeciesDetailTable.contextTypes = {
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 SpeciesDetailTable.childContextTypes = {
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 SpeciesDetailTable.propTypes = {
-  allColumns: React.PropTypes.array.isRequired,
-  allExpandedColumns: React.PropTypes.array.isRequired,
-  id: React.PropTypes.string.isRequired,
-  isSearch: React.PropTypes.bool.isRequired,
-  category: React.PropTypes.string.isRequired,
-  data: React.PropTypes.any.isRequired,
-  columns: React.PropTypes.array.isRequired,
-  expandedColumns: React.PropTypes.array.isRequired
+  allColumns: PropTypes.array.isRequired,
+  allExpandedColumns: PropTypes.array.isRequired,
+  id: PropTypes.string.isRequired,
+  isSearch: PropTypes.bool.isRequired,
+  category: PropTypes.string.isRequired,
+  data: PropTypes.any.isRequired,
+  columns: PropTypes.array.isRequired,
+  expandedColumns: PropTypes.array.isRequired
 };
 
 export default SpeciesDetailTable;

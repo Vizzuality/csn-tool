@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import CSVButton from 'components/tables/CSVButton.js';
 import NavLink from 'containers/common/NavLink';
 import CountriesSearch from 'containers/countries/CountriesSearch';
@@ -25,14 +26,14 @@ function TableFilters(props) {
 
 TableFilters.contextTypes = {
   // Define function to get the translations
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 TableFilters.propTypes = {
-  country: React.PropTypes.string.isRequired,
-  category: React.PropTypes.string,
-  data: React.PropTypes.array,
-  columns: React.PropTypes.array
+  country: PropTypes.string.isRequired,
+  category: PropTypes.string,
+  data: PropTypes.array,
+  columns: PropTypes.array
 };
 
 export default TableFilters;

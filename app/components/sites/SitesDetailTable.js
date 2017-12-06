@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SitesDetailFilters from 'components/sites/SitesDetailFilters';
 import TableList from 'components/tables/TableList';
 import TableListHeader from 'containers/sites/TableListHeader';
@@ -29,12 +30,12 @@ function SitesDetailTable(props) {
 }
 
 SitesDetailTable.propTypes = {
-  allColumns: React.PropTypes.array.isRequired,
-  slug: React.PropTypes.string.isRequired,
-  category: React.PropTypes.string.isRequired,
-  data: React.PropTypes.any.isRequired,
-  columns: React.PropTypes.array.isRequired,
-  type: React.PropTypes.string.isRequired
+  allColumns: PropTypes.array.isRequired,
+  slug: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
+  data: PropTypes.any.isRequired,
+  columns: PropTypes.array.isRequired,
+  type: PropTypes.string.isRequired
 };
 
 export default SitesDetailTable;

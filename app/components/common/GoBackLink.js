@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function GoBackLink(props, context) {
   let url;
@@ -19,24 +20,24 @@ function GoBackLink(props, context) {
 
 GoBackLink.contextTypes = {
   // Define function to get the translations
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 GoBackLink.propTypes = {
   // Go back function
-  goBack: React.PropTypes.func.isRequired,
+  goBack: PropTypes.func.isRequired,
   // Define custom classnames
-  className: React.PropTypes.string,
+  className: PropTypes.string,
   // Define the text to show
-  text: React.PropTypes.string,
+  text: PropTypes.string,
   // Define the text to show translated
-  i18nText: React.PropTypes.string,
+  i18nText: PropTypes.string,
   // Define the icon used for the link
-  icon: React.PropTypes.string,
+  icon: PropTypes.string,
   // Define link end point
-  endPoint: React.PropTypes.string,
+  endPoint: PropTypes.string,
   // Define link language state
-  lang: React.PropTypes.string
+  lang: PropTypes.string
 };
 
 export default GoBackLink;

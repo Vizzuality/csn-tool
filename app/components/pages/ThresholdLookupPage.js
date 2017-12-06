@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { StickyContainer } from 'react-sticky';
 import ThresholdMap from 'containers/threshold/ThresholdMap';
 import ThresholdTable from 'containers/threshold/ThresholdTable';
@@ -67,14 +68,14 @@ class ThresholdLookupPage extends React.Component {
 }
 
 ThresholdLookupPage.contextTypes = {
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 ThresholdLookupPage.propTypes = {
-  data: React.PropTypes.bool,
-  country: React.PropTypes.string,
-  coordinates: React.PropTypes.object,
-  getThreshold: React.PropTypes.func
+  data: PropTypes.bool,
+  country: PropTypes.string,
+  coordinates: PropTypes.object,
+  getThreshold: PropTypes.func
 };
 
 export default ThresholdLookupPage;

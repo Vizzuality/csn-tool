@@ -1,9 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TableListHeader from 'containers/species/TableListHeader';
 import TableList from 'components/tables/TableList';
 import SpeciesFilters from 'components/species/SpeciesFilters';
 import { Sticky } from 'react-sticky';
-
 
 class SpeciesTable extends React.Component {
 
@@ -46,14 +46,14 @@ class SpeciesTable extends React.Component {
 }
 
 SpeciesTable.contextTypes = {
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 SpeciesTable.propTypes = {
-  allColumns: React.PropTypes.array.isRequired,
-  data: React.PropTypes.any.isRequired,
-  columns: React.PropTypes.array.isRequired,
-  isSearch: React.PropTypes.bool.isRequired
+  allColumns: PropTypes.array.isRequired,
+  data: PropTypes.any.isRequired,
+  columns: PropTypes.array.isRequired,
+  isSearch: PropTypes.bool.isRequired
 };
 
 export default SpeciesTable;

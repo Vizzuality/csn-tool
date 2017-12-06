@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import NavLink from 'containers/common/NavLink';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import { numberToThousands } from 'helpers/data';
@@ -124,7 +125,7 @@ function TableList(props) {
 
 TableList.contextTypes = {
   // Define function to get the translations
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 TableList.defaultProps = {
@@ -136,11 +137,11 @@ TableList.propTypes = {
     type: 'action',
     action: function
   } */
-  detailLink: React.PropTypes.any,
-  columns: React.PropTypes.array.isRequired,
-  data: React.PropTypes.any.isRequired,
-  fitBounds: React.PropTypes.func,
-  scroll: React.PropTypes.bool
+  detailLink: PropTypes.any,
+  columns: PropTypes.array.isRequired,
+  data: PropTypes.any.isRequired,
+  fitBounds: PropTypes.func,
+  scroll: PropTypes.bool
 };
 
 export default TableList;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { replaceUrlParams } from 'helpers/router';
 
@@ -32,12 +33,12 @@ function ViewToggler(props, context) {
 
 ViewToggler.contextTypes = {
   // Define function to get the translations
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 ViewToggler.propTypes = {
-  viewMode: React.PropTypes.string,
-  router: React.PropTypes.object.isRequired
+  viewMode: PropTypes.string,
+  router: PropTypes.object.isRequired
 };
 
 export default withRouter(ViewToggler);

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 
 class SearchFilter extends React.Component {
@@ -54,17 +55,17 @@ class SearchFilter extends React.Component {
 
 SearchFilter.contextTypes = {
   // Define function to get the translations
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 SearchFilter.propTypes = {
-  label: React.PropTypes.string,
-  labelType: React.PropTypes.string,
-  placeholder: React.PropTypes.string,
-  setSearchFilter: React.PropTypes.func.isRequired,
-  resetSearchFilter: React.PropTypes.func,
-  router: React.PropTypes.object,
-  searchType: React.PropTypes.string
+  label: PropTypes.string,
+  labelType: PropTypes.string,
+  placeholder: PropTypes.string,
+  setSearchFilter: PropTypes.func.isRequired,
+  resetSearchFilter: PropTypes.func,
+  router: PropTypes.object,
+  searchType: PropTypes.string
 };
 
 export default withRouter(SearchFilter);

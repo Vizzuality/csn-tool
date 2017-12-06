@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   BASEMAP_ATTRIBUTION_MAPBOX,
   BASEMAP_TILE_MAP,
@@ -149,11 +150,11 @@ Map.defaultProps = {
 };
 
 Map.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  router: React.PropTypes.object,
-  markerCluster: React.PropTypes.bool,
-  shareControl: React.PropTypes.bool,
-  urlSync: React.PropTypes.bool
+  id: PropTypes.string.isRequired,
+  router: PropTypes.object,
+  markerCluster: PropTypes.bool,
+  shareControl: PropTypes.bool,
+  urlSync: PropTypes.bool
 };
 
 export default Map;

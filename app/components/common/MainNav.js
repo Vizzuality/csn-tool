@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import NavLink from 'containers/common/NavLink';
 import { withRouter } from 'react-router';
 
@@ -40,11 +41,11 @@ function MainNav(props, context) {
 
 MainNav.contextTypes = {
   // Define function to get the translations
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 MainNav.propTypes = {
-  router: React.PropTypes.object.isRequired
+  router: PropTypes.object.isRequired
 };
 
 export default withRouter(MainNav);

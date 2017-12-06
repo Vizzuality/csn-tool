@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import SecondaryNav from 'components/common/SecondaryNav';
 
@@ -29,7 +30,7 @@ function Footer(props) {
 
 Footer.propTypes = {
   // Define the language selected
-  lang: React.PropTypes.string.isRequired
+  lang: PropTypes.string.isRequired
 };
 
 export default Footer;
