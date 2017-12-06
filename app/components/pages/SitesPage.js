@@ -15,16 +15,18 @@ class SitesPage extends React.Component {
   constructor() {
     super();
     this.onSelectChange = this.onSelectChange.bind(this);
-    this.getData = this.getData.bind(this);
   }
 
   componentWillMount() {
-    this.props.getSitesLocations(this.props.router.location.query.filter);
-    this.props.getSitesList(0, null, this.props.router.location.query.filter);
+    this.props.getSitesLocations(this.props.filter);
+    this.props.getSitesList(0, null, this.props.filter);
   }
 
-  componentWillReceiveProps(newProps) {
-    this.getData(newProps);
+  componentWillReceiveProps(props) {
+    if (props.filter !== this.props.filter || props.viewMode !== this.props.viewMode) {
+      props.getSitesLocations(props.filter);
+      props.getSitesList(0, null, props.filter);
+    }
   }
 
   componentWillUnmount() {
@@ -38,13 +40,6 @@ class SitesPage extends React.Component {
     const route = this.props.router.getCurrentLocation();
     const url = replaceUrlParams(route.pathname + route.search, params);
     this.props.router.push(url);
-  }
-
-  getData(props) {
-    if (props.filter !== this.props.filter || props.viewMode !== this.props.viewMode) {
-      props.getSitesLocations(props.router.location.query.filter);
-      props.getSitesList(0, null, props.router.location.query.filter);
-    }
   }
 
   render() {

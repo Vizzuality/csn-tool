@@ -25,6 +25,7 @@ const mapStateToProps = (state) => {
     state.sites.list;
 
   return {
+    filter: state.sites.filter,
     selected: state.sites.selected,
     category: state.sites.selectedCategory,
     type: state.sites.type,

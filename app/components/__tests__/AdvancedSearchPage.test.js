@@ -18,7 +18,7 @@ const setup = () => {
   };
 
   const standard = {
-    filter: {},
+    filter: 'iba',
     allColumns: ['scientific_name', 'english_name', 'population', 'genus', 'family'],
     columns: ['scientific_name', 'english_name', 'population', 'genus', 'family'],
     allExpandedColumns: ['scientific_name', 'english_name', 'population', 'a', 'b', 'c'],
