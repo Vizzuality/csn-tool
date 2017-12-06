@@ -51,6 +51,7 @@
     "postcss-nested": "^1.0.0",
     "postcss-simple-vars": "^3.0.0",
     "pretty-error": "^2.0.0",
+    "prop-types": "^15.6.0",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
     "react-ga": "^2.1.2",
