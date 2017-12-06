@@ -141,7 +141,7 @@ class Map extends React.Component {
 }
 
 Map.contextTypes = {
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 Map.defaultProps = {
