@@ -124,7 +124,8 @@ export const translations = {
     'eu_birds_directive': 'EU Birds Directive',
     'cms_caf_action_plan': 'CMS CAF action plan',
     'multispecies_flyway': 'Multispecies flyway',
-    'population_trend': 'Population trend'
+    'population_trend': 'Population trend',
+    'tools': 'Tools'
   },
   es: {
     'country': 'Pais',
@@ -235,7 +236,8 @@ export const translations = {
     'geography': 'Geografía',
     'taxonomy': 'Taxonomia',
     'habitat': 'Habitat',
-    'selectOneOption': 'Selecciona al menos una opción'
+    'selectOneOption': 'Selecciona al menos una opción',
+    'tools': 'Herramientas'
   },
   fr: {
     'country': 'Pays',
@@ -363,6 +365,7 @@ export const translations = {
     'eu_birds_directive': "Directive Oiseaux de l'UE",
     'cms_caf_action_plan': "Plan d'action CMS CAF",
     'multispecies_flyway': 'Voie de migration plurispécifique',
-    'population_trend': 'Tendance de la population'
+    'population_trend': 'Tendance de la population',
+    'tools': 'Outils'
   },
 }
