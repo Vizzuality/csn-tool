@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import CSVButton from 'components/tables/CSVButton.js';
 import NavLink from 'containers/common/NavLink';
 import SpeciesDetailSearch from 'containers/species/SpeciesDetailSearch';
@@ -30,15 +31,15 @@ function SpeciesDetailFilters(props) {
 
 SpeciesDetailFilters.contextTypes = {
   // Define function to get the translations
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 SpeciesDetailFilters.propTypes = {
-  id: React.PropTypes.string,
-  category: React.PropTypes.string,
-  isSearch: React.PropTypes.bool,
-  data: React.PropTypes.array,
-  columns: React.PropTypes.array
+  id: PropTypes.string,
+  category: PropTypes.string,
+  isSearch: PropTypes.bool,
+  data: PropTypes.array,
+  columns: PropTypes.array
 };
 
 export default SpeciesDetailFilters;

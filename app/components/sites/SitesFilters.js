@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import CSVButton from 'components/tables/CSVButton.js';
 import SitesSearch from 'containers/sites/SitesSearch';
 import Filter from 'containers/advanced-search/Filter';
@@ -23,18 +24,18 @@ function SitesFilters(props) {
 
 SitesFilters.contextTypes = {
   // Define function to get the translations
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 SitesFilters.propTypes = {
-  csvData: React.PropTypes.oneOfType([
-    React.PropTypes.array,
-    React.PropTypes.func
+  csvData: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.func
   ]),
-  columns: React.PropTypes.array,
-  id: React.PropTypes.any,
-  isSearch: React.PropTypes.bool.isRequired,
-  category: React.PropTypes.string
+  columns: PropTypes.array,
+  id: PropTypes.any,
+  isSearch: PropTypes.bool.isRequired,
+  category: PropTypes.string
 };
 
 export default SitesFilters;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { BASEMAP_TILE, BASEMAP_ATTRIBUTION_MAPBOX, MAP_MIN_ZOOM,
   MAP_CENTER, MAP_INITIAL_ZOOM } from 'constants/map';
 import { render } from 'react-dom';
@@ -132,11 +133,11 @@ Map.defaultProps = {
 };
 
 Map.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  router: React.PropTypes.object,
-  markerCluster: React.PropTypes.bool,
-  shareControl: React.PropTypes.bool,
-  urlSync: React.PropTypes.bool
+  id: PropTypes.string.isRequired,
+  router: PropTypes.object,
+  markerCluster: PropTypes.bool,
+  shareControl: PropTypes.bool,
+  urlSync: PropTypes.bool
 };
 
 export default Map;

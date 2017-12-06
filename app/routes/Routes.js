@@ -5,6 +5,7 @@ import { IndexRoute, Router, Route, applyRouterMiddleware, Redirect } from 'reac
 import { updateLanguage, setCountriesPage, updateCountriesPage, setSitesPage, setThresholdPosition, updateThresholdPosition,
         updateSitesPage, updateSitesDetailPage, setSpeciesPage, updateSpeciesDetailPage } from './RoutesActions';
 import ReactGA from 'react-ga';
+import PropTypes from 'prop-types';
 
 import ContainerPage from 'components/pages/ContainerPage';
 import HomePage from 'components/pages/HomePage';
@@ -126,7 +127,7 @@ const Routes = ({ history }) => (
 );
 
 Routes.propTypes = {
-  history: React.PropTypes.object
+  history: PropTypes.object
 };
 
 export default connect()(Routes);

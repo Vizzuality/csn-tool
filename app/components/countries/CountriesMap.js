@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { BASEMAP_ATTRIBUTION_CARTO, MAP_MIN_ZOOM, MAP_CENTER } from 'constants/map';
 import BasicMap from 'components/maps/BasicMap';
@@ -296,14 +297,14 @@ class CountriesMap extends BasicMap {
 
 
 CountriesMap.propTypes = {
-  id: React.PropTypes.string.isRequired,
-  router: React.PropTypes.object.isRequired,
-  goToSite: React.PropTypes.func.isRequired,
-  goToDetail: React.PropTypes.func.isRequired,
-  getGeoms: React.PropTypes.func.isRequired,
-  data: React.PropTypes.array,
-  geoms: React.PropTypes.any,
-  country: React.PropTypes.string
+  id: PropTypes.string.isRequired,
+  router: PropTypes.object.isRequired,
+  goToSite: PropTypes.func.isRequired,
+  goToDetail: PropTypes.func.isRequired,
+  getGeoms: PropTypes.func.isRequired,
+  data: PropTypes.array,
+  geoms: PropTypes.any,
+  country: PropTypes.string
 };
 
 export default withRouter(CountriesMap);

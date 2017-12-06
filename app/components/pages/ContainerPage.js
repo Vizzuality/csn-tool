@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import I18n from 'redux-i18n';
 import Header from 'containers/common/Header';
 import FeedbackForm from 'components/common/Feedback';
@@ -46,22 +47,22 @@ class ContainerPage extends React.Component {
 }
 
 ContainerPage.childContextTypes = {
-  location: React.PropTypes.object
+  location: PropTypes.object
 };
 
 ContainerPage.propTypes = {
   /**
   * Define required content for page
   **/
-  children: React.PropTypes.element.isRequired,
+  children: PropTypes.element.isRequired,
   /**
   * Finds the router params
   **/
-  params: React.PropTypes.object,
+  params: PropTypes.object,
   /**
   * Finds the route of current location in URL
   **/
-  location: React.PropTypes.object
+  location: PropTypes.object
 };
 
 export default ContainerPage;

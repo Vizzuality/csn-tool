@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router';
 
 function NavLink(props, context) {
@@ -17,28 +18,28 @@ function NavLink(props, context) {
 
 NavLink.contextTypes = {
   // Define function to get the translations
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 NavLink.propTypes = {
   // Define custom classnames
-  className: React.PropTypes.string,
+  className: PropTypes.string,
   // Define the language selected
-  lang: React.PropTypes.string.isRequired,
+  lang: PropTypes.string.isRequired,
   // Define the link to go
-  to: React.PropTypes.string.isRequired,
+  to: PropTypes.string.isRequired,
   // Define the text to show
-  text: React.PropTypes.string,
+  text: PropTypes.string,
   // Define the text to show translated
-  i18nText: React.PropTypes.string,
+  i18nText: PropTypes.string,
   // Define the icon used for the link
-  icon: React.PropTypes.string,
+  icon: PropTypes.string,
   // Define the child componets
-  children: React.PropTypes.any,
+  children: PropTypes.any,
   // Define whether link is a top level
-  parent: React.PropTypes.bool,
+  parent: PropTypes.bool,
   // Define the child componets
-  router: React.PropTypes.object
+  router: PropTypes.object
 };
 
 export default withRouter(NavLink);

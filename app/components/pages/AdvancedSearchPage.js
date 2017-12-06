@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Select from 'react-select';
 
 import SitesTable from 'containers/sites/SitesTable';
@@ -235,14 +236,14 @@ class AdvancedSearchPage extends React.Component {
 }
 
 AdvancedSearchPage.contextTypes = {
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 AdvancedSearchPage.propTypes = {
-  hasResults: React.PropTypes.bool.isRequired,
-  options: React.PropTypes.object,
-  getOptions: React.PropTypes.func.isRequired,
-  onSearch: React.PropTypes.func.isRequired
+  hasResults: PropTypes.bool.isRequired,
+  options: PropTypes.object,
+  getOptions: PropTypes.func.isRequired,
+  onSearch: PropTypes.func.isRequired
 };
 
 export default AdvancedSearchPage;

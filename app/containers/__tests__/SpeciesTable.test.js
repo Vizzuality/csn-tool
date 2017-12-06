@@ -1,6 +1,7 @@
 /* global expect, jest */
 import { mount } from 'enzyme';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import SpeciesTable from 'containers/species/SpeciesTable';
 import SpeciesTableComponent from 'components/species/SpeciesTable';
@@ -48,7 +49,7 @@ const setup = (newStore) => {
     </Provider>, {
       context: { t: jest.fn() },
       childContextTypes: {
-        t: React.PropTypes.func
+        t: PropTypes.func
       }
     }
   );

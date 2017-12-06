@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ViewToggler from 'components/sites/ViewToggler';
 import SitesMap from 'containers/sites/SitesMap';
 import SitesTable from 'containers/sites/SitesTable';
@@ -86,18 +87,18 @@ class SitesPage extends React.Component {
 }
 
 SitesPage.contextTypes = {
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 SitesPage.propTypes = {
-  clearSites: React.PropTypes.func.isRequired,
-  getSitesLocations: React.PropTypes.func.isRequired,
-  setViewMode: React.PropTypes.func.isRequired,
-  selected: React.PropTypes.string,
-  viewMode: React.PropTypes.string,
-  router: React.PropTypes.object,
-  getSitesList: React.PropTypes.func,
-  filter: React.PropTypes.string
+  clearSites: PropTypes.func.isRequired,
+  getSitesLocations: PropTypes.func.isRequired,
+  setViewMode: PropTypes.func.isRequired,
+  selected: PropTypes.string,
+  viewMode: PropTypes.string,
+  router: PropTypes.object,
+  getSitesList: PropTypes.func,
+  filter: PropTypes.string
 };
 
 export default withRouter(SitesPage);
