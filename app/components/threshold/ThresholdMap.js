@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import BasicMap from 'components/maps/BasicMap';
 import { replaceUrlParams } from 'helpers/router';
@@ -139,7 +140,7 @@ class ThresholdMap extends BasicMap {
 }
 
 ThresholdMap.propTypes = {
-  coordinates: React.PropTypes.object
+  coordinates: PropTypes.object
 };
 
 export default withRouter(ThresholdMap);

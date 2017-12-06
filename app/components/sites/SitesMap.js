@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import BasicMap from 'components/maps/BasicMap';
 
@@ -95,11 +96,11 @@ class SitesMap extends BasicMap {
 }
 
 SitesMap.propTypes = {
-  router: React.PropTypes.object.isRequired,
-  selected: React.PropTypes.string,
-  goToDetail: React.PropTypes.func.isRequired,
-  id: React.PropTypes.string,
-  data: React.PropTypes.any
+  router: PropTypes.object.isRequired,
+  selected: PropTypes.string,
+  goToDetail: PropTypes.func.isRequired,
+  id: PropTypes.string,
+  data: PropTypes.any
 };
 
 export default withRouter(SitesMap);

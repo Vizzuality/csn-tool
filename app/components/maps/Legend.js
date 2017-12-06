@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Switch from 'components/common/Switch';
 
 function getSubItems(subItems, onHover) {
@@ -41,9 +42,9 @@ function Legend(props) {
 }
 
 Legend.propTypes = {
-  data: React.PropTypes.array.isRequired,
-  onSwitchChange: React.PropTypes.func.isRequired,
-  onLegendItemHover: React.PropTypes.func
+  data: PropTypes.array.isRequired,
+  onSwitchChange: PropTypes.func.isRequired,
+  onLegendItemHover: PropTypes.func
 };
 
 export default Legend;

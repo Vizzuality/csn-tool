@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import smoothScroll from 'smoothscroll';
 
 class ScrollButton extends React.Component {
@@ -97,9 +98,9 @@ ScrollButton.defaultProps = {
 };
 
 ScrollButton.propTypes = {
-  threshold: React.PropTypes.number,
-  setScrollState: React.PropTypes.func,
-  scroll: React.PropTypes.bool
+  threshold: PropTypes.number,
+  setScrollState: PropTypes.func,
+  scroll: PropTypes.bool
 };
 
 export default ScrollButton;

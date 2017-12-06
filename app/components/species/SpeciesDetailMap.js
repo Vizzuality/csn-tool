@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import BasicMap from 'components/maps/BasicMap';
 import { BASEMAP_ATTRIBUTION_CARTO } from 'constants/map';
@@ -254,17 +255,17 @@ class SpeciesMap extends BasicMap {
 
 SpeciesMap.contextTypes = {
   // Define function to get the translations
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 
 SpeciesMap.propTypes = {
-  router: React.PropTypes.object.isRequired,
-  id: React.PropTypes.string.isRequired,
-  sites: React.PropTypes.any.isRequired,
-  criticalSites: React.PropTypes.any.isRequired,
-  population: React.PropTypes.any.isRequired,
-  selectedCategory: React.PropTypes.string.isRequired
+  router: PropTypes.object.isRequired,
+  id: PropTypes.string.isRequired,
+  sites: PropTypes.any.isRequired,
+  criticalSites: PropTypes.any.isRequired,
+  population: PropTypes.any.isRequired,
+  selectedCategory: PropTypes.string.isRequired
 };
 
 export default withRouter(SpeciesMap);

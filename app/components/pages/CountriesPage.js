@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import GoBackLink from 'containers/common/GoBackLink';
 import CountriesMap from 'containers/countries/CountriesMap';
 import CountriesTable from 'containers/countries/CountriesTable';
@@ -88,22 +89,22 @@ class CountriesPage extends React.Component {
 }
 
 CountriesPage.contextTypes = {
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 CountriesPage.propTypes = {
-  country: React.PropTypes.string,
-  category: React.PropTypes.string,
-  countryStats: React.PropTypes.any,
-  countryData: React.PropTypes.any,
-  getCountryStats: React.PropTypes.func.isRequired,
-  getCountryData: React.PropTypes.func.isRequired,
-  countriesLength: React.PropTypes.number,
-  countries: React.PropTypes.array,
-  searchFilter: React.PropTypes.string,
-  router: React.PropTypes.object,
-  params: React.PropTypes.object,
-  lang: React.PropTypes.string
+  country: PropTypes.string,
+  category: PropTypes.string,
+  countryStats: PropTypes.any,
+  countryData: PropTypes.any,
+  getCountryStats: PropTypes.func.isRequired,
+  getCountryData: PropTypes.func.isRequired,
+  countriesLength: PropTypes.number,
+  countries: PropTypes.array,
+  searchFilter: PropTypes.string,
+  router: PropTypes.object,
+  params: PropTypes.object,
+  lang: PropTypes.string
 };
 
 export default CountriesPage;

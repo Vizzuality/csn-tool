@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import NavLink from 'containers/common/NavLink';
 
 function Intro(props, context) {
@@ -43,7 +44,7 @@ function Intro(props, context) {
 
 Intro.contextTypes = {
   // Define function to get the translations
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 export default Intro;

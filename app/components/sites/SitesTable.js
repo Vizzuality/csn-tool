@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SitesFilters from 'components/sites/SitesFilters';
 import InfiniteScroll from 'components/common/InfiniteScroll';
 import TableList from 'components/tables/TableList';
@@ -56,15 +57,15 @@ class SitesTable extends React.Component {
 }
 
 SitesTable.propTypes = {
-  allColumns: React.PropTypes.array.isRequired,
-  getSitesList: React.PropTypes.func.isRequired,
-  list: React.PropTypes.object.isRequired,
-  category: React.PropTypes.string,
-  filter: React.PropTypes.string,
-  columns: React.PropTypes.array.isRequired,
-  isSearch: React.PropTypes.bool.isRequired,
-  sticky: React.PropTypes.bool,
-  type: React.PropTypes.string
+  allColumns: PropTypes.array.isRequired,
+  getSitesList: PropTypes.func.isRequired,
+  list: PropTypes.object.isRequired,
+  category: PropTypes.string,
+  filter: PropTypes.string,
+  columns: PropTypes.array.isRequired,
+  isSearch: PropTypes.bool.isRequired,
+  sticky: PropTypes.bool,
+  type: PropTypes.string
 };
 
 export default SitesTable;

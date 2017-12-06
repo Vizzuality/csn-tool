@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import CSVButton from 'components/tables/CSVButton.js';
 import ThresholdSearch from 'containers/threshold/ThresholdSearch';
 
@@ -18,8 +19,8 @@ function TresholdFilters(props) {
 }
 
 TresholdFilters.propTypes = {
-  data: React.PropTypes.array.isRequired,
-  columns: React.PropTypes.array.isRequired
+  data: PropTypes.array.isRequired,
+  columns: PropTypes.array.isRequired
 };
 
 export default TresholdFilters;

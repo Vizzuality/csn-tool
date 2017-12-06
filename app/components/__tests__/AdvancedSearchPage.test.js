@@ -1,6 +1,7 @@
 /* global expect, jest */
 import { mount } from 'enzyme';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import AdvancedSearchPage from 'containers/pages/AdvancedSearch';
 import SitesTable from 'containers/sites/SitesTable';
@@ -60,7 +61,7 @@ const setup = () => {
     </Provider>, {
       context: { t: jest.fn() },
       childContextTypes: {
-        t: React.PropTypes.func
+        t: PropTypes.func
       }
     }
   );

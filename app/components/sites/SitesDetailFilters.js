@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import CSVButton from 'components/tables/CSVButton.js';
 import NavLink from 'containers/common/NavLink';
 import SitesDetailSearch from 'containers/sites/SitesDetailSearch';
@@ -20,11 +21,11 @@ function SitesFilters(props) {
 }
 
 SitesFilters.propTypes = {
-  columns: React.PropTypes.array,
-  data: React.PropTypes.any,
-  id: React.PropTypes.string,
-  category: React.PropTypes.string,
-  type: React.PropTypes.string
+  columns: PropTypes.array,
+  data: PropTypes.any,
+  id: PropTypes.string,
+  category: PropTypes.string,
+  type: PropTypes.string
 };
 
 export default SitesFilters;

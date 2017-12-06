@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 
 function topPosition(domElt) {
@@ -72,11 +73,11 @@ class ScrolledTableList extends React.Component {
 }
 
 ScrolledTableList.propTypes = {
-  timeout: React.PropTypes.string,
-  threshold: React.PropTypes.string,
-  hasMore: React.PropTypes.bool.isRequired,
-  loadMore: React.PropTypes.func.isRequired,
-  children: React.PropTypes.element.isRequired
+  timeout: PropTypes.string,
+  threshold: PropTypes.string,
+  hasMore: PropTypes.bool.isRequired,
+  loadMore: PropTypes.func.isRequired,
+  children: PropTypes.element.isRequired
 };
 
 export default ScrolledTableList;

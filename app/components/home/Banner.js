@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import BasicMap from 'components/maps/BasicMap';
 
 function Banner(props, context) {
@@ -26,7 +27,7 @@ function Banner(props, context) {
 }
 
 Banner.contextTypes = {
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 export default Banner;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function Switch(props) {
   const classNames = ['c-switch'];
@@ -10,8 +11,8 @@ function Switch(props) {
 }
 
 Switch.propTypes = {
-  checked: React.PropTypes.bool,
-  onChange: React.PropTypes.func.isRequired
+  checked: PropTypes.bool,
+  onChange: PropTypes.func.isRequired
 };
 
 export default Switch;

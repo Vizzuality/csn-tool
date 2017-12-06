@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router';
 import Select from 'react-select';
 import { translations } from 'locales/translations';
@@ -57,16 +58,16 @@ class Header extends React.Component {
 
 Header.contextTypes = {
   // Define function to get the translations
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 Header.propTypes = {
   // Define the language selected
-  lang: React.PropTypes.string.isRequired,
+  lang: PropTypes.string.isRequired,
   // Define router actions
-  router: React.PropTypes.object,
+  router: PropTypes.object,
   // Define current location
-  location: React.PropTypes.object
+  location: PropTypes.object
 };
 
 export default withRouter(Header);

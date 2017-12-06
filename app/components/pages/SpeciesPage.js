@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SpeciesTable from 'containers/species/SpeciesTable';
 import { StickyContainer } from 'react-sticky';
 
@@ -23,13 +24,13 @@ class SpeciesPage extends React.Component {
 }
 
 SpeciesPage.contextTypes = {
-  t: React.PropTypes.func.isRequired
+  t: PropTypes.func.isRequired
 };
 
 
 SpeciesPage.propTypes = {
-  getSpeciesList: React.PropTypes.func.isRequired,
-  species: React.PropTypes.any.isRequired // bool or array
+  getSpeciesList: PropTypes.func.isRequired,
+  species: PropTypes.any.isRequired // bool or array
 };
 
 export default SpeciesPage;

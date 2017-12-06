@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import GoBackLink from 'containers/common/GoBackLink';
 import SitesMap from 'containers/sites/SitesMap';
 import SitesDetailTable from 'containers/sites/SitesDetailTable';
@@ -117,15 +118,15 @@ class SitesPage extends React.Component {
 }
 
 SitesPage.propTypes = {
-  getSitesStats: React.PropTypes.func.isRequired,
-  getSitesData: React.PropTypes.func.isRequired,
-  stats: React.PropTypes.any,
-  data: React.PropTypes.any,
-  site: React.PropTypes.string,
-  category: React.PropTypes.string,
-  params: React.PropTypes.object,
-  lang: React.PropTypes.string,
-  type: React.PropTypes.string
+  getSitesStats: PropTypes.func.isRequired,
+  getSitesData: PropTypes.func.isRequired,
+  stats: PropTypes.any,
+  data: PropTypes.any,
+  site: PropTypes.string,
+  category: PropTypes.string,
+  params: PropTypes.object,
+  lang: PropTypes.string,
+  type: PropTypes.string
 };
 
 export default SitesPage;

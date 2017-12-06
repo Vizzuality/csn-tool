@@ -2,7 +2,7 @@
   "name": "csn-tool",
   "version": "1.0.0",
   "engines": {
-    "node": "v7.10.1"
+    "node": "8.9.x"
   },
   "description": "Critical Sites Network Tool 2.0",
   "main": "server.js",
@@ -11,9 +11,9 @@
     "test --watch": "NODE_PATH=./app jest --watch",
     "dev": "./node_modules/nodemon/bin/nodemon.js --ignore 'app/' --exec npm run start",
     "build": "webpack --config ./config/webpack.config.js --progress --profile --colors",
-    "postinstall": "npm run build",
+    "postinstall": "yarn run build",
     "lint": "./node_modules/.bin/eslint . --quiet",
-    "prepush": "npm run lint",
+    "prepush": "yarn run lint",
     "extract": "i18n_extract --source=./app --locales=./app/locales",
     "import": "i18n_import --locales=./app/locales --translations=./app/locales"
   },
@@ -51,6 +51,7 @@
     "postcss-nested": "^1.0.0",
     "postcss-simple-vars": "^3.0.0",
     "pretty-error": "^2.0.0",
+    "prop-types": "^15.6.0",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
     "react-ga": "^2.1.2",
@@ -88,7 +89,6 @@
     "jsdom": "^11.0.0",
     "nodemon": "^1.11.0",
     "react-addons-test-utils": "^15.5.1",
-    "react-dom": "^15.5.4",
     "react-test-renderer": "^15.5.4",
     "stylelint-config-standard": "^13.0.0",
     "webpack-bundle-analyzer": "^1.3.0",
