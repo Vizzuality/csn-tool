@@ -7,7 +7,7 @@ import SitesTableComponent from 'components/sites/SitesTable';
 
 const setup = () => {
   const standard = {
-    filter: 'ibn',
+    filter: 'iba',
     allColumns: ['country', 'english_name', 'population', 'genus', 'family'],
     columns: ['country', 'english_name', 'population', 'genus', 'family'],
     list: {
