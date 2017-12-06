@@ -6,11 +6,6 @@ import { replaceUrlParams } from 'helpers/router';
 import Select from 'react-select';
 import { withRouter } from 'react-router';
 
-const FILTER_OPTIONS = [
-  { value: 'iba', label: 'IBA' },
-  { value: 'csn', label: 'Critical Sites' }
-];
-
 class SitesPage extends React.Component {
   constructor() {
     super();
@@ -48,6 +43,11 @@ class SitesPage extends React.Component {
   }
 
   render() {
+    const FILTER_OPTIONS = [
+      { value: 'iba', label: this.context.t('iba') },
+      { value: 'csn', label: this.context.t('criticalSites') }
+    ];
+
     return (
       <div className="l-page">
         <div className={`l-navigation ${this.props.viewMode === 'list' ? '-dark' : ''} `}>
@@ -58,7 +58,7 @@ class SitesPage extends React.Component {
                   <h2>{this.context.t('sites')}</h2>
                 </div>
                 <div className="filter">
-                  <h4 className="text -input-label -light">Type of Site</h4>
+                  <h4 className="text -input-label -light">{this.context.t('typeOfSite')}</h4>
                   <Select
                     name="filter-sites"
                     className="c-select -long"
