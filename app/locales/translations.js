@@ -69,6 +69,8 @@ export const translations = {
     'total_percentage': 'Total %',
     'ramsarCriterionTool': 'Ramsar Criterion 6',
     'ramsarCriterionToolTitle': 'Ramsar Criterion 6 Thresholds',
+    'ramsarCriterionToolFilterHeader': 'Relevant Populations',
+    'ramsarCriterionTooltip': 'Click on the map to reveal relevant populations',
     'habitats': 'Habitats',
     'habitat_name': 'Habitat name',
     'habitat_level_1': 'Habitat level 1',
@@ -126,7 +128,8 @@ export const translations = {
     'multispecies_flyway': 'Multispecies flyway',
     'population_trend': 'Population trend',
     'tools': 'Tools',
-    'feedback': 'Feedback'
+    'feedback': 'Feedback',
+    'scrollText': 'Scroll down to see the data'
   },
   es: {
     'country': 'Pais',
@@ -199,7 +202,8 @@ export const translations = {
     'total_percentage': 'Total %',
     'ramsarCriterionTool': 'Ramsar Criterion 6',
     'ramsarCriterionToolTitle': 'Ramsar Criterion 6 Thresholds',
-    'ramsarCriterionToolFilterHeader': 'Relevant Populations',
+    'ramsarCriterionToolFilterHeader': 'Poblaciones relevantes',
+    'ramsarCriterionTooltip': 'Haga clic en el mapa para revelar poblaciones relevantes',
     'habitats': 'Hábitats',
     'habitat_name': 'Nombre del habitat',
     'habitat_level_1': 'Nivel de hábitat 1',
@@ -240,7 +244,8 @@ export const translations = {
     'habitat': 'Habitat',
     'selectOneOption': 'Selecciona al menos una opción',
     'tools': 'Herramientas',
-    'feedback': 'Comentarios'
+    'feedback': 'Comentarios',
+    'scrollText': 'Desplácese hacia abajo para ver los datos'
   },
   fr: {
     'country': 'Pays',
@@ -314,6 +319,7 @@ export const translations = {
     'ramsarCriterionTool': 'Critère 6 de Ramsar',
     'ramsarCriterionToolTitle': 'Seuils selon Critère 6 Ramsar',
     'ramsarCriterionToolFilterHeader': 'Populations pertinentes',
+    'ramsarCriterionTooltip': 'Cliquez sur la carte pour révéler les espèces pertinentes',
     'habitats': 'Habitats',
     'habitat_name': "Nom de l'habitat",
     'habitat_level_1': "Habitat niveau 1",
@@ -371,6 +377,7 @@ export const translations = {
     'multispecies_flyway': 'Voie de migration plurispécifique',
     'population_trend': 'Tendance de la population',
     'tools': 'Outils',
-    'feedback': 'Commentaires'
+    'feedback': 'Commentaires',
+    'scrollText': 'Faites défiler vers le bas pour voir les données'
   },
 }
