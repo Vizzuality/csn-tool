@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-function Feedback() {
+function Feedback(props, context) {
   return (
     <a
       className="typeform-share"
@@ -8,8 +9,13 @@ function Feedback() {
       data-mode="popup"
       target="_blank"
     >
-      Feedback
+      {context.t('feedback')}
     </a>
   );
 }
+
+Feedback.contextTypes = {
+  t: PropTypes.func.isRequired
+};
+
 export default Feedback;

@@ -59,8 +59,8 @@ class CountriesPage extends React.Component {
                   </div>
                   <div className="filter">
                     <CountriesSearch
-                      placeholder="countriesNameSearch"
-                      label="searchBy"
+                      placeholder={this.context.t('countriesNameSearch')}
+                      label={this.context.t('searchBy')}
                       labelType="light"
                       searchType="dark"
                     />
