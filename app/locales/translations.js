@@ -125,7 +125,8 @@ export const translations = {
     'cms_caf_action_plan': 'CMS CAF action plan',
     'multispecies_flyway': 'Multispecies flyway',
     'population_trend': 'Population trend',
-    'tools': 'Tools'
+    'tools': 'Tools',
+    'feedback': 'Feedback'
   },
   es: {
     'country': 'Pais',
@@ -198,6 +199,7 @@ export const translations = {
     'total_percentage': 'Total %',
     'ramsarCriterionTool': 'Ramsar Criterion 6',
     'ramsarCriterionToolTitle': 'Ramsar Criterion 6 Thresholds',
+    'ramsarCriterionToolFilterHeader': 'Relevant Populations',
     'habitats': 'Hábitats',
     'habitat_name': 'Nombre del habitat',
     'habitat_level_1': 'Nivel de hábitat 1',
@@ -237,7 +239,8 @@ export const translations = {
     'taxonomy': 'Taxonomia',
     'habitat': 'Habitat',
     'selectOneOption': 'Selecciona al menos una opción',
-    'tools': 'Herramientas'
+    'tools': 'Herramientas',
+    'feedback': 'Comentarios'
   },
   fr: {
     'country': 'Pays',
@@ -310,6 +313,7 @@ export const translations = {
     'total_percentage': '% Total',
     'ramsarCriterionTool': 'Critère 6 de Ramsar',
     'ramsarCriterionToolTitle': 'Seuils selon Critère 6 Ramsar',
+    'ramsarCriterionToolFilterHeader': 'Populations pertinentes',
     'habitats': 'Habitats',
     'habitat_name': "Nom de l'habitat",
     'habitat_level_1': "Habitat niveau 1",
@@ -366,6 +370,7 @@ export const translations = {
     'cms_caf_action_plan': "Plan d'action CMS CAF",
     'multispecies_flyway': 'Voie de migration plurispécifique',
     'population_trend': 'Tendance de la population',
-    'tools': 'Outils'
+    'tools': 'Outils',
+    'feedback': 'Commentaires'
   },
 }
