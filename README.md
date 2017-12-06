@@ -15,21 +15,27 @@ Details of this can be found on [DATA_README](DATA_README.md).
 
 Requirements:
 
-* NodeJs 7.7.1 [How to install](https://nodejs.org/download/)
+* NodeJs 8.9 [How to install](https://nodejs.org/download/)
 * Heroku toolbet [How to install](https://toolbelt.heroku.com)
+
+If you use `nvm`
+
+```bash
+nvm use
+```
 
 To install run this command:
 
 ```bash
-npm install
+yarn
 ```
 
 ## Usage
 
-Run server locally usgin npm:
+Run server locally using yarn:
 
 ```bash
-npm start
+yarn start
 ```
 
 Run server locally using Heroku environment:

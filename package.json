@@ -2,7 +2,7 @@
   "name": "csn-tool",
   "version": "1.0.0",
   "engines": {
-    "node": "v7.10.1"
+    "node": "8.9.x"
   },
   "description": "Critical Sites Network Tool 2.0",
   "main": "server.js",
@@ -11,9 +11,9 @@
     "test --watch": "NODE_PATH=./app jest --watch",
     "dev": "./node_modules/nodemon/bin/nodemon.js --ignore 'app/' --exec npm run start",
     "build": "webpack --config ./config/webpack.config.js --progress --profile --colors",
-    "postinstall": "npm run build",
+    "postinstall": "yarn run build",
     "lint": "./node_modules/.bin/eslint . --quiet",
-    "prepush": "npm run lint",
+    "prepush": "yarn run lint",
     "extract": "i18n_extract --source=./app --locales=./app/locales",
     "import": "i18n_import --locales=./app/locales --translations=./app/locales"
   },
