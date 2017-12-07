@@ -88,14 +88,16 @@ class Map extends React.Component {
     this.map.attributionControl.addAttribution(BASEMAP_ATTRIBUTION_MAPBOX);
     this.map.zoomControl.setPosition('topright');
     this.map.scrollWheelZoom.disable();
-    const mapLayer = L.tileLayer(BASEMAP_TILE_MAP);
-    const satelliteLayer = L.tileLayer(BASEMAP_TILE_SATELLITE);
+    const mapLayer = L.tileLayer(BASEMAP_TILE_MAP).setZIndex(0);
+    const satelliteLayer = L.tileLayer(BASEMAP_TILE_SATELLITE).setZIndex(0);
     const baseLayers = {
       [this.context.t('map')]: mapLayer,
       [this.context.t('satellite')]: satelliteLayer
     };
-    L.control.layers(baseLayers).addTo(this.map);
-    mapLayer.addTo(this.map).setZIndex(0);
+    L.control.layers(baseLayers, null, {
+      autoZIndex: false
+    }).addTo(this.map);
+    mapLayer.addTo(this.map);
 
     if (this.props.shareControl) this.addShareControl();
     if (this.props.urlSync) this.setUrlSyncListeners();

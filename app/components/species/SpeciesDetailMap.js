@@ -146,12 +146,10 @@ class SpeciesMap extends BasicMap {
 
     [{
       opacity: '0',
-      active: false,
-      layerGroup: this.layers
+      active: false
     }, {
       opacity: '0.5',
-      active: true,
-      layerGroup: this.activeLayers
+      active: true
     }].forEach(({ opacity, active }) => {
       const cartoCSS = `#species_and_flywaygroups{
         line-opacity: 1;
