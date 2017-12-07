@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import CSVButton from 'components/tables/CSVButton.js';
 import ThresholdSearch from 'containers/threshold/ThresholdSearch';
 
-function TresholdFilters(props) {
+function ThresholdFilters(props, context) {
   return (
     <div className="row c-table-filters">
       <div className="column small-12 medium-8">
-        <h2>Relevant Populations
+        <h2>{context.t('ramsarCriterionToolFilterHeader')}
           <CSVButton data={props.data} columns={props.columns} />
         </h2>
       </div>
@@ -18,9 +18,13 @@ function TresholdFilters(props) {
   );
 }
 
-TresholdFilters.propTypes = {
+ThresholdFilters.contextTypes = {
+  t: PropTypes.func.isRequired
+};
+
+ThresholdFilters.propTypes = {
   data: PropTypes.array.isRequired,
   columns: PropTypes.array.isRequired
 };
 
-export default TresholdFilters;
+export default ThresholdFilters;

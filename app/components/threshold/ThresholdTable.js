@@ -31,6 +31,10 @@ function ThresholdTable(props) {
   );
 }
 
+ThresholdTable.contextTypes = {
+  t: PropTypes.func.isRequired
+};
+
 ThresholdTable.propTypes = {
   allColumns: PropTypes.array.isRequired,
   data: PropTypes.array.isRequired,

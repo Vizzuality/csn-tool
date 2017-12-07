@@ -101,7 +101,7 @@ class ThresholdMap extends BasicMap {
   }
 
   showPopup(e) {
-    const html = '<p style={{ float: "left"}} class="text -light">Click on the map to reveal relevant species</p>';
+    const html = `<p style="float: 'left'" class="text -light">${this.context.t('ramsarCriterionTooltip')}</p>`;
 
     this.popup.setLatLng(e.latlng)
       .setContent(html)
@@ -138,6 +138,10 @@ class ThresholdMap extends BasicMap {
     );
   }
 }
+
+ThresholdMap.contextTypes = {
+  t: PropTypes.func.isRequired
+};
 
 ThresholdMap.propTypes = {
   coordinates: PropTypes.object
