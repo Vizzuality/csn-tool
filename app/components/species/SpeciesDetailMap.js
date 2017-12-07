@@ -55,8 +55,8 @@ class SpeciesMap extends BasicMap {
         layer.setOpacity(0);
       });
     } else {
-      if (this.layers.length === 0) {
-        this.getBounds(this.props.id);
+      if (this.layers.length === 0 && this.props.population !== newProps.population) {
+        this.fetchPopulationBoundaries(this.props.id);
       } else {
         this.layers.forEach((layer) => {
           layer.setOpacity(1);
@@ -88,36 +88,23 @@ class SpeciesMap extends BasicMap {
   }
 
   changeLayerActivation(layerId, active) {
-    this.activeLayers.forEach((layer) => {
-      if (layer.options.id === layerId) {
-        if (active) {
-          layer.setOpacity(1);
-        } else {
-          layer.setOpacity(0);
-        }
-      }
-    });
-    this.layers.forEach((layer) => {
-      if (layer.options.id === layerId) {
-        if (!active) {
-          layer.setOpacity(1);
-        } else {
-          layer.setOpacity(0);
-        }
-      }
-    });
+    const activeLayer = this.activeLayers.find(l => l.options.id === layerId);
+    const layer = this.layers.find(l => l.options.id === layerId);
+
+    if (activeLayer) activeLayer.setOpacity(active ? 1 : 0);
+    if (layer) layer.setOpacity(active ? 0 : 1);
   }
 
-  getBounds(id) {
+  fetchPopulationBoundaries(speciesId) {
     const query = `SELECT ST_AsGeoJSON(ST_Envelope(st_union(f.the_geom)))
       as bbox FROM species_main s
       INNER JOIN species_and_flywaygroups f on f.ssid = s.species_id
-      WHERE s.species_id = ${id}`;
+      WHERE s.species_id = ${speciesId}`;
 
-    getSqlQuery(query, this.setBounds.bind(this));
+    getSqlQuery(query, this.setPopulationBoundaries.bind(this));
   }
 
-  setBounds(res) {
+  setPopulationBoundaries(res) {
     const bounds = JSON.parse(res[0].bbox);
 
     if (bounds) {
