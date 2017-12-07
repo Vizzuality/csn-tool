@@ -33,9 +33,9 @@ export function createLayer(layerData, callback) {
       'Content-Type': 'application/json; charset=UTF-8'
     }
   }).then(response => response.json())
-  .then(res => {
-    callback(`${ENDPOINT_TILES}${res.layergroupid}/{z}/{x}/{y}@2x.png32`);
-  });
+    .then(res => {
+      callback(`${ENDPOINT_TILES}${res.layergroupid}/{z}/{x}/{y}@2x.png32`);
+    });
 }
 
 export function getSqlQuery(query, callback) {

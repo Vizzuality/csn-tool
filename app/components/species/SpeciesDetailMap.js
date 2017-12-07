@@ -15,6 +15,7 @@ class SpeciesMap extends BasicMap {
     this.boundaryColorsToPop = [];
     this.activeBoundary = false;
     this.activeLayers = [];
+    this.setPopulationBoundaryColors(props.population);
   }
 
   componentDidMount() {
@@ -47,17 +48,7 @@ class SpeciesMap extends BasicMap {
       this.clearMarkers();
     }
 
-    if (this.boundaryColorsToPop.length === 0) {
-      if (this.props.population) {
-        let i = 0;
-        this.boundaryColorsToPop = this.props.population.reduce((all, pop) => {
-          const newAll = Object.assign({}, all);
-          newAll[pop.wpepopid] = BOUNDARY_COLORS[i];
-          i++;
-          return newAll;
-        }, []);
-      }
-    }
+    this.setPopulationBoundaryColors(newProps.population);
 
     if (!newProps.layers.population) {
       this.layers.concat(this.activeLayers).forEach((layer) => {
@@ -78,7 +69,7 @@ class SpeciesMap extends BasicMap {
       });
 
       differences.forEach((difference) => {
-        this.changeLayerActivication(difference.id, difference.active);
+        this.changeLayerActivation(difference.id, difference.active);
       });
     }
   }
@@ -87,7 +78,16 @@ class SpeciesMap extends BasicMap {
     this.remove();
   }
 
-  changeLayerActivication(layerId, active) {
+  setPopulationBoundaryColors(population) {
+    if (this.boundaryColorsToPop.length === 0 && population) {
+      this.boundaryColorsToPop = population.reduce((all, pop, index) => ({
+        ...all,
+        [pop.wpepopid]: BOUNDARY_COLORS[index]
+      }), []);
+    }
+  }
+
+  changeLayerActivation(layerId, active) {
     this.activeLayers.forEach((layer) => {
       if (layer.options.id === layerId) {
         if (active) {
@@ -140,7 +140,6 @@ class SpeciesMap extends BasicMap {
 
   addLayer(id, popId) {
     const color = this.boundaryColorsToPop[popId];
-
     const query = `SELECT f.the_geom_webmercator,
       f.colour_index
       FROM species_and_flywaygroups f WHERE f.wpepopid = ${popId} LIMIT 1`;
