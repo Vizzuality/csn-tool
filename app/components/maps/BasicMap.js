@@ -88,8 +88,27 @@ class Map extends React.Component {
     this.map.attributionControl.addAttribution(BASEMAP_ATTRIBUTION_MAPBOX);
     this.map.zoomControl.setPosition('topright');
     this.map.scrollWheelZoom.disable();
+
+    this.addBaseLayers();
+    if (this.props.shareControl) this.addShareControl();
+    if (this.props.urlSync) this.setUrlSyncListeners();
+  }
+
+  addBaseLayers() {
+    this.map.on('baselayerchange', (e) => {
+      const selectedBaseLayerId = e.layer.id;
+      const wasChange = this.selectedBaseLayerId && this.selectedBaseLayerId !== selectedBaseLayerId;
+      // change this
+      const mapContainer = this.map.getContainer();
+      mapContainer.classList.remove(`-${this.selectedBaseLayerId}-mode`);
+      this.selectedBaseLayerId = selectedBaseLayerId;
+      mapContainer.classList.add(`-${selectedBaseLayerId}-mode`);
+      if (wasChange && this.onBaseLayerChange) this.onBaseLayerChange(selectedBaseLayerId);
+    });
     const mapLayer = L.tileLayer(BASEMAP_TILE_MAP).setZIndex(0);
     const satelliteLayer = L.tileLayer(BASEMAP_TILE_SATELLITE).setZIndex(0);
+    mapLayer.id = 'map';
+    satelliteLayer.id = 'satellite';
     const baseLayers = {
       [this.context.t('map')]: mapLayer,
       [this.context.t('satellite')]: satelliteLayer
@@ -98,9 +117,6 @@ class Map extends React.Component {
       autoZIndex: false
     }).addTo(this.map);
     mapLayer.addTo(this.map);
-
-    if (this.props.shareControl) this.addShareControl();
-    if (this.props.urlSync) this.setUrlSyncListeners();
   }
 
   addShareControl() {

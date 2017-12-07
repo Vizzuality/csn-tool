@@ -9,8 +9,8 @@ import { BOUNDARY_COLORS } from 'constants';
 
 class SpeciesMap extends BasicMap {
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
     this.layers = [];
     this.boundaryColorsToPop = [];
     this.activeBoundary = false;
@@ -156,33 +156,24 @@ class SpeciesMap extends BasicMap {
   }
 
   addTile(id, active, url) {
-    let layers = this.layers;
+    const layers = active ? this.activeLayers : this.layers;
+
+    // do not add layer if is already there
+    if (layers.length > 0 && layers.some((layer) => layer.options.id === id)) return;
+
+    const layer = L.tileLayer(url, {
+      id,
+      noWrap: true,
+      attribution: BASEMAP_ATTRIBUTION_CARTO
+    }).setZIndex(2);
 
     if (active) {
-      layers = this.activeLayers;
+      layer.setOpacity(0);
     }
-    if (layers.length > 0 && layers.some((layer) => layer.options.id === id)) {
-      /* layers = layers.map((layer) => {
-        if (layer.options.id === id) {
-          layer.setUrl(url);
-        }
-        return layer;
-      }); */
-    } else {
-      const layer = L.tileLayer(url, {
-        id,
-        noWrap: true,
-        attribution: BASEMAP_ATTRIBUTION_CARTO
-      }).setZIndex(2);
+    layer.addTo(this.map);
+    layer.getContainer().classList.add('-layer-blending');
 
-      if (active) {
-        layer.setOpacity(0);
-      }
-      layer.addTo(this.map);
-      layer.getContainer().classList.add('-layer-blending');
-
-      layers.push(layer);
-    }
+    layers.push(layer);
   }
 
   drawMarkers(speciesSites) {

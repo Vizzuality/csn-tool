@@ -1,27 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
-import { BASEMAP_ATTRIBUTION_CARTO, MAP_MIN_ZOOM, MAP_CENTER } from 'constants/map';
+import {
+  MAP_MIN_ZOOM,
+  MAP_CENTER
+} from 'constants/map';
 import BasicMap from 'components/maps/BasicMap';
-import { createLayer } from 'helpers/map';
 import CountriesLegend from 'containers/countries/CountriesLegend';
 
-class CountriesMap extends BasicMap {
-  constructor() {
-    super();
-    this.styles = {
-      hide: { fillColor: 'white', color: 'transparent', opacity: 0, fillOpacity: 1 },
-      base: { fillColor: '#efd783', fillOpacity: 0.5, color: 'transparent', opacity: 0 },
-      highlight: { fillColor: '#ffc500', fillOpacity: 1, color: 'transparent', opacity: 0 }
-    };
-    this.markers = [];
+const borders = {
+  dashArray: [1, 7],
+  weight: 2,
+  lineCap: 'round'
+};
+const styles = {
+  map: {
+    hide: { fillColor: 'white', fillOpacity: 1, color: 'transparent', opacity: 0 },
+    base: { fillColor: '#efd783', fillOpacity: 0.5, color: 'white', opacity: 0 },
+    highlight: { fillColor: '#ffc500', fillOpacity: 1, color: 'white', opacity: 0 }
+  },
+  satellite: {
+    hide: { fillColor: 'white', fillOpacity: 1, color: 'transparent', opacity: 0 },
+    base: { fillColor: '#efd783', fillOpacity: 0.5, color: 'white', ...borders },
+    highlight: { fillColor: '#ffc500', fillOpacity: 1, color: 'white', ...borders }
   }
+};
+
+class CountriesMap extends BasicMap {
 
   componentWillMount() {
     this.props.getGeoms();
   }
 
   componentDidMount() {
+    this.markers = [];
     // Map initialization
     this.initMap();
     this.initPopup();
@@ -61,7 +73,7 @@ class CountriesMap extends BasicMap {
     }
 
     if (!newProps.country && this.props.country !== newProps.country) {
-      if (this.currentLayer) this.currentLayer.setStyle(this.styles.hide);
+      if (this.currentLayer) this.currentLayer.setStyle(styles[this.selectedBaseLayerId].hide);
       this.outBounds();
       this.map.invalidateSize();
     }
@@ -69,6 +81,10 @@ class CountriesMap extends BasicMap {
 
   componentWillUnmount() {
     this.remove();
+  }
+
+  onBaseLayerChange() {
+    this.drawGeo(this.props.geoms, this.props.countries, this.props.searchFilter);
   }
 
   setActiveLayer() {
@@ -106,46 +122,6 @@ class CountriesMap extends BasicMap {
     }).setContent('');
   }
 
-  addLayer() {
-    const query = 'SELECT * FROM mask';
-
-    const cartoCSS = `#mask{
-      polygon-fill: #000000;
-      polygon-opacity: 1;
-      line-color: #000000;
-      line-width: 1;
-      line-opacity: 1;
-    }
-
-    #mask[iso_a3='${this.props.country}']{
-      polygon-fill: #000000;
-      polygon-opacity: 0;
-      line-color: #000000;
-      line-width: 0;
-      line-opacity: 0;
-    }`;
-
-    createLayer({
-      sql: query,
-      cartocss: cartoCSS
-    }, this.addTile.bind(this));
-  }
-
-  addTile(url) {
-    if (this.layer) {
-      this.layer.setUrl(url);
-    } else {
-      this.layer = L.tileLayer(url, {
-        noWrap: true,
-        attribution: BASEMAP_ATTRIBUTION_CARTO
-      }).setZIndex(2);
-      this.layer.addTo(this.map);
-      this.layer.getContainer().classList.add('-layer-blending');
-    }
-
-    this.layer.setOpacity(0.7);
-  }
-
   goToDetail(iso) {
     this.props.goToDetail(iso);
   }
@@ -168,8 +144,8 @@ class CountriesMap extends BasicMap {
   }
 
   getLayerStyle(searchFilter, countries, iso, isoParam) {
-    const SHOW_STYLE = this.styles.base;
-    const HIDE_STYLE = this.styles.hide;
+    const SHOW_STYLE = styles[this.selectedBaseLayerId].base;
+    const HIDE_STYLE = styles[this.selectedBaseLayerId].hide;
 
     // If selected country
     if (isoParam.length > 0) {
@@ -205,7 +181,7 @@ class CountriesMap extends BasicMap {
         layer.on('mouseover', (e) => {
           if (!this.props.country) {
             this.showPopup(e.latlng, properties);
-            layer.setStyle(this.styles.highlight);
+            layer.setStyle(styles[this.selectedBaseLayerId].highlight);
           }
         });
         layer.on('mousemove', (e) => {
