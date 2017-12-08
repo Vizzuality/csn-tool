@@ -22,6 +22,7 @@ class Map extends React.Component {
       selectedBaseLayer: BASEMAP_MAP
     };
     this.onBaseLayerChange = this.onBaseLayerChange.bind(this);
+    this.setMapParams = this.setMapParams.bind(this);
   }
 
   componentDidMount() {
@@ -59,13 +60,13 @@ class Map extends React.Component {
   }
 
   setUrlSyncListeners() {
-    this.map.on('dragend', this.setMapParams.bind(this));
-    this.map.on('zoomend', this.setMapParams.bind(this));
+    this.map.on('dragend', this.setMapParams);
+    this.map.on('zoomend', this.setMapParams);
   }
 
   unsetUrlSyncListeners() {
-    this.map.off('dragend', this.setMapParams.bind(this));
-    this.map.off('zoomend', this.setMapParams.bind(this));
+    this.map.off('dragend', this.setMapParams);
+    this.map.off('zoomend', this.setMapParams);
   }
 
   remove() {

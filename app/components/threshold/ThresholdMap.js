@@ -11,6 +11,9 @@ class ThresholdMap extends BasicMap {
     this.popupVisible = false;
     this.drawMarker = this.drawMarker.bind(this);
     this.updateCoords = this.updateCoords.bind(this);
+    this.showPopup = this.showPopup.bind(this);
+    this.setPopupPosition = this.setPopupPosition.bind(this);
+    this.hidePopup = this.hidePopup.bind(this);
     if (props.coordinates) {
       setTimeout(() => {
         this.drawMarker(props.coordinates);
@@ -22,31 +25,23 @@ class ThresholdMap extends BasicMap {
     if (nextProps.coordinates) {
       this.drawMarker(nextProps.coordinates);
     }
-    // if (nextProps.data && nextProps.data.length > 0 && nextProps.data.length !== this.props.data.length) {
-    //   this.drawBounds(nextProps.data);
-    // }
-    // if (nextProps.data && !nextProps.data.length) {
-    //   this.clearBounds();
-    // }
   }
-
 
   componentDidMount() {
     this.initMap();
     this.initPopup();
     this.map.on('click', this.updateCoords);
-    this.map.on('mouseover', this.showPopup.bind(this));
-    this.map.on('mousemove', this.setPopupPosition.bind(this));
-    this.map.on('mouseout', this.hidePopup.bind(this));
-    // this.boundsLayer = new L.geoJson();
+    this.map.on('mouseover', this.showPopup);
+    this.map.on('mousemove', this.setPopupPosition);
+    this.map.on('mouseout', this.hidePopup);
   }
 
   componentWillUnmount() {
     this.remove();
     this.map.off('click', this.updateCoords);
-    this.map.off('mouseover', this.showPopup.bind(this));
-    this.map.off('mousemove', this.setPopupPosition.bind(this));
-    this.map.off('mouseout', this.hidePopup.bind(this));
+    this.map.off('mouseover', this.showPopup);
+    this.map.off('mousemove', this.setPopupPosition);
+    this.map.off('mouseout', this.hidePopup);
   }
 
   updateCoords(e) {
