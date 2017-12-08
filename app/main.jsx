@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
 import thunk from 'redux-thunk';
 import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
-import { i18nState } from "redux-i18n"
+import { i18nState } from 'redux-i18n';
 
 import * as reducers from 'reducers';
 import Routes from './routes/Routes';
@@ -61,11 +61,11 @@ process.env.NODE_ENV === 'production' && ReactGA.initialize(config.googleAnalyti
 render(
   <Provider store={store}>
     {/* Tell the Router to use our enhanced history */}
-    <Routes history={history}/>
+    <Routes history={history} />
   </Provider>,
   document.getElementById('app')
 );
 
 export default function dispatch(action) {
-  store.dispatch(action)
+  store.dispatch(action);
 }

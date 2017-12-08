@@ -9,6 +9,7 @@ import BasicMap from 'components/maps/BasicMap';
 import CountriesLegend from 'containers/countries/CountriesLegend';
 
 const borders = {
+  color: 'white',
   dashArray: [1, 7],
   weight: 2,
   lineCap: 'round'
@@ -21,8 +22,8 @@ const styles = {
   },
   satellite: {
     hide: { fillColor: 'white', fillOpacity: 1, color: 'transparent', opacity: 0 },
-    base: { fillColor: '#efd783', fillOpacity: 0.5, color: 'white', ...borders },
-    highlight: { fillColor: '#ffc500', fillOpacity: 1, color: 'white', ...borders }
+    base: { fillColor: '#efd783', fillOpacity: 0.5, ...borders },
+    highlight: { fillColor: '#ffc500', fillOpacity: 1, ...borders, weight: 3 }
   }
 };
 
@@ -73,7 +74,7 @@ class CountriesMap extends BasicMap {
     }
 
     if (!newProps.country && this.props.country !== newProps.country) {
-      if (this.currentLayer) this.currentLayer.setStyle(styles[this.selectedBaseLayerId].hide);
+      if (this.currentLayer) this.currentLayer.setStyle(styles[this.state.selectedBaseLayer].hide);
       this.outBounds();
       this.map.invalidateSize();
     }
@@ -83,8 +84,10 @@ class CountriesMap extends BasicMap {
     this.remove();
   }
 
-  onBaseLayerChange() {
-    this.drawGeo(this.props.geoms, this.props.countries, this.props.searchFilter);
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.selectedBaseLayer !== prevState.selectedBaseLayer) {
+      this.drawGeo(this.props.geoms, this.props.countries, this.props.searchFilter);
+    }
   }
 
   setActiveLayer() {
@@ -144,8 +147,8 @@ class CountriesMap extends BasicMap {
   }
 
   getLayerStyle(searchFilter, countries, iso, isoParam) {
-    const SHOW_STYLE = styles[this.selectedBaseLayerId].base;
-    const HIDE_STYLE = styles[this.selectedBaseLayerId].hide;
+    const SHOW_STYLE = styles[this.state.selectedBaseLayer].base;
+    const HIDE_STYLE = styles[this.state.selectedBaseLayer].hide;
 
     // If selected country
     if (isoParam.length > 0) {
@@ -181,7 +184,7 @@ class CountriesMap extends BasicMap {
         layer.on('mouseover', (e) => {
           if (!this.props.country) {
             this.showPopup(e.latlng, properties);
-            layer.setStyle(styles[this.selectedBaseLayerId].highlight);
+            layer.setStyle(styles[this.state.selectedBaseLayer].highlight);
           }
         });
         layer.on('mousemove', (e) => {

@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   BASEMAP_ATTRIBUTION_MAPBOX,
+  BASEMAP_MAP,
+  BASEMAP_SATELLITE,
   BASEMAP_TILE_MAP,
   BASEMAP_TILE_SATELLITE,
   MAP_CENTER,
@@ -14,12 +16,31 @@ import { replaceUrlParams } from 'helpers/router';
 
 class Map extends React.Component {
 
+  constructor() {
+    super();
+    this.state = {
+      selectedBaseLayer: BASEMAP_MAP
+    };
+    this.onBaseLayerChange = this.onBaseLayerChange.bind(this);
+  }
+
   componentDidMount() {
     this.initMap();
   }
 
   componentWillUnmount() {
     this.remove();
+  }
+
+  onBaseLayerChange(e) {
+    const selectedBaseLayer = e.layer.options.type;
+    const mapContainer = this.map.getContainer();
+
+    if (this.state.selectedBaseLayer) {
+      mapContainer.classList.remove(`-${this.state.selectedBaseLayer}-view`);
+    }
+    this.setState({ selectedBaseLayer });
+    mapContainer.classList.add(`-${selectedBaseLayer}-view`);
   }
 
   getMapParams() {
@@ -50,6 +71,7 @@ class Map extends React.Component {
   remove() {
     this.map.remove();
     if (this.props.urlSync) this.unsetUrlSyncListeners();
+    if (this.props.baseLayerSelector) this.map.off('baselayerchange', this.onBaseLayerChange);
   }
 
   initMap() {
@@ -63,6 +85,7 @@ class Map extends React.Component {
     this.map = L.map(this.props.id, {
       minZoom: MAP_MIN_ZOOM,
       zoom: query.zoom || MAP_INITIAL_ZOOM,
+      zoomControl: this.props.zoomControl,
       center,
       detectRetina: true,
       zoomAnimation: false
@@ -86,7 +109,7 @@ class Map extends React.Component {
     }
 
     this.map.attributionControl.addAttribution(BASEMAP_ATTRIBUTION_MAPBOX);
-    this.map.zoomControl.setPosition('topright');
+    if (this.props.zoomControl) this.map.zoomControl.setPosition('topright');
     this.map.scrollWheelZoom.disable();
 
     this.addBaseLayers();
@@ -95,27 +118,20 @@ class Map extends React.Component {
   }
 
   addBaseLayers() {
-    this.map.on('baselayerchange', (e) => {
-      const selectedBaseLayerId = e.layer.id;
-      const wasChange = this.selectedBaseLayerId && this.selectedBaseLayerId !== selectedBaseLayerId;
-      // change this
-      const mapContainer = this.map.getContainer();
-      mapContainer.classList.remove(`-${this.selectedBaseLayerId}-mode`);
-      this.selectedBaseLayerId = selectedBaseLayerId;
-      mapContainer.classList.add(`-${selectedBaseLayerId}-mode`);
-      if (wasChange && this.onBaseLayerChange) this.onBaseLayerChange(selectedBaseLayerId);
-    });
-    const mapLayer = L.tileLayer(BASEMAP_TILE_MAP).setZIndex(0);
-    const satelliteLayer = L.tileLayer(BASEMAP_TILE_SATELLITE).setZIndex(0);
-    mapLayer.id = 'map';
-    satelliteLayer.id = 'satellite';
-    const baseLayers = {
-      [this.context.t('map')]: mapLayer,
-      [this.context.t('satellite')]: satelliteLayer
-    };
-    L.control.layers(baseLayers, null, {
-      autoZIndex: false
-    }).addTo(this.map);
+    const mapLayer = L.tileLayer(BASEMAP_TILE_MAP, { type: BASEMAP_MAP }).setZIndex(0);
+
+    if (this.props.baseLayerSelector) {
+      const satelliteLayer = L.tileLayer(BASEMAP_TILE_SATELLITE, { type: BASEMAP_SATELLITE }).setZIndex(0);
+      const baseLayers = {
+        [this.context.t('map')]: mapLayer,
+        [this.context.t('satellite')]: satelliteLayer
+      };
+      L.control.layers(baseLayers, null, {
+        autoZIndex: false
+      }).addTo(this.map);
+      this.map.on('baselayerchange', this.onBaseLayerChange);
+    }
+
     mapLayer.addTo(this.map);
   }
 
@@ -164,7 +180,9 @@ Map.contextTypes = {
 
 Map.defaultProps = {
   urlSync: true,
-  shareControl: true
+  shareControl: true,
+  baseLayerSelector: true,
+  zoomControl: true
 };
 
 Map.propTypes = {
@@ -172,7 +190,9 @@ Map.propTypes = {
   router: PropTypes.object,
   markerCluster: PropTypes.bool,
   shareControl: PropTypes.bool,
-  urlSync: PropTypes.bool
+  urlSync: PropTypes.bool,
+  baseLayerSelector: PropTypes.bool,
+  zoomControl: PropTypes.bool
 };
 
 export default Map;
