@@ -124,8 +124,8 @@ class Map extends React.Component {
     if (this.props.baseLayerSelector) {
       const satelliteLayer = L.tileLayer(BASEMAP_TILE_SATELLITE, { type: BASEMAP_SATELLITE }).setZIndex(0);
       const baseLayers = {
-        [this.context.t('map')]: mapLayer,
-        [this.context.t('satellite')]: satelliteLayer
+        Map: mapLayer,
+        Satellite: satelliteLayer
       };
       L.control.layers(baseLayers, null, {
         autoZIndex: false
@@ -174,10 +174,6 @@ class Map extends React.Component {
     );
   }
 }
-
-Map.contextTypes = {
-  t: PropTypes.func.isRequired
-};
 
 Map.defaultProps = {
   urlSync: true,

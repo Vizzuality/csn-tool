@@ -128,7 +128,6 @@ export const translations = {
     'multispecies_flyway': 'Multispecies flyway',
     'population_trend': 'Population trend',
     'tools': 'Tools',
-    'satellite': 'Satellite',
     'feedback': 'Feedback',
     'scrollText': 'Scroll down to see the data',
     'coordinates': 'Coordinates'
@@ -246,7 +245,6 @@ export const translations = {
     'habitat': 'Habitat',
     'selectOneOption': 'Selecciona al menos una opción',
     'tools': 'Herramientas',
-    'satellite': 'Satélite',
     'feedback': 'Comentarios',
     'scrollText': 'Desplácese hacia abajo para ver los datos',
     'coordinates': 'Coordenadas'
@@ -381,7 +379,6 @@ export const translations = {
     'multispecies_flyway': 'Voie de migration plurispécifique',
     'population_trend': 'Tendance de la population',
     'tools': 'Outils',
-    'satellite': 'Satellite',
     'feedback': 'Commentaires',
     'scrollText': 'Faites défiler vers le bas pour voir les données',
     'coordinates': 'Coordonnées'
