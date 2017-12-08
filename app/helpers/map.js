@@ -39,8 +39,9 @@ export function createLayer(layerData, callback) {
 }
 
 export function getSqlQuery(query, callback) {
-  return fetch(ENDPOINT_SQL + query).then(response => response.json())
-  .then(res => {
-    callback(res.rows);
-  });
+  return fetch(ENDPOINT_SQL + query)
+    .then(response => response.json())
+    .then(res => {
+      callback(res.rows);
+    });
 }

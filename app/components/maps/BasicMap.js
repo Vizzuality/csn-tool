@@ -16,11 +16,14 @@ import { replaceUrlParams } from 'helpers/router';
 
 class Map extends React.Component {
 
-  constructor() {
-    super();
-    this.state = {
-      selectedBaseLayer: BASEMAP_MAP
-    };
+  constructor(props) {
+    super(props);
+
+    const selectedBaseLayer = props.urlSync
+            ? props.router.getCurrentLocation().query.view || BASEMAP_MAP
+            : BASEMAP_MAP;
+    this.state = { selectedBaseLayer };
+
     this.onBaseLayerChange = this.onBaseLayerChange.bind(this);
     this.setMapParams = this.setMapParams.bind(this);
   }
@@ -29,27 +32,32 @@ class Map extends React.Component {
     this.initMap();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.selectedBaseLayer !== prevState.selectedBaseLayer) {
+      const mapContainer = this.map.getContainer();
+      mapContainer.classList.remove(`-${prevState.selectedBaseLayer}-view`);
+      this.setMapParams();
+      mapContainer.classList.add(`-${this.state.selectedBaseLayer}-view`);
+    }
+  }
+
   componentWillUnmount() {
     this.remove();
   }
 
   onBaseLayerChange(e) {
     const selectedBaseLayer = e.layer.options.type;
-    const mapContainer = this.map.getContainer();
-
-    if (this.state.selectedBaseLayer) {
-      mapContainer.classList.remove(`-${this.state.selectedBaseLayer}-view`);
-    }
     this.setState({ selectedBaseLayer });
-    mapContainer.classList.add(`-${selectedBaseLayer}-view`);
   }
 
   getMapParams() {
-    const latLng = this.map.getCenter();
+    const { lat, lng } = this.map.getCenter();
+    const view = this.state.selectedBaseLayer;
     return {
       zoom: this.map.getZoom(),
-      lat: latLng.lat,
-      lng: latLng.lng
+      lat,
+      lng,
+      view
     };
   }
 
@@ -76,10 +84,7 @@ class Map extends React.Component {
   }
 
   initMap() {
-    let query = {};
-    if (this.props.urlSync) {
-      query = this.props.router.getCurrentLocation().query;
-    }
+    const query = this.props.urlSync && this.props.router.getCurrentLocation().query;
     const center = query && query.lat && query.lng
      ? [query.lat, query.lng]
      : MAP_CENTER;
@@ -120,9 +125,10 @@ class Map extends React.Component {
 
   addBaseLayers() {
     const mapLayer = L.tileLayer(BASEMAP_TILE_MAP, { type: BASEMAP_MAP }).setZIndex(0);
+    const satelliteLayer = L.tileLayer(BASEMAP_TILE_SATELLITE, { type: BASEMAP_SATELLITE }).setZIndex(0);
+    const selectedLayer = this.state.selectedBaseLayer === BASEMAP_MAP ? mapLayer : satelliteLayer;
 
     if (this.props.baseLayerSelector) {
-      const satelliteLayer = L.tileLayer(BASEMAP_TILE_SATELLITE, { type: BASEMAP_SATELLITE }).setZIndex(0);
       const baseLayers = {
         Map: mapLayer,
         Satellite: satelliteLayer
@@ -133,7 +139,8 @@ class Map extends React.Component {
       this.map.on('baselayerchange', this.onBaseLayerChange);
     }
 
-    mapLayer.addTo(this.map);
+    this.map.addLayer(selectedLayer);
+    this.map.getContainer().classList.add(`-${selectedLayer.options.type}-view`);
   }
 
   addShareControl() {

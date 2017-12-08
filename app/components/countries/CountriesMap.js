@@ -85,6 +85,7 @@ class CountriesMap extends BasicMap {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    super.componentDidUpdate(prevProps, prevState);
     if (this.state.selectedBaseLayer !== prevState.selectedBaseLayer) {
       this.drawGeo(this.props.geoms, this.props.countries, this.props.searchFilter);
     }
