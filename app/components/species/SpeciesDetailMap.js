@@ -9,12 +9,13 @@ import { BOUNDARY_COLORS } from 'constants';
 
 class SpeciesMap extends BasicMap {
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
     this.layers = [];
     this.boundaryColorsToPop = [];
     this.activeBoundary = false;
     this.activeLayers = [];
+    this.setPopulationBoundaryColors(props.population);
   }
 
   componentDidMount() {
@@ -47,25 +48,15 @@ class SpeciesMap extends BasicMap {
       this.clearMarkers();
     }
 
-    if (this.boundaryColorsToPop.length === 0) {
-      if (this.props.population) {
-        let i = 0;
-        this.boundaryColorsToPop = this.props.population.reduce((all, pop) => {
-          const newAll = Object.assign({}, all);
-          newAll[pop.wpepopid] = BOUNDARY_COLORS[i];
-          i++;
-          return newAll;
-        }, []);
-      }
-    }
+    this.setPopulationBoundaryColors(newProps.population);
 
     if (!newProps.layers.population) {
       this.layers.concat(this.activeLayers).forEach((layer) => {
         layer.setOpacity(0);
       });
     } else {
-      if (this.layers.length === 0) {
-        this.getBounds(this.props.id);
+      if (this.layers.length === 0 && this.props.population !== newProps.population) {
+        this.fetchPopulationBoundaries(this.props.id);
       } else {
         this.layers.forEach((layer) => {
           layer.setOpacity(1);
@@ -78,7 +69,7 @@ class SpeciesMap extends BasicMap {
       });
 
       differences.forEach((difference) => {
-        this.changeLayerActivication(difference.id, difference.active);
+        this.changeLayerActivation(difference.id, difference.active);
       });
     }
   }
@@ -87,37 +78,33 @@ class SpeciesMap extends BasicMap {
     this.remove();
   }
 
-  changeLayerActivication(layerId, active) {
-    this.activeLayers.forEach((layer) => {
-      if (layer.options.id === layerId) {
-        if (active) {
-          layer.setOpacity(1);
-        } else {
-          layer.setOpacity(0);
-        }
-      }
-    });
-    this.layers.forEach((layer) => {
-      if (layer.options.id === layerId) {
-        if (!active) {
-          layer.setOpacity(1);
-        } else {
-          layer.setOpacity(0);
-        }
-      }
-    });
+  setPopulationBoundaryColors(population) {
+    if (this.boundaryColorsToPop.length === 0 && population) {
+      this.boundaryColorsToPop = population.reduce((all, pop, index) => ({
+        ...all,
+        [pop.wpepopid]: BOUNDARY_COLORS[index]
+      }), []);
+    }
   }
 
-  getBounds(id) {
+  changeLayerActivation(layerId, active) {
+    const activeLayer = this.activeLayers.find(l => l.options.id === layerId);
+    const layer = this.layers.find(l => l.options.id === layerId);
+
+    if (activeLayer) activeLayer.setOpacity(active ? 1 : 0);
+    if (layer) layer.setOpacity(active ? 0 : 1);
+  }
+
+  fetchPopulationBoundaries(speciesId) {
     const query = `SELECT ST_AsGeoJSON(ST_Envelope(st_union(f.the_geom)))
       as bbox FROM species_main s
       INNER JOIN species_and_flywaygroups f on f.ssid = s.species_id
-      WHERE s.species_id = ${id}`;
+      WHERE s.species_id = ${speciesId}`;
 
-    getSqlQuery(query, this.setBounds.bind(this));
+    getSqlQuery(query, this.setPopulationBoundaries.bind(this));
   }
 
-  setBounds(res) {
+  setPopulationBoundaries(res) {
     const bounds = JSON.parse(res[0].bbox);
 
     if (bounds) {
@@ -140,19 +127,16 @@ class SpeciesMap extends BasicMap {
 
   addLayer(id, popId) {
     const color = this.boundaryColorsToPop[popId];
-
     const query = `SELECT f.the_geom_webmercator,
       f.colour_index
       FROM species_and_flywaygroups f WHERE f.wpepopid = ${popId} LIMIT 1`;
 
     [{
       opacity: '0',
-      active: false,
-      layerGroup: this.layers
+      active: false
     }, {
       opacity: '0.5',
-      active: true,
-      layerGroup: this.activeLayers
+      active: true
     }].forEach(({ opacity, active }) => {
       const cartoCSS = `#species_and_flywaygroups{
         line-opacity: 1;
@@ -172,33 +156,24 @@ class SpeciesMap extends BasicMap {
   }
 
   addTile(id, active, url) {
-    let layers = this.layers;
+    const layers = active ? this.activeLayers : this.layers;
+
+    // do not add layer if is already there
+    if (layers.length > 0 && layers.some((layer) => layer.options.id === id)) return;
+
+    const layer = L.tileLayer(url, {
+      id,
+      noWrap: true,
+      attribution: BASEMAP_ATTRIBUTION_CARTO
+    }).setZIndex(2);
 
     if (active) {
-      layers = this.activeLayers;
+      layer.setOpacity(0);
     }
-    if (layers.length > 0 && layers.some((layer) => layer.options.id === id)) {
-      /* layers = layers.map((layer) => {
-        if (layer.options.id === id) {
-          layer.setUrl(url);
-        }
-        return layer;
-      }); */
-    } else {
-      const layer = L.tileLayer(url, {
-        id,
-        noWrap: true,
-        attribution: BASEMAP_ATTRIBUTION_CARTO
-      }).setZIndex(2);
+    layer.addTo(this.map);
+    layer.getContainer().classList.add('-layer-blending');
 
-      if (active) {
-        layer.setOpacity(0);
-      }
-      layer.addTo(this.map);
-      layer.getContainer().classList.add('-layer-blending');
-
-      layers.push(layer);
-    }
+    layers.push(layer);
   }
 
   drawMarkers(speciesSites) {

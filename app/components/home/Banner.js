@@ -5,7 +5,7 @@ import BasicMap from 'components/maps/BasicMap';
 function Banner(props, context) {
   return (
     <div className="c-banner">
-      <BasicMap id="home-map" urlSync={false} shareControl={false} />
+      <BasicMap id="home-map" urlSync={false} shareControl={false} zoomControl={false} baseLayerSelector={false} />
       <div className="content">
         <svg className="banner-logo">
           <use xlinkHref="#logo-big"></use>

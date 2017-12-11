@@ -50,7 +50,7 @@
     z-index: 0;
   }
 
-  .leaflet-overlay-pane, {
+  .leaflet-overlay-pane {
     mix-blend-mode: multiply;
 
     .leaflet-interactive {
@@ -69,6 +69,20 @@
   &.-threshold {
     .leaflet-overlay-pane .leaflet-interactive {
       fill-opacity: 0;
+    }
+  }
+
+  &.-satellite-view {
+    .leaflet-overlay-pane {
+      mix-blend-mode: overlay;
+
+      .leaflet-interactive {
+        fill-opacity: 0.5;
+      }
+    }
+
+    .-layer-blending {
+      mix-blend-mode: normal;
     }
   }
 }

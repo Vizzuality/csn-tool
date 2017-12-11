@@ -20,7 +20,9 @@
     }
   }
 
-  .leaflet-bar {
+  .leaflet-bar,
+  .leaflet-control-layers {
+    background-color: unset;
     box-shadow: none;
     border-radius: 0;
 
@@ -55,6 +57,11 @@
     a:hover {
       background-color: rgba($bg-dark-color, 0.8);
     }
+  }
+
+  .leaflet-control-layers-expanded {
+    background-color: rgba($bg-dark-color, 0.8);
+    color: $white;
   }
 
   .leaflet-custom-control {
