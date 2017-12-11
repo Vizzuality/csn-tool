@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import BasicMap from 'components/maps/BasicMap';
-import { BASEMAP_ATTRIBUTION_CARTO } from 'constants/map';
-import { createLayer, getSqlQuery } from 'helpers/map';
+import { getSqlQuery } from 'helpers/map';
 import SpeciesDetailLegend from 'containers/species/SpeciesDetailLegend';
 import { BOUNDARY_COLORS } from 'constants';
 
@@ -11,10 +10,13 @@ class SpeciesMap extends BasicMap {
 
   constructor(props, context) {
     super(props, context);
+    this.state = {
+      ...this.state,
+      activeLayer: null
+    };
     this.layers = [];
     this.boundaryColorsToPop = [];
     this.activeBoundary = false;
-    this.activeLayers = [];
     this.setPopulationBoundaryColors(props.population);
   }
 
@@ -51,25 +53,25 @@ class SpeciesMap extends BasicMap {
     this.setPopulationBoundaryColors(newProps.population);
 
     if (!newProps.layers.population) {
-      this.layers.concat(this.activeLayers).forEach((layer) => {
-        layer.setOpacity(0);
+      this.layers.forEach((lg) => {
+        lg.setStyle({
+          fill: false,
+          opacity: 0
+        });
       });
     } else {
       if (this.layers.length === 0 && this.props.population !== newProps.population) {
         this.fetchPopulationBoundaries(this.props.id);
-      } else {
-        this.layers.forEach((layer) => {
-          layer.setOpacity(1);
-        });
       }
 
-      const differences = newProps.activeBounds.filter((newBound) => {
-        const oldBound = this.props.activeBounds.filter((bound) => bound.id === newBound.id)[0];
-        return !oldBound || oldBound.active !== newBound.active;
-      });
-
-      differences.forEach((difference) => {
-        this.changeLayerActivation(difference.id, difference.active);
+      this.layers.forEach((lg) => {
+        const isActive = newProps.activeBounds.some(
+          (bound) => bound.id === lg.options.id && bound.active
+        );
+        lg.setStyle({
+          fill: isActive,
+          opacity: 1
+        });
       });
     }
   }
@@ -96,16 +98,18 @@ class SpeciesMap extends BasicMap {
   }
 
   fetchPopulationBoundaries(speciesId) {
-    const query = `SELECT ST_AsGeoJSON(ST_Envelope(st_union(f.the_geom)))
-      as bbox FROM species_main s
+    const query = `
+      SELECT ST_AsGeoJSON(ST_Envelope(st_union(f.the_geom))) as bbox
+      FROM species_main s
       INNER JOIN species_and_flywaygroups f on f.ssid = s.species_id
-      WHERE s.species_id = ${speciesId}`;
+      WHERE s.species_id = ${speciesId}
+    `;
 
-    getSqlQuery(query, this.setPopulationBoundaries.bind(this));
+    getSqlQuery(query).then(this.setPopulationBoundaries.bind(this));
   }
 
   setPopulationBoundaries(res) {
-    const bounds = JSON.parse(res[0].bbox);
+    const bounds = JSON.parse(res.rows[0].bbox);
 
     if (bounds) {
       const coords = bounds.coordinates[0];
@@ -120,60 +124,43 @@ class SpeciesMap extends BasicMap {
 
     if (this.props.population) {
       this.props.population.forEach((pop) => {
-        this.addLayer(this.props.id, pop.wpepopid);
+        this.getLayer(this.props.id, pop.wpepopid);
       });
     }
   }
 
-  addLayer(id, popId) {
+  getLayer(id, popId) {
     const color = this.boundaryColorsToPop[popId];
-    const query = `SELECT f.the_geom_webmercator,
-      f.colour_index
-      FROM species_and_flywaygroups f WHERE f.wpepopid = ${popId} LIMIT 1`;
+    const query = `
+      SELECT the_geom
+      FROM species_and_flywaygroups
+      WHERE wpepopid = ${popId} LIMIT 1
+    `;
 
-    [{
-      opacity: '0',
-      active: false
-    }, {
-      opacity: '0.5',
-      active: true
-    }].forEach(({ opacity, active }) => {
-      const cartoCSS = `#species_and_flywaygroups{
-        line-opacity: 1;
-        line-width: 3;
-        line-dasharray: 1, 7;
-        line-cap: round;
-        line-color: ${color};
-        polygon-fill: ${color};
-        polygon-opacity: ${opacity}
-      }`;
+    getSqlQuery(`${query}&format=geojson`)
+      .then((layerGeoJSON) => {
+        // do not add layer if is already there
+        if (this.layers.length > 0 && this.layers.some((l) => l.options.id === popId)) return;
 
-      createLayer({
-        sql: query,
-        cartocss: cartoCSS
-      }, this.addTile.bind(this, popId, active));
-    });
-  }
-
-  addTile(id, active, url) {
-    const layers = active ? this.activeLayers : this.layers;
-
-    // do not add layer if is already there
-    if (layers.length > 0 && layers.some((layer) => layer.options.id === id)) return;
-
-    const layer = L.tileLayer(url, {
-      id,
-      noWrap: true,
-      attribution: BASEMAP_ATTRIBUTION_CARTO
-    }).setZIndex(2);
-
-    if (active) {
-      layer.setOpacity(0);
-    }
-    layer.addTo(this.map);
-    layer.getContainer().classList.add('-layer-blending');
-
-    layers.push(layer);
+        const layer = L.geoJSON(layerGeoJSON, {
+          id: popId,
+          noWrap: true,
+          style: {
+            opacity: 1,
+            weight: 3,
+            dashArray: [1, 7],
+            lineCap: 'round',
+            color,
+            fill: false,
+            fillOpacity: 0.5,
+            fillColor: color
+          }
+        });
+        layer.setZIndex(2);
+        layer.addTo(this.map);
+        layer.getPane().classList.add('-layer-blending');
+        this.layers.push(layer);
+      });
   }
 
   drawMarkers(speciesSites) {
