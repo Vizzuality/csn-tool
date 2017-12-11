@@ -10,13 +10,8 @@ class SpeciesMap extends BasicMap {
 
   constructor(props, context) {
     super(props, context);
-    this.state = {
-      ...this.state,
-      activeLayer: null
-    };
-    this.layers = [];
+    this.popBoundaryLayers = [];
     this.boundaryColorsToPop = [];
-    this.activeBoundary = false;
     this.setPopulationBoundaryColors(props.population);
   }
 
@@ -53,31 +48,34 @@ class SpeciesMap extends BasicMap {
     this.setPopulationBoundaryColors(newProps.population);
 
     if (!newProps.layers.population) {
-      this.layers.forEach((lg) => {
-        lg.setStyle({
-          fill: false,
-          opacity: 0
-        });
-      });
+      this.hidePopulationBoundaries();
     } else {
-      if (this.layers.length === 0 && this.props.population !== newProps.population) {
+      if (this.popBoundaryLayers.length === 0 && this.props.population !== newProps.population) {
         this.fetchPopulationBoundaries(this.props.id);
       }
 
-      this.layers.forEach((lg) => {
-        const isActive = newProps.activeBounds.some(
-          (bound) => bound.id === lg.options.id && bound.active
-        );
-        lg.setStyle({
-          fill: isActive,
-          opacity: 1
+      if (this.popBoundaryLayers.length &&
+          (this.props.activeBounds !== newProps.activeBounds || newProps.population)) {
+        this.popBoundaryLayers.forEach((pbLayerGroup) => {
+          const isActive = newProps.activeBounds.some(
+            (bound) => bound.id === pbLayerGroup.options.id && bound.active
+          );
+          pbLayerGroup.setStyle({
+            fill: isActive,
+            opacity: 1
+          });
         });
-      });
+      }
     }
   }
 
-  componentWillUnmount() {
-    this.remove();
+  hidePopulationBoundaries() {
+    this.popBoundaryLayers.forEach((pbLayerGroup) => {
+      pbLayerGroup.setStyle({
+        fill: false,
+        opacity: 0
+      });
+    });
   }
 
   setPopulationBoundaryColors(population) {
@@ -87,14 +85,6 @@ class SpeciesMap extends BasicMap {
         [pop.wpepopid]: BOUNDARY_COLORS[index]
       }), []);
     }
-  }
-
-  changeLayerActivation(layerId, active) {
-    const activeLayer = this.activeLayers.find(l => l.options.id === layerId);
-    const layer = this.layers.find(l => l.options.id === layerId);
-
-    if (activeLayer) activeLayer.setOpacity(active ? 1 : 0);
-    if (layer) layer.setOpacity(active ? 0 : 1);
   }
 
   fetchPopulationBoundaries(speciesId) {
@@ -124,13 +114,12 @@ class SpeciesMap extends BasicMap {
 
     if (this.props.population) {
       this.props.population.forEach((pop) => {
-        this.getLayer(this.props.id, pop.wpepopid);
+        this.getPopulationBoundaryLayer(this.props.id, pop.wpepopid);
       });
     }
   }
 
-  getLayer(id, popId) {
-    const color = this.boundaryColorsToPop[popId];
+  getPopulationBoundaryLayer(id, popId) {
     const query = `
       SELECT the_geom
       FROM species_and_flywaygroups
@@ -138,29 +127,35 @@ class SpeciesMap extends BasicMap {
     `;
 
     getSqlQuery(`${query}&format=geojson`)
-      .then((layerGeoJSON) => {
-        // do not add layer if is already there
-        if (this.layers.length > 0 && this.layers.some((l) => l.options.id === popId)) return;
+      .then(this.addPopulationBoundaryLayer.bind(this, popId));
+  }
 
-        const layer = L.geoJSON(layerGeoJSON, {
-          id: popId,
-          noWrap: true,
-          style: {
-            opacity: 1,
-            weight: 3,
-            dashArray: [1, 7],
-            lineCap: 'round',
-            color,
-            fill: false,
-            fillOpacity: 0.5,
-            fillColor: color
-          }
-        });
-        layer.setZIndex(2);
-        layer.addTo(this.map);
-        layer.getPane().classList.add('-layer-blending');
-        this.layers.push(layer);
-      });
+  addPopulationBoundaryLayer(popId, layerGeoJSON) {
+    const color = this.boundaryColorsToPop[popId];
+    // do not add layer if is already there
+    if (this.popBoundaryLayers.length > 0 &&
+        this.popBoundaryLayers.some((l) => l.options.id === popId)) {
+      return;
+    }
+
+    const layer = L.geoJSON(layerGeoJSON, {
+      id: popId,
+      noWrap: true,
+      style: {
+        opacity: 1,
+        weight: 3,
+        dashArray: [1, 7],
+        lineCap: 'round',
+        color,
+        fill: false,
+        fillOpacity: 0.5,
+        fillColor: color
+      }
+    });
+    layer.setZIndex(2);
+    layer.addTo(this.map);
+    layer.getPane().classList.add('-layer-blending');
+    this.popBoundaryLayers.push(layer);
   }
 
   drawMarkers(speciesSites) {
