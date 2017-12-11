@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
+import { getSqlQuery } from 'helpers/map';
 import BasicMap from 'components/maps/BasicMap';
 
 class SitesMap extends BasicMap {
@@ -29,23 +30,39 @@ class SitesMap extends BasicMap {
 
     if (newProps.selected && newProps.data && newProps.data.length > 0) {
       this.map.setView([newProps.data[0].lat, newProps.data[0].lon], 8);
+      this.fetchSiteLayer(newProps.selected);
     }
   }
 
-  componentWillUnmount() {
-    this.remove();
+  fetchSiteLayer(siteId) {
+    const query = `
+      SELECT the_geom
+      FROM csn_sites_polygons
+      WHERE siterecid = ${siteId} LIMIT 1
+    `;
+
+    getSqlQuery(`${query}&format=geojson`)
+      .then(this.addSiteLayer.bind(this));
   }
 
-  setActiveSite() {
-    const onEachFeature = (layer) => {
-      const properties = layer.feature.properties;
-      const iso = properties.iso3;
-      const isoParam = this.props.country;
-      if (iso === isoParam) {
-        this.activeLayer = layer;
+  addSiteLayer(layerGeoJSON) {
+    const color = 'red';
+    const layer = L.geoJSON(layerGeoJSON, {
+      noWrap: true,
+      style: {
+        opacity: 1,
+        weight: 3,
+        dashArray: [1, 7],
+        lineCap: 'round',
+        color,
+        fill: true,
+        fillOpacity: 0.5,
+        fillColor: color
       }
-    };
-    this.topoLayer.eachLayer(onEachFeature);
+    });
+    layer.setZIndex(2);
+    layer.addTo(this.map);
+    layer.getPane().classList.add('-layer-blending');
   }
 
   drawMarkers(data) {
