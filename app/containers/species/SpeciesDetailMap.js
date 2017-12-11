@@ -6,7 +6,7 @@ const mapStateToProps = (state) => ({
   sites: state.species.sites[state.species.selected] || false,
   criticalSites: state.species.criticalSites[state.species.selected] || false,
   population: state.species.population[state.species.selected] || false,
-  selectedPopulationBoundaryId: state.species.selectedPopulationBoundaryId,
+  selectedPopulationId: state.species.selectedPopulationId,
   layers: state.species.layers,
   selectedCategory: state.species.selectedCategory
 });

@@ -10,9 +10,8 @@ class SpeciesMap extends BasicMap {
 
   constructor(props, context) {
     super(props, context);
-    this.popBoundaryLayers = [];
-    this.boundaryColorsToPop = [];
-    this.setPopulationBoundaryColors(props.population);
+    this.populationLayers = [];
+    this.setPopulationColors(props.population);
   }
 
   componentDidMount() {
@@ -45,22 +44,22 @@ class SpeciesMap extends BasicMap {
       this.clearMarkers();
     }
 
-    this.setPopulationBoundaryColors(newProps.population);
+    this.setPopulationColors(newProps.population);
 
     if (!newProps.layers.population) {
-      this.hidePopulationBoundaries();
+      this.hidePopulations();
     } else {
-      if (this.popBoundaryLayers.length === 0 && this.props.population !== newProps.population) {
+      if (this.populationLayers.length === 0 && this.props.population !== newProps.population) {
         this.fetchPopulationBoundaries(this.props.id);
       }
 
-      if (this.popBoundaryLayers.length &&
-          (this.props.selectedPopulationBoundaryId !== newProps.selectedPopulationBoundaryId || newProps.population)) {
-        this.popBoundaryLayers.forEach((pbLayerGroup) => {
-          const id = pbLayerGroup.options.id;
-          const isActive = id === newProps.selectedPopulationBoundaryId;
+      if (this.populationLayers.length &&
+          (this.props.selectedPopulationId !== newProps.selectedPopulationId || newProps.population)) {
+        this.populationLayers.forEach((layer) => {
+          const id = layer.options.populationId;
+          const isActive = id === newProps.selectedPopulationId;
 
-          pbLayerGroup.setStyle({
+          layer.setStyle({
             fill: isActive,
             opacity: 1
           });
@@ -69,21 +68,21 @@ class SpeciesMap extends BasicMap {
     }
   }
 
-  hidePopulationBoundaries() {
-    this.popBoundaryLayers.forEach((pbLayerGroup) => {
-      pbLayerGroup.setStyle({
+  hidePopulations() {
+    this.populationLayers.forEach((layer) => {
+      layer.setStyle({
         fill: false,
         opacity: 0
       });
     });
   }
 
-  setPopulationBoundaryColors(population) {
-    if (this.boundaryColorsToPop.length === 0 && population) {
-      this.boundaryColorsToPop = population.reduce((all, pop, index) => ({
+  setPopulationColors(population) {
+    if (population) {
+      this.populationColors = population.reduce((all, pop, index) => ({
         ...all,
         [pop.wpepopid]: BOUNDARY_COLORS[index]
-      }), []);
+      }), {});
     }
   }
 
@@ -114,32 +113,32 @@ class SpeciesMap extends BasicMap {
 
     if (this.props.population) {
       this.props.population.forEach((pop) => {
-        this.fetchPopulationBoundaryLayer(this.props.id, pop.wpepopid);
+        this.fetchPopulationLayer(this.props.id, pop.wpepopid);
       });
     }
   }
 
-  fetchPopulationBoundaryLayer(id, popId) {
+  fetchPopulationLayer(id, populationId) {
     const query = `
       SELECT the_geom
       FROM species_and_flywaygroups
-      WHERE wpepopid = ${popId} LIMIT 1
+      WHERE wpepopid = ${populationId} LIMIT 1
     `;
 
     getSqlQuery(`${query}&format=geojson`)
-      .then(this.addPopulationBoundaryLayer.bind(this, popId));
+      .then(this.addPopulationLayer.bind(this, populationId));
   }
 
-  addPopulationBoundaryLayer(popId, layerGeoJSON) {
-    const color = this.boundaryColorsToPop[popId];
+  addPopulationLayer(populationId, layerGeoJSON) {
+    const color = this.populationColors[populationId];
     // do not add layer if is already there
-    if (this.popBoundaryLayers.length > 0 &&
-        this.popBoundaryLayers.some((l) => l.options.id === popId)) {
+    if (this.populationLayers.length > 0 &&
+        this.populationLayers.some((l) => l.options.populationId === populationId)) {
       return;
     }
 
     const layer = L.geoJSON(layerGeoJSON, {
-      id: popId,
+      populationId,
       noWrap: true,
       style: {
         opacity: 1,
@@ -155,7 +154,7 @@ class SpeciesMap extends BasicMap {
     layer.setZIndex(2);
     layer.addTo(this.map);
     layer.getPane().classList.add('-layer-blending');
-    this.popBoundaryLayers.push(layer);
+    this.populationLayers.push(layer);
   }
 
   drawMarkers(speciesSites) {
@@ -203,7 +202,7 @@ class SpeciesMap extends BasicMap {
       <div className="l-maps-container">
         <div id={this.props.id} className="c-map -full"></div>
         <div className="l-legend">
-          <SpeciesDetailLegend boundaryColorsToPop={this.boundaryColorsToPop} />
+          <SpeciesDetailLegend populationColors={this.populationColors} />
         </div>
       </div>
     );
@@ -223,7 +222,7 @@ SpeciesMap.propTypes = {
   criticalSites: PropTypes.any.isRequired,
   population: PropTypes.any.isRequired,
   selectedCategory: PropTypes.string.isRequired,
-  selectedPopulationBoundaryId: PropTypes.number
+  selectedPopulationId: PropTypes.number
 };
 
 export default withRouter(SpeciesMap);

@@ -53,7 +53,7 @@ const initialState = {
     field: '',
     order: ''
   },
-  selectedPopulationBoundaryId: null,
+  selectedPopulationId: null,
   columnFilter: {}
 };
 
@@ -135,16 +135,9 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { layers });
     }
     case TOGGLE_LEGEND_ITEM: {
-      const {
-        id,
-        active
-      } = action.payload;
-
-      const selectedPopulationBoundaryId = active ? id : null;
-
       return {
         ...state,
-        selectedPopulationBoundaryId
+        selectedPopulationId: action.payload.active ? action.payload.id : null
       };
     }
     case SET_SPECIES_SORT: {
