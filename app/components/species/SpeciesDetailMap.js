@@ -55,11 +55,11 @@ class SpeciesMap extends BasicMap {
       }
 
       if (this.popBoundaryLayers.length &&
-          (this.props.activeBounds !== newProps.activeBounds || newProps.population)) {
+          (this.props.selectedPopulationBoundaryId !== newProps.selectedPopulationBoundaryId || newProps.population)) {
         this.popBoundaryLayers.forEach((pbLayerGroup) => {
-          const isActive = newProps.activeBounds.some(
-            (bound) => bound.id === pbLayerGroup.options.id && bound.active
-          );
+          const id = pbLayerGroup.options.id;
+          const isActive = id === newProps.selectedPopulationBoundaryId;
+
           pbLayerGroup.setStyle({
             fill: isActive,
             opacity: 1
@@ -114,12 +114,12 @@ class SpeciesMap extends BasicMap {
 
     if (this.props.population) {
       this.props.population.forEach((pop) => {
-        this.getPopulationBoundaryLayer(this.props.id, pop.wpepopid);
+        this.fetchPopulationBoundaryLayer(this.props.id, pop.wpepopid);
       });
     }
   }
 
-  getPopulationBoundaryLayer(id, popId) {
+  fetchPopulationBoundaryLayer(id, popId) {
     const query = `
       SELECT the_geom
       FROM species_and_flywaygroups
@@ -222,7 +222,8 @@ SpeciesMap.propTypes = {
   sites: PropTypes.any.isRequired,
   criticalSites: PropTypes.any.isRequired,
   population: PropTypes.any.isRequired,
-  selectedCategory: PropTypes.string.isRequired
+  selectedCategory: PropTypes.string.isRequired,
+  selectedPopulationBoundaryId: PropTypes.number
 };
 
 export default withRouter(SpeciesMap);

@@ -3,7 +3,6 @@ import reducer from 'reducers/species';
 import { CHANGE_COLUMN_ACTIVATION } from 'constants/index.js';
 
 const initialState = {
-  activeBounds: [],
   allColumns: ['scientific_name', 'english_name', 'genus', 'family', 'iucn_category', 'aewa_annex_2'],
   columns: ['scientific_name', 'genus', 'family', 'iucn_category', 'aewa_annex_2'],
   expandedColumns: ['scientific_name', 'population', 'a', 'b', 'c'],
@@ -11,6 +10,7 @@ const initialState = {
   list: false,
   selected: '',
   selectedCategory: 'sites',
+  selectedPopulationBoundaryId: null,
   searchFilter: '',
   stats: {},
   sites: {},
