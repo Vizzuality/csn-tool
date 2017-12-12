@@ -47,16 +47,18 @@ class SitesMap extends BasicMap {
   setSelectedSite(props) {
     if (props.selected && props.data && props.data.length > 0) {
       this.map.setView([props.data[0].lat, props.data[0].lon], 8);
-      this.fetchSiteLayer(props.selected);
+      this.fetchSiteLayer(props.selected, props.type);
     }
   }
 
-  fetchSiteLayer(siteId) {
+  fetchSiteLayer(siteId, siteType) {
+    const dataset = siteType === 'iba' ? 'ibas_geometries' : 'csn_sites_polygons';
+    const siteIdColumn = siteType === 'iba' ? 'site_id' : 'siterecid';
     const query = `
       SELECT
         ST_AsGeoJSON(the_geom, 15, 1) as geom
-      FROM csn_sites_polygons
-      WHERE siterecid = ${siteId} LIMIT 1
+      FROM ${dataset}
+      WHERE ${siteIdColumn} = ${siteId} LIMIT 1
     `; // asGeoJSON with options - add bbox for fitBound
 
     getSqlQuery(query)
@@ -134,7 +136,8 @@ SitesMap.propTypes = {
   selected: PropTypes.string,
   goToDetail: PropTypes.func.isRequired,
   id: PropTypes.string,
-  data: PropTypes.any
+  data: PropTypes.any,
+  type: PropTypes.string
 };
 
 export default withRouter(SitesMap);

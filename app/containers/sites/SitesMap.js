@@ -11,7 +11,8 @@ function getData(sites) {
 
 const mapStateToProps = (state) => ({
   selected: state.sites.selected,
-  data: getData(state.sites)
+  data: getData(state.sites),
+  type: state.sites.type
 });
 
 const mapDispatchToProps = (dispatch) => ({
