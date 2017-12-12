@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
-import { getSqlQuery } from 'helpers/map';
 import BasicMap from 'components/maps/BasicMap';
 
 const SELECTED_SITE_STYLE = {
@@ -24,49 +23,40 @@ class SitesMap extends BasicMap {
   componentDidMount() {
     this.initMap();
 
-    if (this.props.data && this.props.data.length) {
-      this.drawMarkers(this.props.data);
+    if (this.props.sites && this.props.sites.length) {
+      this.drawMarkers(this.props.sites);
     }
 
     this.setSelectedSite(this.props);
   }
 
   componentWillReceiveProps(newProps) {
-    const siteDataHasChanged = newProps.data !== this.props.data && newProps.data.length;
-    const newSiteHasBeenSelected = this.props.selected !== newProps.selected ||
-            (siteDataHasChanged && !this.selectedSiteLayer);
+    const siteDataHasChanged = newProps.sites !== this.props.sites;
+    const newSiteHasBeenSelected = this.props.selectedSite !== newProps.selectedSite;
 
     if (siteDataHasChanged) {
-      this.clearMarkers();
-      this.drawMarkers(newProps.data);
+      if (newProps.sites && newProps.sites.length) {
+        this.clearMarkers();
+        this.drawMarkers(newProps.sites);
+      }
     }
 
     if (newSiteHasBeenSelected) this.setSelectedSite(newProps);
   }
 
   setSelectedSite(props) {
-    if (props.selected && props.data && props.data.length > 0) {
-      this.map.setView([props.data[0].lat, props.data[0].lon], 8);
-      this.fetchSiteLayer(props.selected, props.type);
+    if (props.selectedSite) {
+      if (this.selectedSiteLayer) this.map.removeLayer(this.selectedSiteLayer);
+      this.clearMarkers();
+      this.drawMarkers([props.selectedSite]);
+      this.createSelectedSiteLayer(props.selectedSite);
     }
   }
 
-  fetchSiteLayer(siteId, siteType) {
-    const dataset = siteType === 'iba' ? 'ibas_geometries' : 'csn_sites_polygons';
-    const siteIdColumn = siteType === 'iba' ? 'site_id' : 'siterecid';
-    const query = `
-      SELECT
-        ST_AsGeoJSON(the_geom, 15, 1) as geom
-      FROM ${dataset}
-      WHERE ${siteIdColumn} = ${siteId} LIMIT 1
-    `; // asGeoJSON with options - add bbox for fitBound
+  createSelectedSiteLayer(site) {
+    if (!site.geom) return;
 
-    getSqlQuery(query)
-      .then(this.addSiteLayer.bind(this));
-  }
-
-  addSiteLayer(data) {
-    const geom = JSON.parse(data.rows[0].geom);
+    const geom = JSON.parse(site.geom);
     const bbox = geom.bbox;
     const layer = L.geoJSON(geom, {
       noWrap: true,
@@ -84,17 +74,17 @@ class SitesMap extends BasicMap {
     }
   }
 
-  drawMarkers(data) {
+  drawMarkers(sites) {
     const sitesIcon = L.divIcon({
       className: 'map-marker',
       iconSize: null,
       html: '<span class="icon -secondary"</span>'
     });
 
-    data.forEach((site) => {
+    sites.forEach((site) => {
       if (site.lat && site.lon) {
         const marker = L.marker([site.lat, site.lon], { icon: sitesIcon });
-        marker.bindPopup(`<p class="text -light">${site.site_name}</p>`);
+        marker.bindPopup(`<p class="text -light">${site.site_name || site.name}</p>`);
         marker.on('mouseover', function () {
           this.openPopup();
         });
@@ -102,7 +92,7 @@ class SitesMap extends BasicMap {
           this.closePopup();
         });
         marker.on('click', () => {
-          if (!this.props.selected) {
+          if (!this.props.selectedSite) {
             this.props.goToDetail(site.id, site.site_type);
           } else {
             marker.closePopup();
@@ -133,10 +123,10 @@ class SitesMap extends BasicMap {
 
 SitesMap.propTypes = {
   router: PropTypes.object.isRequired,
-  selected: PropTypes.string,
+  selectedSite: PropTypes.any,
   goToDetail: PropTypes.func.isRequired,
   id: PropTypes.string,
-  data: PropTypes.any,
+  sites: PropTypes.any,
   type: PropTypes.string
 };
 

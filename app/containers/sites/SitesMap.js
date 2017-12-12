@@ -2,17 +2,21 @@ import { connect } from 'react-redux';
 import { goSiteDetail } from 'actions/sites';
 import SitesMap from 'components/sites/SitesMap';
 
-function getData(sites) {
-  if (!sites.selected) return sites.locations;
-  if (sites.locations && sites.locations.length) {
-    return sites.locations.filter(l => l.id === parseInt(sites.selected, 10));
-  }
-  return sites.stats ? sites.stats.site : [];
+function getSites(sites) {
+  return !sites.selected ? sites.locations : [];
+}
+
+function getSelectedSite(sites) {
+  if (!sites.selected) return null;
+
+  if (sites.stats && sites.stats.site) return sites.stats.site[0];
+
+  return null;
 }
 
 const mapStateToProps = (state) => ({
-  selected: state.sites.selected,
-  data: getData(state.sites),
+  selectedSite: getSelectedSite(state.sites),
+  sites: getSites(state.sites),
   type: state.sites.type
 });
 

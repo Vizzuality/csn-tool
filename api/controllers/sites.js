@@ -79,34 +79,38 @@ function getSitesDetails(req, res) {
 
   if (req.params.type === 'iba') {
     query = `SELECT
-      sites.site_id AS id,
+      s.site_id AS id,
       protection_status AS protected,
-      iso3 as country,
-      site_name,
-      lat,
-      lon,
-      hyperlink,
-      csn,
-      iba,
+      s.iso3 as country,
+      s.site_name,
+      s.lat,
+      s.lon,
+      s.hyperlink,
+      s.csn,
+      s.iba,
       COUNT(ss.species_id) AS qualifying_species,
-      sites.iba_in_danger
-    FROM sites
-    LEFT JOIN species_sites AS ss ON ss.site_id = sites.site_id
-    WHERE sites.site_id = ${req.params.id}
-    GROUP BY sites.site_id, sites.protection_status, iso3, site_name, lat, lon, hyperlink, csn, iba, iba_in_danger`;
+      s.iba_in_danger,
+      ST_AsGeoJSON(ig.the_geom, 15, 1) as geom
+    FROM sites s
+    LEFT JOIN species_sites AS ss ON ss.site_id = s.site_id
+    LEFT JOIN ibas_geometries AS ig on ig.site_id = s.site_id
+    WHERE s.site_id = ${req.params.id}
+    GROUP BY s.site_id, s.protection_status, s.iso3, s.site_name, s.lat, s.lon, s.hyperlink, s.csn, s.iba, s.iba_in_danger, geom`;
   } else {
     query = `SELECT
       s.site_id AS id,
       s.protected,
-      iso3 AS country,
+      s.iso3 AS country,
       site_name_clean AS site_name,
       lat,
       lon,
-      COUNT(ss.species_rec_id) AS qualifying_species
+      COUNT(ss.species_rec_id) AS qualifying_species,
+      ST_AsGeoJSON(csnp.the_geom, 15, 1) as geom
     FROM sites_csn_points AS s
     LEFT JOIN csn_species_sites AS ss ON ss.site_id = s.site_id
+    LEFT JOIN csn_sites_polygons AS csnp on csnp.siterecid = s.site_id
     WHERE s.site_id = ${req.params.id}
-    GROUP BY s.site_id, s.protected, iso3, lat, lon, s.site_name_clean`;
+    GROUP BY s.site_id, s.protected, iso3, lat, lon, s.site_name_clean, geom`;
   }
 
   rp(CARTO_SQL + query)
@@ -127,7 +131,8 @@ function getSitesDetails(req, res) {
             csn: row.csn,
             iba: row.iba,
             iba_in_danger: row.iba_in_danger,
-            qualifying_species: row.qualifying_species
+            qualifying_species: row.qualifying_species,
+            geom: row.geom
           }]
         });
       } else {

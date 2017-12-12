@@ -27,7 +27,7 @@ const initialState = {
   allColumns: ALL_SITES_COLUMNS.iba,
   selected: '',
   selectedCategory: 'species',
-  locations: false,
+  locations: [],
   list: {
     page: 0,
     search: '',
@@ -74,6 +74,9 @@ export default function (state = initialState, action) {
         columns: DEFAULT_SITES_COLUMNS[action.payload.filter || columnsSelector],
         allColumns: ALL_SITES_COLUMNS[action.payload.filter || columnsSelector]
       };
+      if (state.selected !== params.selected) {
+        params.stats = {};
+      }
       return Object.assign({}, state, params);
     }
     case SET_SITES_SEARCH:
