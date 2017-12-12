@@ -28,7 +28,7 @@ function getLegendData(species, ownProps) {
           icon: 'dots',
           id: pop.wpepopid,
           name: pop.population,
-          color: ownProps.boundaryColorsToPop[pop.wpepopid]
+          color: ownProps.populationColors[pop.wpepopid]
         });
       });
     }

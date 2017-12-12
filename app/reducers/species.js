@@ -45,7 +45,6 @@ const initialState = {
   criticalSites: {},
   population: {},
   lookAlikeSpecies: {},
-  activeBounds: [],
   layers: {
     sites: true,
     population: true
@@ -54,6 +53,7 @@ const initialState = {
     field: '',
     order: ''
   },
+  selectedPopulationId: null,
   columnFilter: {}
 };
 
@@ -135,23 +135,10 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { layers });
     }
     case TOGGLE_LEGEND_ITEM: {
-      const activeBounds = state.activeBounds.slice(0);
-      const id = action.payload.id;
-      const active = action.payload.active;
-
-      const foundBound = activeBounds.filter((bound) => bound.id === id)[0];
-      if (!foundBound) {
-        activeBounds.push({ id, active });
-      }
-
-      const newState = Object.assign({}, state, {
-        activeBounds: activeBounds.map((bound) =>
-          Object.assign({}, bound, {
-            active: (bound.id === id) && active
-          })
-      ) });
-
-      return newState;
+      return {
+        ...state,
+        selectedPopulationId: action.payload.active ? action.payload.id : null
+      };
     }
     case SET_SPECIES_SORT: {
       let list = null;

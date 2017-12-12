@@ -17,5 +17,4 @@ export const BASEMAP_ATTRIBUTION_MAPBOX = '© <a href="https://www.mapbox.com/ab
 export const BASEMAP_ATTRIBUTION_CARTO = 'CARTO <a href="https://carto.com/attributions" target="_blank">attribution</a>';
 
 // Map's endpoints
-export const ENDPOINT_TILES = `https://${process.env.CARTODB_ACCOUNT}.carto.com/api/v1/map/`;
 export const ENDPOINT_SQL = `https://${process.env.CARTODB_ACCOUNT}.carto.com/api/v2/sql?q=`;
