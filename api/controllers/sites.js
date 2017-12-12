@@ -72,20 +72,17 @@ function getSitesDetails(req, res) {
     hyperlink, csn, iba, COUNT(ss.species_id) AS qualifying_species,
     sites.iba_in_danger
     FROM sites
-    INNER JOIN species_sites AS ss ON ss.site_id = sites.site_id
+    LEFT JOIN species_sites AS ss ON ss.site_id = sites.site_id
     WHERE sites.site_id = ${req.params.id}
-    GROUP BY sites.site_id, sites.protection_status, iso3, site_name, lat,
-    lon, hyperlink, csn, iba, iba_in_danger
-    `;
+    GROUP BY sites.site_id, sites.protection_status, iso3, site_name, lat, lon, hyperlink, csn, iba, iba_in_danger`;
   } else {
     query = `SELECT s.site_id AS id, s.protected,
       iso3 AS country, site_name_clean AS site_name, lat, lon,
       COUNT(ss.species_rec_id) AS qualifying_species
       FROM sites_csn_points AS s
-      INNER JOIN csn_species_sites AS ss ON ss.site_id = s.site_id
+      LEFT JOIN csn_species_sites AS ss ON ss.site_id = s.site_id
       WHERE s.site_id = ${req.params.id}
-      GROUP BY s.site_id, s.protected, iso3, lat, lon,
-      s.site_name_clean`;
+      GROUP BY s.site_id, s.protected, iso3, lat, lon, s.site_name_clean`;
   }
 
   rp(CARTO_SQL + query)
