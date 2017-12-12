@@ -4,9 +4,10 @@ import SitesMap from 'components/sites/SitesMap';
 
 function getData(sites) {
   if (!sites.selected) return sites.locations;
-  return sites[sites.selectedCategory] && sites[sites.selectedCategory][sites.selected]
-    ? sites[sites.selectedCategory][sites.selected].site
-    : [];
+  if (sites.locations && sites.locations.length) {
+    return sites.locations.filter(l => l.id === parseInt(sites.selected, 10));
+  }
+  return sites.stats ? sites.stats.site : [];
 }
 
 const mapStateToProps = (state) => ({

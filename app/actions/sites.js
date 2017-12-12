@@ -27,7 +27,7 @@ export function clearSites() {
 }
 
 export function getSitesStats(id, type) {
-  const url = `${config.apiHost}/sites/${type}/${id}/details`;
+  const url = `${config.apiHost}/sites/${type}/${id}`;
   return dispatch => {
     fetch(url)
       .then(response => response.json())
@@ -73,7 +73,7 @@ export function getSitesLocations(type) {
 }
 
 export function getSitesSpecies(id, type) {
-  const url = `${config.apiHost}/sites/${type}/${id}`;
+  const url = `${config.apiHost}/sites/${type}/${id}/species`;
   return dispatch => {
     try {
       fetch(url)
