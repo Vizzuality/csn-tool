@@ -4,6 +4,17 @@ import { withRouter } from 'react-router';
 import { getSqlQuery } from 'helpers/map';
 import BasicMap from 'components/maps/BasicMap';
 
+const SELECTED_SITE_STYLE = {
+  opacity: 1,
+  weight: 2,
+  dashArray: [1, 7],
+  lineCap: 'round',
+  color: 'white',
+  fill: true,
+  fillOpacity: 0.5,
+  fillColor: '#efd783'
+};
+
 class SitesMap extends BasicMap {
   constructor(props) {
     super(props);
@@ -16,53 +27,57 @@ class SitesMap extends BasicMap {
     if (this.props.data && this.props.data.length) {
       this.drawMarkers(this.props.data);
     }
+
+    this.setSelectedSite(this.props);
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.data && newProps.data.length) {
-      if (this.props.data.length !== newProps.data.length) {
-        this.clearMarkers();
-        this.drawMarkers(newProps.data);
-      }
-    } else {
+    const siteDataHasChanged = newProps.data !== this.props.data && newProps.data.length;
+    const newSiteHasBeenSelected = this.props.selected !== newProps.selected || siteDataHasChanged;
+
+    if (siteDataHasChanged) {
       this.clearMarkers();
+      this.drawMarkers(newProps.data);
     }
 
-    if (newProps.selected && newProps.data && newProps.data.length > 0) {
-      this.map.setView([newProps.data[0].lat, newProps.data[0].lon], 8);
-      this.fetchSiteLayer(newProps.selected);
+    if (newSiteHasBeenSelected) this.setSelectedSite(newProps);
+  }
+
+  setSelectedSite(props) {
+    if (props.selected && props.data && props.data.length > 0) {
+      this.map.setView([props.data[0].lat, props.data[0].lon], 8);
+      this.fetchSiteLayer(props.selected);
     }
   }
 
   fetchSiteLayer(siteId) {
     const query = `
-      SELECT the_geom
+      SELECT
+        ST_AsGeoJSON(the_geom, 15, 1) as geom
       FROM csn_sites_polygons
       WHERE siterecid = ${siteId} LIMIT 1
-    `;
+    `; // asGeoJSON with options - add bbox for fitBound
 
-    getSqlQuery(`${query}&format=geojson`)
+    getSqlQuery(query)
       .then(this.addSiteLayer.bind(this));
   }
 
-  addSiteLayer(layerGeoJSON) {
-    const color = 'red';
-    const layer = L.geoJSON(layerGeoJSON, {
+  addSiteLayer(data) {
+    const geom = JSON.parse(data.rows[0].geom);
+    const bbox = geom.bbox;
+    const layer = L.geoJSON(geom, {
       noWrap: true,
-      style: {
-        opacity: 1,
-        weight: 3,
-        dashArray: [1, 7],
-        lineCap: 'round',
-        color,
-        fill: true,
-        fillOpacity: 0.5,
-        fillColor: color
-      }
+      style: SELECTED_SITE_STYLE
     });
-    layer.setZIndex(2);
     layer.addTo(this.map);
     layer.getPane().classList.add('-layer-blending');
+
+    if (bbox) {
+      this.map.fitBounds([
+        [bbox[1], bbox[0]],
+        [bbox[3], bbox[2]]
+      ]);
+    }
   }
 
   drawMarkers(data) {
@@ -106,7 +121,7 @@ class SitesMap extends BasicMap {
   render() {
     return (
       <div className="l-maps-container">
-        <div id={this.props.id} className="c-map -full"></div>
+        <div id={this.props.id} className="c-map -full -sites"></div>
       </div>
     );
   }
