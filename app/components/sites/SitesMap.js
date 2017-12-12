@@ -33,7 +33,8 @@ class SitesMap extends BasicMap {
 
   componentWillReceiveProps(newProps) {
     const siteDataHasChanged = newProps.data !== this.props.data && newProps.data.length;
-    const newSiteHasBeenSelected = this.props.selected !== newProps.selected || siteDataHasChanged;
+    const newSiteHasBeenSelected = this.props.selected !== newProps.selected ||
+            (siteDataHasChanged && !this.selectedSiteLayer);
 
     if (siteDataHasChanged) {
       this.clearMarkers();
@@ -71,6 +72,7 @@ class SitesMap extends BasicMap {
     });
     layer.addTo(this.map);
     layer.getPane().classList.add('-layer-blending');
+    this.selectedSiteLayer = layer;
 
     if (bbox) {
       this.map.fitBounds([
