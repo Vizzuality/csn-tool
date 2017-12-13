@@ -50,13 +50,13 @@ export function updateSpeciesDetailPage(actualState, replace, done) {
   done();
 }
 
-export function setSitesPage(actualState, replace, done) {
-  setSitesParams(actualState);
+export function setSpeciesPage(actualState, replace, done) {
+  setupSpeciesParams(actualState);
   done();
 }
 
-export function setSpeciesPage(actualState, replace, done) {
-  setupSpeciesParams(actualState);
+export function setSitesPage(actualState, replace, done) {
+  setSitesParams(actualState);
   done();
 }
 

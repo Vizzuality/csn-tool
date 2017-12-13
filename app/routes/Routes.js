@@ -2,8 +2,18 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useScroll } from 'react-router-scroll';
 import { IndexRoute, Router, Route, applyRouterMiddleware, Redirect } from 'react-router';
-import { updateLanguage, setCountriesPage, updateCountriesPage, setSitesPage, setThresholdPosition, updateThresholdPosition,
-        updateSitesPage, updateSitesDetailPage, setSpeciesPage, updateSpeciesDetailPage } from './RoutesActions';
+import {
+  updateLanguage,
+  setCountriesPage,
+  updateCountriesPage,
+  setSitesPage,
+  setThresholdPosition,
+  updateThresholdPosition,
+  updateSitesPage,
+  updateSitesDetailPage,
+  setSpeciesPage,
+  updateSpeciesDetailPage
+} from './RoutesActions';
 import ReactGA from 'react-ga';
 import PropTypes from 'prop-types';
 
