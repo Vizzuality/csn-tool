@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import SpeciesDetailTable from 'components/species/SpeciesDetailTable';
 import { filterByColumns, filterBySearch } from 'helpers/filters';
+import { mapSelectPopulation } from 'actions/species';
 
 function getSpeciesDetailData(rows, columns, filter, columnFilter) {
   if (!rows || rows.length === 0) return [];
@@ -48,6 +49,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = () => ({});
+const mapDispatchToProps = {
+  mapSelectPopulation
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SpeciesDetailTable);

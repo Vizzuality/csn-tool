@@ -54,7 +54,9 @@ class SpeciesMap extends BasicMap {
       }
 
       if (this.populationLayers.length &&
-          (this.props.selectedPopulationId !== newProps.selectedPopulationId || newProps.population)) {
+          (this.props.selectedPopulationId !== newProps.selectedPopulationId ||
+           this.props.layers.population !== newProps.layers.population ||
+           this.props.population !== newProps.population)) {
         this.populationLayers.forEach((layer) => {
           const id = layer.options.populationId;
           const isActive = id === newProps.selectedPopulationId;
@@ -63,6 +65,10 @@ class SpeciesMap extends BasicMap {
             fill: isActive,
             opacity: 1
           });
+
+          if (isActive && newProps.fitBoundsToSelectedPopulation) {
+            this.map.fitBounds(layer.getBounds());
+          }
         });
       }
     }
@@ -220,7 +226,8 @@ SpeciesMap.propTypes = {
   criticalSites: PropTypes.any.isRequired,
   population: PropTypes.any.isRequired,
   selectedCategory: PropTypes.string.isRequired,
-  selectedPopulationId: PropTypes.number
+  selectedPopulationId: PropTypes.number,
+  fitBoundsToSelectedPopulation: PropTypes.bool
 };
 
 export default withRouter(SpeciesMap);

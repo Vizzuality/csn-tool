@@ -1,8 +1,20 @@
-import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES, GET_SPECIES_POPULATION,
-  GET_SPECIES_CRITICAL_SITES, GET_SPECIES_LOOK_ALIKE_SPECIES, SET_SPECIES_PARAMS,
-  TOGGLE_LEGEND_ITEM, SET_SPECIES_DETAIL_PARAMS, SET_SPECIES_SORT,
-  SET_SPECIES_COLUMN_FILTER, SET_SPECIES_DETAIL_SEARCH, TOGGLE_SPECIES_LAYER,
-  CHANGE_COLUMN_ACTIVATION } from 'constants/index.js';
+import {
+  CHANGE_COLUMN_ACTIVATION,
+  GET_SPECIES_CRITICAL_SITES,
+  GET_SPECIES_LIST,
+  GET_SPECIES_LOOK_ALIKE_SPECIES,
+  GET_SPECIES_POPULATION,
+  GET_SPECIES_SITES,
+  GET_SPECIES_STATS,
+  MAP_SELECT_POPULATION,
+  SET_SPECIES_COLUMN_FILTER,
+  SET_SPECIES_DETAIL_PARAMS,
+  SET_SPECIES_DETAIL_SEARCH,
+  SET_SPECIES_PARAMS,
+  SET_SPECIES_SORT,
+  TOGGLE_LEGEND_ITEM,
+  TOGGLE_SPECIES_LAYER
+} from 'constants/index.js';
 import { commonSort } from './common.js';
 
 const ALL_SPECIES_COLUMNS = {
@@ -54,6 +66,7 @@ const initialState = {
     order: ''
   },
   selectedPopulationId: null,
+  highlightedPopulationId: null,
   columnFilter: {}
 };
 
@@ -73,7 +86,8 @@ export default function (state = initialState, action) {
         selected: action.payload.id,
         selectedCategory: action.payload.category,
         columns: DEFAULT_SPECIES_COLUMNS[action.payload.category],
-        allColumns: ALL_SPECIES_COLUMNS[action.payload.category]
+        allColumns: ALL_SPECIES_COLUMNS[action.payload.category],
+        selectedPopulationId: action.payload.category === 'lookAlikeSpecies' ? state.selectedPopulationId : null
       };
       return Object.assign({}, state, params);
     }
@@ -129,6 +143,12 @@ export default function (state = initialState, action) {
       data[action.payload.id] = action.payload.data;
       return Object.assign({}, state, { lookAlikeSpecies: data });
     }
+    case MAP_SELECT_POPULATION: {
+      return {
+        ...state,
+        selectedPopulationId: action.payload.populationId
+      };
+    }
     case TOGGLE_SPECIES_LAYER: {
       const layers = Object.assign({}, state.layers);
       layers[action.payload] = !layers[action.payload];
@@ -137,7 +157,7 @@ export default function (state = initialState, action) {
     case TOGGLE_LEGEND_ITEM: {
       return {
         ...state,
-        selectedPopulationId: action.payload.active ? action.payload.id : null
+        highlightedPopulationId: action.payload.active ? action.payload.id : null
       };
     }
     case SET_SPECIES_SORT: {
