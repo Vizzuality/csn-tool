@@ -78,12 +78,10 @@ class SpeciesMap extends BasicMap {
   }
 
   setPopulationColors(population) {
-    if (population) {
-      this.populationColors = population.reduce((all, pop, index) => ({
-        ...all,
-        [pop.wpepopid]: BOUNDARY_COLORS[index]
-      }), {});
-    }
+    this.populationColors = (population || []).reduce((all, pop, index) => ({
+      ...all,
+      [pop.wpepopid]: BOUNDARY_COLORS[index]
+    }), {});
   }
 
   fetchPopulationBoundaries(speciesId) {
