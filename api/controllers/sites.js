@@ -89,13 +89,11 @@ function getSitesDetails(req, res) {
       s.csn,
       s.iba,
       COUNT(ss.species_id) AS qualifying_species,
-      s.iba_in_danger,
-      ST_AsGeoJSON(ig.the_geom, 15, 1) as geom
+      s.iba_in_danger
     FROM sites s
     LEFT JOIN species_sites AS ss ON ss.site_id = s.site_id
-    LEFT JOIN ibas_geometries AS ig on ig.site_id = s.site_id
     WHERE s.site_id = ${req.params.id}
-    GROUP BY s.site_id, s.protection_status, s.iso3, s.site_name, s.lat, s.lon, s.hyperlink, s.csn, s.iba, s.iba_in_danger, geom`;
+    GROUP BY s.site_id, s.protection_status, s.iso3, s.site_name, s.lat, s.lon, s.hyperlink, s.csn, s.iba, s.iba_in_danger`;
   } else {
     query = `SELECT
       s.site_id AS id,
@@ -104,13 +102,11 @@ function getSitesDetails(req, res) {
       site_name_clean AS site_name,
       lat,
       lon,
-      COUNT(ss.species_rec_id) AS qualifying_species,
-      ST_AsGeoJSON(csnp.the_geom, 15, 1) as geom
+      COUNT(ss.species_rec_id) AS qualifying_species
     FROM sites_csn_points AS s
     LEFT JOIN csn_species_sites AS ss ON ss.site_id = s.site_id
-    LEFT JOIN csn_sites_polygons AS csnp on csnp.siterecid = s.site_id
     WHERE s.site_id = ${req.params.id}
-    GROUP BY s.site_id, s.protected, iso3, lat, lon, s.site_name_clean, geom`;
+    GROUP BY s.site_id, s.protected, iso3, lat, lon, s.site_name_clean`;
   }
 
   rp(CARTO_SQL + query)
@@ -131,8 +127,7 @@ function getSitesDetails(req, res) {
             csn: row.csn,
             iba: row.iba,
             iba_in_danger: row.iba_in_danger,
-            qualifying_species: row.qualifying_species,
-            geom: row.geom
+            qualifying_species: row.qualifying_species
           }]
         });
       } else {

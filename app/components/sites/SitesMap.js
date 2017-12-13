@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
+import { getSqlQuery } from 'helpers/map';
 import BasicMap from 'components/maps/BasicMap';
 
 const SELECTED_SITE_STYLE = {
@@ -49,14 +50,33 @@ class SitesMap extends BasicMap {
       if (this.selectedSiteLayer) this.map.removeLayer(this.selectedSiteLayer);
       this.clearMarkers();
       this.drawMarkers([props.selectedSite]);
-      this.createSelectedSiteLayer(props.selectedSite);
+
+      this.fetchSiteLayer(props.selectedSite);
     }
   }
 
-  createSelectedSiteLayer(site) {
-    if (!site.geom) return;
+  fetchSiteLayer(site) {
+    const dataset = site.type === 'iba' ? 'ibas_geometries' : 'csn_sites_polygons';
+    const siteIdColumn = site.type === 'iba' ? 'site_id' : 'siterecid';
+    const query = `
+       SELECT
+         ST_AsGeoJSON(the_geom, 15, 1) as geom
+       FROM ${dataset}
+       WHERE ${siteIdColumn} = ${site.id} LIMIT 1
+     `; // asGeoJSON with options - add bbox for fitBound
 
-    const geom = JSON.parse(site.geom);
+    getSqlQuery(query)
+      .then(this.addSiteLayer.bind(this));
+  }
+
+  addSiteLayer(data) {
+    // layer not found, just set map view on selectedSite with default zoom
+    if (!data.rows.length) {
+      this.map.setView([this.props.selectedSite.lat, this.props.selectedSite.lon], 8);
+      return;
+    }
+
+    const geom = JSON.parse(data.rows[0].geom);
     const bbox = geom.bbox;
     const layer = L.geoJSON(geom, {
       noWrap: true,
