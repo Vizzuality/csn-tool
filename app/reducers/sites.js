@@ -130,7 +130,6 @@ export default function (state = initialState, action) {
       if (isResource) {
         const newData = {
           [state.selected]: {
-            site: [...state[state.selectedCategory][state.selected].site],
             data: list
           }
         };
