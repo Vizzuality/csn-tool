@@ -1,8 +1,19 @@
-import { GET_SPECIES_STATS, GET_SPECIES_LIST, GET_SPECIES_SITES,
-  GET_SPECIES_CRITICAL_SITES, GET_SPECIES_POPULATION,
-  GET_SPECIES_LOOK_ALIKE_SPECIES, SET_SPECIES_PARAMS,
-  SET_SPECIES_DETAIL_PARAMS, SET_SPECIES_SORT, SET_SPECIES_COLUMN_FILTER,
-  SET_SPECIES_DETAIL_SEARCH, TOGGLE_SPECIES_LAYER, TOGGLE_LEGEND_ITEM } from 'constants/index.js';
+import {
+  GET_SPECIES_CRITICAL_SITES,
+  GET_SPECIES_LIST,
+  GET_SPECIES_LOOK_ALIKE_SPECIES,
+  GET_SPECIES_POPULATION,
+  GET_SPECIES_SITES,
+  GET_SPECIES_STATS,
+  MAP_SELECT_POPULATION,
+  SET_SPECIES_COLUMN_FILTER,
+  SET_SPECIES_DETAIL_PARAMS,
+  SET_SPECIES_DETAIL_SEARCH,
+  SET_SPECIES_PARAMS,
+  SET_SPECIES_SORT,
+  TOGGLE_LEGEND_ITEM,
+  TOGGLE_SPECIES_LAYER
+} from 'constants/index.js';
 
 export function getSpeciesStats(id) {
   const url = `${config.apiHost}/species/${id}`;
@@ -178,5 +189,12 @@ export function setSpeciesFilter(filter) {
   return {
     type: SET_SPECIES_COLUMN_FILTER,
     payload: filter
+  };
+}
+
+export function mapSelectPopulation(populationId) {
+  return {
+    type: MAP_SELECT_POPULATION,
+    payload: { populationId }
   };
 }

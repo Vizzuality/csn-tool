@@ -55,6 +55,7 @@ export const BOUNDARY_COLORS = [
   '#6a3d9a',
   '#ffff99'
 ];
+export const MAP_SELECT_POPULATION = 'MAP_SELECT_POPULATION';
 
 // THRESHOLD
 export const SET_THRESHOLD_DATA = 'SET_THRESHOLD_DATA';
