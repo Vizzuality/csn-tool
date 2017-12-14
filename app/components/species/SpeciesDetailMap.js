@@ -54,7 +54,9 @@ class SpeciesMap extends BasicMap {
       this.hidePopulations();
     } else {
       if (this.populationLayers.length === 0 && this.props.populations !== newProps.populations) {
-        this.fetchPopulationBoundaries(this.props.id);
+        if (newProps.fitToPopulationBoudaries) {
+          this.fetchPopulationBoundaries(this.props.id);
+        }
         this.fetchPopulationLayers(newProps);
       }
 
@@ -92,8 +94,6 @@ class SpeciesMap extends BasicMap {
   }
 
   fetchPopulationBoundaries(speciesId) {
-    if (!this.props.fitToPopulationBoudaries) return;
-
     const query = `
       SELECT ST_AsGeoJSON(ST_Envelope(st_union(f.the_geom))) as bbox
       FROM species_main s
