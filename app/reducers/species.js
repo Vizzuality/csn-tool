@@ -88,7 +88,7 @@ export default function (state = initialState, action) {
         selectedCategory: action.payload.category,
         columns: DEFAULT_SPECIES_COLUMNS[action.payload.category],
         allColumns: ALL_SPECIES_COLUMNS[action.payload.category],
-        selectedPopulationId: action.payload.category === 'lookAlikeSpecies' ? state.selectedPopulationId : null
+        selectedLASpeciesPopulation: action.payload.category === 'lookAlikeSpecies' ? state.selectLASpeciesPopulation : null
       };
       return Object.assign({}, state, params);
     }

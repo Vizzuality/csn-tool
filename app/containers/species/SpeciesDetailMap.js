@@ -9,11 +9,19 @@ const getPopulations = createSelector(
   (selectedLASpeciesPopulation, population, selected) => {
     if (!selectedLASpeciesPopulation) return population[selected];
 
-    const selectedPopulation = (population[selected] || []).find(p => p.wpepopid === selectedLASpeciesPopulation.populationId);
+    const originalSpecies = selectedLASpeciesPopulation.species;
+
+    const selectedSpecies = {
+      population: `${originalSpecies.original_species} (${originalSpecies.population})`,
+      wpepopid: selectedLASpeciesPopulation.species.pop_id_origin
+    };
 
     return [
-      ...selectedLASpeciesPopulation.aLikeSpecies,
-      selectedPopulation
+      selectedSpecies,
+      ...selectedLASpeciesPopulation.aLikeSpecies.map(({ scientific_name, population, wpepopid }) => ({
+        population: `${scientific_name} (${population})`,
+        wpepopid
+      }))
     ];
   }
 );

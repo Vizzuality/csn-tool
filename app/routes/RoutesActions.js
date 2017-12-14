@@ -1,7 +1,10 @@
 import dispatch from '../main';
 import { setLanguage } from 'redux-i18n';
 import { setCountryParams } from 'actions/countries';
-import { setSpeciesParams, setSpeciesDetailParams } from 'actions/species';
+import {
+  setSpeciesParams,
+  setSpeciesDetailParams
+} from 'actions/species';
 import { setViewMode, setSiteParams } from 'actions/sites';
 import { setLocation } from 'actions/threshold';
 
