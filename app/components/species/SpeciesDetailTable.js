@@ -136,6 +136,9 @@ class SpeciesDetailTable extends React.Component {
     const columns = isLookAlikeSpecies && this.props.selectedLASpeciesPopulation ? this.props.expandedColumns : this.props.columns;
     const allColumns = isLookAlikeSpecies && this.props.selectedLASpeciesPopulation ? this.props.allExpandedColumns : this.props.allColumns;
     const isSelectable = !!(isLookAlikeSpecies && this.props.selectedLASpeciesPopulation);
+    const selectedItem = isLookAlikeSpecies && this.props.selectedLASpeciesPopulation
+            ? this.props.selectedLASpeciesPopulation.selectedALikeSpecies
+            : null;
 
     return (
       <div className="c-table" >
@@ -154,6 +157,7 @@ class SpeciesDetailTable extends React.Component {
           detailLink={detailLink}
           onItemClick={this.handleTableItemClick}
           selectable={isSelectable}
+          selectedItem={selectedItem}
         />
       </div>
     );
