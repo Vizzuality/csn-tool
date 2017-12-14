@@ -42,6 +42,18 @@
         border-bottom: rem(1) solid rgba($border-color, 0.2);
       }
 
+      &.selectable {
+        cursor: pointer;
+
+        &:hover {
+          background-color: yellow;
+        }
+      }
+
+      &.selected {
+        background-color: red;
+      }
+
       > div {
         padding-right: rem(15);
 

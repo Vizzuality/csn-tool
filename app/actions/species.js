@@ -5,7 +5,7 @@ import {
   GET_SPECIES_POPULATION,
   GET_SPECIES_SITES,
   GET_SPECIES_STATS,
-  MAP_SELECT_POPULATION,
+  SELECT_LA_SPECIES_POPULATION,
   SET_SPECIES_COLUMN_FILTER,
   SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_DETAIL_SEARCH,
@@ -192,9 +192,9 @@ export function setSpeciesFilter(filter) {
   };
 }
 
-export function mapSelectPopulation(populationId) {
+export function selectLASpeciesPopulation(item) {
   return {
-    type: MAP_SELECT_POPULATION,
-    payload: { populationId }
+    type: SELECT_LA_SPECIES_POPULATION,
+    payload: item
   };
 }

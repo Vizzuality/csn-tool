@@ -16,6 +16,7 @@ class SpeciesDetailTable extends React.Component {
     };
     this.clearSelection = this.clearSelection.bind(this);
     this.getLookAlikeSpecies = this.getLookAlikeSpecies.bind(this);
+    this.handleTableItemClick = this.handleTableItemClick.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
@@ -32,7 +33,6 @@ class SpeciesDetailTable extends React.Component {
     this.setState({
       selectedItem: species
     });
-    this.props.mapSelectPopulation(species.pop_id_origin);
 
     fetch(url)
       .then(res => {
@@ -40,6 +40,11 @@ class SpeciesDetailTable extends React.Component {
         throw Error(res.statusText);
       })
       .then(data => {
+        this.props.selectLASpeciesPopulation({
+          species,
+          populationId: species.pop_id_origin,
+          aLikeSpecies: data
+        });
         this.setState({ data });
       })
       .catch((err) => {
@@ -108,12 +113,16 @@ class SpeciesDetailTable extends React.Component {
     );
   }
 
+  handleTableItemClick(/* item */) {
+    // TODO: add code here
+  }
+
   clearSelection() {
     this.setState({
       data: [],
       selectedItem: null
     });
-    this.props.mapSelectPopulation(null);
+    this.props.selectLASpeciesPopulation(null);
   }
 
   renderTableHeader(isLookAlikeSpecies, data, columns, allColumns) {
@@ -163,6 +172,7 @@ class SpeciesDetailTable extends React.Component {
           data={data}
           columns={columns}
           detailLink={detailLink}
+          onItemClick={this.handleTableItemClick}
         />
       </div>
     );
@@ -186,7 +196,7 @@ SpeciesDetailTable.propTypes = {
   data: PropTypes.any.isRequired,
   columns: PropTypes.array.isRequired,
   expandedColumns: PropTypes.array.isRequired,
-  mapSelectPopulation: PropTypes.func.isRequired
+  selectLASpeciesPopulation: PropTypes.func.isRequired
 };
 
 export default SpeciesDetailTable;

@@ -6,7 +6,7 @@ import {
   GET_SPECIES_POPULATION,
   GET_SPECIES_SITES,
   GET_SPECIES_STATS,
-  MAP_SELECT_POPULATION,
+  SELECT_LA_SPECIES_POPULATION,
   SET_SPECIES_COLUMN_FILTER,
   SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_DETAIL_SEARCH,
@@ -65,6 +65,7 @@ const initialState = {
     field: '',
     order: ''
   },
+  selectedLASpeciesPopulation: null,
   selectedPopulationId: null,
   highlightedPopulationId: null,
   columnFilter: {}
@@ -143,10 +144,10 @@ export default function (state = initialState, action) {
       data[action.payload.id] = action.payload.data;
       return Object.assign({}, state, { lookAlikeSpecies: data });
     }
-    case MAP_SELECT_POPULATION: {
+    case SELECT_LA_SPECIES_POPULATION: {
       return {
         ...state,
-        selectedPopulationId: action.payload.populationId
+        selectedLASpeciesPopulation: action.payload
       };
     }
     case TOGGLE_SPECIES_LAYER: {

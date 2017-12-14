@@ -221,8 +221,15 @@ function getSpeciesLookAlikeSpecies(req, res) {
 }
 
 function getPopulationsLookAlikeSpecies(req, res) {
-  const query = `SELECT sm.scientific_name AS scientific_name, sm.english_name,
-    pi.population_name AS population, pi.a, pi.b, pi.c, sm.species_id AS id
+  const query = `SELECT
+    sm.scientific_name AS scientific_name,
+    sm.english_name,
+    pi.population_name AS population,
+    pi.wpepopid,
+    pi.a,
+    pi.b,
+    pi.c,
+    sm.species_id AS id
     FROM ( SELECT confusion_group,
        sm.species_id, sm.scientific_name,
        pi.the_geom, pi.population_name, pi.a, pi.b, pi.c
@@ -233,11 +240,8 @@ function getPopulationsLookAlikeSpecies(req, res) {
        AND pi.wpepopid = ${req.params.populationId}
        AND sm.species_id = ${req.params.id}
     ) as sq
-    INNER JOIN species_main AS sm ON
-    (sq.confusion_group %26%26 sm.confusion_group)
-    AND sm.species_id != sq.species_id
-    INNER JOIN populations_iba AS pi ON pi.species_main_id = sm.species_id
-    AND ST_INTERSECTS(sq.the_geom, pi.the_geom)
+    INNER JOIN species_main AS sm ON (sq.confusion_group %26%26 sm.confusion_group) AND sm.species_id != sq.species_id
+    INNER JOIN populations_iba AS pi ON pi.species_main_id = sm.species_id AND ST_INTERSECTS(sq.the_geom, pi.the_geom)
     ORDER BY sm.taxonomic_sequence ASC, pi.population_name ASC`;
 
   rp(CARTO_SQL + query)
