@@ -16,17 +16,18 @@ const getPopulations = createSelector(
 
     const {
       species,
-      aLikeSpecies
+      selectedALikeSpecies
     } = selectedLASpeciesPopulation;
+
     const selectedSpecies = {
       population: `${species.original_species} (${species.population})`,
       wpepopid: selectedLASpeciesPopulation.species.pop_id_origin
     };
     const results = [selectedSpecies];
-    if (aLikeSpecies) {
+    if (selectedALikeSpecies) {
       results.push({
-        population: `${aLikeSpecies.scientific_name} (${aLikeSpecies.population})`,
-        wpepopid: aLikeSpecies.wpepopid
+        population: `${selectedALikeSpecies.scientific_name} (${selectedALikeSpecies.population})`,
+        wpepopid: selectedALikeSpecies.wpepopid
       });
     }
 

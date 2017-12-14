@@ -6,6 +6,7 @@ import {
   GET_SPECIES_SITES,
   GET_SPECIES_STATS,
   SELECT_LA_SPECIES_POPULATION,
+  SELECT_LA_SPECIES_POPULATION_SPECIES,
   SET_SPECIES_COLUMN_FILTER,
   SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_DETAIL_SEARCH,
@@ -195,6 +196,13 @@ export function setSpeciesFilter(filter) {
 export function selectLASpeciesPopulation(item) {
   return {
     type: SELECT_LA_SPECIES_POPULATION,
+    payload: item
+  };
+}
+
+export function selectLASpeciesPopulationSpecies(item) {
+  return {
+    type: SELECT_LA_SPECIES_POPULATION_SPECIES,
     payload: item
   };
 }

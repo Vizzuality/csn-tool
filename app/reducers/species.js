@@ -7,6 +7,7 @@ import {
   GET_SPECIES_SITES,
   GET_SPECIES_STATS,
   SELECT_LA_SPECIES_POPULATION,
+  SELECT_LA_SPECIES_POPULATION_SPECIES,
   SET_SPECIES_COLUMN_FILTER,
   SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_DETAIL_SEARCH,
@@ -66,7 +67,6 @@ const initialState = {
     order: ''
   },
   selectedLASpeciesPopulation: null,
-  selectedPopulationId: null,
   highlightedPopulationId: null,
   columnFilter: {}
 };
@@ -148,6 +148,15 @@ export default function (state = initialState, action) {
       return {
         ...state,
         selectedLASpeciesPopulation: action.payload
+      };
+    }
+    case SELECT_LA_SPECIES_POPULATION_SPECIES: {
+      return {
+        ...state,
+        selectedLASpeciesPopulation: {
+          ...state.selectedLASpeciesPopulation,
+          selectedALikeSpecies: action.payload
+        }
       };
     }
     case TOGGLE_SPECIES_LAYER: {

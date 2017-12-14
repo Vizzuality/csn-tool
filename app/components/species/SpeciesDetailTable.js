@@ -10,29 +10,13 @@ import { Sticky } from 'react-sticky';
 class SpeciesDetailTable extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      data: [],
-      selectedItem: null
-    };
     this.clearSelection = this.clearSelection.bind(this);
     this.getLookAlikeSpecies = this.getLookAlikeSpecies.bind(this);
     this.handleTableItemClick = this.handleTableItemClick.bind(this);
   }
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.category !== 'lookAlikeSpecies') {
-      this.setState({
-        selectedItem: null
-      });
-    }
-  }
-
   getLookAlikeSpecies(species) {
     const url = `${config.apiHost}/species/${species.species_id}/look-alike-species/${species.pop_id_origin}`;
-
-    this.setState({
-      selectedItem: species
-    });
 
     fetch(url)
       .then(res => {
@@ -41,16 +25,15 @@ class SpeciesDetailTable extends React.Component {
       })
       .then(data => {
         this.props.selectLASpeciesPopulation({
-          species
+          species,
+          aLikeSpecies: data
         });
-        this.setState({ data });
-      })
-      .catch((err) => {
-        console.warn(err);
       });
   }
 
   getSelectedHeader() {
+    const selectedSpecies = this.props.selectedLASpeciesPopulation.species;
+
     return (
       <div className="table-navigation">
         <button className="btn -back" onClick={this.clearSelection}>
@@ -59,23 +42,23 @@ class SpeciesDetailTable extends React.Component {
         <div className="nav">
           <div>
             <span className="title">{this.context.t('species')}</span>
-            <h3>{this.state.selectedItem.original_species}</h3>
+            <h3>{selectedSpecies.original_species}</h3>
           </div>
           <div>
             <span className="title">{this.context.t('population')}</span>
-            <span>{this.state.selectedItem.population}</span>
+            <span>{selectedSpecies.population}</span>
           </div>
           <div>
             <span className="title">A</span>
-            <span>{this.state.selectedItem.original_a || '-'}</span>
+            <span>{selectedSpecies.original_a || '-'}</span>
           </div>
           <div>
             <span className="title">B</span>
-            <span>{this.state.selectedItem.original_b || '-'}</span>
+            <span>{selectedSpecies.original_b || '-'}</span>
           </div>
           <div>
             <span className="title">C</span>
-            <span>{this.state.selectedItem.original_c || '-'}</span>
+            <span>{selectedSpecies.original_c || '-'}</span>
           </div>
         </div>
       </div>
@@ -91,7 +74,7 @@ class SpeciesDetailTable extends React.Component {
       case 'criticalSites':
         return 'sites/csn';
       case 'lookAlikeSpecies':
-        if (this.state.selectedItem) return 'species';
+        if (this.props.selectedLASpeciesPopulation) return 'species';
         return {
           type: 'action',
           action: this.getLookAlikeSpecies
@@ -112,25 +95,12 @@ class SpeciesDetailTable extends React.Component {
   }
 
   handleTableItemClick(item) {
-    const { selectedItem } = this.state;
-
-    if (selectedItem) {
-      this.props.selectLASpeciesPopulation({
-        species: selectedItem,
-        aLikeSpecies: item
-      });
-
-      this.setState({
-        selectedRowItem: item
-      });
+    if (this.props.selectedLASpeciesPopulation) {
+      this.props.selectLASpeciesPopulationSpecies(item);
     }
   }
 
   clearSelection() {
-    this.setState({
-      data: [],
-      selectedItem: null
-    });
     this.props.selectLASpeciesPopulation(null);
   }
 
@@ -144,7 +114,7 @@ class SpeciesDetailTable extends React.Component {
           id={this.props.id}
           category={this.props.category}
         />
-        {isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0
+        {isLookAlikeSpecies && this.props.selectedLASpeciesPopulation
           ? this.getSelectedHeader()
           : null
         }
@@ -162,10 +132,10 @@ class SpeciesDetailTable extends React.Component {
   render() {
     const detailLink = this.getDetailLink(this.props.category);
     const isLookAlikeSpecies = this.props.category === 'lookAlikeSpecies';
-    const data = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? this.state.data : this.props.data;
-    const columns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? this.props.expandedColumns : this.props.columns;
-    const allColumns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? this.props.allExpandedColumns : this.props.allColumns;
-    const isSelectable = !!(isLookAlikeSpecies && this.state.selectedItem);
+    const data = this.props.data;
+    const columns = isLookAlikeSpecies && this.props.selectedLASpeciesPopulation ? this.props.expandedColumns : this.props.columns;
+    const allColumns = isLookAlikeSpecies && this.props.selectedLASpeciesPopulation ? this.props.allExpandedColumns : this.props.allColumns;
+    const isSelectable = !!(isLookAlikeSpecies && this.props.selectedLASpeciesPopulation);
 
     return (
       <div className="c-table" >
@@ -184,7 +154,6 @@ class SpeciesDetailTable extends React.Component {
           detailLink={detailLink}
           onItemClick={this.handleTableItemClick}
           selectable={isSelectable}
-          selectedItem={this.state.selectedRowItem}
         />
       </div>
     );
@@ -208,7 +177,9 @@ SpeciesDetailTable.propTypes = {
   data: PropTypes.any.isRequired,
   columns: PropTypes.array.isRequired,
   expandedColumns: PropTypes.array.isRequired,
-  selectLASpeciesPopulation: PropTypes.func.isRequired
+  selectedLASpeciesPopulation: PropTypes.any,
+  selectLASpeciesPopulation: PropTypes.func.isRequired,
+  selectLASpeciesPopulationSpecies: PropTypes.func.isRequired
 };
 
 export default SpeciesDetailTable;
