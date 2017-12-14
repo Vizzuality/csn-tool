@@ -210,8 +210,7 @@ function getSpeciesLookAlikeSpecies(req, res) {
         const dataParsed = mergeNames(results, params);
         res.json(dataParsed);
       } else {
-        res.status(404);
-        res.json({ error: 'There are no confusion populations for this Species' });
+        res.json([]);
       }
     })
     .catch((err) => {
