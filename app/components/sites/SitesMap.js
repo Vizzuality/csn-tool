@@ -1,7 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
+import { getSqlQuery } from 'helpers/map';
 import BasicMap from 'components/maps/BasicMap';
+
+const SELECTED_SITE_STYLE = {
+  opacity: 1,
+  weight: 2,
+  dashArray: [1, 7],
+  lineCap: 'round',
+  color: 'white',
+  fill: true,
+  fillOpacity: 0.5,
+  fillColor: '#efd783'
+};
 
 class SitesMap extends BasicMap {
   constructor(props) {
@@ -12,53 +24,87 @@ class SitesMap extends BasicMap {
   componentDidMount() {
     this.initMap();
 
-    if (this.props.data && this.props.data.length) {
-      this.drawMarkers(this.props.data);
+    if (this.props.sites && this.props.sites.length) {
+      this.drawMarkers(this.props.sites);
     }
+
+    this.setSelectedSite(this.props);
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.data && newProps.data.length) {
-      if (this.props.data.length !== newProps.data.length) {
+    const siteDataHasChanged = newProps.sites !== this.props.sites;
+    const newSiteHasBeenSelected = this.props.selectedSite !== newProps.selectedSite;
+
+    if (siteDataHasChanged) {
+      if (newProps.sites && newProps.sites.length) {
         this.clearMarkers();
-        this.drawMarkers(newProps.data);
+        this.drawMarkers(newProps.sites);
       }
-    } else {
+    }
+
+    if (newSiteHasBeenSelected) this.setSelectedSite(newProps);
+  }
+
+  setSelectedSite(props) {
+    if (props.selectedSite) {
+      if (this.selectedSiteLayer) this.map.removeLayer(this.selectedSiteLayer);
       this.clearMarkers();
+      this.drawMarkers([props.selectedSite]);
+
+      this.fetchSiteLayer(props.selectedSite);
+    }
+  }
+
+  fetchSiteLayer(site) {
+    const dataset = site.type === 'iba' ? 'ibas_geometries' : 'csn_sites_polygons';
+    const siteIdColumn = site.type === 'iba' ? 'site_id' : 'siterecid';
+    const query = `
+       SELECT
+         ST_AsGeoJSON(the_geom, 15, 1) as geom
+       FROM ${dataset}
+       WHERE ${siteIdColumn} = ${site.id} LIMIT 1
+     `; // asGeoJSON with options - add bbox for fitBound
+
+    getSqlQuery(query)
+      .then(this.addSiteLayer.bind(this));
+  }
+
+  addSiteLayer(data) {
+    // layer not found, just set map view on selectedSite with default zoom
+    if (!data.rows.length) {
+      this.map.setView([this.props.selectedSite.lat, this.props.selectedSite.lon], 8);
+      return;
     }
 
-    if (newProps.selected && newProps.data && newProps.data.length > 0) {
-      this.map.setView([newProps.data[0].lat, newProps.data[0].lon], 8);
+    const geom = JSON.parse(data.rows[0].geom);
+    const bbox = geom.bbox;
+    const layer = L.geoJSON(geom, {
+      noWrap: true,
+      style: SELECTED_SITE_STYLE
+    });
+    layer.addTo(this.map);
+    layer.getPane().classList.add('-layer-blending');
+    this.selectedSiteLayer = layer;
+
+    if (bbox) {
+      this.map.fitBounds([
+        [bbox[1], bbox[0]],
+        [bbox[3], bbox[2]]
+      ]);
     }
   }
 
-  componentWillUnmount() {
-    this.remove();
-  }
-
-  setActiveSite() {
-    const onEachFeature = (layer) => {
-      const properties = layer.feature.properties;
-      const iso = properties.iso3;
-      const isoParam = this.props.country;
-      if (iso === isoParam) {
-        this.activeLayer = layer;
-      }
-    };
-    this.topoLayer.eachLayer(onEachFeature);
-  }
-
-  drawMarkers(data) {
+  drawMarkers(sites) {
     const sitesIcon = L.divIcon({
       className: 'map-marker',
       iconSize: null,
       html: '<span class="icon -secondary"</span>'
     });
 
-    data.forEach((site) => {
+    sites.forEach((site) => {
       if (site.lat && site.lon) {
         const marker = L.marker([site.lat, site.lon], { icon: sitesIcon });
-        marker.bindPopup(`<p class="text -light">${site.site_name}</p>`);
+        marker.bindPopup(`<p class="text -light">${site.site_name || site.name}</p>`);
         marker.on('mouseover', function () {
           this.openPopup();
         });
@@ -66,7 +112,7 @@ class SitesMap extends BasicMap {
           this.closePopup();
         });
         marker.on('click', () => {
-          if (!this.props.selected) {
+          if (!this.props.selectedSite) {
             this.props.goToDetail(site.id, site.site_type);
           } else {
             marker.closePopup();
@@ -89,7 +135,7 @@ class SitesMap extends BasicMap {
   render() {
     return (
       <div className="l-maps-container">
-        <div id={this.props.id} className="c-map -full"></div>
+        <div id={this.props.id} className="c-map -full -sites"></div>
       </div>
     );
   }
@@ -97,10 +143,11 @@ class SitesMap extends BasicMap {
 
 SitesMap.propTypes = {
   router: PropTypes.object.isRequired,
-  selected: PropTypes.string,
+  selectedSite: PropTypes.any,
   goToDetail: PropTypes.func.isRequired,
   id: PropTypes.string,
-  data: PropTypes.any
+  sites: PropTypes.any,
+  type: PropTypes.string
 };
 
 export default withRouter(SitesMap);

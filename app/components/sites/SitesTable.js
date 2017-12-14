@@ -29,11 +29,17 @@ class SitesTable extends React.Component {
         <InfiniteScroll
           page={this.props.list.page}
           hasMore={this.props.list.hasMore}
-          loadMore={() => this.props.getSitesList(this.props.list.page + 1, search)}
+          loadMore={() => this.props.getSitesList(this.props.list.page + 1, search, this.props.filter)}
         >
           <div className={!this.props.isSearch && 'sticky-table'}>
             <div className={!this.props.isSearch ? 'sticky-header column' : 'column'} >
-              <SitesFilters csvData={() => this.getAllSites(search, filter)} columns={this.props.columns} isSearch={this.props.isSearch} category={this.props.category} type={this.props.type} />
+              <SitesFilters
+                csvData={() => this.getAllSites(search, filter)}
+                columns={this.props.columns}
+                isSearch={this.props.isSearch}
+                category={this.props.category}
+                type={this.props.type}
+              />
               <TableListHeader
                 includeSort={false}
                 data={this.props.list.data}

@@ -27,12 +27,12 @@ class SpeciesDetailTable extends React.Component {
   }
 
   getLookAlikeSpecies(species) {
+    const url = `${config.apiHost}/species/${species.species_id}/look-alike-species/${species.pop_id_origin}`;
+
     this.setState({
       selectedItem: species
     });
-    // change the params to the species!
-    // const url = `${config.apiHost}/countries/${species.species_id}/look-alike-species/${species.confusion_species}`;
-    const url = `${config.apiHost}/species/${species.species_id}/look-alike-species/${species.pop_id_origin}`;
+    this.props.mapSelectPopulation(species.pop_id_origin);
 
     fetch(url)
       .then(res => {
@@ -113,6 +113,7 @@ class SpeciesDetailTable extends React.Component {
       data: [],
       selectedItem: null
     });
+    this.props.mapSelectPopulation(null);
   }
 
   renderTableHeader(isLookAlikeSpecies, data, columns, allColumns) {
@@ -184,7 +185,8 @@ SpeciesDetailTable.propTypes = {
   category: PropTypes.string.isRequired,
   data: PropTypes.any.isRequired,
   columns: PropTypes.array.isRequired,
-  expandedColumns: PropTypes.array.isRequired
+  expandedColumns: PropTypes.array.isRequired,
+  mapSelectPopulation: PropTypes.func.isRequired
 };
 
 export default SpeciesDetailTable;

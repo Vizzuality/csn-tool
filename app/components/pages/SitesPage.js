@@ -19,7 +19,7 @@ class SitesPage extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    if (props.filter !== this.props.filter || props.viewMode !== this.props.viewMode) {
+    if ((props.filter !== this.props.filter && props.filter) || props.viewMode !== this.props.viewMode) {
       props.getSitesLocations(props.filter);
       props.getSitesList(0, null, props.filter);
     }

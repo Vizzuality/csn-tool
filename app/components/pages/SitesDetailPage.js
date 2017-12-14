@@ -16,7 +16,7 @@ class SitesPage extends React.Component {
   }
 
   getData(props) {
-    if (!props.data) {
+    if (!props.data && props.site) {
       props.getSitesData(props.site, props.category, props.type);
     }
   }

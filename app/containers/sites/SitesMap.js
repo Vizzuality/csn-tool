@@ -2,16 +2,22 @@ import { connect } from 'react-redux';
 import { goSiteDetail } from 'actions/sites';
 import SitesMap from 'components/sites/SitesMap';
 
-function getData(sites) {
-  if (!sites.selected) return sites.locations;
-  return sites[sites.selectedCategory] && sites[sites.selectedCategory][sites.selected]
-    ? sites[sites.selectedCategory][sites.selected].site
-    : [];
+function getSites(sites) {
+  return !sites.selected ? sites.locations : [];
+}
+
+function getSelectedSite(sites) {
+  if (!sites.selected) return null;
+
+  if (sites.stats && sites.stats.site) return sites.stats.site[0];
+
+  return null;
 }
 
 const mapStateToProps = (state) => ({
-  selected: state.sites.selected,
-  data: getData(state.sites)
+  selectedSite: getSelectedSite(state.sites),
+  sites: getSites(state.sites),
+  type: state.sites.type
 });
 
 const mapDispatchToProps = (dispatch) => ({
