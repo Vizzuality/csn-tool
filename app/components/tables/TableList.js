@@ -47,7 +47,7 @@ function TableList(props) {
   : <div id="table-rows" className="c-table-list">
     <ul>
       {props.data.map((item, index) => (
-        <li key={index} className={classNames('table-row', 'f32', { selectable: props.selectable })} onClick={() => props.onItemClick(item)}>
+        <li key={index} className={classNames('table-row', 'f32', { selectable: props.selectable, selected: props.selectedItem === item })} onClick={() => props.onItemClick(item)}>
           {props.columns.map((column, index2) => {
             let alignClass = '';
             if (columnsCenterAligned.indexOf(column) > -1) {
@@ -131,7 +131,8 @@ TableList.contextTypes = {
 };
 
 TableList.defaultProps = {
-  detailLink: null
+  detailLink: null,
+  onItemClick: () => {}
 };
 
 TableList.propTypes = {
@@ -145,6 +146,7 @@ TableList.propTypes = {
   fitBounds: PropTypes.func,
   scroll: PropTypes.bool,
   selectable: PropTypes.bool,
+  selectedItem: PropTypes.any,
   onItemClick: PropTypes.func
 };
 

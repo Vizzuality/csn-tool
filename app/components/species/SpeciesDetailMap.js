@@ -55,6 +55,7 @@ class SpeciesMap extends BasicMap {
     } else {
       if (this.populationLayers.length === 0 && this.props.populations !== newProps.populations) {
         this.fetchPopulationBoundaries(this.props.id);
+        this.fetchPopulationLayers(newProps);
       }
 
       if (this.populationLayers.length &&
@@ -69,10 +70,6 @@ class SpeciesMap extends BasicMap {
             fill: isActive,
             opacity: 1
           });
-
-          if (isActive && newProps.fitBoundsToSelectedPopulation) {
-            this.map.fitBounds(layer.getBounds());
-          }
         });
       }
     }
@@ -95,6 +92,8 @@ class SpeciesMap extends BasicMap {
   }
 
   fetchPopulationBoundaries(speciesId) {
+    if (!this.props.fitToPopulationBoudaries) return;
+
     const query = `
       SELECT ST_AsGeoJSON(ST_Envelope(st_union(f.the_geom))) as bbox
       FROM species_main s
@@ -118,9 +117,11 @@ class SpeciesMap extends BasicMap {
         ]);
       }
     }
+  }
 
-    if (this.props.populations) {
-      this.props.populations.forEach((pop) => {
+  fetchPopulationLayers({ populations }) {
+    if (populations) {
+      populations.forEach((pop) => {
         this.fetchPopulationLayer(pop.wpepopid);
       });
     }
@@ -164,6 +165,9 @@ class SpeciesMap extends BasicMap {
     layer.addTo(this.map);
     layer.getPane().classList.add('-layer-blending');
     this.populationLayers.push(layer);
+    if (this.props.fitToPopulationId === populationId) {
+      this.map.fitBounds(layer.getBounds());
+    }
   }
 
   removePopulationLayers() {
@@ -236,7 +240,6 @@ SpeciesMap.contextTypes = {
   t: PropTypes.func.isRequired
 };
 
-
 SpeciesMap.propTypes = {
   router: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
@@ -245,7 +248,8 @@ SpeciesMap.propTypes = {
   populations: PropTypes.any.isRequired,
   selectedCategory: PropTypes.string.isRequired,
   selectedPopulationId: PropTypes.number,
-  fitBoundsToSelectedPopulation: PropTypes.bool
+  fitToPopulationBoudaries: PropTypes.bool,
+  fitToPopulationId: PropTypes.number
 };
 
 export default withRouter(SpeciesMap);

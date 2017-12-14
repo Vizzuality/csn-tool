@@ -41,9 +41,7 @@ class SpeciesDetailTable extends React.Component {
       })
       .then(data => {
         this.props.selectLASpeciesPopulation({
-          species,
-          populationId: species.pop_id_origin,
-          aLikeSpecies: data
+          species
         });
         this.setState({ data });
       })
@@ -113,8 +111,19 @@ class SpeciesDetailTable extends React.Component {
     );
   }
 
-  handleTableItemClick(/* item */) {
-    // TODO: add code here
+  handleTableItemClick(item) {
+    const { selectedItem } = this.state;
+
+    if (selectedItem) {
+      this.props.selectLASpeciesPopulation({
+        species: selectedItem,
+        aLikeSpecies: item
+      });
+
+      this.setState({
+        selectedRowItem: item
+      });
+    }
   }
 
   clearSelection() {
@@ -156,6 +165,7 @@ class SpeciesDetailTable extends React.Component {
     const data = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? this.state.data : this.props.data;
     const columns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? this.props.expandedColumns : this.props.columns;
     const allColumns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? this.props.allExpandedColumns : this.props.allColumns;
+    const isSelectable = !!(isLookAlikeSpecies && this.state.selectedItem);
 
     return (
       <div className="c-table" >
@@ -173,6 +183,8 @@ class SpeciesDetailTable extends React.Component {
           columns={columns}
           detailLink={detailLink}
           onItemClick={this.handleTableItemClick}
+          selectable={isSelectable}
+          selectedItem={this.state.selectedRowItem}
         />
       </div>
     );
