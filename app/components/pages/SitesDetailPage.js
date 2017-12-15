@@ -42,7 +42,7 @@ class SitesPage extends React.Component {
                               Type
                             </div>
                             <div className="value">
-                              {this.props.type === 'iba' ? 'IBA' : 'Critical Site'}
+                              {this.props.type === 'iba' ? this.context.t('iba') : this.context.t('criticalSite')}
                             </div>
                           </div>
                           <div className="item">
@@ -123,6 +123,10 @@ class SitesPage extends React.Component {
     );
   }
 }
+
+SitesPage.contextTypes = {
+  t: PropTypes.func.isRequired
+};
 
 SitesPage.propTypes = {
   getSitesStats: PropTypes.func.isRequired,
