@@ -10,7 +10,6 @@ const initialState = {
   list: false,
   selected: '',
   selectedCategory: 'sites',
-  selectedPopulationId: null,
   searchFilter: '',
   stats: {},
   sites: {},

@@ -6,7 +6,8 @@ import {
   GET_SPECIES_POPULATION,
   GET_SPECIES_SITES,
   GET_SPECIES_STATS,
-  MAP_SELECT_POPULATION,
+  SELECT_LA_SPECIES_POPULATION,
+  SELECT_LA_SPECIES_POPULATION_SPECIES,
   SET_SPECIES_COLUMN_FILTER,
   SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_DETAIL_SEARCH,
@@ -65,7 +66,7 @@ const initialState = {
     field: '',
     order: ''
   },
-  selectedPopulationId: null,
+  selectedLASpeciesPopulation: null,
   highlightedPopulationId: null,
   columnFilter: {}
 };
@@ -87,7 +88,7 @@ export default function (state = initialState, action) {
         selectedCategory: action.payload.category,
         columns: DEFAULT_SPECIES_COLUMNS[action.payload.category],
         allColumns: ALL_SPECIES_COLUMNS[action.payload.category],
-        selectedPopulationId: action.payload.category === 'lookAlikeSpecies' ? state.selectedPopulationId : null
+        selectedLASpeciesPopulation: action.payload.category === 'lookAlikeSpecies' ? state.selectLASpeciesPopulation : null
       };
       return Object.assign({}, state, params);
     }
@@ -143,10 +144,19 @@ export default function (state = initialState, action) {
       data[action.payload.id] = action.payload.data;
       return Object.assign({}, state, { lookAlikeSpecies: data });
     }
-    case MAP_SELECT_POPULATION: {
+    case SELECT_LA_SPECIES_POPULATION: {
       return {
         ...state,
-        selectedPopulationId: action.payload.populationId
+        selectedLASpeciesPopulation: action.payload
+      };
+    }
+    case SELECT_LA_SPECIES_POPULATION_SPECIES: {
+      return {
+        ...state,
+        selectedLASpeciesPopulation: {
+          ...state.selectedLASpeciesPopulation,
+          selectedALikeSpecies: action.payload
+        }
       };
     }
     case TOGGLE_SPECIES_LAYER: {

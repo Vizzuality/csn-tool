@@ -1,7 +1,10 @@
 import { connect } from 'react-redux';
 import SpeciesDetailTable from 'components/species/SpeciesDetailTable';
 import { filterByColumns, filterBySearch } from 'helpers/filters';
-import { mapSelectPopulation } from 'actions/species';
+import {
+  selectLASpeciesPopulation,
+  selectLASpeciesPopulationSpecies
+} from 'actions/species';
 
 function getSpeciesDetailData(rows, columns, filter, columnFilter) {
   if (!rows || rows.length === 0) return [];
@@ -23,15 +26,21 @@ function getSpeciesDetailData(rows, columns, filter, columnFilter) {
   return filteredData;
 }
 
+function getDetailList(species) {
+  if (species.selectedLASpeciesPopulation) return species.selectedLASpeciesPopulation.aLikeSpecies;
+
+  return species[species.selectedCategory] && species[species.selectedCategory][species.selected]
+    ? species[species.selectedCategory][species.selected]
+    : [];
+}
+
 const mapStateToProps = (state) => {
   // if it comes from search, show fields instead of species columns
   const columns = state.search.results && state.search.results.fields ?
     Object.keys(state.search.results.fields) : state.species.columns;
 
   const species = state.species;
-  const detailList = species[species.selectedCategory] && species[species.selectedCategory][species.selected]
-    ? species[species.selectedCategory][species.selected]
-    : false;
+  const detailList = getDetailList(species);
 
   const data = state.search.results ?
     getSpeciesDetailData(state.search.results.rows, columns, state.search.search, state.search.columnFilter) :
@@ -45,12 +54,14 @@ const mapStateToProps = (state) => {
     columns,
     allColumns: state.species.allColumns,
     expandedColumns: state.species.expandedColumns,
-    allExpandedColumns: state.species.allExpandedColumns
+    allExpandedColumns: state.species.allExpandedColumns,
+    selectedLASpeciesPopulation: state.species.selectedLASpeciesPopulation
   };
 };
 
 const mapDispatchToProps = {
-  mapSelectPopulation
+  selectLASpeciesPopulation,
+  selectLASpeciesPopulationSpecies
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SpeciesDetailTable);

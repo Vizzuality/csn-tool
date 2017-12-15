@@ -6,7 +6,7 @@ function getLegendData(species, ownProps) {
   const legend = [];
   if (species.sites[species.selected]) {
     const sites = species.sites[species.selected];
-    const populations = species.population[species.selected];
+    const populations = ownProps.populations;
 
     const unique = {};
     const distinct = [];

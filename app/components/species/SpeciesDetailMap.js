@@ -11,7 +11,7 @@ class SpeciesMap extends BasicMap {
   constructor(props, context) {
     super(props, context);
     this.populationLayers = [];
-    this.setPopulationColors(props.population);
+    this.setPopulationColors(props.populations);
   }
 
   componentDidMount() {
@@ -44,19 +44,26 @@ class SpeciesMap extends BasicMap {
       this.clearMarkers();
     }
 
-    this.setPopulationColors(newProps.population);
+    this.setPopulationColors(newProps.populations);
+
+    if (newProps.populations !== this.props.populations) {
+      this.removePopulationLayers();
+    }
 
     if (!newProps.layers.population) {
       this.hidePopulations();
     } else {
-      if (this.populationLayers.length === 0 && this.props.population !== newProps.population) {
-        this.fetchPopulationBoundaries(this.props.id);
+      if (this.populationLayers.length === 0 && this.props.populations !== newProps.populations) {
+        if (newProps.fitToPopulationBoudaries) {
+          this.fetchPopulationBoundaries(this.props.id);
+        }
+        this.fetchPopulationLayers(newProps);
       }
 
       if (this.populationLayers.length &&
           (this.props.selectedPopulationId !== newProps.selectedPopulationId ||
            this.props.layers.population !== newProps.layers.population ||
-           this.props.population !== newProps.population)) {
+           this.props.populations !== newProps.populations)) {
         this.populationLayers.forEach((layer) => {
           const id = layer.options.populationId;
           const isActive = id === newProps.selectedPopulationId;
@@ -65,10 +72,6 @@ class SpeciesMap extends BasicMap {
             fill: isActive,
             opacity: 1
           });
-
-          if (isActive && newProps.fitBoundsToSelectedPopulation) {
-            this.map.fitBounds(layer.getBounds());
-          }
         });
       }
     }
@@ -83,8 +86,8 @@ class SpeciesMap extends BasicMap {
     });
   }
 
-  setPopulationColors(population) {
-    this.populationColors = (population || []).reduce((all, pop, index) => ({
+  setPopulationColors(populations) {
+    this.populationColors = (populations || []).reduce((all, pop, index) => ({
       ...all,
       [pop.wpepopid]: BOUNDARY_COLORS[index]
     }), {});
@@ -114,15 +117,17 @@ class SpeciesMap extends BasicMap {
         ]);
       }
     }
+  }
 
-    if (this.props.population) {
-      this.props.population.forEach((pop) => {
-        this.fetchPopulationLayer(this.props.id, pop.wpepopid);
+  fetchPopulationLayers({ populations }) {
+    if (populations) {
+      populations.forEach((pop) => {
+        this.fetchPopulationLayer(pop.wpepopid);
       });
     }
   }
 
-  fetchPopulationLayer(id, populationId) {
+  fetchPopulationLayer(populationId) {
     const query = `
       SELECT the_geom
       FROM species_and_flywaygroups
@@ -134,12 +139,13 @@ class SpeciesMap extends BasicMap {
   }
 
   addPopulationLayer(populationId, layerGeoJSON) {
-    const color = this.populationColors[populationId];
     // do not add layer if is already there
     if (this.populationLayers.length > 0 &&
         this.populationLayers.some((l) => l.options.populationId === populationId)) {
       return;
     }
+    const color = this.populationColors[populationId];
+    const isActive = this.props.selectedPopulationId === populationId;
 
     const layer = L.geoJSON(layerGeoJSON, {
       populationId,
@@ -150,7 +156,7 @@ class SpeciesMap extends BasicMap {
         dashArray: [1, 7],
         lineCap: 'round',
         color,
-        fill: false,
+        fill: isActive,
         fillOpacity: 0.5,
         fillColor: color
       }
@@ -159,6 +165,19 @@ class SpeciesMap extends BasicMap {
     layer.addTo(this.map);
     layer.getPane().classList.add('-layer-blending');
     this.populationLayers.push(layer);
+    if (this.props.fitToPopulationId === populationId) {
+      this.map.fitBounds(layer.getBounds());
+    }
+  }
+
+  removePopulationLayers() {
+    if (this.populationLayers && this.populationLayers.length) {
+      this.populationLayers.forEach((l) => {
+        this.map.removeLayer(l);
+      });
+
+      this.populationLayers = [];
+    }
   }
 
   drawMarkers(speciesSites) {
@@ -206,7 +225,10 @@ class SpeciesMap extends BasicMap {
       <div className="l-maps-container">
         <div id={this.props.id} className="c-map -full"></div>
         <div className="l-legend">
-          <SpeciesDetailLegend populationColors={this.populationColors} />
+          <SpeciesDetailLegend
+            populations={this.props.populations}
+            populationColors={this.populationColors}
+          />
         </div>
       </div>
     );
@@ -218,16 +240,16 @@ SpeciesMap.contextTypes = {
   t: PropTypes.func.isRequired
 };
 
-
 SpeciesMap.propTypes = {
   router: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
   sites: PropTypes.any.isRequired,
   criticalSites: PropTypes.any.isRequired,
-  population: PropTypes.any.isRequired,
+  populations: PropTypes.any.isRequired,
   selectedCategory: PropTypes.string.isRequired,
   selectedPopulationId: PropTypes.number,
-  fitBoundsToSelectedPopulation: PropTypes.bool
+  fitToPopulationBoudaries: PropTypes.bool,
+  fitToPopulationId: PropTypes.number
 };
 
 export default withRouter(SpeciesMap);

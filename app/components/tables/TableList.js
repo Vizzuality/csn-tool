@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import NavLink from 'containers/common/NavLink';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import { numberToThousands } from 'helpers/data';
 
 const columnsWithYears = ['year', 'start', 'end', 'year_end', 'year_start'];
+const columnsCenterAligned = ['a', 'b', 'c', 'original_a', 'original_b', 'original_c', 'iba', 'csn', 'iba_species', 'csn_species'];
 
 function detailLinkFrame(label, link) {
   return (
@@ -37,18 +39,18 @@ function getDetailLink(detailLink, item) {
 
 function TableList(props) {
   if (!props.data) return (<div className="c-table-list blank"><LoadingSpinner inner transparent /></div>);
+
   const colWidth = 97.5 / props.columns.length; // still need empty category
-  const colCenter = ['a', 'b', 'c', 'original_a', 'original_b', 'original_c',
-    'iba', 'csn', 'iba_species', 'csn_species'];
+
   return !props.data.length
   ? <div className="c-table-list"><div className="no-data"><p className="text -title"> No data </p></div></div>
   : <div id="table-rows" className="c-table-list">
     <ul>
       {props.data.map((item, index) => (
-        <li key={index} className="table-row f32">
+        <li key={index} className={classNames('table-row', 'f32', { selectable: props.selectable, selected: props.selectedItem === item })} onClick={() => props.onItemClick(item)}>
           {props.columns.map((column, index2) => {
             let alignClass = '';
-            if (colCenter.indexOf(column) > -1) {
+            if (columnsCenterAligned.indexOf(column) > -1) {
               alignClass = '-center';
             } else if (typeof item[column] === 'number') {
               alignClass = '-right';
@@ -129,7 +131,8 @@ TableList.contextTypes = {
 };
 
 TableList.defaultProps = {
-  detailLink: null
+  detailLink: null,
+  onItemClick: () => {}
 };
 
 TableList.propTypes = {
@@ -141,7 +144,10 @@ TableList.propTypes = {
   columns: PropTypes.array.isRequired,
   data: PropTypes.any.isRequired,
   fitBounds: PropTypes.func,
-  scroll: PropTypes.bool
+  scroll: PropTypes.bool,
+  selectable: PropTypes.bool,
+  selectedItem: PropTypes.any,
+  onItemClick: PropTypes.func
 };
 
 export default TableList;
