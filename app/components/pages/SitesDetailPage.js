@@ -39,6 +39,14 @@ class SitesPage extends React.Component {
                         <div className="list">
                           <div className="item">
                             <div className="label">
+                              Type
+                            </div>
+                            <div className="value">
+                              {this.props.type === 'iba' ? 'IBA' : 'Critical Site'}
+                            </div>
+                          </div>
+                          <div className="item">
+                            <div className="label">
                               Country
                             </div>
                             <div className="value">
@@ -83,7 +91,6 @@ class SitesPage extends React.Component {
                               </a>
                             </div>
                           </div>
-
                         </div>
                       </div>
                     </div>
