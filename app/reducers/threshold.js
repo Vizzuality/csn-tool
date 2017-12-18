@@ -6,14 +6,10 @@ import {
   SET_THRESHOLD_POSITION,
   SET_THRESHOLD_SEARCH_FILTER
 } from 'constants/action-types';
-
-const ALL_THRESHOLD_COLUMNS = ['scientific_name', 'english_name', 'iucn_category',
-  'population', 'a', 'b', 'c', 'caf_action_plan', 'eu_birds_directive',
-  'flyway_range', 'year_start', 'year_end', 'size_min', 'size_max',
-  'ramsar_criterion'];
-
-const DEFAULT_THRESHOLD_COLUMNS = ['scientific_name', 'iucn_category',
-  'population', 'a', 'b', 'c', 'ramsar_criterion'];
+import {
+  DEFAULT_THRESHOLD_COLUMNS,
+  ALL_THRESHOLD_COLUMNS
+} from 'constants/thresholds';
 
 const initialState = {
   columns: DEFAULT_THRESHOLD_COLUMNS,
