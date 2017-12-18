@@ -70,7 +70,7 @@ function parseParams(query) {
   return params;
 }
 
-async function getSitesResults(req, res) {
+async function getIBAsResults(req, res) {
   // TODO: get sites search querying by
   // countries='country_id1, country_id2'
   // sites='site_id'
@@ -102,20 +102,30 @@ async function getSitesResults(req, res) {
       FROM sites s
       LEFT JOIN stc ON stc.site_id = s.site_id
       ${(params.species || params.genus || params.family) &&
-        `JOIN species_sites ss ON ss.site_id = s.site_id
-          JOIN species ON ss.species_id = species.species_id AND (
+        `INNER JOIN species_sites ss ON ss.site_id = s.site_id
+          INNER JOIN species ON ss.species_id = species.species_id AND (
             ${params.species ? `species.species_id IN(${params.species.join()})` : false}
             OR ${params.genus ? `species.genus IN('${params.genus.join('\',\'')}')` : false}
             OR ${params.family ? `species.family IN('${params.family.join('\',\'')}')` : false}
           )` || ''}
       ${params.habitat &&
-        `JOIN sites_habitats sh ON sh.site_id = s.site_id AND habitat_id IN (${params.habitat.join()})` || ''}
+        `INNER JOIN sites_habitats sh ON sh.site_id = s.site_id AND habitat_id IN (${params.habitat.join()})` || ''}
       ${where.length > 0 && `WHERE ${where.join(' AND ')}` || ''}
       GROUP BY s.site_name, s.country, s.iso2, s.protection_status, s.hyperlink,
       s.iba_in_danger, s.site_id, stc.iba
       ORDER by country ASC, site_name ASC`;
     const data = await rp(CARTO_SQL + query);
     res.json(JSON.parse(data));
+  } catch (err) {
+    res.status(err.statusCode || 500);
+    res.json({ error: err.message });
+  }
+}
+
+async function getCriticalSitesResults(req, res) {
+  try {
+    // TODO: write the query
+    res.json(JSON.parse([]));
   } catch (err) {
     res.status(err.statusCode || 500);
     res.json({ error: err.message });
@@ -215,7 +225,8 @@ async function getPopulationsResults(req, res) {
 
 module.exports = {
   getOptions,
-  getSitesResults,
+  getCriticalSitesResults,
+  getIBAsResults,
   getSpeciesResults,
   getPopulationsResults
 };

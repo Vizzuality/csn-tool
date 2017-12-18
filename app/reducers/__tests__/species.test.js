@@ -16,6 +16,8 @@ const initialState = {
   criticalSites: {},
   population: {},
   lookAlikeSpecies: {},
+  highlightedPopulationId: null,
+  selectedLASpeciesPopulation: null,
   layers: {
     sites: true,
     population: true

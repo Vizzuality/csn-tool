@@ -2,27 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 
+import Button from 'components/common/Button';
 import SitesTable from 'containers/sites/SitesTable';
 import SpeciesTable from 'containers/species/SpeciesTable';
 import PopulationsTable from 'containers/species/SpeciesDetailTable';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import { StickyContainer } from 'react-sticky';
 
-const rows = [
-  {
-    title: 'geography',
-    sections: ['country', 'aewa_region', 'ramsar_region', 'site', 'protection', 'site_threat', 'site_habitat']
-  },
-  {
-    title: 'taxonomy',
-    sections: ['family', 'genus', 'species', 'red_list_status', 'aewa_annex_2',
-      'species_threat', 'species_habitat_association']
-  },
-  {
-    title: 'population',
-    sections: ['aewa_table_1_status', 'eu_birds_directive', 'cms_caf_action_plan', 'multispecies_flyway', 'population_trend']
-  }
-];
+const SEARCH_GROUPS = {
+  geography: ['country', 'aewa_region', 'ramsar_region', 'site', 'protection', 'site_threat', 'site_habitat'],
+  taxonomy: ['family', 'genus', 'species', 'red_list_status', 'aewa_annex_2', 'species_threat', 'species_habitat_association'],
+  population: ['aewa_table_1_status', 'eu_birds_directive', 'cms_caf_action_plan', 'multispecies_flyway', 'population_trend']
+};
 
 function filterSitesByCountry(countries, sites) {
   if (!countries) return sites;
@@ -49,13 +40,7 @@ class AdvancedSearchPage extends React.Component {
     super();
     this.state = {
       searchType: '',
-      filters: {
-        country: null,
-        site: null,
-        family: null,
-        genus: null,
-        species: null
-      },
+      filters: {},
       errors: {
         empty: false
       }
@@ -124,14 +109,24 @@ class AdvancedSearchPage extends React.Component {
     return false;
   }
 
-  content() {
+  isFilterSelected({ filter, group }) {
+    if (group) return SEARCH_GROUPS[group].some((f) => this.isFilterSelected({ filter: f }));
+
     const { filters } = this.state;
-    const hasSites = filters.site && filters.site.length > 0;
-    const hasSpecies = filters.species && filters.species.length > 0;
+
+    return filters[filter] && filters[filter].length > 0;
+  }
+
+  renderContent() {
+    const { filters } = this.state;
+    const hasSites = this.isFilterSelected({ filter: 'site' });
+    const hasSpecies = this.isFilterSelected({ filter: 'species' });
+    const anyPopulationFilter = this.isFilterSelected({ group: 'population' });
+    const searchIBAsDisabled = hasSites || anyPopulationFilter;
 
     let resultsTable = null;
     switch (this.state.searchType) {
-      case 'sites':
+      case 'ibas':
         resultsTable = <SitesTable />;
         break;
       case 'species':
@@ -147,12 +142,12 @@ class AdvancedSearchPage extends React.Component {
 
     return (
       <div>
-        {rows.map((row, index) => (
+        {Object.keys(SEARCH_GROUPS).map((group, index) => (
           <div className="row c-search-group" key={index}>
             <div className="column small-12">
-              <h3 className="group-title">{this.context.t(row.title)}</h3>
+              <h3 className="group-title">{this.context.t(group.title)}</h3>
             </div>
-            {row.sections.map((section, index2) => {
+            {SEARCH_GROUPS[group].map((section, index2) => {
               const value = filters[section] || null;
               const options = this.props.options && this.getFilteredOptions(section, this.props.options[section]) || [];
               return (
@@ -177,32 +172,44 @@ class AdvancedSearchPage extends React.Component {
               <span>{this.context.t('selectOneOption')}</span>
             }
           </div>
-          <div className="column small-12 medium-2 medium-offset-6">
-            <button
-              id="searchSitesButton"
-              className={`btn -small -dark ${hasSites ? '-disabled' : ''}`}
-              onClick={() => { if (!hasSites) this.onSearchClick('sites'); }}
+          <div className="column small-12 medium-2 medium-offset-4">
+            <Button
+              id="searchIBAsButton"
+              className="-small -dark"
+              disabled={searchIBAsDisabled}
+              onClick={() => this.onSearchClick('ibas')}
             >
-              {this.context.t('searchSites')}
-            </button>
+              {this.context.t('searchIBAs')}
+            </Button>
           </div>
           <div className="column small-12 medium-2">
-            <button
+            <Button
+              id="searchCriticalSitesButton"
+              className="-small -dark"
+              disabled={hasSites}
+              onClick={() => this.onSearchClick('criticalSites')}
+            >
+              {this.context.t('searchCriticalSites')}
+            </Button>
+          </div>
+          <div className="column small-12 medium-2">
+            <Button
               id="searchSpeciesButton"
-              className={`btn -small -dark ${hasSpecies ? '-disabled' : ''}`}
-              onClick={() => { if (!hasSpecies) this.onSearchClick('species'); }}
+              className="-small -dark"
+              onClick={() => this.onSearchClick('species')}
+              disabled={hasSpecies}
             >
               {this.context.t('searchSpecies')}
-            </button>
+            </Button>
           </div>
           <div className="column small-12 medium-2 ">
-            <button
+            <Button
               id="searchPopulationsButton"
-              className="btn -small -dark"
+              className="-small -dark"
               onClick={() => this.onSearchClick('populations')}
             >
               {this.context.t('searchPopulations')}
-            </button>
+            </Button>
           </div>
         </div>
         {this.props.hasResults &&
@@ -226,7 +233,7 @@ class AdvancedSearchPage extends React.Component {
             </div>
           </div>
           {this.props.options
-            ? this.content()
+            ? this.renderContent()
             : <LoadingSpinner />
           }
         </div>

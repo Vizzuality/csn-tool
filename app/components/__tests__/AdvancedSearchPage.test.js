@@ -81,14 +81,14 @@ describe('components', () => {
 
     it('should render sites table', () => {
       const { enzymeWrapper } = setup();
-      enzymeWrapper.find('#searchSitesButton').simulate('click');
+      enzymeWrapper.find('#searchIBAsButton').simulate('click');
       enzymeWrapper.update();
       expect(enzymeWrapper.find(SitesTable).length).toBeGreaterThan(0);
     });
 
     it('should not render a sticky sites table', () => {
       const { enzymeWrapper } = setup();
-      enzymeWrapper.find('#searchSitesButton').simulate('click');
+      enzymeWrapper.find('#searchIBAsButton').simulate('click');
       enzymeWrapper.update();
       expect(enzymeWrapper.find('#sitesTable').find('.sticky-header').length).toEqual(0);
     });
@@ -102,7 +102,7 @@ describe('components', () => {
 
     it('should not render a sticky species table header', () => {
       const { enzymeWrapper } = setup();
-      enzymeWrapper.find('#searchSitesButton').simulate('click');
+      enzymeWrapper.find('#searchIBAsButton').simulate('click');
       enzymeWrapper.update();
       expect(enzymeWrapper.find('#sitesTable').find('-sticky').length).toEqual(0);
     });
