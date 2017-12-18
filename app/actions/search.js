@@ -1,4 +1,9 @@
-import { GET_SEARCH_OPTIONS, GET_SEARCH_RESULTS, SET_SEARCH_FILTER, BEFORE_GET_SEARCH_RESULTS } from 'constants';
+import {
+  BEFORE_GET_SEARCH_RESULTS,
+  GET_SEARCH_OPTIONS,
+  GET_SEARCH_RESULTS,
+  SET_SEARCH_FILTER
+} from 'constants/action-types';
 
 export function setSearchFilter(search, filter) {
   return {

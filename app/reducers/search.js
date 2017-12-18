@@ -5,7 +5,7 @@ import {
   SET_SPECIES_SORT,
   SET_SPECIES_COLUMN_FILTER,
   BEFORE_GET_SEARCH_RESULTS
-} from 'constants';
+} from 'constants/action-types';
 import { commonSort } from './common.js';
 
 const initialState = {

@@ -1,4 +1,4 @@
-import { CHANGE_COLUMN_ACTIVATION } from 'constants';
+import { CHANGE_COLUMN_ACTIVATION } from 'constants/action-types';
 
 export function changeColumnActivation(column, expanded) {
   return {

@@ -1,6 +1,6 @@
 /* global expect, jest */
 import reducer from 'reducers/species';
-import { CHANGE_COLUMN_ACTIVATION } from 'constants/index.js';
+import { CHANGE_COLUMN_ACTIVATION } from 'constants/action-types';
 
 const initialState = {
   allColumns: ['scientific_name', 'english_name', 'genus', 'family', 'iucn_category', 'aewa_annex_2'],

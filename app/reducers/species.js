@@ -15,7 +15,7 @@ import {
   SET_SPECIES_SORT,
   TOGGLE_LEGEND_ITEM,
   TOGGLE_SPECIES_LAYER
-} from 'constants/index.js';
+} from 'constants/action-types';
 import { commonSort } from './common.js';
 
 const ALL_SPECIES_COLUMNS = {

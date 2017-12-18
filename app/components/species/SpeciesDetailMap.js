@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import BasicMap from 'components/maps/BasicMap';
 import { getSqlQuery } from 'helpers/map';
 import SpeciesDetailLegend from 'containers/species/SpeciesDetailLegend';
-import { BOUNDARY_COLORS } from 'constants';
+import { BOUNDARY_COLORS } from 'constants/map';
 
 class SpeciesMap extends BasicMap {
 

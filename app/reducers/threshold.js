@@ -1,5 +1,11 @@
-import { SET_THRESHOLD_DATA, SET_THRESHOLD_POSITION, SET_THRESHOLD_SEARCH_FILTER,
-   SET_THRESHOLD_COLUMN_SORT, SET_THRESHOLD_COLUMN_FILTER, CHANGE_COLUMN_ACTIVATION } from 'constants';
+import {
+  CHANGE_COLUMN_ACTIVATION,
+  SET_THRESHOLD_COLUMN_FILTER,
+  SET_THRESHOLD_COLUMN_SORT,
+  SET_THRESHOLD_DATA,
+  SET_THRESHOLD_POSITION,
+  SET_THRESHOLD_SEARCH_FILTER
+} from 'constants/action-types';
 
 const ALL_THRESHOLD_COLUMNS = ['scientific_name', 'english_name', 'iucn_category',
   'population', 'a', 'b', 'c', 'caf_action_plan', 'eu_birds_directive',

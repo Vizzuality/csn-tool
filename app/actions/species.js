@@ -14,7 +14,7 @@ import {
   SET_SPECIES_SORT,
   TOGGLE_LEGEND_ITEM,
   TOGGLE_SPECIES_LAYER
-} from 'constants/index.js';
+} from 'constants/action-types';
 
 export function getSpeciesStats(id) {
   const url = `${config.apiHost}/species/${id}`;

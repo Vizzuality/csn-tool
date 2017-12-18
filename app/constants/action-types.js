@@ -42,19 +42,6 @@ export const TOGGLE_SPECIES_LAYER = 'TOGGLE_SPECIES_LAYER';
 export const TOGGLE_LEGEND_ITEM = 'TOGGLE_LEGEND_ITEM';
 export const SET_SPECIES_SORT = 'SET_SPECIES_SORT';
 export const SET_SPECIES_COLUMN_FILTER = 'SET_SPECIES_COLUMN_FILTER';
-export const BOUNDARY_COLORS = [
-  '#a6cee3',
-  '#1f78b4',
-  '#b2df8a',
-  '#33a02c',
-  '#fb9a99',
-  '#e31a1c',
-  '#fdbf6f',
-  '#ff7f00',
-  '#cab2d6',
-  '#6a3d9a',
-  '#ffff99'
-];
 export const SELECT_LA_SPECIES_POPULATION = 'SELECT_LA_SPECIES_POPULATION';
 export const SELECT_LA_SPECIES_POPULATION_SPECIES = 'SELECT_LA_SPECIES_POPULATION_SPECIES';
 
