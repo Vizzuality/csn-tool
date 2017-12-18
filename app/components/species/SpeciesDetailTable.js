@@ -105,6 +105,8 @@ class SpeciesDetailTable extends React.Component {
   }
 
   renderTableHeader(isLookAlikeSpecies, data, columns, allColumns) {
+    const isExpanded = !!(isLookAlikeSpecies && this.props.selectedLASpeciesPopulation);
+
     return (
       <div>
         <SpeciesDetailFilters
@@ -114,12 +116,9 @@ class SpeciesDetailTable extends React.Component {
           id={this.props.id}
           category={this.props.category}
         />
-        {isLookAlikeSpecies && this.props.selectedLASpeciesPopulation
-          ? this.getSelectedHeader()
-          : null
-        }
+        {isExpanded && this.getSelectedHeader()}
         <TableListHeader
-          expanded={isLookAlikeSpecies}
+          expanded={isExpanded}
           data={data}
           columns={columns}
           allColumns={allColumns}
