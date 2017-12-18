@@ -130,27 +130,34 @@ class SpeciesDetailTable extends React.Component {
   }
 
   render() {
-    const detailLink = this.getDetailLink(this.props.category);
-    const isLookAlikeSpecies = this.props.category === 'lookAlikeSpecies';
-    const data = this.props.data;
-    const columns = isLookAlikeSpecies && this.props.selectedLASpeciesPopulation ? this.props.expandedColumns : this.props.columns;
-    const allColumns = isLookAlikeSpecies && this.props.selectedLASpeciesPopulation ? this.props.allExpandedColumns : this.props.allColumns;
-    const isSelectable = !!(isLookAlikeSpecies && this.props.selectedLASpeciesPopulation);
-    const selectedItem = isLookAlikeSpecies && this.props.selectedLASpeciesPopulation
-            ? this.props.selectedLASpeciesPopulation.selectedALikeSpecies
+    const {
+      allColumns,
+      category,
+      columns,
+      data,
+      isSearch,
+      selectedLASpeciesPopulation
+    } = this.props;
+
+    const detailLink = this.getDetailLink(category);
+    const isLookAlikeSpecies = category === 'lookAlikeSpecies';
+    const isSelectable = !!(isLookAlikeSpecies && selectedLASpeciesPopulation);
+    const selectedItem = isLookAlikeSpecies && selectedLASpeciesPopulation
+            ? selectedLASpeciesPopulation.selectedALikeSpecies
             : null;
 
     return (
       <div className="c-table" >
-        {!this.props.isSearch && <ScrollButton />}
-        {this.props.isSearch ?
+        {!isSearch && <ScrollButton />}
+        {isSearch ? (
           <div>
             {this.renderTableHeader(isLookAlikeSpecies, data, columns, allColumns)}
-          </div> :
+          </div>
+        ) : (
           <Sticky topOffset={-120} stickyClassName={'-sticky'}>
             {this.renderTableHeader(isLookAlikeSpecies, data, columns, allColumns)}
           </Sticky>
-        }
+        )}
         <TableList
           data={data}
           columns={columns}
@@ -174,13 +181,11 @@ SpeciesDetailTable.childContextTypes = {
 
 SpeciesDetailTable.propTypes = {
   allColumns: PropTypes.array.isRequired,
-  allExpandedColumns: PropTypes.array.isRequired,
   id: PropTypes.string.isRequired,
   isSearch: PropTypes.bool.isRequired,
   category: PropTypes.string.isRequired,
   data: PropTypes.any.isRequired,
   columns: PropTypes.array.isRequired,
-  expandedColumns: PropTypes.array.isRequired,
   selectedLASpeciesPopulation: PropTypes.any,
   selectLASpeciesPopulation: PropTypes.func.isRequired,
   selectLASpeciesPopulationSpecies: PropTypes.func.isRequired

@@ -34,13 +34,26 @@ function getDetailList(species) {
     : [];
 }
 
-const mapStateToProps = (state) => {
+function getColumns({ species, search }) {
+  const isExpandedView = species.selectedCategory === 'lookAlikeSpecies' && species.selectedLASpeciesPopulation;
   // if it comes from search, show fields instead of species columns
-  const columns = state.search.results && state.search.results.fields ?
-    Object.keys(state.search.results.fields) : state.species.columns;
+  const columns = search.results && search.results.fields
+          ? Object.keys(search.results.fields)
+          : species.columns;
 
+  return {
+    allColumns: isExpandedView ? species.allExpandedColumns : species.allColumns,
+    columns: isExpandedView ? species.expandedColumns : columns
+  };
+}
+
+const mapStateToProps = (state) => {
   const species = state.species;
   const detailList = getDetailList(species);
+  const {
+    allColumns,
+    columns
+  } = getColumns(state);
 
   const data = state.search.results ?
     getSpeciesDetailData(state.search.results.rows, columns, state.search.search, state.search.columnFilter) :
@@ -51,10 +64,8 @@ const mapStateToProps = (state) => {
     category: state.search.results ? 'population' : state.species.selectedCategory,
     isSearch: state.search.results && state.search.results.rows.length > 0 || false,
     data,
+    allColumns,
     columns,
-    allColumns: state.species.allColumns,
-    expandedColumns: state.species.expandedColumns,
-    allExpandedColumns: state.species.allExpandedColumns,
     selectedLASpeciesPopulation: state.species.selectedLASpeciesPopulation
   };
 };
