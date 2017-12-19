@@ -132,7 +132,9 @@ export const translations = {
     'feedback': 'Feedback',
     'scrollText': 'Scroll down to see the data',
     'coordinates': 'Coordinates',
-    'birdlifeFactsheet': 'Birdlife Factsheet'
+    'birdlifeFactsheet': 'Birdlife Factsheet',
+    'viewSpeciesDetails': 'View species details',
+    'viewSiteDetails': 'View site details'
   },
   es: {
     'country': 'Pais',

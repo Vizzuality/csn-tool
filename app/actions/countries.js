@@ -2,6 +2,7 @@ import {
   GET_COUNTRIES_CRITICAL_SITES,
   GET_COUNTRIES_GEOM,
   GET_COUNTRIES_LIST,
+  GET_COUNTRIES_LOOK_ALIKE_SPECIES_POPULATION,
   GET_COUNTRIES_POPULATIONS,
   GET_COUNTRIES_SIMILAR_SPECIES,
   GET_COUNTRIES_SITES,
@@ -165,6 +166,24 @@ export function getCountryLookAlikeSpecies(iso) {
   };
 }
 
+export function getCountryLookAlikeSpeciesPopulation(iso, populationId) {
+  const url = `${config.apiHost}/countries/${iso}/look-alike-species/${populationId}`;
+
+  return (dispatch) => {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        dispatch({
+          type: GET_COUNTRIES_LOOK_ALIKE_SPECIES_POPULATION,
+          payload: {
+            populationId,
+            data
+          }
+        });
+      });
+  };
+}
+
 export function getCountriesGeom() {
   const url = '/geoms.topojson';
   return dispatch => {
@@ -182,7 +201,12 @@ export function getCountriesGeom() {
 export function setCountryParams(params) {
   return {
     type: SET_COUNTRY_PARAMS,
-    payload: { country: params.iso, category: params.cat, filter: params.filter }
+    payload: {
+      country: params.iso,
+      category: params.cat,
+      filter: params.filter,
+      population: params.population
+    }
   };
 }
 

@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Sticky } from 'react-sticky';
+
 import LoadingSpinner from 'components/common/LoadingSpinner';
+import NavLink from 'containers/common/NavLink';
+import ScrollButton from 'components/common/ScrollButton';
 import SpeciesDetailFilters from 'components/species/SpeciesDetailFilters';
 import TableList from 'components/tables/TableList';
 import TableListHeader from 'containers/species/TableListHeader';
-import ScrollButton from 'components/common/ScrollButton';
-import { Sticky } from 'react-sticky';
-import NavLink from 'containers/common/NavLink';
 
 class SpeciesDetailTable extends React.Component {
   constructor(props) {
@@ -60,6 +61,8 @@ class SpeciesDetailTable extends React.Component {
         return 'sites/csn';
       case 'lookAlikeSpecies':
         return 'speciesPopulation';
+      case 'lookAlikeSpeciesPopulation':
+        return 'species';
       case 'sites':
         return 'sites/iba';
       default:
@@ -93,7 +96,6 @@ class SpeciesDetailTable extends React.Component {
         />
         {isExpanded && this.getSelectedHeader()}
         <TableListHeader
-          expanded={isExpanded}
           data={data}
           columns={columns}
           allColumns={allColumns}

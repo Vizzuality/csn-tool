@@ -1,17 +1,28 @@
 import { connect } from 'react-redux';
 import CountriesPage from 'components/pages/CountriesPage';
-import { getCountryStats, getCountrySites, getCountryCriticalSites, getCountrySpecies,
-  getCountryPopulations, getCountryLookAlikeSpecies, getCountriesList } from 'actions/countries';
+import {
+  getCountryStats,
+  getCountrySites,
+  getCountryCriticalSites,
+  getCountrySpecies,
+  getCountryPopulations,
+  getCountryLookAlikeSpecies,
+  getCountryLookAlikeSpeciesPopulation,
+  getCountriesList
+} from 'actions/countries';
 
 function getCountryData(countries) {
-  return countries[countries.selectedCategory] && countries[countries.selectedCategory][countries.selected]
-    ? countries[countries.selectedCategory][countries.selected]
-    : false;
+  const id = countries.selectedLASpeciesPopulation || countries.selected;
+
+  return countries[countries.selectedCategory] && countries[countries.selectedCategory][id]
+       ? countries[countries.selectedCategory][id]
+       : false;
 }
 
 const mapStateToProps = (state) => ({
   country: state.countries.selected,
   category: state.countries.selectedCategory,
+  selectedPopulationId: state.countries.selectedLASpeciesPopulation,
   countries: state.countries.countries,
   countryStats: state.countries.stats[state.countries.selected] || false,
   countryData: getCountryData(state.countries),
@@ -21,7 +32,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getCountryStats: (iso) => dispatch(getCountryStats(iso)),
   getCountriesList: () => dispatch(getCountriesList()),
-  getCountryData: (country, category) => {
+  getCountryData: (country, category, populationId) => {
     switch (category) {
       case 'species':
         dispatch(getCountrySpecies(country));
@@ -34,6 +45,10 @@ const mapDispatchToProps = (dispatch) => ({
         break;
       case 'lookAlikeSpecies':
         dispatch(getCountryLookAlikeSpecies(country));
+        break;
+      case 'lookAlikeSpeciesPopulation':
+        dispatch(getCountryLookAlikeSpecies(country));
+        dispatch(getCountryLookAlikeSpeciesPopulation(country, populationId));
         break;
       default:
         dispatch(getCountrySites(country));

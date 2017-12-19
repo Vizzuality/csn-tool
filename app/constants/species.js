@@ -22,6 +22,3 @@ export const DEFAULT_SPECIES_COLUMNS = {
     'geometric_mean', 'units', 'percentfly'],
   sites: ['country', 'site_name', 'season', 'geometric_mean', 'units', 'iba_criteria']
 };
-
-export const ALL_EXPANDED_SPECIES_COLUMNS = ['scientific_name', 'english_name', 'population', 'a', 'b', 'c'];
-export const DEFAULT_EXPANDED_SPECIES_COLUMNS = ['scientific_name', 'population', 'a', 'b', 'c'];

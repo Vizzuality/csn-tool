@@ -17,7 +17,8 @@ function getCountriesParams(state) {
   return {
     iso: state.params.iso || '',
     cat: state.params.cat || 'sites', // defult value
-    filter: state.location.query.filter || ''
+    filter: state.location.query.filter || '',
+    population: state.params.population
   };
 }
 

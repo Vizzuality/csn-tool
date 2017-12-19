@@ -101,7 +101,7 @@ SpeciesDetailPage.contextTypes = {
 
 SpeciesDetailPage.propTypes = {
   id: PropTypes.string.isRequired,
-  selectedPopulationId: PropTypes.any,
+  selectedPopulationId: PropTypes.string,
   category: PropTypes.string.isRequired,
   getSpeciesStats: PropTypes.func.isRequired,
   getSpeciesData: PropTypes.func.isRequired,

@@ -6,6 +6,7 @@ export const ALL_COUNTRY_COLUMNS = {
   criticalSites: ['csn_name', 'protected', 'csn_species', 'total_percentage'],
   lookAlikeSpecies: ['original_species', 'english_name', 'population', 'original_a', 'original_b',
                      'original_c', 'confusion_species', 'confusion_species_as'],
+  lookAlikeSpeciesPopulation: ['scientific_name', 'english_name', 'population', 'a', 'b', 'c'],
   sites: ['site_name', 'protected', 'iba_species', 'iba_in_danger']
 };
 
@@ -15,8 +16,6 @@ export const DEFAULT_COUNTRY_COLUMNS = {
   criticalSites: ['csn_name', 'protected', 'csn_species', 'total_percentage'],
   lookAlikeSpecies: ['original_species', 'population', 'original_a', 'original_b',
                      'original_c', 'confusion_species', 'confusion_species_as'],
+  lookAlikeSpeciesPopulation: ['scientific_name', 'population', 'a', 'b', 'c'],
   sites: ['site_name', 'protected', 'iba_species', 'iba_in_danger']
 };
-
-export const ALL_EXPANDED_COUNTRY_COLUMNS = ['scientific_name', 'english_name', 'population', 'a', 'b', 'c'];
-export const DEFAULT_EXPANDED_COUNTRY_COLUMNS = ['scientific_name', 'population', 'a', 'b', 'c'];

@@ -117,7 +117,7 @@ const Routes = ({ history }) => (
       <IndexRoute component={HomePage} />
       <Route path="countries">
         <IndexRoute component={CountriesPage} onEnter={setCountriesPage} onChange={updateCountriesPage} />
-        <Route path=":iso(/:cat)" component={CountriesPage} onEnter={setCountriesPage} />
+        <Route path=":iso(/:cat)(/:population)" component={CountriesPage} onEnter={setCountriesPage} />
       </Route>
       <Route path="sites">
         <IndexRoute component={SitesPage} onEnter={setSitesPage} onChange={updateSitesPage} />

@@ -1,79 +1,49 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import LoadingSpinner from 'components/common/LoadingSpinner';
-import CountriesFilters from 'components/countries/CountriesFilters';
-import TableListHeader from 'containers/countries/TableListHeader';
-import TableList from 'components/tables/TableList';
-import ScrollButton from 'components/common/ScrollButton';
 import { Sticky } from 'react-sticky';
 
-class CountriesTable extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [],
-      selectedItem: null
-    };
-    this.clearSelection = this.clearSelection.bind(this);
-    this.getLookAlikeSpecies = this.getLookAlikeSpecies.bind(this);
-  }
+import CountriesFilters from 'components/countries/CountriesFilters';
+import LoadingSpinner from 'components/common/LoadingSpinner';
+import NavLink from 'containers/common/NavLink';
+import ScrollButton from 'components/common/ScrollButton';
+import TableList from 'components/tables/TableList';
+import TableListHeader from 'containers/countries/TableListHeader';
 
+class CountriesTable extends React.Component {
   componentWillMount() {
     this.props.cleanSearchFilter('');
   }
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.category !== 'lookAlikeSpecies') {
-      this.setState({
-        selectedItem: null
-      });
-    }
-  }
-
-  getLookAlikeSpecies(species) {
-    this.setState({
-      selectedItem: species
-    });
-    const url = `${config.apiHost}/countries/${this.props.country}/look-alike-species/${species.pop_id_origin}`;
-    fetch(url)
-      .then(res => {
-        if (res.ok) return res.json();
-        throw Error(res.statusText);
-      })
-      .then(data => {
-        this.setState({ data });
-      })
-      .catch((err) => {
-        console.warn(err);
-      });
-  }
-
   getSelectedHeader() {
+    const { selectedLASpeciesPopulation } = this.props;
+
+    if (!selectedLASpeciesPopulation) return null;
+
     return (
       <div className="table-navigation">
-        <button className="btn -back" onClick={this.clearSelection}>
-          <span className="link">{this.context.t('backToSpecies')}</span>
-        </button>
+        <NavLink to={`/countries/${selectedLASpeciesPopulation.iso3}/lookAlikeSpecies`} className="btn -back">
+          {this.context.t('backToSpecies')}
+        </NavLink>
         <div className="nav">
           <div>
             <span className="title">{this.context.t('species')}</span>
-            <h3>{this.state.selectedItem.original_species}</h3>
+            <h3>{selectedLASpeciesPopulation.original_species}</h3>
           </div>
           <div>
             <span className="title">{this.context.t('population')}</span>
-            <span>{this.state.selectedItem.population}</span>
+            <span>{selectedLASpeciesPopulation.population}</span>
           </div>
           <div>
             <span className="title">A</span>
-            <span>{this.state.selectedItem.original_a || '-'}</span>
+            <span>{selectedLASpeciesPopulation.original_a || '-'}</span>
           </div>
           <div>
             <span className="title">B</span>
-            <span>{this.state.selectedItem.original_b || '-'}</span>
+            <span>{selectedLASpeciesPopulation.original_b || '-'}</span>
           </div>
           <div>
             <span className="title">C</span>
-            <span>{this.state.selectedItem.original_c || '-'}</span>
+            <span>{selectedLASpeciesPopulation.original_c || '-'}</span>
           </div>
         </div>
       </div>
@@ -84,14 +54,14 @@ class CountriesTable extends React.Component {
     switch (category) {
       case 'populations':
         return 'species';
+      case 'population':
+        return null; // no display
       case 'criticalSites':
         return 'sites/csn';
       case 'lookAlikeSpecies':
-        if (this.state.selectedItem) return 'species';
-        return {
-          type: 'action',
-          action: this.getLookAlikeSpecies
-        };
+        return 'countrySpeciesPopulation';
+      case 'lookAlikeSpeciesPopulation':
+        return 'species';
       case 'sites':
         return 'sites/iba';
       default:
@@ -107,40 +77,37 @@ class CountriesTable extends React.Component {
     );
   }
 
-  clearSelection() {
-    this.setState({
-      data: [],
-      selectedItem: null
-    });
-  }
-
   render() {
-    const detailLink = this.getDetailLink(this.props.category);
-    const isLookAlikeSpecies = this.props.category === 'lookAlikeSpecies';
-    const data = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? this.state.data : this.props.data;
-    const columns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? this.props.expandedColumns : this.props.columns;
-    const allColumns = isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0 ? this.props.allExpandedColumns : this.props.allColumns;
+    const {
+      allColumns,
+      category,
+      columns,
+      data,
+      selectedLASpeciesPopulation
+    } = this.props;
 
+    const detailLink = this.getDetailLink(category);
+    const isLookAlikeSpecies = category.startsWith('lookAlikeSpecies');
+    const isExpanded = !!(isLookAlikeSpecies && selectedLASpeciesPopulation);
     const downloadData = (typeof data !== 'boolean') && data || [];
+
     return (
       <div id="countriesTable" className="c-table">
         <ScrollButton />
         <Sticky topOffset={-120} stickyClassName={'-sticky'}>
           <CountriesFilters data={downloadData} columns={columns} country={this.props.country} category={this.props.category} />
-          {isLookAlikeSpecies && this.state.selectedItem && this.state.data.length > 0
+          {isExpanded && data.length > 0
             ? this.getSelectedHeader()
             : null
           }
           <TableListHeader
-            expanded={isLookAlikeSpecies}
-            selectedCategory={this.state.selectedItem ? 'expanded' : null}
             data={data}
             columns={columns}
             allColumns={allColumns}
             detailLink
           />
         </Sticky>
-        {isLookAlikeSpecies && this.state.selectedItem && this.state.data.length === 0
+        {isExpanded && data.length === 0
           ? this.getLoading()
           : <TableList
             data={data}
@@ -159,13 +126,12 @@ CountriesTable.contextTypes = {
 
 CountriesTable.propTypes = {
   allColumns: PropTypes.array.isRequired,
-  allExpandedColumns: PropTypes.array.isRequired,
   country: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
   columns: PropTypes.array.isRequired,
-  expandedColumns: PropTypes.array.isRequired,
   data: PropTypes.any,
-  cleanSearchFilter: PropTypes.func
+  cleanSearchFilter: PropTypes.func,
+  selectedLASpeciesPopulation: PropTypes.any
 };
 
 export default CountriesTable;

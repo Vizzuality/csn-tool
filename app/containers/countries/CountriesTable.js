@@ -4,8 +4,9 @@ import { setSearchFilter } from 'actions/countries';
 import { filterByColumns, filterBySearch } from 'helpers/filters';
 
 function getCountryData(countries, columns) {
-  const data = countries[countries.selectedCategory] && countries[countries.selectedCategory][countries.selected]
-    ? countries[countries.selectedCategory][countries.selected]
+  const id = countries.selectedLASpeciesPopulation || countries.selected;
+  const data = countries[countries.selectedCategory] && countries[countries.selectedCategory][id]
+    ? countries[countries.selectedCategory][id]
     : false;
 
   if (!data) return data;
@@ -21,6 +22,14 @@ function getCountryData(countries, columns) {
   return filteredData;
 }
 
+function getSelectedSpeciesPopulation(countries) {
+  if (!countries.selectedLASpeciesPopulation) return null;
+
+  const lookAlikeSpecies = countries.lookAlikeSpecies && countries.lookAlikeSpecies[countries.selected];
+
+  return (lookAlikeSpecies || []).find((las) => las.pop_id_origin === parseInt(countries.selectedLASpeciesPopulation, 10));
+}
+
 const mapStateToProps = (state) => {
   const columns = state.countries.columns;
 
@@ -29,9 +38,8 @@ const mapStateToProps = (state) => {
     category: state.countries.selectedCategory,
     data: getCountryData(state.countries, columns),
     columns,
-    expandedColumns: state.countries.expandedColumns,
-    allExpandedColumns: state.countries.allExpandedColumns,
-    allColumns: state.countries.allColumns
+    allColumns: state.countries.allColumns,
+    selectedLASpeciesPopulation: getSelectedSpeciesPopulation(state.countries)
   };
 };
 

@@ -142,10 +142,7 @@ export function getSpeciesLookAlikeSpeciesPopulation(id, populationId) {
 
   return (dispatch) => {
     fetch(url)
-      .then(res => {
-        if (res.ok) return res.json();
-        throw Error(res.statusText);
-      })
+      .then(response => response.json())
       .then(data => {
         dispatch({
           type: GET_SPECIES_LOOK_ALIKE_SPECIES_POPULATION,
