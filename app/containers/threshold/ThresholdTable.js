@@ -4,7 +4,7 @@ import { getSitesList } from 'actions/sites';
 import { filterByColumns } from 'helpers/filters';
 
 function getThresholdData(threshold, columns) {
-  const data = threshold.data || false;
+  const data = threshold.list || false;
   if (!data) return data;
 
   let filteredData = data;

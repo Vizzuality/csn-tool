@@ -1,6 +1,6 @@
 import {
+  SET_SORT,
   SET_THRESHOLD_COLUMN_FILTER,
-  SET_THRESHOLD_COLUMN_SORT,
   SET_THRESHOLD_DATA,
   SET_THRESHOLD_POSITION,
   SET_THRESHOLD_SEARCH_FILTER
@@ -35,7 +35,7 @@ export function setLocation(coordinates) {
 
 export function setThresholdTableSort(sort) {
   return {
-    type: SET_THRESHOLD_COLUMN_SORT,
+    type: `${SET_SORT}_threshold`,
     payload: sort
   };
 }
