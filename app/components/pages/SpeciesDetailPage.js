@@ -32,8 +32,8 @@ class SpeciesDetailPage extends React.Component {
         <div className="l-navigation">
           <div className="row">
             <div className="column c-navigation">
-              {this.props.stats.species
-                ? <div className="content">
+              {this.props.stats.species &&
+                <div className="content">
                   <div className="title">
                     <GoBackLink className="breadcrumb" i18nText="back" endPoint="species" />
                     <div className="name">
@@ -47,7 +47,7 @@ class SpeciesDetailPage extends React.Component {
                     <div className="list">
                       <div className="item">
                         <div className="label">
-                          English name
+                          {this.context.t('english_name')}
                         </div>
                         <div className="value">
                           {this.props.stats.species[0].english_name}
@@ -55,7 +55,7 @@ class SpeciesDetailPage extends React.Component {
                       </div>
                       <div className="item">
                         <div className="label">
-                          Family
+                          {this.context.t('family')}
                         </div>
                         <div className="value">
                           {this.props.stats.species[0].family}
@@ -63,7 +63,7 @@ class SpeciesDetailPage extends React.Component {
                       </div>
                       <div id="birdlife-factsheet-link" className="item">
                         <div className="label">
-                          Birdlife Factsheet
+                          {this.context.t('birdlifeFactsheet')}
                         </div>
                         <div className="value">
                           <a className="external-link" target="_blank" href={this.props.stats.species[0].hyperlink}>
@@ -76,7 +76,6 @@ class SpeciesDetailPage extends React.Component {
                     </div>
                   </div>
                 </div>
-                : ''
               }
             </div>
           </div>
@@ -99,7 +98,6 @@ class SpeciesDetailPage extends React.Component {
 SpeciesDetailPage.contextTypes = {
   t: PropTypes.func.isRequired
 };
-
 
 SpeciesDetailPage.propTypes = {
   id: PropTypes.string.isRequired,

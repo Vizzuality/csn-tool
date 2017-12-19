@@ -131,7 +131,8 @@ export const translations = {
     'tools': 'Tools',
     'feedback': 'Feedback',
     'scrollText': 'Scroll down to see the data',
-    'coordinates': 'Coordinates'
+    'coordinates': 'Coordinates',
+    'birdlifeFactsheet': 'Birdlife Factsheet'
   },
   es: {
     'country': 'Pais',
@@ -249,7 +250,8 @@ export const translations = {
     'tools': 'Herramientas',
     'feedback': 'Comentarios',
     'scrollText': 'Desplácese hacia abajo para ver los datos',
-    'coordinates': 'Coordenadas'
+    'coordinates': 'Coordenadas',
+    'birdlifeFactsheet': 'Birdlife Factsheet'
   },
   fr: {
     'country': 'Pays',
@@ -384,6 +386,7 @@ export const translations = {
     'tools': 'Outils',
     'feedback': 'Commentaires',
     'scrollText': 'Faites défiler vers le bas pour voir les données',
-    'coordinates': 'Coordonnées'
+    'coordinates': 'Coordonnées',
+    'birdlifeFactsheet': 'Birdlife Factsheet'
   },
 }
