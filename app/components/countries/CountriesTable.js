@@ -54,8 +54,6 @@ class CountriesTable extends React.Component {
     switch (category) {
       case 'populations':
         return 'species';
-      case 'population':
-        return null; // no display
       case 'criticalSites':
         return 'sites/csn';
       case 'lookAlikeSpecies':

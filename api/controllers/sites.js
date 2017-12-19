@@ -221,10 +221,8 @@ function getSitesSpecies(req, res) {
 
   rp(CARTO_SQL + query)
     .then((data) => {
-      const result = JSON.parse(data);
-      res.json({
-        data: result.rows
-      });
+      const results = JSON.parse(data).rows || [];
+      res.json(results);
     })
     .catch((err) => {
       res.status(err.statusCode || 500);

@@ -4,7 +4,7 @@ import { filterByColumns } from 'helpers/filters';
 
 function getSitesData(sites, columns) {
   const data = sites[sites.selectedCategory] && sites[sites.selectedCategory][sites.selected]
-    ? sites[sites.selectedCategory][sites.selected].data
+    ? sites[sites.selectedCategory][sites.selected]
     : false;
 
   if (!data) return data;
