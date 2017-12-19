@@ -11,14 +11,12 @@ import {
   SET_COUNTRY_COLUMN_FILTER,
   SET_COUNTRY_PARAMS,
   SET_COUNTRY_SEARCH,
-  SET_COUNTRY_SORT,
   TOGGLE_COUNTRIES_LAYER
 } from 'constants/action-types';
 import {
   ALL_COUNTRY_COLUMNS,
   DEFAULT_COUNTRY_COLUMNS
 } from 'constants/countries';
-import { commonSort } from './common';
 import withTable from './withTable';
 
 const initialState = {
@@ -111,23 +109,6 @@ const countriesReducer = (state = initialState, action) => {
       const layers = Object.assign({}, state.layers);
       layers[action.payload] = !layers[action.payload];
       return Object.assign({}, state, { layers });
-    }
-    case SET_COUNTRY_SORT: {
-      let list = null;
-      let isResource = false;
-      if (state.selected && state.selectedCategory) {
-        isResource = true;
-        list = [...state[state.selectedCategory][state.selected]];
-      } else {
-        list = [...state.list];
-      }
-      list.sort(commonSort(action.payload.field, action.payload.order));
-
-      if (isResource) {
-        const data = Object.assign({}, state[state.selectedCategory], { [state.selected]: list });
-        return Object.assign({}, state, { [state.selectedCategory]: data, sort: action.payload });
-      }
-      return Object.assign({}, state, { list, sort: action.payload });
     }
     default:
       return state;

@@ -7,7 +7,7 @@ import {
   SET_SITES_COLUMN_FILTER,
   SET_SITES_PARAMS,
   SET_SITES_SEARCH,
-  SET_SITES_SORT,
+  SET_SORT,
   SET_VIEW_MODE
 } from 'constants/action-types';
 import { RESULTS_PER_PAGE } from 'constants/config';
@@ -125,7 +125,7 @@ export function setViewMode(viewMode) {
 
 export function setSitesTableSort(sort) {
   return {
-    type: SET_SITES_SORT,
+    type: `${SET_SORT}_sites`,
     payload: sort
   };
 }

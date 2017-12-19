@@ -11,7 +11,7 @@ import {
   SET_COUNTRY_COLUMN_FILTER,
   SET_COUNTRY_PARAMS,
   SET_COUNTRY_SEARCH,
-  SET_COUNTRY_SORT,
+  SET_SORT,
   TOGGLE_COUNTRIES_LAYER
 } from 'constants/action-types';
 import { push } from 'react-router-redux';
@@ -226,7 +226,7 @@ export function toggleLayer(layer) {
 
 export function setCountriesTableSort(sort) {
   return {
-    type: SET_COUNTRY_SORT,
+    type: `${SET_SORT}_countries`,
     payload: sort
   };
 }

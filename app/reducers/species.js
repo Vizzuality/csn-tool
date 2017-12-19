@@ -11,7 +11,6 @@ import {
   SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_DETAIL_SEARCH,
   SET_SPECIES_PARAMS,
-  SET_SPECIES_SORT,
   TOGGLE_LEGEND_ITEM,
   TOGGLE_SPECIES_LAYER
 } from 'constants/action-types';
@@ -19,8 +18,7 @@ import {
   ALL_SPECIES_COLUMNS,
   DEFAULT_SPECIES_COLUMNS
 } from 'constants/species';
-import { commonSort } from './common';
-import withTable from './withTable';
+import withTable from 'reducers/withTable';
 
 const initialState = {
   columns: DEFAULT_SPECIES_COLUMNS.over,
@@ -125,23 +123,6 @@ const speciesReducer = (state = initialState, action) => {
         ...state,
         highlightedPopulationId: action.payload.active ? action.payload.id : null
       };
-    }
-    case SET_SPECIES_SORT: {
-      let list = null;
-      let isResource = false;
-      if (state.selected && state.selectedCategory) {
-        isResource = true;
-        list = [...state[state.selectedCategory][state.selected]];
-      } else {
-        list = [...state.list];
-      }
-      list.sort(commonSort(action.payload.field, action.payload.order));
-
-      if (isResource) {
-        const data = Object.assign({}, state[state.selectedCategory], { [state.selected]: list });
-        return Object.assign({}, state, { [state.selectedCategory]: data, sort: action.payload });
-      }
-      return Object.assign({}, state, { list, sort: action.payload });
     }
     default:
       return state;

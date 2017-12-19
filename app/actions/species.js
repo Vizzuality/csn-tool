@@ -7,11 +7,11 @@ import {
   GET_SPECIES_SITES,
   GET_SPECIES_STATS,
   SELECT_SPECIES_TABLE_ITEM,
+  SET_SORT,
   SET_SPECIES_COLUMN_FILTER,
   SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_DETAIL_SEARCH,
   SET_SPECIES_PARAMS,
-  SET_SPECIES_SORT,
   TOGGLE_LEGEND_ITEM,
   TOGGLE_SPECIES_LAYER
 } from 'constants/action-types';
@@ -158,7 +158,7 @@ export function getSpeciesLookAlikeSpeciesPopulation(id, populationId) {
 
 export function setSpeciesTableSort(sort) {
   return {
-    type: SET_SPECIES_SORT,
+    type: `${SET_SORT}_species`,
     payload: sort
   };
 }

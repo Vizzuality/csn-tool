@@ -7,7 +7,6 @@ import {
   SET_SITES_COLUMN_FILTER,
   SET_SITES_PARAMS,
   SET_SITES_SEARCH,
-  SET_SITES_SORT,
   SET_VIEW_MODE
 } from 'constants/action-types';
 import {
@@ -15,7 +14,6 @@ import {
   DEFAULT_SITES_COLUMNS
 } from 'constants/sites';
 import { RESULTS_PER_PAGE } from 'constants/config';
-import { commonSort } from './common';
 import withTable from './withTable';
 
 const initialState = {
@@ -97,29 +95,6 @@ const sitesReducer = (state = initialState, action) => {
       const data = Object.assign({}, state.species, {});
       data[action.payload.id] = action.payload.data;
       return Object.assign({}, state, { species: data });
-    }
-    case SET_SITES_SORT: {
-      let list = null;
-      let isResource = false;
-      if (state.selected && state.selectedCategory) {
-        isResource = true;
-        list = [...state[state.selectedCategory][state.selected].data];
-      } else {
-        list = [...state.list.data];
-      }
-      list.sort(commonSort(action.payload.field, action.payload.order));
-
-      if (isResource) {
-        const newData = {
-          [state.selected]: {
-            data: list
-          }
-        };
-        const data = Object.assign({}, state[state.selectedCategory], newData);
-        return Object.assign({}, state, { [state.selectedCategory]: data, sort: action.payload });
-      }
-      const newList = Object.assign({}, state.list, { data: list });
-      return Object.assign({}, state, { list: newList, sort: action.payload });
     }
     default:
       return state;
