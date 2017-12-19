@@ -6,13 +6,8 @@ function getCountries(req, res) {
   const query = 'SELECT * FROM countries';
   rp(CARTO_SQL + query)
     .then((data) => {
-      const result = JSON.parse(data);
-      if (result.rows && result.rows.length > 0) {
-        res.json(result.rows);
-      } else {
-        res.status(404);
-        res.json({ error: 'No countries' });
-      }
+      const result = JSON.parse(data).rows || [];
+      res.json(result);
     })
     .catch((err) => {
       res.status(err.statusCode || 500);
@@ -24,13 +19,8 @@ function getCountryDetails(req, res) {
   const query = `SELECT * FROM countries WHERE iso3='${req.params.iso}'`;
   rp(CARTO_SQL + query)
     .then((data) => {
-      const result = JSON.parse(data);
-      if (result.rows && result.rows.length > 0) {
-        res.json(result.rows[0]);
-      } else {
-        res.status(404);
-        res.json({ error: 'No country found' });
-      }
+      const result = JSON.parse(data).rows || [];
+      res.json(result);
     })
     .catch((err) => {
       res.status(err.statusCode || 500);
@@ -54,16 +44,11 @@ function getCountrySites(req, res) {
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
-        results.map((item) => {
-          const site = item;
-          site.protected_slug = normalizeSiteStatus(item.protected);
-          return site;
+        results.forEach((item) => {
+          item.protected_slug = normalizeSiteStatus(item.protected);  // eslint-disable-line no-param-reassign
         });
-        res.json(results);
-      } else {
-        res.status(404);
-        res.json({ error: 'No sites found' });
       }
+      res.json(results);
     })
     .catch((err) => {
       res.status(err.statusCode || 500);
@@ -88,16 +73,11 @@ function getCountryCriticalSites(req, res) {
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
-        results.map((item) => {
-          const site = item;
-          site.protected_slug = normalizeSiteStatus(item.protected);
-          return site;
+        results.forEach((item) => {
+          item.protected_slug = normalizeSiteStatus(item.protected);  // eslint-disable-line no-param-reassign
         });
-        res.json(results);
-      } else {
-        res.status(404);
-        res.json({ error: 'No sites found' });
       }
+      res.json(results);
     })
     .catch((err) => {
       res.status(err.statusCode || 500);
@@ -120,13 +100,8 @@ function getCountrySpecies(req, res) {
     ORDER BY s.taxonomic_sequence`;
   rp(CARTO_SQL + query)
     .then((data) => {
-      const result = JSON.parse(data);
-      if (result.rows && result.rows.length > 0) {
-        res.json(result.rows);
-      } else {
-        res.status(404);
-        res.json({ error: 'No species found' });
-      }
+      const result = JSON.parse(data).rows || [];
+      res.json(result);
     })
     .catch((err) => {
       res.status(err.statusCode || 500);
@@ -158,13 +133,8 @@ function getCountryPopulations(req, res) {
   `;
   rp(CARTO_SQL + query)
     .then((data) => {
-      const result = JSON.parse(data);
-      if (result.rows && result.rows.length > 0) {
-        res.json(result.rows);
-      } else {
-        res.status(404);
-        res.json({ error: 'No species found' });
-      }
+      const result = JSON.parse(data).rows || [];
+      res.json(result);
     })
     .catch((err) => {
       res.status(err.statusCode || 500);
@@ -215,13 +185,8 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
 
   rp(CARTO_SQL + query)
     .then((data) => {
-      const result = JSON.parse(data);
-      if (result.rows && result.rows.length > 0) {
-        res.json(result.rows);
-      } else {
-        res.status(404);
-        res.json({ error: 'No species found' });
-      }
+      const result = JSON.parse(data).rows || [];
+      res.json(result);
     })
     .catch((err) => {
       res.status(err.statusCode || 500);
@@ -265,13 +230,8 @@ function getCountryLookAlikeSpecies(req, res) {
 
   rp(CARTO_SQL + query)
     .then((data) => {
-      const result = JSON.parse(data);
-      if (result.rows && result.rows.length > 0) {
-        res.json(result.rows);
-      } else {
-        res.status(404);
-        res.json({ error: 'No species found' });
-      }
+      const result = JSON.parse(data).rows || [];
+      res.json(result);
     })
     .catch((err) => {
       res.status(err.statusCode || 500);
