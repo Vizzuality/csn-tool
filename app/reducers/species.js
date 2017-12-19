@@ -1,13 +1,12 @@
 import {
-  CHANGE_COLUMN_ACTIVATION,
   GET_SPECIES_CRITICAL_SITES,
   GET_SPECIES_LIST,
   GET_SPECIES_LOOK_ALIKE_SPECIES,
+  GET_SPECIES_LOOK_ALIKE_SPECIES_POPULATION,
   GET_SPECIES_POPULATION,
   GET_SPECIES_SITES,
   GET_SPECIES_STATS,
-  SELECT_LA_SPECIES_POPULATION,
-  SELECT_LA_SPECIES_POPULATION_SPECIES,
+  SELECT_SPECIES_TABLE_ITEM,
   SET_SPECIES_COLUMN_FILTER,
   SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_DETAIL_SEARCH,
@@ -17,9 +16,7 @@ import {
   TOGGLE_SPECIES_LAYER
 } from 'constants/action-types';
 import {
-  ALL_EXPANDED_SPECIES_COLUMNS,
   ALL_SPECIES_COLUMNS,
-  DEFAULT_EXPANDED_SPECIES_COLUMNS,
   DEFAULT_SPECIES_COLUMNS
 } from 'constants/species';
 import { commonSort } from './common';
@@ -31,12 +28,15 @@ const initialState = {
   list: false,
   selected: '',
   selectedCategory: 'sites',
+  selectedLASpeciesPopulation: null,
+  selectedTableItem: null,
   searchFilter: '',
   stats: {},
   sites: {},
   criticalSites: {},
   population: {},
   lookAlikeSpecies: {},
+  lookAlikeSpeciesPopulation: {},
   layers: {
     sites: true,
     population: true
@@ -45,7 +45,6 @@ const initialState = {
     field: '',
     order: ''
   },
-  selectedLASpeciesPopulation: null,
   highlightedPopulationId: null,
   columnFilter: {}
 };
@@ -62,12 +61,14 @@ const speciesReducer = (state = initialState, action) => {
       return Object.assign({}, state, params);
     }
     case SET_SPECIES_DETAIL_PARAMS: {
+      const category = action.payload.category;
       const params = {
         selected: action.payload.id,
-        selectedCategory: action.payload.category,
-        columns: DEFAULT_SPECIES_COLUMNS[action.payload.category],
-        allColumns: ALL_SPECIES_COLUMNS[action.payload.category],
-        selectedLASpeciesPopulation: action.payload.category === 'lookAlikeSpecies' ? state.selectLASpeciesPopulation : null
+        selectedCategory: category,
+        columns: DEFAULT_SPECIES_COLUMNS[category],
+        allColumns: ALL_SPECIES_COLUMNS[category],
+        selectedLASpeciesPopulation: category === 'lookAlikeSpeciesPopulation' ? action.payload.population : null,
+        selectedTableItem: null
       };
       return Object.assign({}, state, params);
     }
@@ -103,23 +104,15 @@ const speciesReducer = (state = initialState, action) => {
       data[action.payload.id] = action.payload.data;
       return Object.assign({}, state, { lookAlikeSpecies: data });
     }
-    case SELECT_LA_SPECIES_POPULATION: {
-      const selectedLASpeciesPopulation = action.payload;
-
-      return {
-        ...state,
-        columns: selectedLASpeciesPopulation ? DEFAULT_EXPANDED_SPECIES_COLUMNS : DEFAULT_SPECIES_COLUMNS.lookAlikeSpecies,
-        allColumns: selectedLASpeciesPopulation ? ALL_EXPANDED_SPECIES_COLUMNS : ALL_SPECIES_COLUMNS.lookAlikeSpecies,
-        selectedLASpeciesPopulation: action.payload
-      };
+    case GET_SPECIES_LOOK_ALIKE_SPECIES_POPULATION: {
+      const data = Object.assign({}, state.lookAlikeSpeciesPopulation, {});
+      data[action.payload.populationId] = action.payload.data;
+      return Object.assign({}, state, { lookAlikeSpeciesPopulation: data });
     }
-    case SELECT_LA_SPECIES_POPULATION_SPECIES: {
+    case SELECT_SPECIES_TABLE_ITEM: {
       return {
         ...state,
-        selectedLASpeciesPopulation: {
-          ...state.selectedLASpeciesPopulation,
-          selectedALikeSpecies: action.payload
-        }
+        selectedTableItem: action.payload
       };
     }
     case TOGGLE_SPECIES_LAYER: {

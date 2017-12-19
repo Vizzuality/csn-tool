@@ -48,8 +48,9 @@ export function updateCountriesPage(prevState, nextState, replace, done) {
 
 export function updateSpeciesDetailPage(actualState, replace, done) {
   const id = actualState.params.id || '';
+  const population = actualState.params.population;
   const cat = actualState.params.cat || 'sites'; // default value
-  dispatch(setSpeciesDetailParams(id, cat));
+  dispatch(setSpeciesDetailParams(id, cat, population));
   done();
 }
 

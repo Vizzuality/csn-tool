@@ -6,59 +6,44 @@ import TableList from 'components/tables/TableList';
 import TableListHeader from 'containers/species/TableListHeader';
 import ScrollButton from 'components/common/ScrollButton';
 import { Sticky } from 'react-sticky';
+import NavLink from 'containers/common/NavLink';
 
 class SpeciesDetailTable extends React.Component {
   constructor(props) {
     super(props);
-    this.clearSelection = this.clearSelection.bind(this);
-    this.getLookAlikeSpecies = this.getLookAlikeSpecies.bind(this);
     this.handleTableItemClick = this.handleTableItemClick.bind(this);
   }
 
-  getLookAlikeSpecies(species) {
-    const url = `${config.apiHost}/species/${species.species_id}/look-alike-species/${species.pop_id_origin}`;
-
-    fetch(url)
-      .then(res => {
-        if (res.ok) return res.json();
-        throw Error(res.statusText);
-      })
-      .then(data => {
-        this.props.selectLASpeciesPopulation({
-          species,
-          aLikeSpecies: data
-        });
-      });
-  }
-
   getSelectedHeader() {
-    const selectedSpecies = this.props.selectedLASpeciesPopulation.species;
+    const selectedPopulation = this.props.selectedLASpeciesPopulation;
+
+    if (!selectedPopulation) return null;
 
     return (
       <div className="table-navigation">
-        <button className="btn -back" onClick={this.clearSelection}>
-          <span className="link">{this.context.t('backToSpecies')}</span>
-        </button>
+        <NavLink to={`/species/${selectedPopulation.species_id}/lookAlikeSpecies`} className="btn -back">
+          {this.context.t('backToSpecies')}
+        </NavLink>
         <div className="nav">
           <div>
             <span className="title">{this.context.t('species')}</span>
-            <h3>{selectedSpecies.original_species}</h3>
+            <h3>{selectedPopulation.original_species}</h3>
           </div>
           <div>
             <span className="title">{this.context.t('population')}</span>
-            <span>{selectedSpecies.population}</span>
+            <span>{selectedPopulation.population}</span>
           </div>
           <div>
             <span className="title">A</span>
-            <span>{selectedSpecies.original_a || '-'}</span>
+            <span>{selectedPopulation.original_a || '-'}</span>
           </div>
           <div>
             <span className="title">B</span>
-            <span>{selectedSpecies.original_b || '-'}</span>
+            <span>{selectedPopulation.original_b || '-'}</span>
           </div>
           <div>
             <span className="title">C</span>
-            <span>{selectedSpecies.original_c || '-'}</span>
+            <span>{selectedPopulation.original_c || '-'}</span>
           </div>
         </div>
       </div>
@@ -74,11 +59,7 @@ class SpeciesDetailTable extends React.Component {
       case 'criticalSites':
         return 'sites/csn';
       case 'lookAlikeSpecies':
-        if (this.props.selectedLASpeciesPopulation) return 'species';
-        return {
-          type: 'action',
-          action: this.getLookAlikeSpecies
-        };
+        return 'speciesPopulation';
       case 'sites':
         return 'sites/iba';
       default:
@@ -96,17 +77,11 @@ class SpeciesDetailTable extends React.Component {
 
   handleTableItemClick(item) {
     if (this.props.selectedLASpeciesPopulation) {
-      this.props.selectLASpeciesPopulationSpecies(item);
+      this.props.selectSpeciesTableItem(item);
     }
   }
 
-  clearSelection() {
-    this.props.selectLASpeciesPopulation(null);
-  }
-
-  renderTableHeader(isLookAlikeSpecies, data, columns, allColumns) {
-    const isExpanded = !!(isLookAlikeSpecies && this.props.selectedLASpeciesPopulation);
-
+  renderTableHeader(isExpanded, data, columns, allColumns) {
     return (
       <div>
         <SpeciesDetailFilters
@@ -135,26 +110,24 @@ class SpeciesDetailTable extends React.Component {
       columns,
       data,
       isSearch,
-      selectedLASpeciesPopulation
+      selectedLASpeciesPopulation,
+      selectedTableItem
     } = this.props;
 
     const detailLink = this.getDetailLink(category);
-    const isLookAlikeSpecies = category === 'lookAlikeSpecies';
-    const isSelectable = !!(isLookAlikeSpecies && selectedLASpeciesPopulation);
-    const selectedItem = isLookAlikeSpecies && selectedLASpeciesPopulation
-            ? selectedLASpeciesPopulation.selectedALikeSpecies
-            : null;
+    const isLookAlikeSpecies = category.startsWith('lookAlikeSpecies');
+    const isExpanded = !!(isLookAlikeSpecies && selectedLASpeciesPopulation);
 
     return (
       <div className="c-table" >
         {!isSearch && <ScrollButton />}
         {isSearch ? (
           <div>
-            {this.renderTableHeader(isLookAlikeSpecies, data, columns, allColumns)}
+            {this.renderTableHeader(isExpanded, data, columns, allColumns)}
           </div>
         ) : (
           <Sticky topOffset={-120} stickyClassName={'-sticky'}>
-            {this.renderTableHeader(isLookAlikeSpecies, data, columns, allColumns)}
+            {this.renderTableHeader(isExpanded, data, columns, allColumns)}
           </Sticky>
         )}
         <TableList
@@ -162,8 +135,8 @@ class SpeciesDetailTable extends React.Component {
           columns={columns}
           detailLink={detailLink}
           onItemClick={this.handleTableItemClick}
-          selectable={isSelectable}
-          selectedItem={selectedItem}
+          selectable={isExpanded}
+          selectedItem={selectedTableItem}
         />
       </div>
     );
@@ -186,8 +159,8 @@ SpeciesDetailTable.propTypes = {
   data: PropTypes.any.isRequired,
   columns: PropTypes.array.isRequired,
   selectedLASpeciesPopulation: PropTypes.any,
-  selectLASpeciesPopulation: PropTypes.func.isRequired,
-  selectLASpeciesPopulationSpecies: PropTypes.func.isRequired
+  selectedTableItem: PropTypes.any,
+  selectSpeciesTableItem: PropTypes.func.isRequired
 };
 
 export default SpeciesDetailTable;

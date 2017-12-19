@@ -1,5 +1,4 @@
 import {
-  CHANGE_COLUMN_ACTIVATION,
   SET_THRESHOLD_COLUMN_FILTER,
   SET_THRESHOLD_COLUMN_SORT,
   SET_THRESHOLD_DATA,
@@ -10,6 +9,7 @@ import {
   DEFAULT_THRESHOLD_COLUMNS,
   ALL_THRESHOLD_COLUMNS
 } from 'constants/thresholds';
+import withTable from './withTable';
 
 const initialState = {
   columns: DEFAULT_THRESHOLD_COLUMNS,
@@ -27,22 +27,8 @@ const initialState = {
   }
 };
 
-export default function (state = initialState, action) {
+const thresholdReducer = (state = initialState, action) => {
   switch (action.type) {
-    case CHANGE_COLUMN_ACTIVATION: {
-      const columns = state.columns.slice();
-      let newColumns = columns.filter((col) => col !== action.payload);
-      if (columns.length === newColumns.length) {
-        newColumns.push(action.payload);
-        const prevColumns = state.allColumns.slice();
-        newColumns = prevColumns.reduce((previous, currentItem) => {
-          const isIn = newColumns.some((newCol) => newCol === currentItem);
-          if (isIn) previous.push(currentItem);
-          return previous;
-        }, []);
-      }
-      return Object.assign({}, state, { columns: newColumns });
-    }
     case SET_THRESHOLD_POSITION:
       return Object.assign({}, state, { coordinates: action.payload });
     case SET_THRESHOLD_SEARCH_FILTER:
@@ -67,4 +53,6 @@ export default function (state = initialState, action) {
     default:
       return state;
   }
-}
+};
+
+export default withTable('threshold', thresholdReducer);

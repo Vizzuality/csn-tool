@@ -1,10 +1,7 @@
 import { connect } from 'react-redux';
 import SpeciesDetailTable from 'components/species/SpeciesDetailTable';
 import { filterByColumns, filterBySearch } from 'helpers/filters';
-import {
-  selectLASpeciesPopulation,
-  selectLASpeciesPopulationSpecies
-} from 'actions/species';
+import { selectSpeciesTableItem } from 'actions/species';
 
 function getSpeciesDetailData(rows, columns, filter, columnFilter) {
   if (!rows || rows.length === 0) return [];
@@ -27,56 +24,44 @@ function getSpeciesDetailData(rows, columns, filter, columnFilter) {
 }
 
 function getDetailList(species) {
-  if (species.selectedLASpeciesPopulation) return species.selectedLASpeciesPopulation.aLikeSpecies;
+  const id = species.selectedLASpeciesPopulation || species.selected;
 
-  return species[species.selectedCategory] && species[species.selectedCategory][species.selected]
-    ? species[species.selectedCategory][species.selected]
+  return species[species.selectedCategory] && species[species.selectedCategory][id]
+    ? species[species.selectedCategory][id]
     : [];
 }
 
-function getColumns({ species, search }) {
-  // const isExpandedView = species.selectedCategory === 'lookAlikeSpecies' && species.selectedLASpeciesPopulation;
-  // if it comes from search, show fields instead of species columns
-  const columns = search.results && search.results.fields
-          ? Object.keys(search.results.fields)
-          : species.columns;
+function getSelectedSpeciesPopulation(species) {
+  if (!species.selectedLASpeciesPopulation) return null;
 
-  return {
-    allColumns: species.allColumns,
-    columns
-  };
-  // return {
-  //   allColumns: isExpandedView ? species.allExpandedColumns : species.allColumns,
-  //   columns: isExpandedView ? species.expandedColumns : columns
-  // };
+  const lookAlikeSpecies = species.lookAlikeSpecies && species.lookAlikeSpecies[species.selected];
+
+  return (lookAlikeSpecies || []).find((las) => las.pop_id_origin === parseInt(species.selectedLASpeciesPopulation, 10));
 }
 
 const mapStateToProps = (state) => {
+  const columns = state.search.results && state.search.results.fields ?
+          Object.keys(state.search.results.fields) : state.species.columns;
   const species = state.species;
   const detailList = getDetailList(species);
-  const {
-    allColumns,
-    columns
-  } = getColumns(state);
 
   const data = state.search.results ?
     getSpeciesDetailData(state.search.results.rows, columns, state.search.search, state.search.columnFilter) :
     getSpeciesDetailData(detailList, columns, state.species.searchFilter, state.species.columnFilter);
 
   return {
-    species: state.species.selected,
     category: state.search.results ? 'population' : state.species.selectedCategory,
     isSearch: state.search.results && state.search.results.rows.length > 0 || false,
     data,
-    allColumns,
+    allColumns: state.species.allColumns,
     columns,
-    selectedLASpeciesPopulation: state.species.selectedLASpeciesPopulation
+    selectedLASpeciesPopulation: getSelectedSpeciesPopulation(state.species),
+    selectedTableItem: species.selectedTableItem
   };
 };
 
 const mapDispatchToProps = {
-  selectLASpeciesPopulation,
-  selectLASpeciesPopulationSpecies
+  selectSpeciesTableItem
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SpeciesDetailTable);

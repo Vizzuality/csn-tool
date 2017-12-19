@@ -10,7 +10,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   sortBy: (sort) => dispatch(setThresholdTableSort(sort)),
   filterBy: (filter) => dispatch(setThresholdColumnFilter(filter)),
-  changeColumnActivation: (column) => dispatch(changeColumnActivation(column))
+  changeColumnActivation: (column) => dispatch(changeColumnActivation(column, 'threshold'))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableListHeader);

@@ -125,7 +125,7 @@ const Routes = ({ history }) => (
       </Route>
       <Route path="species">
         <IndexRoute component={SpeciesPage} onEnter={setSpeciesPage} />
-        <Route path=":id(/:cat)" component={SpeciesDetailPage} onEnter={updateSpeciesDetailPage} />
+        <Route path=":id(/:cat)(/:population)" component={SpeciesDetailPage} onEnter={updateSpeciesDetailPage} />
       </Route>
       <Route path="threshold-lookup" component={ThersholdLookup} onEnter={setThresholdPosition} onChange={updateThresholdPosition} />
       <Route path="guidance" component={GuidancePage} />

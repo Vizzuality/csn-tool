@@ -12,18 +12,18 @@ class SpeciesDetailPage extends React.Component {
     this.props.getSpeciesData(this.props.id, 'sites');
     this.props.getSpeciesData(this.props.id, 'population');
     if (this.props.category !== 'sites' && this.props.category !== 'population') {
-      this.props.getSpeciesData(this.props.id, this.props.category);
+      this.props.getSpeciesData(this.props.id, this.props.category, this.props.selectedPopulationId);
     }
   }
 
   componentWillReceiveProps(newProps) {
     if (this.hasNewParams(newProps) && !newProps.data) {
-      this.props.getSpeciesData(newProps.id, newProps.category);
+      this.props.getSpeciesData(newProps.id, newProps.category, newProps.selectedPopulationId);
     }
   }
 
   hasNewParams(newProps) {
-    return this.props.category !== newProps.category;
+    return this.props.category !== newProps.category || this.props.selectedPopulationId !== newProps.selectedPopulationId;
   }
 
   render() {
@@ -101,6 +101,7 @@ SpeciesDetailPage.contextTypes = {
 
 SpeciesDetailPage.propTypes = {
   id: PropTypes.string.isRequired,
+  selectedPopulationId: PropTypes.any,
   category: PropTypes.string.isRequired,
   getSpeciesStats: PropTypes.func.isRequired,
   getSpeciesData: PropTypes.func.isRequired,

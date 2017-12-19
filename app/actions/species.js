@@ -2,11 +2,11 @@ import {
   GET_SPECIES_CRITICAL_SITES,
   GET_SPECIES_LIST,
   GET_SPECIES_LOOK_ALIKE_SPECIES,
+  GET_SPECIES_LOOK_ALIKE_SPECIES_POPULATION,
   GET_SPECIES_POPULATION,
   GET_SPECIES_SITES,
   GET_SPECIES_STATS,
-  SELECT_LA_SPECIES_POPULATION,
-  SELECT_LA_SPECIES_POPULATION_SPECIES,
+  SELECT_SPECIES_TABLE_ITEM,
   SET_SPECIES_COLUMN_FILTER,
   SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_DETAIL_SEARCH,
@@ -137,6 +137,28 @@ export function getSpeciesLookAlikeSpecies(id) {
   };
 }
 
+export function getSpeciesLookAlikeSpeciesPopulation(id, populationId) {
+  const url = `${config.apiHost}/species/${id}/look-alike-species/${populationId}`;
+
+  return (dispatch) => {
+    fetch(url)
+      .then(res => {
+        if (res.ok) return res.json();
+        throw Error(res.statusText);
+      })
+      .then(data => {
+        dispatch({
+          type: GET_SPECIES_LOOK_ALIKE_SPECIES_POPULATION,
+          payload: {
+            id,
+            populationId,
+            data
+          }
+        });
+      });
+  };
+}
+
 export function setSpeciesTableSort(sort) {
   return {
     type: SET_SPECIES_SORT,
@@ -151,10 +173,10 @@ export function setSpeciesParams(site, category, filter, type) {
   };
 }
 
-export function setSpeciesDetailParams(id, category) {
+export function setSpeciesDetailParams(id, category, population) {
   return {
     type: SET_SPECIES_DETAIL_PARAMS,
-    payload: { id, category }
+    payload: { id, category, population }
   };
 }
 
@@ -193,16 +215,9 @@ export function setSpeciesFilter(filter) {
   };
 }
 
-export function selectLASpeciesPopulation(item) {
+export function selectSpeciesTableItem(item) {
   return {
-    type: SELECT_LA_SPECIES_POPULATION,
-    payload: item
-  };
-}
-
-export function selectLASpeciesPopulationSpecies(item) {
-  return {
-    type: SELECT_LA_SPECIES_POPULATION_SPECIES,
+    type: SELECT_SPECIES_TABLE_ITEM,
     payload: item
   };
 }

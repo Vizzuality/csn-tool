@@ -21,12 +21,10 @@ function detailLinkFrame(label, link) {
 
 function getDetailLink(detailLink, item) {
   const popupContent = typeof detailLink === 'string' && detailLink.indexOf('species') > -1 ? 'species' : 'sites';
-  if (detailLink && detailLink.type === 'action') {
+  if (detailLink === 'speciesPopulation') {
     return (
       detailLinkFrame('View species details', (
-        <button className="popup-link" onClick={() => detailLink.action(item)} icon="icon-table_arrow_right" >
-          <svg><use xlinkHref="#icon-table_arrow_right"></use></svg>
-        </button>
+        <NavLink className="popup-link" to={`/species/${item.species_id}/lookAlikeSpeciesPopulation/${item.pop_id_origin}`} icon="icon-table_arrow_right" parent />
       ))
     );
   }
