@@ -22,13 +22,12 @@ import {
   DEFAULT_EXPANDED_SPECIES_COLUMNS,
   DEFAULT_SPECIES_COLUMNS
 } from 'constants/species';
-import { commonSort } from './common.js';
+import { commonSort } from './common';
+import withTable from './withTable';
 
 const initialState = {
   columns: DEFAULT_SPECIES_COLUMNS.over,
   allColumns: ALL_SPECIES_COLUMNS.over,
-  expandedColumns: DEFAULT_EXPANDED_SPECIES_COLUMNS,
-  allExpandedColumns: ALL_EXPANDED_SPECIES_COLUMNS,
   list: false,
   selected: '',
   selectedCategory: 'sites',
@@ -51,7 +50,7 @@ const initialState = {
   columnFilter: {}
 };
 
-export default function (state = initialState, action) {
+const speciesReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_SPECIES_PARAMS: {
       const params = {
@@ -71,26 +70,6 @@ export default function (state = initialState, action) {
         selectedLASpeciesPopulation: action.payload.category === 'lookAlikeSpecies' ? state.selectLASpeciesPopulation : null
       };
       return Object.assign({}, state, params);
-    }
-    case CHANGE_COLUMN_ACTIVATION: {
-      const columns = action.expanded
-        ? state.expandedColumns.slice()
-        : state.columns.slice();
-      let newColumns = columns.filter((col) => col !== action.payload);
-      if (columns.length === newColumns.length) {
-        newColumns.push(action.payload);
-        const prevColumns = action.expanded
-          ? state.allExpandedColumns.slice()
-          : state.allColumns.slice();
-        newColumns = prevColumns.reduce((previous, currentItem) => {
-          const isIn = newColumns.some((newCol) => newCol === currentItem);
-          if (isIn) previous.push(currentItem);
-          return previous;
-        }, []);
-      }
-      return action.expanded
-        ? Object.assign({}, state, { expandedColumns: newColumns })
-        : Object.assign({}, state, { columns: newColumns });
     }
     case SET_SPECIES_COLUMN_FILTER:
       return Object.assign({}, state, { columnFilter: action.payload });
@@ -125,8 +104,12 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { lookAlikeSpecies: data });
     }
     case SELECT_LA_SPECIES_POPULATION: {
+      const selectedLASpeciesPopulation = action.payload;
+
       return {
         ...state,
+        columns: selectedLASpeciesPopulation ? DEFAULT_EXPANDED_SPECIES_COLUMNS : DEFAULT_SPECIES_COLUMNS.lookAlikeSpecies,
+        allColumns: selectedLASpeciesPopulation ? ALL_EXPANDED_SPECIES_COLUMNS : ALL_SPECIES_COLUMNS.lookAlikeSpecies,
         selectedLASpeciesPopulation: action.payload
       };
     }
@@ -170,4 +153,6 @@ export default function (state = initialState, action) {
     default:
       return state;
   }
-}
+};
+
+export default withTable('species', speciesReducer);

@@ -1,5 +1,4 @@
 import {
-  CHANGE_COLUMN_ACTIVATION,
   CLEAR_SITES_LIST,
   GET_SITES_LIST,
   GET_SITES_LOCATIONS,
@@ -16,7 +15,8 @@ import {
   DEFAULT_SITES_COLUMNS
 } from 'constants/sites';
 import { RESULTS_PER_PAGE } from 'constants/config';
-import { commonSort } from './common.js';
+import { commonSort } from './common';
+import withTable from './withTable';
 
 const initialState = {
   columns: DEFAULT_SITES_COLUMNS.iba,
@@ -44,22 +44,8 @@ const initialState = {
   type: 'iba'
 };
 
-export default function (state = initialState, action) {
+const sitesReducer = (state = initialState, action) => {
   switch (action.type) {
-    case CHANGE_COLUMN_ACTIVATION: {
-      const columns = state.columns.slice();
-      let newColumns = columns.filter((col) => col !== action.payload);
-      if (columns.length === newColumns.length) {
-        newColumns.push(action.payload);
-        const prevColumns = state.allColumns.slice();
-        newColumns = prevColumns.reduce((previous, currentItem) => {
-          const isIn = newColumns.some((newCol) => newCol === currentItem);
-          if (isIn) previous.push(currentItem);
-          return previous;
-        }, []);
-      }
-      return Object.assign({}, state, { columns: newColumns });
-    }
     case SET_SITES_PARAMS: {
       const columnsSelector = action.payload.category === 'species' ? `${action.payload.type}Species` : action.payload.category;
       const params = {
@@ -138,4 +124,6 @@ export default function (state = initialState, action) {
     default:
       return state;
   }
-}
+};
+
+export default withTable('sites', sitesReducer);

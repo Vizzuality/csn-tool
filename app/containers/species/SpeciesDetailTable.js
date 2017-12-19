@@ -35,16 +35,20 @@ function getDetailList(species) {
 }
 
 function getColumns({ species, search }) {
-  const isExpandedView = species.selectedCategory === 'lookAlikeSpecies' && species.selectedLASpeciesPopulation;
+  // const isExpandedView = species.selectedCategory === 'lookAlikeSpecies' && species.selectedLASpeciesPopulation;
   // if it comes from search, show fields instead of species columns
   const columns = search.results && search.results.fields
           ? Object.keys(search.results.fields)
           : species.columns;
 
   return {
-    allColumns: isExpandedView ? species.allExpandedColumns : species.allColumns,
-    columns: isExpandedView ? species.expandedColumns : columns
+    allColumns: species.allColumns,
+    columns
   };
+  // return {
+  //   allColumns: isExpandedView ? species.allExpandedColumns : species.allColumns,
+  //   columns: isExpandedView ? species.expandedColumns : columns
+  // };
 }
 
 const mapStateToProps = (state) => {
