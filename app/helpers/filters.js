@@ -43,3 +43,20 @@ export function filterBySearch(data, searchFilter, columns) {
     return modItem;
   });
 }
+
+export function filterData({ data, columns, filter, columnFilter } = {}) {
+  if (!data) return [];
+
+  const searchFilter = (typeof filter === 'string') && filter.toLowerCase();
+
+  let filteredData = data.slice();
+  if (searchFilter) {
+    filteredData = filterBySearch(filteredData, searchFilter, columns);
+  }
+
+  if (columnFilter && Object.keys(columnFilter).length !== 0) {
+    filteredData = filterByColumns(filteredData, columnFilter);
+  }
+
+  return filteredData;
+}

@@ -1,28 +1,14 @@
 import { connect } from 'react-redux';
 import SitesTable from 'components/sites/SitesTable';
 import { getSitesList } from 'actions/sites';
-import { filterBySearch } from 'helpers/filters';
-
-function getSitesData(rows, filter, columns) {
-  if (!rows) return [];
-  const data = rows.slice();
-
-  const searchFilter = (typeof filter === 'string') && filter.toLowerCase();
-
-  let filteredData = data;
-  if (searchFilter) {
-    filteredData = filterBySearch(data, searchFilter, columns);
-  }
-
-  return filteredData;
-}
+import { filterData } from 'helpers/filters';
 
 const mapStateToProps = (state) => {
   const columns = state.sites.columns;
 
-  const data = state.search.results ?
-    { data: getSitesData(state.search.results.rows, state.search.search, columns), hasMore: false } :
-    state.sites.list;
+  const data = state.search.results
+    ? { data: filterData({ data: state.search.results.rows, filter: state.search.search, columns }), hasMore: false }
+    : state.sites.list;
 
   return {
     filter: state.sites.filter,

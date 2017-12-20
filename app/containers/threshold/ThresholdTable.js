@@ -1,43 +1,17 @@
 import { connect } from 'react-redux';
 import ThresholdTable from 'components/threshold/ThresholdTable';
 import { getSitesList } from 'actions/sites';
-import { filterByColumns } from 'helpers/filters';
-
-function getThresholdData(threshold, columns) {
-  const data = threshold.list || false;
-  if (!data) return data;
-
-  let filteredData = data;
-  if (threshold.columnFilter && Object.keys(threshold.columnFilter).length !== 0) {
-    filteredData = filterByColumns(filteredData, threshold.columnFilter);
-  }
-
-  if (threshold.searchFilter) {
-    filteredData = data.filter((item) => {
-      let match = false;
-      const modItem = item;
-      const searchFilter = threshold.searchFilter.toLowerCase();
-
-      for (let i = 0, cLength = columns.length; i < cLength; i++) {
-        if (typeof modItem[columns[i]] === 'string' && modItem[columns[i]].toLowerCase().indexOf(searchFilter) >= 0) {
-          modItem[columns[i]] = modItem[columns[i]].toLowerCase().replace(searchFilter, `<span class="filtered">${searchFilter}</span>`);
-          match = true;
-          break;
-        }
-      }
-      return match;
-    });
-  }
-
-  return filteredData;
-}
+import { filterData } from 'helpers/filters';
 
 const mapStateToProps = (state) => {
-  const columns = state.threshold.columns;
+  const threshold = state.threshold;
+  const columns = threshold.columns;
+  const data = threshold.list;
+
   return {
-    data: getThresholdData(state.threshold, columns),
+    data: filterData({ data, columns, filter: threshold.searchFilter, columnFilter: threshold.columnFilter }),
     columns,
-    allColumns: state.threshold.allColumns
+    allColumns: threshold.allColumns
   };
 };
 
