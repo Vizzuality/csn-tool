@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { Sticky } from 'react-sticky';
 
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import NavLink from 'containers/common/NavLink';
 import ScrollButton from 'components/common/ScrollButton';
 import SpeciesDetailFilters from 'components/species/SpeciesDetailFilters';
+import SpeciesPopulationHeader from 'components/species/SpeciesPopulationHeader';
 import TableList from 'components/tables/TableList';
 import TableListHeader from 'containers/species/TableListHeader';
 
@@ -16,38 +16,15 @@ class SpeciesDetailTable extends React.Component {
   }
 
   getSelectedHeader() {
-    const selectedPopulation = this.props.selectedLASpeciesPopulation;
+    const { selectedLASpeciesPopulation } = this.props;
 
-    if (!selectedPopulation) return null;
+    if (!this.props.selectedLASpeciesPopulation) return null;
 
     return (
-      <div className="table-navigation">
-        <NavLink to={`/species/${selectedPopulation.species_id}/lookAlikeSpecies`} className="btn -back">
-          {this.context.t('backToSpecies')}
-        </NavLink>
-        <div className="nav">
-          <div>
-            <span className="title">{this.context.t('species')}</span>
-            <h3>{selectedPopulation.original_species}</h3>
-          </div>
-          <div>
-            <span className="title">{this.context.t('population')}</span>
-            <span>{selectedPopulation.population}</span>
-          </div>
-          <div>
-            <span className="title">A</span>
-            <span>{selectedPopulation.original_a || '-'}</span>
-          </div>
-          <div>
-            <span className="title">B</span>
-            <span>{selectedPopulation.original_b || '-'}</span>
-          </div>
-          <div>
-            <span className="title">C</span>
-            <span>{selectedPopulation.original_c || '-'}</span>
-          </div>
-        </div>
-      </div>
+      <SpeciesPopulationHeader
+        species={selectedLASpeciesPopulation}
+        backLinkTo={`/species/${selectedLASpeciesPopulation.species_id}/lookAlikeSpecies`}
+      />
     );
   }
 

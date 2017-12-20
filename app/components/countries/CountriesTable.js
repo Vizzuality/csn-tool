@@ -4,8 +4,8 @@ import { Sticky } from 'react-sticky';
 
 import CountriesFilters from 'components/countries/CountriesFilters';
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import NavLink from 'containers/common/NavLink';
 import ScrollButton from 'components/common/ScrollButton';
+import SpeciesPopulationHeader from 'components/species/SpeciesPopulationHeader';
 import TableList from 'components/tables/TableList';
 import TableListHeader from 'containers/countries/TableListHeader';
 
@@ -17,36 +17,13 @@ class CountriesTable extends React.Component {
   getSelectedHeader() {
     const { selectedLASpeciesPopulation } = this.props;
 
-    if (!selectedLASpeciesPopulation) return null;
+    if (!this.props.selectedLASpeciesPopulation) return null;
 
     return (
-      <div className="table-navigation">
-        <NavLink to={`/countries/${selectedLASpeciesPopulation.iso3}/lookAlikeSpecies`} className="btn -back">
-          {this.context.t('backToSpecies')}
-        </NavLink>
-        <div className="nav">
-          <div>
-            <span className="title">{this.context.t('species')}</span>
-            <h3>{selectedLASpeciesPopulation.original_species}</h3>
-          </div>
-          <div>
-            <span className="title">{this.context.t('population')}</span>
-            <span>{selectedLASpeciesPopulation.population}</span>
-          </div>
-          <div>
-            <span className="title">A</span>
-            <span>{selectedLASpeciesPopulation.original_a || '-'}</span>
-          </div>
-          <div>
-            <span className="title">B</span>
-            <span>{selectedLASpeciesPopulation.original_b || '-'}</span>
-          </div>
-          <div>
-            <span className="title">C</span>
-            <span>{selectedLASpeciesPopulation.original_c || '-'}</span>
-          </div>
-        </div>
-      </div>
+      <SpeciesPopulationHeader
+        species={selectedLASpeciesPopulation}
+        backLinkTo={`/countries/${selectedLASpeciesPopulation.iso3}/lookAlikeSpecies`}
+      />
     );
   }
 
