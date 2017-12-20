@@ -13,7 +13,6 @@ jest.mock('../tables/CSVButton.js', () => 'csvbutton');
 const setup = () => {
   const props = {
     getOptions: jest.fn(),
-    hasResults: true,
     options: {},
     onSearch: jest.fn()
   };

@@ -62,10 +62,9 @@ async function getOptions(req, res) {
 
 function parseParams(query) {
   const params = {};
+  // wrap in array
   Object.keys(query).forEach((key) => {
-    if (query[key] && query[key] !== 'undefined') {
-      params[key] = query[key].split(',');
-    }
+    params[key] = Array.of(query[key]);
   });
   return params;
 }

@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import Select from 'react-select';
 
 import Button from 'components/common/Button';
-import SitesTable from 'containers/sites/SitesTable';
-import SpeciesTable from 'containers/species/SpeciesTable';
-import PopulationsTable from 'containers/species/SpeciesDetailTable';
+import SearchTable from 'containers/advanced-search/SearchTable';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import { StickyContainer } from 'react-sticky';
 
@@ -119,26 +117,19 @@ class AdvancedSearchPage extends React.Component {
 
   renderContent() {
     const { filters } = this.state;
+    const { data } = this.props;
+
     const hasSites = this.isFilterSelected({ filter: 'site' });
     const hasSpecies = this.isFilterSelected({ filter: 'species' });
+    const hasResults = data && data.length;
     const anyPopulationFilter = this.isFilterSelected({ group: 'population' });
     const searchIBAsDisabled = hasSites || anyPopulationFilter;
 
-    let resultsTable = null;
-    switch (this.state.searchType) {
-      case 'ibas':
-        resultsTable = <SitesTable />;
-        break;
-      case 'species':
-        resultsTable = <StickyContainer><SpeciesTable /></StickyContainer>;
-        break;
-      case 'populations':
-        resultsTable = <StickyContainer><PopulationsTable id={'PopulationsTable'} /></StickyContainer>;
-        break;
-      default:
-        resultsTable = [];
-        break;
-    }
+    const resultsTable = (
+      <StickyContainer>
+        <SearchTable />
+      </StickyContainer>
+    );
 
     return (
       <div>
@@ -212,7 +203,7 @@ class AdvancedSearchPage extends React.Component {
             </Button>
           </div>
         </div>
-        {this.props.hasResults &&
+        {hasResults &&
           <div className="row">
             <div className="column">
               {resultsTable}
@@ -247,7 +238,9 @@ AdvancedSearchPage.contextTypes = {
 };
 
 AdvancedSearchPage.propTypes = {
-  hasResults: PropTypes.bool.isRequired,
+  data: PropTypes.any,
+  columns: PropTypes.any,
+  allColumns: PropTypes.any,
   options: PropTypes.object,
   getOptions: PropTypes.func.isRequired,
   onSearch: PropTypes.func.isRequired

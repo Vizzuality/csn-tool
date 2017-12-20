@@ -8,8 +8,6 @@ const mapStateToProps = (state) => {
   const data = state.search.results ? state.search.results.rows : state.species.list;
 
   return {
-    species: state.species.selected,
-    category: state.species.selectedCategory,
     isSearch: state.search.results && state.search.results.rows.length > 0 || false,
     data: filterData({ data, columns, filter }),
     columns,

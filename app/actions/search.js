@@ -2,8 +2,10 @@ import {
   BEFORE_GET_SEARCH_RESULTS,
   GET_SEARCH_OPTIONS,
   GET_SEARCH_RESULTS,
-  SET_SEARCH_FILTER
+  SET_SEARCH_FILTER,
+  SET_SORT
 } from 'constants/action-types';
+import { queryParams } from 'helpers/queryParams';
 
 export function setSearchFilter(search, filter) {
   return {
@@ -33,24 +35,19 @@ export function getSearchOptions() {
   };
 }
 
+function getFilterValues(filters) {
+  return Object.keys(filters).reduce((result, key) => {
+    const value = filters[key];
+    result[key] = Array.isArray(value) // eslint-disable-line no-param-reassign
+      ? value.map((v) => v.value)
+      : value.value;
+    return result;
+  }, {});
+}
+
 export function getSearchResults(category, filters) {
-  let params = '';
-  Object.keys(filters).forEach((key) => {
-    if (filters[key]) {
-      params += `${params ? '&' : '?'}`;
-      if (Array.isArray(filters[key]) && filters[key].length > 0) {
-        params += `${key}=`;
-        filters[key].forEach((filter, index) => {
-          params += `${index > 0 ? ',' : ''}${filter.value}`;
-        });
-      } else {
-        params += `${key}=${filters[key].value}`;
-      }
-    }
-  });
-
-
-  const url = `${config.apiHost}/search/${category}${params}`;
+  const params = queryParams(getFilterValues(filters));
+  const url = `${config.apiHost}/search/${category}?${params}`;
   return dispatch => {
     try {
       dispatch({
@@ -61,14 +58,27 @@ export function getSearchResults(category, filters) {
         .then(data => {
           dispatch({
             type: GET_SEARCH_RESULTS,
-            payload: data
+            payload: {
+              data,
+              category
+            }
           });
         });
     } catch (err) {
       dispatch({
         type: GET_SEARCH_RESULTS,
-        payload: []
+        payload: {
+          data: [],
+          category
+        }
       });
     }
+  };
+}
+
+export function setSearchTableSort(sort) {
+  return {
+    type: `${SET_SORT}_search`,
+    payload: sort
   };
 }
