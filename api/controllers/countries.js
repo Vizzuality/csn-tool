@@ -19,8 +19,13 @@ function getCountryDetails(req, res) {
   const query = `SELECT * FROM countries WHERE iso3='${req.params.iso}'`;
   rp(CARTO_SQL + query)
     .then((data) => {
-      const result = JSON.parse(data).rows || [];
-      res.json(result);
+      const result = JSON.parse(data);
+      if (result.rows && result.rows.length > 0) {
+        res.json(result.rows[0]);
+      } else {
+        res.status(404);
+        res.json({ error: 'No country found' });
+      }
     })
     .catch((err) => {
       res.status(err.statusCode || 500);
