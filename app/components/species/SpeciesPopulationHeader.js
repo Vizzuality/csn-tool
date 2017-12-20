@@ -6,7 +6,9 @@ import NavLink from 'containers/common/NavLink';
 const SpeciesPopulationHeader = ({ species, backLinkTo }, context) => ((
   <div className="table-navigation">
     <NavLink to={backLinkTo} className="btn -back">
-      {context.t('backToSpecies')}
+      <span className="link">
+        {context.t('backToSpecies')}
+      </span>
     </NavLink>
     <div className="nav">
       <div>
