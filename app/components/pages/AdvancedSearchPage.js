@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
+import { StickyContainer } from 'react-sticky';
 
 import Button from 'components/common/Button';
-import SearchTable from 'containers/advanced-search/SearchTable';
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import { StickyContainer } from 'react-sticky';
+import SearchTable from 'containers/advanced-search/SearchTable';
 
 const SEARCH_GROUPS = {
   geography: ['country', 'aewa_region', 'ramsar_region', 'site', 'protection', 'site_threat', 'site_habitat'],
@@ -37,7 +37,6 @@ class AdvancedSearchPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      searchType: '',
       filters: {},
       errors: {
         empty: false
@@ -69,9 +68,6 @@ class AdvancedSearchPage extends React.Component {
 
   onSearchClick(category) {
     const { filters } = this.state;
-    this.setState({
-      searchType: category
-    });
     if (this.hasFilters(filters)) {
       this.props.onSearch(category, filters);
     } else {

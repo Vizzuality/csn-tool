@@ -3,23 +3,33 @@ import PropTypes from 'prop-types';
 import TableListHeader from 'containers/advanced-search/TableListHeader';
 import TableList from 'components/tables/TableList';
 
-const SearchTable = ({ data, allColumns, columns }) => ((
-  <div id="searchTable">
-    <div>
-      <TableListHeader
+const SearchTable = ({ data, allColumns, columns, category }) => {
+  const detailLinkHash = {
+    species: 'species',
+    ibas: 'sites/iba',
+    criticalSites: 'sites/csn',
+    populations: null
+  };
+  const detailLink = detailLinkHash[category];
+
+  return (
+    <div id="searchTable">
+      <div>
+        <TableListHeader
+          data={data}
+          columns={columns}
+          allColumns={allColumns}
+          detailLink
+        />
+      </div>
+      <TableList
         data={data}
         columns={columns}
-        allColumns={allColumns}
-        detailLink
+        detailLink={detailLink}
       />
     </div>
-    <TableList
-      data={data}
-      columns={columns}
-      detailLink="species"
-    />
-  </div>
-));
+  );
+};
 
 SearchTable.contextTypes = {
   t: PropTypes.func.isRequired
@@ -28,7 +38,8 @@ SearchTable.contextTypes = {
 SearchTable.propTypes = {
   allColumns: PropTypes.array.isRequired,
   data: PropTypes.any.isRequired,
-  columns: PropTypes.array.isRequired
+  columns: PropTypes.array.isRequired,
+  category: PropTypes.string.isRequired
 };
 
 export default SearchTable;

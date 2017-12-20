@@ -9,6 +9,7 @@ const mapStateToProps = (state) => {
 
   return {
     data: filterData({ data, columns, filter }),
+    category: state.search.selectedCategory,
     columns,
     allColumns: state.search.allColumns
   };
