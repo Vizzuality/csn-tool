@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 
 const { runQuery } = require('../helpers');
-const AS_STRING = "', '";
+const AS_STRING = "','";
 
 async function getGeneral(query) {
   try {
@@ -62,13 +62,16 @@ async function getOptions(req, res) {
   }
 }
 
-function parseParams(query) {
-  const params = {};
-  // wrap in array
-  Object.keys(query).forEach((key) => {
-    params[key] = Array.isArray(query[key]) ? query[key] : Array.of(query[key]);
-  });
-  return params;
+function condition(column, value) {
+  if (!Array.isArray(value)) {
+    if (isNaN(value)) return `${column} = '${value}'`;
+    return `${column} = ${value}`;
+  }
+
+  const anyNaN = value.some((v) => isNaN(v));
+
+  if (anyNaN) return `${column} IN ('${value.join(AS_STRING)}')`;
+  return `${column} IN (${value.join()})`;
 }
 
 async function getIBAsResults(req, res) {
@@ -77,7 +80,7 @@ async function getIBAsResults(req, res) {
   // family, genus, species, red list status, aewa annex 2, species threat, species habitat association
   // NO QUERY BY site, any population
   try {
-    const params = parseParams(req.query);
+    const params = req.query;
     const {
       aewa_annex_2,
       aewa_region,
@@ -97,45 +100,27 @@ async function getIBAsResults(req, res) {
     const joinSpeciesSites = !!(species || family || genus || species_threat || species_habitat_association);
     const joinSpecies = !!(species || family || genus || red_list_status || aewa_annex_2);
     const where = [];
+    const addCondition = (column, param) => { if (param) where.push(condition(column, param)); };
+
     // sites filters
-    if (country) {
-      where.push(`c.country_id IN(${country.join()})`);
-    }
-    if (aewa_region) {
-      where.push(`c.aewa_region IN ('${aewa_region.join(AS_STRING)}')`);
-    }
-    if (ramsar_region) {
-      where.push(`c.ramsar_region IN ('${ramsar_region.join(AS_STRING)}')`);
-    }
-    if (protection) {
-      where.push(`protection_status IN ('${protection.join(AS_STRING)}')`);
-    }
-    if (site_habitat) {
-      where.push(`sh.habitat_id IN (${site_habitat.join()})`);
-    }
-    if (site_threat) {
-      where.push(`st.threat_id IN (${site_threat.join()})`);
-    }
+    addCondition('c.country_id', country);
+    addCondition('c.aewa_region', aewa_region);
+    addCondition('c.ramsar_region', ramsar_region);
+    addCondition('protection_status', protection);
+    addCondition('sh.habitat_id', site_habitat);
+    addCondition('st.threat_id', site_threat);
     // species filters
     if (species || genus || family) {
-      where.push(`
-       (${species ? `sp.species_id IN(${species.join()})` : false}
-         OR ${genus ? `sp.genus IN('${genus.join(AS_STRING)}')` : false}
-         OR ${family ? `sp.family IN('${family.join(AS_STRING)}')` : false})`
-      );
+      where.push(`(
+       ${species ? condition('sp.species_id', species) : false}
+       OR ${genus ? condition('sp.genus', genus) : false}
+       OR ${family ? condition('sp.family', family) : false}
+      )`);
     }
-    if (red_list_status) {
-      where.push(`sp.iucn_category IN ('${red_list_status.join(AS_STRING)}')`);
-    }
-    if (aewa_annex_2) {
-      where.push(`sp.aewa_annex_2 = ${aewa_annex_2}`);
-    }
-    if (species_threat) {
-      where.push(`spt.threat_level_1 IN ('${species_threat.join(AS_STRING)}')`);
-    }
-    if (species_habitat_association) {
-      where.push(`sph.habitat_level_1 IN ('${species_habitat_association.join(AS_STRING)}')`);
-    }
+    addCondition('sp.iucn_category', red_list_status);
+    addCondition('sp.aewa_annex_2', aewa_annex_2);
+    addCondition('spt.threat_level_1', species_threat);
+    addCondition('sph.habitat_level_1', species_habitat_association);
 
     const query = `
       WITH stc AS (
@@ -187,7 +172,7 @@ async function getCriticalSitesResults(req, res) {
 
 async function getSpeciesResults(req, res) {
   try {
-    const params = parseParams(req.query);
+    const params = req.query;
     const {
       aewa_annex_2,
       aewa_region,
@@ -209,69 +194,43 @@ async function getSpeciesResults(req, res) {
       species_habitat_association,
       species_threat
     } = params;
+
     const joinCountries = !!(country || aewa_region || ramsar_region);
     const joinSpeciesSites = !!(site || site_habitat || site_threat);
+    const joinSites = !!(site || protection);
     const joinPopulations = !!(aewa_table_1_status || cms_caf_action_plan || eu_birds_directive || multispecies_flyway || population_trend);
     const where = [];
+    const addCondition = (column, param) => { if (param) where.push(condition(column, param)); };
 
     // species filters
     if (species || genus || family) {
-      where.push(`
-       (${species ? `sp.species_id IN(${species.join()})` : false}
-         OR ${genus ? `sp.genus IN('${genus.join(AS_STRING)}')` : false}
-         OR ${family ? `sp.family IN('${family.join(AS_STRING)}')` : false})`
-                );
+      where.push(`(
+       ${species ? condition('sp.species_id', species) : false}
+       OR ${genus ? condition('sp.genus', genus) : false}
+       OR ${family ? condition('sp.family', family) : false}
+      )`);
     }
-    if (aewa_annex_2) {
-      where.push(`sp.aewa_annex_2 = ${aewa_annex_2}`);
-    }
-    if (red_list_status) {
-      where.push(`sp.iucn_category IN ('${red_list_status.join(AS_STRING)}')`);
-    }
-    if (species_threat) {
-      where.push(`spt.threat_level_1 IN ('${species_threat.join(AS_STRING)}')`);
-    }
-    if (species_habitat_association) {
-      where.push(`sph.habitat_level_1 IN ('${species_habitat_association.join(AS_STRING)}')`);
-    }
+    addCondition('sp.aewa_annex_2', aewa_annex_2);
+    addCondition('sp.iucn_category', red_list_status);
+    addCondition('spt.threat_level_1', species_threat);
+    addCondition('sph.habitat_level_1', species_habitat_association);
     // sites filters
-    if (protection) {
-      where.push(`protection_status IN ('${protection.join(AS_STRING)}')`);
-    }
-    if (aewa_region) {
-      where.push(`c.aewa_region IN ('${aewa_region.join(AS_STRING)}')`);
-    }
-    if (ramsar_region) {
-      where.push(`c.ramsar_region IN ('${ramsar_region.join(AS_STRING)}')`);
-    }
+    addCondition('s.protection_status', protection);
+    addCondition('c.aewa_region', aewa_region);
+    addCondition('c.ramsar_region', ramsar_region);
     if (country && !site) {
-      where.push(`sc.country_id IN (${country.join()}) AND sc.country_status != 'Vagrant'`);
+      addCondition('sc.country_id', country);
+      where.push("sc.country_status != 'Vagrant'");
     }
-    if (site) {
-      where.push(`s.site_id IN (${site.join()})`);
-    }
-    if (site_habitat) {
-      where.push(`sh.habitat_id IN (${site_habitat.join()})`);
-    }
-    if (site_threat) {
-      where.push(`st.threat_id IN (${site_threat.join()})`);
-    }
+    addCondition('s.site_id', site);
+    addCondition('sh.habitat_id', site_habitat);
+    addCondition('st.threat_id', site_threat);
     // population filters
-    if (aewa_table_1_status) {
-      where.push(`pi.a IN ('${aewa_table_1_status.join(AS_STRING)}')`);
-    }
-    if (cms_caf_action_plan) {
-      where.push(`pi.cms_caf_action_plan = ${cms_caf_action_plan}`);
-    }
-    if (eu_birds_directive) {
-      where.push(`pi.eu_birds_directive = ${eu_birds_directive}`);
-    }
-    if (multispecies_flyway) {
-      where.push(`pi.multispecies_flyway IN ('${multispecies_flyway.join(AS_STRING)}')`);
-    }
-    if (population_trend) {
-      where.push(`pi.trend IN ('${population_trend.join(AS_STRING)}')`);
-    }
+    addCondition('pi.a', aewa_table_1_status);
+    addCondition('pi.cms_caf_action_plan', cms_caf_action_plan);
+    addCondition('pi.eu_birds_directive', eu_birds_directive);
+    addCondition('pi.multispecies_flyway', multispecies_flyway);
+    addCondition('pi.trend', population_trend);
 
     const query = `
       SELECT
@@ -288,7 +247,7 @@ async function getSpeciesResults(req, res) {
         `INNER JOIN species_country sc ON sc.species_id = sc.species_id
          INNER JOIN countries c ON c.country_id = sc.country_id` || ''}
       ${joinSpeciesSites ? 'INNER JOIN species_sites ss ON ss.species_id = sp.species_id' : ''}
-      ${site ? 'INNER JOIN sites s ON ss.site_id = s.site_id' : ''}
+      ${joinSites ? 'INNER JOIN sites s ON ss.site_id = s.site_id' : ''}
       ${species_threat ? 'INNER JOIN species_threats spt ON spt.species_id = sp.species_id' : ''}
       ${species_habitat_association ? 'INNER JOIN species_habitat sph ON sph.species_id = sp.species_id' : ''}
       ${site_habitat ? 'INNER JOIN sites_habitats sh ON sh.site_id = ss.site_id' : ''}
@@ -306,50 +265,103 @@ async function getSpeciesResults(req, res) {
 }
 
 async function getPopulationsResults(req, res) {
-  // TODO: Add filtering by Habitat
   try {
-    const params = parseParams(req.query);
+    const params = req.query;
+    const {
+      aewa_annex_2,
+      aewa_region,
+      aewa_table_1_status,
+      cms_caf_action_plan,
+      country,
+      eu_birds_directive,
+      family,
+      genus,
+      multispecies_flyway,
+      population_trend,
+      protection,
+      ramsar_region,
+      red_list_status,
+      site,
+      site_habitat,
+      site_threat,
+      species,
+      species_habitat_association,
+      species_threat
+    } = params;
+
+    const joinCountries = !!(country || aewa_region || ramsar_region);
+    const joinSites = !!(site || protection);
+    const joinSpeciesSites = !!(site || site_habitat || site_threat || protection);
+    const where = [];
+    const addCondition = (column, param) => { if (param) where.push(condition(column, param)); };
+
+    // species filters
+    if (species || genus || family) {
+      where.push(`(
+       ${species ? condition('sp.species_id', species) : false}
+       OR ${genus ? condition('sp.genus', genus) : false}
+       OR ${family ? condition('sp.family', family) : false}
+      )`);
+    }
+    addCondition('sp.aewa_annex_2', aewa_annex_2);
+    addCondition('sp.iucn_category', red_list_status);
+    addCondition('spt.threat_level_1', species_threat);
+    addCondition('sph.habitat_level_1', species_habitat_association);
+    // sites filters
+    addCondition('s.protection_status', protection);
+    addCondition('c.aewa_region', aewa_region);
+    addCondition('c.ramsar_region', ramsar_region);
+    if (country && !site) {
+      addCondition('sc.country_id', country);
+      where.push("sc.country_status != 'Vagrant'");
+    }
+    addCondition('s.site_id', site);
+    addCondition('sh.habitat_id', site_habitat);
+    addCondition('st.threat_id', site_threat);
+    // population filters
+    addCondition('pi.a', aewa_table_1_status);
+    addCondition('pi.cms_caf_action_plan', cms_caf_action_plan);
+    addCondition('pi.eu_birds_directive', eu_birds_directive);
+    addCondition('pi.multispecies_flyway', multispecies_flyway);
+    addCondition('pi.trend', population_trend);
+
     const query = `SELECT
-      s.scientific_name,
-      s.english_name,
-      s.iucn_category,
+      sp.scientific_name,
+      sp.english_name,
+      sp.iucn_category,
       pi.wpepopid AS pop_id,
-      s.species_id AS id,
+      sp.species_id AS id,
       'http://wpe.wetlands.org/view/' || pi.wpepopid AS pop_hyperlink,
-      pi.caf_action_plan, pi.eu_birds_directive,
-      pi.a, pi.b, pi.c, pi.flyway_range,
-      pi.year_start, pi.year_end,
-      pi.size_min, pi.size_max,
+      pi.caf_action_plan,
+      pi.eu_birds_directive,
+      pi.a,
+      pi.b,
+      pi.c,
+      pi.flyway_range,
+      pi.year_start,
+      pi.year_end,
+      pi.size_min,
+      pi.size_max,
       pi.population_name AS population,
       pi.ramsar_criterion_6 AS ramsar_criterion
       FROM populations_iba AS pi
-      JOIN species_main s ON pi.species_main_id = s.species_id
-      ${params.country && !params.site
-        ? `JOIN species_sites ss ON ss.species_id = s.species_id
-          JOIN species_country sc ON sc.country_id IN(${params.country.join()}) AND
-          sc.country_status != 'Vagrant'
-          JOIN sites ON ss.site_id = sites.site_id AND sites.country_id = sc.country_id
-          JOIN world_borders AS wb ON wb.iso3 = sc.iso
-          AND ST_INTERSECTS(pi.the_geom, wb.the_geom)
-          `
-        : ''}
-      ${params.site
-        ? `JOIN species_sites ss ON ss.species_id = s.species_id
-          JOIN sites ON ss.site_id = sites.site_id AND sites.site_id IN(${params.site.join()})`
-        : ''}
-      ${params.species || params.genus || params.family
-        ? `WHERE (
-            ${params.species ? `s.id IN(${params.species.join()})` : false}
-            OR ${params.genus ? `s.genus IN('${params.genus.join('\',\'')}')` : false}
-            OR ${params.family ? `s.family IN('${params.family.join('\',\'')}')` : false}
-          )`
-        : ''
-      }
-      GROUP by s.scientific_name, s.english_name, s.iucn_category, pi.wpepopid,
-      s.species_id, pi.caf_action_plan, pi.eu_birds_directive, pi.a, pi.b, pi.c,
+      INNER JOIN species_main sp ON pi.species_main_id = sp.species_id
+      ${joinCountries &&
+        `INNER JOIN species_country sc ON sc.species_id = sc.species_id
+         INNER JOIN countries c ON c.country_id = sc.country_id
+         INNER JOIN world_borders AS wb ON wb.iso3 = sc.iso AND ST_INTERSECTS(pi.the_geom, wb.the_geom)` || ''}
+      ${joinSpeciesSites ? 'INNER JOIN species_sites ss ON ss.species_id = sp.species_id' : ''}
+      ${joinSites ? 'INNER JOIN sites s ON ss.site_id = s.site_id' : ''}
+      ${species_threat ? 'INNER JOIN species_threats spt ON spt.species_id = sp.species_id' : ''}
+      ${species_habitat_association ? 'INNER JOIN species_habitat sph ON sph.species_id = sp.species_id' : ''}
+      ${site_habitat ? 'INNER JOIN sites_habitats sh ON sh.site_id = ss.site_id' : ''}
+      ${site_threat ? 'INNER JOIN sites_threats st ON st.site_id = ss.site_id' : ''}
+      ${where.length > 0 && `WHERE ${where.join(' AND ')}` || ''}
+      GROUP by sp.scientific_name, sp.english_name, sp.iucn_category, pi.wpepopid,
+      sp.species_id, pi.caf_action_plan, pi.eu_birds_directive, pi.a, pi.b, pi.c,
       pi.flyway_range, pi.year_start, pi.year_end, pi.size_min, pi.size_max,
-      pi.population_name, pi.ramsar_criterion_6, s.taxonomic_sequence
-      ORDER by s.taxonomic_sequence ASC`;
+      pi.population_name, pi.ramsar_criterion_6, sp.taxonomic_sequence
+      ORDER by sp.taxonomic_sequence ASC`;
     const data = await runQuery(query);
     res.json(JSON.parse(data));
   } catch (err) {
