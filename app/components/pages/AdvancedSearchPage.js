@@ -137,6 +137,7 @@ class AdvancedSearchPage extends React.Component {
             {SEARCH_GROUPS[group].map((section, index2) => {
               const value = filters[section] || null;
               const options = this.props.options && this.getFilteredOptions(section, this.props.options[section]) || [];
+
               return (
                 <div className="column small-12 medium-3 group-field" key={index2}>
                   <h4 className="label">{this.context.t(section)}</h4>
