@@ -1,5 +1,4 @@
-const rp = require('request-promise');
-const CARTO_SQL = require('../constants').CARTO_SQL;
+const { runQuery } = require('../helpers');
 
 function getSpeciesByPosition(req, res) {
   // TO include the geom
@@ -24,7 +23,7 @@ function getSpeciesByPosition(req, res) {
     WHERE ST_CONTAINS(p.the_geom_webmercator,ST_Transform(ST_SetSRID(ST_MakePoint(${req.params.lng},${req.params.lat}), 4326), 3857))
     AND sc.country_status != 'Vagrant'
     ORDER BY sm.taxonomic_sequence ASC`;
-  rp(CARTO_SQL + query)
+  runQuery(query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {

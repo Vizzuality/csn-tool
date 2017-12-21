@@ -1,12 +1,11 @@
 /* eslint-disable camelcase */
 
-const rp = require('request-promise');
-const CARTO_SQL = require('../constants').CARTO_SQL;
+const { runQuery } = require('../helpers');
 const AS_STRING = "', '";
 
 async function getGeneral(query) {
   try {
-    const data = await rp(CARTO_SQL + query);
+    const data = await runQuery(query);
     return JSON.parse(data).rows || [];
   } catch (err) {
     return [];
@@ -169,7 +168,7 @@ async function getIBAsResults(req, res) {
 
     // console.log('query', query);
 
-    const data = await rp(CARTO_SQL + query);
+    const data = await runQuery(query);
     res.json(JSON.parse(data));
   } catch (err) {
     res.status(err.statusCode || 500);
@@ -217,7 +216,7 @@ async function getSpeciesResults(req, res) {
       GROUP BY s.scientific_name, s.family, s.genus, s.english_name, s.species_id,
       s.iucn_category, s.hyperlink, s.taxonomic_sequence
       ORDER by taxonomic_sequence ASC`;
-    const data = await rp(CARTO_SQL + query);
+    const data = await runQuery(query);
     res.json(JSON.parse(data));
   } catch (err) {
     res.status(err.statusCode || 500);
@@ -270,7 +269,7 @@ async function getPopulationsResults(req, res) {
       pi.flyway_range, pi.year_start, pi.year_end, pi.size_min, pi.size_max,
       pi.population_name, pi.ramsar_criterion_6, s.taxonomic_sequence
       ORDER by s.taxonomic_sequence ASC`;
-    const data = await rp(CARTO_SQL + query);
+    const data = await runQuery(query);
     res.json(JSON.parse(data));
   } catch (err) {
     res.status(err.statusCode || 500);

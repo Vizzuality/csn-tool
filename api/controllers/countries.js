@@ -1,10 +1,9 @@
-const rp = require('request-promise');
-const CARTO_SQL = require('../constants').CARTO_SQL;
 const normalizeSiteStatus = require('../helpers/index').normalizeSiteStatus;
+const { runQuery } = require('../helpers');
 
 function getCountries(req, res) {
   const query = 'SELECT * FROM countries';
-  rp(CARTO_SQL + query)
+  runQuery(query)
     .then((data) => {
       const result = JSON.parse(data).rows || [];
       res.json(result);
@@ -17,7 +16,7 @@ function getCountries(req, res) {
 
 function getCountryDetails(req, res) {
   const query = `SELECT * FROM countries WHERE iso3='${req.params.iso}'`;
-  rp(CARTO_SQL + query)
+  runQuery(query)
     .then((data) => {
       const result = JSON.parse(data);
       if (result.rows && result.rows.length > 0) {
@@ -45,7 +44,7 @@ function getCountrySites(req, res) {
     c.iso3 = '${req.params.iso}'
     LEFT JOIN stc ON stc.site_id = s.site_id
     ORDER BY s.site_name`;
-  rp(CARTO_SQL + query)
+  runQuery(query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
@@ -74,7 +73,7 @@ function getCountryCriticalSites(req, res) {
     INNER JOIN csn_species_count AS csc ON csc.site_id = s.site_id
     WHERE s.iso3 = '${req.params.iso}'
     ORDER BY s.site_name ASC`;
-  rp(CARTO_SQL + query)
+  runQuery(query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
@@ -103,7 +102,7 @@ function getCountrySpecies(req, res) {
     s.hyperlink, sc.country_status, s.iucn_category, s.taxonomic_sequence,
     sc.occurrence_status
     ORDER BY s.taxonomic_sequence`;
-  rp(CARTO_SQL + query)
+  runQuery(query)
     .then((data) => {
       const result = JSON.parse(data).rows || [];
       res.json(result);
@@ -136,7 +135,7 @@ function getCountryPopulations(req, res) {
     )
     ORDER BY s.taxonomic_sequence
   `;
-  rp(CARTO_SQL + query)
+  runQuery(query)
     .then((data) => {
       const result = JSON.parse(data).rows || [];
       res.json(result);
@@ -175,7 +174,7 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
     ) as sq
 
     INNER JOIN species_main AS sm ON
-    (sq.confusion_group %26%26 sm.confusion_group)
+    (sq.confusion_group && sm.confusion_group)
     AND sm.species_id != sq.species_id
     INNER JOIN world_borders AS wb ON
     wb.iso3 = '${req.params.iso}'
@@ -188,7 +187,7 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
     sq.a, sq.b, sq.c, sq.wpepopid, sq.taxonomic_sequence
     ORDER BY sq.taxonomic_sequence ASC`;
 
-  rp(CARTO_SQL + query)
+  runQuery(query)
     .then((data) => {
       const result = JSON.parse(data).rows || [];
       res.json(result);
@@ -223,7 +222,7 @@ function getCountryLookAlikeSpecies(req, res) {
     ) as sq
 
     INNER JOIN species_main AS sm ON
-    (sq.confusion_group %26%26 sm.confusion_group)
+    (sq.confusion_group && sm.confusion_group)
     AND sm.species_id != sq.species_id
     INNER JOIN world_borders AS wb ON
     wb.iso3 = '${req.params.iso}'
@@ -233,7 +232,7 @@ function getCountryLookAlikeSpecies(req, res) {
     AND pi.species_main_id = sm.species_id
     ORDER BY sm.taxonomic_sequence ASC`;
 
-  rp(CARTO_SQL + query)
+  runQuery(query)
     .then((data) => {
       const result = JSON.parse(data).rows || [];
       res.json(result);
