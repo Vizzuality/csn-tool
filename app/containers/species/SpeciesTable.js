@@ -4,11 +4,10 @@ import { filterData } from 'helpers/filters';
 
 const mapStateToProps = (state) => {
   const columns = state.species.columns;
-  const filter = state.search.results ? state.search.search : state.species.searchFilter;
-  const data = state.search.results ? state.search.results.rows : state.species.list;
+  const filter = state.species.searchFilter;
+  const data = state.species.list;
 
   return {
-    isSearch: state.search.results && state.search.results.rows.length > 0 || false,
     data: filterData({ data, columns, filter }),
     columns,
     allColumns: state.species.allColumns

@@ -67,7 +67,6 @@ class SpeciesDetailTable extends React.Component {
         <SpeciesDetailFilters
           data={data}
           columns={columns}
-          isSearch={this.props.isSearch}
           id={this.props.id}
           category={this.props.category}
         />
@@ -88,7 +87,6 @@ class SpeciesDetailTable extends React.Component {
       category,
       columns,
       data,
-      isSearch,
       selectedLASpeciesPopulation,
       selectedTableItem
     } = this.props;
@@ -99,16 +97,10 @@ class SpeciesDetailTable extends React.Component {
 
     return (
       <div className="c-table" >
-        {!isSearch && <ScrollButton />}
-        {isSearch ? (
-          <div>
-            {this.renderTableHeader(isExpanded, data, columns, allColumns)}
-          </div>
-        ) : (
-          <Sticky topOffset={-120} stickyClassName={'-sticky'}>
-            {this.renderTableHeader(isExpanded, data, columns, allColumns)}
-          </Sticky>
-        )}
+        <ScrollButton />
+        <Sticky topOffset={-120} stickyClassName={'-sticky'}>
+          {this.renderTableHeader(isExpanded, data, columns, allColumns)}
+        </Sticky>
         <TableList
           data={data}
           columns={columns}
@@ -133,7 +125,6 @@ SpeciesDetailTable.childContextTypes = {
 SpeciesDetailTable.propTypes = {
   allColumns: PropTypes.array.isRequired,
   id: PropTypes.string.isRequired,
-  isSearch: PropTypes.bool.isRequired,
   category: PropTypes.string.isRequired,
   data: PropTypes.any.isRequired,
   columns: PropTypes.array.isRequired,

@@ -20,18 +20,15 @@ function getSelectedSpeciesPopulation(species) {
 }
 
 const mapStateToProps = (state) => {
-  const columns = state.search.results && state.search.results.fields ?
-          Object.keys(state.search.results.fields) : state.species.columns;
+  const columns = state.species.columns;
   const species = state.species;
   const detailList = getDetailList(species);
-  const isSearch = !!(state.search.results);
-  const data = isSearch ? state.search.results.rows : detailList;
-  const filter = isSearch ? state.search.search : state.species.searchFilter;
-  const columnFilter = isSearch ? state.search.columnFilter : state.species.columnFilter;
+  const data = detailList;
+  const filter = state.species.searchFilter;
+  const columnFilter = state.species.columnFilter;
 
   return {
-    category: state.search.results ? 'population' : state.species.selectedCategory,
-    isSearch,
+    category: state.species.selectedCategory,
     data: filterData({ data, columns, filter, columnFilter }),
     allColumns: state.species.allColumns,
     columns,
