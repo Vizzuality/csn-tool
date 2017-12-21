@@ -12,6 +12,7 @@ const setup = () => {
     allColumns: ['country', 'english_name', 'population', 'genus', 'family'],
     columns: ['country', 'english_name', 'population', 'genus', 'family'],
     list: {
+      hasMore: false,
       data: [
         { country: 'Albania' },
         { country: 'England' }
@@ -20,14 +21,7 @@ const setup = () => {
   };
 
   const state = {
-    sites: standard,
-    search: {
-      results: {
-        rows: standard.list.data,
-        sites: []
-      },
-      options: {}
-    }
+    sites: standard
   };
 
   const store = {
@@ -68,23 +62,6 @@ describe('containers', () => {
     it('should filter search results when the filter is empty', () => {
       const { enzymeWrapper, standard } = setup();
       expect(enzymeWrapper.find(SitesTableComponent).props().list.data).toEqual(standard.list.data);
-    });
-
-    it('should filter search results by search filter', () => {
-      const { state, store } = setup();
-      state.search.search = 'En';
-      const enzymeWrapper = mount(
-        <Provider store={store}>
-          <SitesTable />
-        </Provider>, {
-          context: { t: jest.fn() },
-          childContextTypes: {
-            t: PropTypes.func
-          }
-        }
-      );
-      expect(enzymeWrapper.find(SitesTableComponent).props().list.data)
-        .toEqual([{ country: '<span class="filtered">en</span>gland' }]);
     });
   });
 });

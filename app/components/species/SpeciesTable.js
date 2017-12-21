@@ -12,7 +12,7 @@ class SpeciesTable extends React.Component {
 
     return (
       <div>
-        <SpeciesFilters data={data} columns={columns}/>
+        <SpeciesFilters data={data} columns={columns} />
         <TableListHeader
           data={data}
           columns={columns}
