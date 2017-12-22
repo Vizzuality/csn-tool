@@ -8,7 +8,7 @@ function NavLink(props, context) {
     search = '';
   }
   return (
-    <Link activeClassName="-current" className={props.className} to={`/${props.lang}${props.to}${search}`}>
+    <Link activeClassName="-current" className={props.className} to={`/${props.lang}${props.to}${search}`} onClick={(e) => e.stopPropagation()}>
       {props.i18nText ? context.t(props.i18nText) : props.text}
       {props.icon && <svg><use xlinkHref={`#${props.icon}`}></use></svg>}
       {props.children}
