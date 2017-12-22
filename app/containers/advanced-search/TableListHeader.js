@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import TableListHeader from 'components/tables/TableListHeader';
-import { setSearchTableSort } from 'actions/search';
+import { setSearchTableSort, setSearchColumnFilter } from 'actions/search';
 import { changeColumnActivation } from 'actions/common';
 import { TABLES } from 'constants/tables';
 
@@ -11,7 +11,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   sortBy: (sort) => dispatch(setSearchTableSort(sort)),
-  filterBy: () => {},
+  filterBy: (filter) => dispatch(setSearchColumnFilter(filter)),
   changeColumnActivation: (column) => dispatch(changeColumnActivation(column, TABLES.SEARCH))
 });
 

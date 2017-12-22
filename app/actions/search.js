@@ -2,18 +2,12 @@ import {
   BEFORE_GET_SEARCH_RESULTS,
   GET_SEARCH_OPTIONS,
   GET_SEARCH_RESULTS,
+  SET_COLUMN_FILTER,
   SET_SEARCH_FILTER,
   SET_SORT
 } from 'constants/action-types';
 import { TABLES } from 'constants/tables';
 import { queryParams } from 'helpers/queryParams';
-
-export function setSearchFilter(search) {
-  return {
-    type: `${SET_SEARCH_FILTER}_${TABLES.SEARCH}`,
-    payload: { search }
-  };
-}
 
 export function getSearchOptions() {
   const url = `${config.apiHost}/search/options`;
@@ -81,5 +75,19 @@ export function setSearchTableSort(sort) {
   return {
     type: `${SET_SORT}_${TABLES.SEARCH}`,
     payload: sort
+  };
+}
+
+export function setSearchFilter(search) {
+  return {
+    type: `${SET_SEARCH_FILTER}_${TABLES.SEARCH}`,
+    payload: search
+  };
+}
+
+export function setSearchColumnFilter(filter) {
+  return {
+    type: `${SET_COLUMN_FILTER}_${TABLES.SEARCH}`,
+    payload: filter
   };
 }
