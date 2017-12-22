@@ -6,8 +6,9 @@ import {
 } from 'constants/action-types';
 import {
   DEFAULT_THRESHOLD_COLUMNS,
-  ALL_THRESHOLD_COLUMNS
-} from 'constants/thresholds';
+  ALL_THRESHOLD_COLUMNS,
+  TABLES
+} from 'constants/tables';
 import withTable from './withTable';
 
 const initialState = {
@@ -41,4 +42,4 @@ const thresholdReducer = (state = initialState, action) => {
   }
 };
 
-export default withTable('threshold', thresholdReducer);
+export default withTable(TABLES.THRESHOLDS, thresholdReducer);

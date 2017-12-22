@@ -7,14 +7,15 @@ import {
   GET_SPECIES_SITES,
   GET_SPECIES_STATS,
   SELECT_SPECIES_TABLE_ITEM,
+  SET_COLUMN_FILTER,
+  SET_SEARCH_FILTER,
   SET_SORT,
-  SET_SPECIES_COLUMN_FILTER,
   SET_SPECIES_DETAIL_PARAMS,
-  SET_SPECIES_DETAIL_SEARCH,
   SET_SPECIES_PARAMS,
   TOGGLE_LEGEND_ITEM,
   TOGGLE_SPECIES_LAYER
 } from 'constants/action-types';
+import { TABLES } from 'constants/tables';
 
 export function getSpeciesStats(id) {
   const url = `${config.apiHost}/species/${id}`;
@@ -158,7 +159,7 @@ export function getSpeciesLookAlikeSpeciesPopulation(id, populationId) {
 
 export function setSpeciesTableSort(sort) {
   return {
-    type: `${SET_SORT}_species`,
+    type: `${SET_SORT}_${TABLES.SPECIES}`,
     payload: sort
   };
 }
@@ -179,14 +180,14 @@ export function setSpeciesDetailParams(id, category, population) {
 
 export function setSearchFilter(search) {
   return {
-    type: SET_SPECIES_DETAIL_SEARCH,
+    type: `${SET_SEARCH_FILTER}_${TABLES.SPECIES}`,
     payload: search
   };
 }
 
 export function resetSearchFilter() {
   return {
-    type: SET_SPECIES_DETAIL_SEARCH,
+    type: `${SET_SEARCH_FILTER}_${TABLES.SPECIES}`,
     payload: ''
   };
 }
@@ -207,7 +208,7 @@ export function toggleLegendItem(item, active) {
 
 export function setSpeciesFilter(filter) {
   return {
-    type: SET_SPECIES_COLUMN_FILTER,
+    type: `${SET_COLUMN_FILTER}_${TABLES.SPECIES}`,
     payload: filter
   };
 }

@@ -7,17 +7,16 @@ import {
   GET_SPECIES_SITES,
   GET_SPECIES_STATS,
   SELECT_SPECIES_TABLE_ITEM,
-  SET_SPECIES_COLUMN_FILTER,
   SET_SPECIES_DETAIL_PARAMS,
-  SET_SPECIES_DETAIL_SEARCH,
   SET_SPECIES_PARAMS,
   TOGGLE_LEGEND_ITEM,
   TOGGLE_SPECIES_LAYER
 } from 'constants/action-types';
 import {
   ALL_SPECIES_COLUMNS,
-  DEFAULT_SPECIES_COLUMNS
-} from 'constants/species';
+  DEFAULT_SPECIES_COLUMNS,
+  TABLES
+} from 'constants/tables';
 import withTable from 'reducers/withTable';
 
 const initialState = {
@@ -70,10 +69,6 @@ const speciesReducer = (state = initialState, action) => {
       };
       return Object.assign({}, state, params);
     }
-    case SET_SPECIES_COLUMN_FILTER:
-      return Object.assign({}, state, { columnFilter: action.payload });
-    case SET_SPECIES_DETAIL_SEARCH:
-      return Object.assign({}, state, { searchFilter: action.payload });
     case GET_SPECIES_STATS:
       return Object.assign({}, state, { stats: action.payload });
     case GET_SPECIES_LIST:
@@ -129,4 +124,4 @@ const speciesReducer = (state = initialState, action) => {
   }
 };
 
-export default withTable('species', speciesReducer);
+export default withTable(TABLES.SPECIES, speciesReducer);

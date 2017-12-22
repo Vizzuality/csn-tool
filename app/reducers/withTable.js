@@ -1,15 +1,22 @@
 import {
   CHANGE_COLUMN_ACTIVATION,
+  SET_COLUMN_FILTER,
+  SET_SEARCH_FILTER,
   SET_SORT
 } from 'constants/action-types';
 import { commonSort } from 'reducers/common';
 
-export default function (name, reducer) {
+export default function (tableName, reducer) {
   return (prevState, action) => {
     const state = reducer(prevState, action);
+    const tableAction = (name) => `${name}_${tableName}`;
 
     switch (action.type) {
-      case `${CHANGE_COLUMN_ACTIVATION}_${name}`: {
+      case tableAction(SET_SEARCH_FILTER):
+        return Object.assign({}, state, { searchFilter: action.payload });
+      case tableAction(SET_COLUMN_FILTER):
+        return Object.assign({}, state, { columnFilter: action.payload });
+      case tableAction(CHANGE_COLUMN_ACTIVATION): {
         const columns = state.columns.slice();
         let newColumns = columns.filter((col) => col !== action.payload);
 
@@ -24,7 +31,7 @@ export default function (name, reducer) {
           columns: newColumns
         };
       }
-      case `${SET_SORT}_${name}`: {
+      case tableAction(SET_SORT): {
         let list = null;
         let isResource = false;
         const id = state.selectedLASpeciesPopulation || state.selected;

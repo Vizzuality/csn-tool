@@ -8,12 +8,13 @@ import {
   GET_COUNTRIES_SITES,
   GET_COUNTRIES_SPECIES,
   GET_COUNTRIES_STATS,
-  SET_COUNTRY_COLUMN_FILTER,
+  SET_COLUMN_FILTER,
   SET_COUNTRY_PARAMS,
-  SET_COUNTRY_SEARCH,
+  SET_SEARCH_FILTER,
   SET_SORT,
   TOGGLE_COUNTRIES_LAYER
 } from 'constants/action-types';
+import { TABLES } from 'constants/tables';
 import { push } from 'react-router-redux';
 
 export function goCountryDetail(iso) {
@@ -210,13 +211,6 @@ export function setCountryParams(params) {
   };
 }
 
-export function setSearchFilter(search) {
-  return {
-    type: SET_COUNTRY_SEARCH,
-    payload: search
-  };
-}
-
 export function toggleLayer(layer) {
   return {
     type: TOGGLE_COUNTRIES_LAYER,
@@ -224,16 +218,23 @@ export function toggleLayer(layer) {
   };
 }
 
+export function setSearchFilter(search) {
+  return {
+    type: `${SET_SEARCH_FILTER}_${TABLES.COUNTRIES}`,
+    payload: search
+  };
+}
+
 export function setCountriesTableSort(sort) {
   return {
-    type: `${SET_SORT}_countries`,
+    type: `${SET_SORT}_${TABLES.COUNTRIES}`,
     payload: sort
   };
 }
 
 export function setCountriesTableFilter(filter) {
   return {
-    type: SET_COUNTRY_COLUMN_FILTER,
+    type: `${SET_COLUMN_FILTER}_${TABLES.COUNTRIES}`,
     payload: filter
   };
 }

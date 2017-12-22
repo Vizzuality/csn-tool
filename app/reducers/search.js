@@ -1,18 +1,15 @@
 import {
   GET_SEARCH_OPTIONS,
   GET_SEARCH_RESULTS,
-  SET_SEARCH_FILTER,
-  SET_SPECIES_COLUMN_FILTER,
   BEFORE_GET_SEARCH_RESULTS
 } from 'constants/action-types';
 import {
-  ALL_SPECIES_COLUMNS,
-  DEFAULT_SPECIES_COLUMNS
-} from 'constants/species';
-import {
   ALL_SITES_COLUMNS,
-  DEFAULT_SITES_COLUMNS
-} from 'constants/sites';
+  ALL_SPECIES_COLUMNS,
+  DEFAULT_SITES_COLUMNS,
+  DEFAULT_SPECIES_COLUMNS,
+  TABLES
+} from 'constants/tables';
 
 import withTable from './withTable';
 
@@ -70,13 +67,9 @@ const searchReducer = (state = initialState, action) => {
         searchFilter: '',
         isFetching: false
       };
-    case SET_SEARCH_FILTER:
-      return { ...state, searchFilter: action.payload.search };
-    case SET_SPECIES_COLUMN_FILTER:
-      return { ...state, columnFilter: action.payload };
     default:
       return state;
   }
 };
 
-export default withTable('search', searchReducer);
+export default withTable(TABLES.SEARCH, searchReducer);

@@ -4,15 +4,14 @@ import {
   GET_SITES_LOCATIONS,
   GET_SITES_SPECIES,
   GET_SITES_STATS,
-  SET_SITES_COLUMN_FILTER,
   SET_SITES_PARAMS,
-  SET_SITES_SEARCH,
   SET_VIEW_MODE
 } from 'constants/action-types';
 import {
   ALL_SITES_COLUMNS,
-  DEFAULT_SITES_COLUMNS
-} from 'constants/sites';
+  DEFAULT_SITES_COLUMNS,
+  TABLES
+} from 'constants/tables';
 import { RESULTS_PER_PAGE } from 'constants/config';
 import withTable from './withTable';
 
@@ -59,10 +58,6 @@ const sitesReducer = (state = initialState, action) => {
       }
       return Object.assign({}, state, params);
     }
-    case SET_SITES_SEARCH:
-      return Object.assign({}, state, { searchFilter: action.payload });
-    case SET_SITES_COLUMN_FILTER:
-      return Object.assign({}, state, { columnFilter: action.payload });
     case SET_VIEW_MODE:
       return Object.assign({}, state, { viewMode: action.payload });
     case GET_SITES_LOCATIONS:
@@ -101,4 +96,4 @@ const sitesReducer = (state = initialState, action) => {
   }
 };
 
-export default withTable('sites', sitesReducer);
+export default withTable(TABLES.SITES, sitesReducer);

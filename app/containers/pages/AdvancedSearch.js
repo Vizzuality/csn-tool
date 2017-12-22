@@ -4,7 +4,7 @@ import { getSearchOptions, getSearchResults } from 'actions/search';
 import {
   ALL_SPECIES_COLUMNS,
   DEFAULT_SPECIES_COLUMNS
-} from 'constants/species';
+} from 'constants/tables';
 
 const mapStateToProps = (state) => ({
   options: state.search.options,

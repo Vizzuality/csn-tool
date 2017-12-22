@@ -3,8 +3,9 @@ import {
   SET_THRESHOLD_COLUMN_FILTER,
   SET_THRESHOLD_DATA,
   SET_THRESHOLD_POSITION,
-  SET_THRESHOLD_SEARCH_FILTER
+  SET_SEARCH_FILTER
 } from 'constants/action-types';
+import { TABLES } from 'constants/tables';
 
 export function setLocation(coordinates) {
   return dispatch => {
@@ -35,14 +36,14 @@ export function setLocation(coordinates) {
 
 export function setThresholdTableSort(sort) {
   return {
-    type: `${SET_SORT}_threshold`,
+    type: `${SET_SORT}_${TABLES.THRESHOLDS}`,
     payload: sort
   };
 }
 
 export function setThresholdTableFilter(filter) {
   return {
-    type: SET_THRESHOLD_SEARCH_FILTER,
+    type: `${SET_SEARCH_FILTER}_${TABLES.THRESHOLDS}`,
     payload: filter
   };
 }

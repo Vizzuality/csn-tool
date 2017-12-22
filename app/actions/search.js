@@ -5,11 +5,12 @@ import {
   SET_SEARCH_FILTER,
   SET_SORT
 } from 'constants/action-types';
+import { TABLES } from 'constants/tables';
 import { queryParams } from 'helpers/queryParams';
 
 export function setSearchFilter(search) {
   return {
-    type: SET_SEARCH_FILTER,
+    type: `${SET_SEARCH_FILTER}_${TABLES.SEARCH}`,
     payload: { search }
   };
 }
@@ -78,7 +79,7 @@ export function getSearchResults(category, filters) {
 
 export function setSearchTableSort(sort) {
   return {
-    type: `${SET_SORT}_search`,
+    type: `${SET_SORT}_${TABLES.SEARCH}`,
     payload: sort
   };
 }

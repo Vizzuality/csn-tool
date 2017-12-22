@@ -8,15 +8,14 @@ import {
   GET_COUNTRIES_SITES,
   GET_COUNTRIES_SPECIES,
   GET_COUNTRIES_STATS,
-  SET_COUNTRY_COLUMN_FILTER,
   SET_COUNTRY_PARAMS,
-  SET_COUNTRY_SEARCH,
   TOGGLE_COUNTRIES_LAYER
 } from 'constants/action-types';
 import {
   ALL_COUNTRY_COLUMNS,
-  DEFAULT_COUNTRY_COLUMNS
-} from 'constants/countries';
+  DEFAULT_COUNTRY_COLUMNS,
+  TABLES
+} from 'constants/tables';
 import withTable from './withTable';
 
 const initialState = {
@@ -61,10 +60,6 @@ const countriesReducer = (state = initialState, action) => {
       };
       return Object.assign({}, state, params);
     }
-    case SET_COUNTRY_SEARCH:
-      return Object.assign({}, state, { searchFilter: action.payload });
-    case SET_COUNTRY_COLUMN_FILTER:
-      return Object.assign({}, state, { columnFilter: action.payload });
     case GET_COUNTRIES_LIST:
       return Object.assign({}, state, { countries: action.payload });
     case GET_COUNTRIES_GEOM:
@@ -115,4 +110,4 @@ const countriesReducer = (state = initialState, action) => {
   }
 };
 
-export default withTable('countries', countriesReducer);
+export default withTable(TABLES.COUNTRIES, countriesReducer);
