@@ -9,6 +9,7 @@ import {
 const mapStateToProps = (state) => ({
   options: state.search.options,
   data: state.search.list,
+  isFetching: state.search.isFetching,
   columns: DEFAULT_SPECIES_COLUMNS.over,
   allColumns: ALL_SPECIES_COLUMNS.over
 });

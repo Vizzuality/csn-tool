@@ -4,7 +4,7 @@ import { filterData } from 'helpers/filters';
 
 const mapStateToProps = (state) => {
   const columns = state.search.columns;
-  const filter = state.search.search;
+  const filter = state.search.searchFilter;
   const data = state.search.list;
 
   return {

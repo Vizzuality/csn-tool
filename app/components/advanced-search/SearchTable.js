@@ -39,7 +39,7 @@ SearchTable.propTypes = {
   allColumns: PropTypes.array.isRequired,
   data: PropTypes.any.isRequired,
   columns: PropTypes.array.isRequired,
-  category: PropTypes.string.isRequired
+  category: PropTypes.string
 };
 
 export default SearchTable;

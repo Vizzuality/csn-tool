@@ -20,8 +20,9 @@ const initialState = {
   columns: [],
   allColumns: [],
   options: null,
-  list: [],
-  search: false,
+  list: false,
+  isFetching: false,
+  searchFilter: '',
   sort: {
     field: '',
     order: ''
@@ -59,14 +60,15 @@ const searchReducer = (state = initialState, action) => {
     case GET_SEARCH_OPTIONS:
       return { ...state, options: action.payload };
     case BEFORE_GET_SEARCH_RESULTS:
-      return { ...state, list: [], columnFilter: {} };
+      return { ...state, list: false, isFetching: true, columnFilter: {} };
     case GET_SEARCH_RESULTS:
       return {
         ...state,
         ...getColumns(action.payload.category),
         list: action.payload.data.rows,
         selectedCategory: action.payload.category,
-        search: false
+        searchFilter: '',
+        isFetching: false
       };
     case SET_SEARCH_FILTER:
       return { ...state, search: action.payload.search };

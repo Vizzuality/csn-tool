@@ -11,15 +11,14 @@ const setup = () => {
   const props = {
     getOptions: jest.fn(),
     options: {},
-    onSearch: jest.fn()
+    onSearch: jest.fn(),
+    isFetching: false
   };
 
   const standard = {
     filter: 'iba',
     allColumns: ['scientific_name', 'english_name', 'population', 'genus', 'family'],
     columns: ['scientific_name', 'english_name', 'population', 'genus', 'family'],
-    allExpandedColumns: ['scientific_name', 'english_name', 'population', 'a', 'b', 'c'],
-    expandedColumns: ['scientific_name', 'english_name', 'population', 'a', 'b', 'c'],
     list: [
       { csn: 'a' }
     ]

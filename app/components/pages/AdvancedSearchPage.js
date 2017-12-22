@@ -113,19 +113,13 @@ class AdvancedSearchPage extends React.Component {
 
   renderContent() {
     const { filters } = this.state;
-    const { data } = this.props;
+    const { data, isFetching } = this.props;
 
     const hasSites = this.isFilterSelected({ filter: 'site' });
     const hasSpecies = this.isFilterSelected({ filter: 'species' });
-    const hasResults = data && data.length;
+    const hasBeenSearched = isFetching || data;
     const anyPopulationFilter = this.isFilterSelected({ group: 'population' });
     const searchIBAsDisabled = hasSites || anyPopulationFilter;
-
-    const resultsTable = (
-      <StickyContainer>
-        <SearchTable />
-      </StickyContainer>
-    );
 
     return (
       <div>
@@ -200,13 +194,15 @@ class AdvancedSearchPage extends React.Component {
             </Button>
           </div>
         </div>
-        {hasResults &&
-          <div className="row">
-            <div className="column">
-              {resultsTable}
-            </div>
+        <div className="row">
+          <div className="column">
+            {hasBeenSearched &&
+              <StickyContainer>
+                <SearchTable />
+              </StickyContainer>
+            }
           </div>
-        }
+        </div>
       </div>
     );
   }
@@ -236,6 +232,7 @@ AdvancedSearchPage.contextTypes = {
 
 AdvancedSearchPage.propTypes = {
   data: PropTypes.any,
+  isFetching: PropTypes.bool.isRequired,
   columns: PropTypes.any,
   allColumns: PropTypes.any,
   options: PropTypes.object,
