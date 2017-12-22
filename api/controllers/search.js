@@ -105,8 +105,8 @@ async function getIBAsResults(req, res) {
       species_threat
     } = params;
 
-    const joinSpeciesSites = !!(species || family || genus || species_threat || species_habitat_association);
     const joinSpecies = !!(species || family || genus || red_list_status || aewa_annex_2);
+    const joinSpeciesSites = !!(joinSpecies || species_threat || species_habitat_association);
     const where = [];
     const addCondition = (column, param, collection = where) => { if (param) collection.push(condition(column, param)); };
 
