@@ -12,6 +12,7 @@ const SEARCH_GROUPS = {
   taxonomy: ['family', 'genus', 'species', 'red_list_status', 'aewa_annex_2', 'species_threat', 'species_habitat_association'],
   population: ['aewa_table_1_status', 'eu_birds_directive', 'cms_caf_action_plan', 'multispecies_flyway', 'population_trend']
 };
+const SINGLE_SELECTS = ['aewa_annex_2', 'eu_birds_directive', 'cms_caf_action_plan'];
 
 function filterSitesByCountry(countries, sites) {
   if (!countries) return sites;
@@ -20,11 +21,11 @@ function filterSitesByCountry(countries, sites) {
 }
 function filterSpeciesByGenusAndFamily(genus, families, species) {
   if (!genus && !families) return species;
-  if (!genus || !genus.length > 0) {
+  if (!genus) {
     const familyValues = families.map((item) => item.value);
     return species.filter((site) => familyValues.indexOf(site.family) > -1);
   }
-  if (!families || !families.length > 0) {
+  if (!families) {
     const genusValues = genus.map((item) => item.value);
     return species.filter((site) => genusValues.indexOf(site.genus) > -1);
   }
@@ -56,6 +57,9 @@ class AdvancedSearchPage extends React.Component {
         ...state.filters,
         [section]: value
       };
+      if (!value || (Array.isArray(value) && !value.length)) {
+        delete filters[section];
+      }
       const hasValue = this.hasFilters(filters);
       return {
         filters,
@@ -83,11 +87,10 @@ class AdvancedSearchPage extends React.Component {
     const { filters } = this.state;
     switch (section) {
       case 'site':
-        return filters.country && filters.country.length > 0
-          ? filterSitesByCountry(filters.country, options)
-          : options;
+        return filters.country
+          ? filterSitesByCountry(filters.country, options) : options;
       case 'species':
-        return filters.genus && filters.genus.length > 0 || filters.family && filters.family.length > 0
+        return filters.genus && filters.family
           ? filterSpeciesByGenusAndFamily(filters.genus, filters.family, options)
           : options;
       default:
@@ -96,11 +99,7 @@ class AdvancedSearchPage extends React.Component {
   }
 
   hasFilters(filters) {
-    const keys = Object.keys(filters);
-    for (let i = 0, kLength = keys.length; i < kLength; i++) {
-      if (filters[keys[i]] && filters[keys[i]].length > 0) return true;
-    }
-    return false;
+    return Object.keys(filters).length > 0;
   }
 
   isFilterSelected({ filter, group }) {
@@ -108,7 +107,7 @@ class AdvancedSearchPage extends React.Component {
 
     const { filters } = this.state;
 
-    return filters[filter] && filters[filter].length > 0;
+    return !!(filters[filter]);
   }
 
   renderContent() {
@@ -131,12 +130,13 @@ class AdvancedSearchPage extends React.Component {
             {SEARCH_GROUPS[group].map((section, index2) => {
               const value = filters[section] || null;
               const options = this.props.options && this.getFilteredOptions(section, this.props.options[section]) || [];
+              const isMulti = !SINGLE_SELECTS.includes(section);
 
               return (
                 <div className="column small-12 medium-3 group-field" key={index2}>
                   <h4 className="label">{this.context.t(section)}</h4>
                   <Select
-                    multi
+                    multi={isMulti}
                     className="c-select -white"
                     name={section}
                     value={value}
@@ -149,12 +149,12 @@ class AdvancedSearchPage extends React.Component {
           </div>
         ))}
         <div className="row c-search-actions">
-          <div className="column medium-offset-6 validation-error">
+          <div className="column medium-offset-2 validation-error">
             {this.state.errors.empty &&
               <span>{this.context.t('selectOneOption')}</span>
             }
           </div>
-          <div className="column small-12 medium-2 medium-offset-4">
+          <div className="column small-12 medium-2">
             <Button
               id="searchIBAsButton"
               className="-small -dark"
