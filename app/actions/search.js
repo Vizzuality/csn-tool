@@ -7,10 +7,10 @@ import {
 } from 'constants/action-types';
 import { queryParams } from 'helpers/queryParams';
 
-export function setSearchFilter(search, filter) {
+export function setSearchFilter(search) {
   return {
     type: SET_SEARCH_FILTER,
-    payload: { search, filter }
+    payload: { search }
   };
 }
 

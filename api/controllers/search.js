@@ -2,14 +2,7 @@
 
 const { runQuery } = require('../helpers');
 
-const AS_STRING = "','";
-const booleanOptions = [{
-  label: 'true',
-  value: true
-}, {
-  label: 'false',
-  value: false
-}];
+const booleanOptions = [true, false].map((value) => ({ label: value.toString(), value }));
 
 async function getGeneral(query) {
   try {
@@ -78,7 +71,7 @@ function condition(column, value) {
 
   const anyNaN = value.some((v) => isNaN(v));
 
-  if (anyNaN) return `${column} IN ('${value.join(AS_STRING)}')`;
+  if (anyNaN) return `${column} IN ('${value.join("','")}')`;
   return `${column} IN (${value.join()})`;
 }
 
@@ -88,7 +81,6 @@ async function getIBAsResults(req, res) {
   // family, genus, species, red list status, aewa annex 2, species threat, species habitat association
   // NO QUERY BY site, any population
   try {
-    const params = req.query;
     const {
       aewa_annex_2,
       aewa_region,
@@ -103,7 +95,7 @@ async function getIBAsResults(req, res) {
       species,
       species_habitat_association,
       species_threat
-    } = params;
+    } = req.query;
 
     const joinSpecies = !!(species || family || genus || red_list_status || aewa_annex_2);
     const joinSpeciesSites = !!(joinSpecies || species_threat || species_habitat_association);
@@ -170,7 +162,6 @@ async function getIBAsResults(req, res) {
 
 async function getCriticalSitesResults(req, res) {
   try {
-    const params = req.query;
     const {
       aewa_annex_2,
       aewa_region,
@@ -190,7 +181,7 @@ async function getCriticalSitesResults(req, res) {
       species,
       species_habitat_association,
       species_threat
-    } = params;
+    } = req.query;
 
     const joinPopulations = !!(aewa_table_1_status || cms_caf_action_plan || eu_birds_directive || multispecies_flyway || population_trend);
     const joinSpecies = !!(joinPopulations || species || family || genus || red_list_status || aewa_annex_2);
@@ -266,7 +257,6 @@ async function getCriticalSitesResults(req, res) {
 
 async function getSpeciesResults(req, res) {
   try {
-    const params = req.query;
     const {
       aewa_annex_2,
       aewa_region,
@@ -287,7 +277,7 @@ async function getSpeciesResults(req, res) {
       species,
       species_habitat_association,
       species_threat
-    } = params;
+    } = req.query;
 
     const joinCountries = !!(country || aewa_region || ramsar_region);
     const joinSpeciesSites = !!(site || site_habitat || site_threat);
@@ -360,7 +350,6 @@ async function getSpeciesResults(req, res) {
 
 async function getPopulationsResults(req, res) {
   try {
-    const params = req.query;
     const {
       aewa_annex_2,
       aewa_region,
@@ -381,11 +370,11 @@ async function getPopulationsResults(req, res) {
       species,
       species_habitat_association,
       species_threat
-    } = params;
+    } = req.query;
 
     const joinCountries = !!(country || aewa_region || ramsar_region);
     const joinSites = !!(site || protection);
-    const joinSpeciesSites = !!(site || site_habitat || site_threat || protection);
+    const joinSpeciesSites = !!(joinSites || site_habitat || site_threat);
     const where = [];
     const addCondition = (column, param, collection = where) => { if (param) collection.push(condition(column, param)); };
 

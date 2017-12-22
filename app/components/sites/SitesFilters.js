@@ -18,11 +18,6 @@ function SitesFilters(props) {
   );
 }
 
-SitesFilters.contextTypes = {
-  // Define function to get the translations
-  t: PropTypes.func.isRequired
-};
-
 SitesFilters.propTypes = {
   csvData: PropTypes.oneOfType([
     PropTypes.array,

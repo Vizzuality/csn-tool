@@ -25,7 +25,9 @@ function MainNav(props, context) {
             <li>
               <NavLink to={"/threshold-lookup"} i18nText="ramsarCriterionTool" parent />
             </li>
-            {/* <li><NavLink to={"/advanced-search"} i18nText="advancedSearch" parent /></li> */}
+            <li>
+              <NavLink to={"/advanced-search"} i18nText="advancedSearch" parent />
+            </li>
           </ul>
         </li>
         <li>

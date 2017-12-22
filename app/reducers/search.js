@@ -71,7 +71,7 @@ const searchReducer = (state = initialState, action) => {
         isFetching: false
       };
     case SET_SEARCH_FILTER:
-      return { ...state, search: action.payload.search };
+      return { ...state, searchFilter: action.payload.search };
     case SET_SPECIES_COLUMN_FILTER:
       return { ...state, columnFilter: action.payload };
     default:
