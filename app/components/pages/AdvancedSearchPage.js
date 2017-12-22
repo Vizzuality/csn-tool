@@ -149,12 +149,12 @@ class AdvancedSearchPage extends React.Component {
           </div>
         ))}
         <div className="row c-search-actions">
-          <div className="column medium-offset-2 validation-error">
+          <div className="column medium-2 validation-error">
             {this.state.errors.empty &&
               <span>{this.context.t('selectOneOption')}</span>
             }
           </div>
-          <div className="column small-12 medium-2">
+          <div className="column small-12 medium-10 action-buttons">
             <Button
               id="searchIBAsButton"
               className="-small -dark"
@@ -163,8 +163,6 @@ class AdvancedSearchPage extends React.Component {
             >
               {this.context.t('searchIBAs')}
             </Button>
-          </div>
-          <div className="column small-12 medium-2">
             <Button
               id="searchCriticalSitesButton"
               className="-small -dark"
@@ -173,8 +171,6 @@ class AdvancedSearchPage extends React.Component {
             >
               {this.context.t('searchCriticalSites')}
             </Button>
-          </div>
-          <div className="column small-12 medium-2">
             <Button
               id="searchSpeciesButton"
               className="-small -dark"
@@ -183,8 +179,6 @@ class AdvancedSearchPage extends React.Component {
             >
               {this.context.t('searchSpecies')}
             </Button>
-          </div>
-          <div className="column small-12 medium-2 ">
             <Button
               id="searchPopulationsButton"
               className="-small -dark"
