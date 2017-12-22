@@ -17,7 +17,7 @@ class CountriesTable extends React.Component {
   getSelectedHeader() {
     const { selectedLASpeciesPopulation } = this.props;
 
-    if (!this.props.selectedLASpeciesPopulation) return null;
+    if (!selectedLASpeciesPopulation) return null;
 
     return (
       <SpeciesPopulationHeader
@@ -57,6 +57,7 @@ class CountriesTable extends React.Component {
       allColumns,
       category,
       columns,
+      country,
       data,
       selectedLASpeciesPopulation
     } = this.props;
@@ -64,13 +65,12 @@ class CountriesTable extends React.Component {
     const detailLink = this.getDetailLink(category);
     const isLookAlikeSpecies = category.startsWith('lookAlikeSpecies');
     const isExpanded = !!(isLookAlikeSpecies && selectedLASpeciesPopulation);
-    const downloadData = (typeof data !== 'boolean') && data || [];
 
     return (
       <div id="countriesTable" className="c-table">
         <ScrollButton />
         <Sticky topOffset={-120} stickyClassName={'-sticky'}>
-          <CountriesFilters data={downloadData} columns={columns} country={this.props.country} category={this.props.category} />
+          <CountriesFilters data={data || []} columns={columns} country={country} category={category} />
           {isExpanded && data.length > 0
             ? this.getSelectedHeader()
             : null

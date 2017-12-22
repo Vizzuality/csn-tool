@@ -38,7 +38,7 @@ export function filterBySearch(data, searchFilter, columns) {
 }
 
 export function filterData({ data, columns, filter, columnFilter } = {}) {
-  if (!data) return [];
+  if (!data) return false;
 
   const searchFilter = (typeof filter === 'string') && filter.toLowerCase();
 

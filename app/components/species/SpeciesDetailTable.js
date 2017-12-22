@@ -65,7 +65,7 @@ class SpeciesDetailTable extends React.Component {
     return (
       <div>
         <SpeciesDetailFilters
-          data={data}
+          data={data || []}
           columns={columns}
           id={this.props.id}
           category={this.props.category}

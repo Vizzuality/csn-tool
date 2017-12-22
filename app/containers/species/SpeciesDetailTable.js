@@ -8,7 +8,7 @@ function getDetailList(species) {
 
   return species[species.selectedCategory] && species[species.selectedCategory][id]
     ? species[species.selectedCategory][id]
-    : [];
+    : false;
 }
 
 function getSelectedSpeciesPopulation(species) {
@@ -22,8 +22,7 @@ function getSelectedSpeciesPopulation(species) {
 const mapStateToProps = (state) => {
   const columns = state.species.columns;
   const species = state.species;
-  const detailList = getDetailList(species);
-  const data = detailList;
+  const data = getDetailList(species);
   const filter = state.species.searchFilter;
   const columnFilter = state.species.columnFilter;
 
