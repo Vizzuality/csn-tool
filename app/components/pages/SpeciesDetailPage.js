@@ -7,19 +7,27 @@ import { StickyContainer } from 'react-sticky';
 
 class SpeciesDetailPage extends React.Component {
   componentWillMount() {
-    this.props.getSpeciesStats(this.props.id);
-    // Sites and populations always needed in the map
-    this.props.getSpeciesData(this.props.id, 'sites');
-    this.props.getSpeciesData(this.props.id, 'population');
+    this.getInitialData(this.props.id);
     if (this.props.category !== 'sites' && this.props.category !== 'population') {
       this.props.getSpeciesData(this.props.id, this.props.category, this.props.selectedPopulationId);
     }
   }
 
   componentWillReceiveProps(newProps) {
+    if (newProps.id !== this.props.id) {
+      this.getInitialData(newProps.id);
+    }
+
     if (this.hasNewParams(newProps) && !newProps.data) {
       this.props.getSpeciesData(newProps.id, newProps.category, newProps.selectedPopulationId);
     }
+  }
+
+  getInitialData(speciesId) {
+    this.props.getSpeciesStats(speciesId);
+    // Sites and populations always needed in the map
+    this.props.getSpeciesData(speciesId, 'sites');
+    this.props.getSpeciesData(speciesId, 'population');
   }
 
   hasNewParams(newProps) {
