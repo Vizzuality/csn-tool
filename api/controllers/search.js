@@ -3,9 +3,17 @@
 const { runQuery } = require('../helpers');
 
 const AS_STRING = "','";
+const booleanOptions = [{
+  label: 'true',
+  value: true
+}, {
+  label: 'false',
+  value: false
+}];
 
 async function getGeneral(query) {
   try {
+    if (query.isBoolean) return booleanOptions;
     const data = await runQuery(query);
     return JSON.parse(data).rows || [];
   } catch (err) {
@@ -13,13 +21,12 @@ async function getGeneral(query) {
   }
 }
 
-const queryProducer = (table, label, value) => {
-  let formattedLabel = label;
-  if (['eu_birds_directive', 'caf_action_plan', 'aewa_annex_2'].includes(label)) {
-    formattedLabel = `CAST(${label} as CHAR(50))`;
-  }
-  return `SELECT DISTINCT(${formattedLabel}) as label, ${value || label} as value FROM ${table} ORDER BY ${label} ASC`;
-};
+const queryProducer = (table, label, value) => (`
+  SELECT DISTINCT(${label}) as label, ${value || label} as value
+  FROM ${table}
+  WHERE coalesce(${label}, '') != ''
+  ORDER BY ${label} ASC
+`);
 
 const optionQueries = [
   // geography
@@ -37,13 +44,13 @@ const optionQueries = [
   { name: 'species',
     query: 'SELECT DISTINCT(scientific_name) as label, species_id as value, family, genus FROM species_main ORDER by scientific_name ASC' },
   { name: 'red_list_status', query: queryProducer('species_main', 'iucn_category') },
-  { name: 'aewa_annex_2', query: queryProducer('species_main', 'aewa_annex_2') },
+  { name: 'aewa_annex_2', query: { isBoolean: true } },
   { name: 'species_threat', query: queryProducer('species_threats', 'threat_level_1') },
   { name: 'species_habitat_association', query: queryProducer('species_habitat', 'habitat_level_1') },
   // population
   { name: 'aewa_table_1_status', query: queryProducer('populations_iba', 'a') },
-  { name: 'eu_birds_directive', query: queryProducer('populations_iba', 'eu_birds_directive') },
-  { name: 'cms_caf_action_plan', query: queryProducer('populations_iba', 'caf_action_plan') },
+  { name: 'eu_birds_directive', query: { isBoolean: true } },
+  { name: 'cms_caf_action_plan', query: { isBoolean: true } },
   { name: 'multispecies_flyway', query: queryProducer('populations_iba', 'flyway_range') },
   { name: 'population_trend', query: queryProducer('populations_iba', 'trend') }
 ];

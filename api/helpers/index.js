@@ -24,7 +24,8 @@ function mergeNames(data, params) {
   });
 }
 
-function runQuery(query, options = {}) {
+function runQuery(q, options = {}) {
+  const query = q.replace(/^\s*[\r\n]/gm, ''); // remove empty lines
   if (process.env.NODE_ENV === 'development') {
     console.log('RUNNING QUERY: ', query);
   }
