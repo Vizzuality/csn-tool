@@ -1,8 +1,6 @@
 import {
-  SET_THRESHOLD_COLUMN_FILTER,
   SET_THRESHOLD_DATA,
-  SET_THRESHOLD_POSITION,
-  SET_THRESHOLD_SEARCH_FILTER
+  SET_THRESHOLD_POSITION
 } from 'constants/action-types';
 import {
   DEFAULT_THRESHOLD_COLUMNS,
@@ -31,10 +29,6 @@ const thresholdReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_THRESHOLD_POSITION:
       return Object.assign({}, state, { coordinates: action.payload });
-    case SET_THRESHOLD_SEARCH_FILTER:
-      return Object.assign({}, state, { searchFilter: action.payload });
-    case SET_THRESHOLD_COLUMN_FILTER:
-      return Object.assign({}, state, { columnFilter: action.payload });
     case SET_THRESHOLD_DATA:
       return Object.assign({}, state, { list: action.payload });
     default:

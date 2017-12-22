@@ -1,6 +1,6 @@
 import {
   SET_SORT,
-  SET_THRESHOLD_COLUMN_FILTER,
+  SET_COLUMN_FILTER,
   SET_THRESHOLD_DATA,
   SET_THRESHOLD_POSITION,
   SET_SEARCH_FILTER
@@ -50,7 +50,7 @@ export function setThresholdTableFilter(filter) {
 
 export function setThresholdColumnFilter(filter) {
   return {
-    type: SET_THRESHOLD_COLUMN_FILTER,
+    type: `${SET_COLUMN_FILTER}_${TABLES.THRESHOLDS}`,
     payload: filter
   };
 }

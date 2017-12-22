@@ -4,8 +4,8 @@ import { setThresholdTableSort, setThresholdColumnFilter } from 'actions/thresho
 import { changeColumnActivation } from 'actions/common';
 import { TABLES } from 'constants/tables';
 
-const mapStateToProps = (state) => ({
-  sort: state.threshold.sort
+const mapStateToProps = ({ threshold: { sort } }) => ({
+  sort
 });
 
 const mapDispatchToProps = (dispatch) => ({
