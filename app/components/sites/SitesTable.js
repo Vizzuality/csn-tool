@@ -31,12 +31,11 @@ class SitesTable extends React.Component {
           hasMore={this.props.list.hasMore}
           loadMore={() => this.props.getSitesList(this.props.list.page + 1, search, this.props.filter)}
         >
-          <div className={!this.props.isSearch && 'sticky-table'}>
-            <div className={!this.props.isSearch ? 'sticky-header column' : 'column'} >
+          <div className="sticky-table">
+            <div className="sticky-header column">
               <SitesFilters
                 csvData={() => this.getAllSites(search, filter)}
                 columns={this.props.columns}
-                isSearch={this.props.isSearch}
                 category={this.props.category}
                 type={this.props.type}
               />
@@ -48,7 +47,7 @@ class SitesTable extends React.Component {
                 detailLink
               />
             </div>
-            <div className={!this.props.isSearch && 'sticky-content'}>
+            <div className="sticky-content">
               <TableList
                 data={this.props.list.data}
                 columns={this.props.columns}
@@ -69,7 +68,6 @@ SitesTable.propTypes = {
   category: PropTypes.string,
   filter: PropTypes.string,
   columns: PropTypes.array.isRequired,
-  isSearch: PropTypes.bool.isRequired,
   sticky: PropTypes.bool,
   type: PropTypes.string
 };

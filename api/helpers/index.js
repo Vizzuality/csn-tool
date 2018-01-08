@@ -1,3 +1,8 @@
+/* eslint-disable no-console */
+
+const rp = require('request-promise');
+const CARTO_SQL = require('../constants').CARTO_SQL;
+
 function normalizeSiteStatus(string) {
   if (string && string !== undefined) {
     const uString = string.toUpperCase();
@@ -19,7 +24,23 @@ function mergeNames(data, params) {
   });
 }
 
+function runQuery(q, options = {}) {
+  const query = q.replace(/^\s*[\r\n]/gm, ''); // remove empty lines
+  if (process.env.NODE_ENV === 'development') {
+    console.log('RUNNING QUERY: \n', query);
+  }
+
+  return rp({
+    uri: CARTO_SQL,
+    qs: {
+      ...options,
+      q: query
+    }
+  });
+}
+
 module.exports = {
   normalizeSiteStatus,
-  mergeNames
+  mergeNames,
+  runQuery
 };

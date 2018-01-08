@@ -1,18 +1,18 @@
 import { connect } from 'react-redux';
 import TableListHeader from 'components/tables/TableListHeader';
-import { setSitesTableSort, setSitesTableFilter } from 'actions/sites';
+import { setSearchTableSort, setSearchColumnFilter } from 'actions/search';
 import { changeColumnActivation } from 'actions/common';
 import { TABLES } from 'constants/tables';
 
 const mapStateToProps = (state) => ({
-  selectedCategory: state.sites.selectedCategory,
-  sort: state.sites.sort
+  selectedCategory: state.search.selectedCategory,
+  sort: state.search.sort
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  sortBy: (sort) => dispatch(setSitesTableSort(sort)),
-  filterBy: (filter) => dispatch(setSitesTableFilter(filter)),
-  changeColumnActivation: (column) => dispatch(changeColumnActivation(column, TABLES.SITES))
+  sortBy: (sort) => dispatch(setSearchTableSort(sort)),
+  filterBy: (filter) => dispatch(setSearchColumnFilter(filter)),
+  changeColumnActivation: (column) => dispatch(changeColumnActivation(column, TABLES.SEARCH))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableListHeader);

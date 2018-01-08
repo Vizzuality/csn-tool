@@ -1,37 +1,31 @@
 import { connect } from 'react-redux';
 import CountriesTable from 'components/countries/CountriesTable';
 import { setSearchFilter } from 'actions/countries';
-import { filterByColumns, filterBySearch } from 'helpers/filters';
+import { filterData } from 'helpers/filters';
 
-function getCountryData(countries, columns) {
-  const data = countries[countries.selectedCategory] && countries[countries.selectedCategory][countries.selected]
-    ? countries[countries.selectedCategory][countries.selected]
-    : false;
+function getSelectedSpeciesPopulation(countries) {
+  if (!countries.selectedLASpeciesPopulation) return null;
 
-  if (!data) return data;
+  const lookAlikeSpecies = countries.lookAlikeSpecies && countries.lookAlikeSpecies[countries.selected];
 
-  const searchFilter = countries.searchFilter.toLowerCase();
-  let filteredData = data;
-  if (Object.keys(countries.columnFilter).length !== 0) {
-    filteredData = filterByColumns(filteredData, countries.columnFilter);
-  }
-  if (searchFilter) {
-    filteredData = filterBySearch(data, searchFilter, columns);
-  }
-  return filteredData;
+  return (lookAlikeSpecies || []).find((las) => las.pop_id_origin === parseInt(countries.selectedLASpeciesPopulation, 10));
 }
 
 const mapStateToProps = (state) => {
-  const columns = state.countries.columns;
+  const countries = state.countries;
+  const columns = countries.columns;
+  const id = countries.selectedLASpeciesPopulation || countries.selected;
+  const data = countries[countries.selectedCategory] && countries[countries.selectedCategory][id]
+          ? countries[countries.selectedCategory][id]
+          : false;
 
   return {
-    country: state.countries.selected,
-    category: state.countries.selectedCategory,
-    data: getCountryData(state.countries, columns),
+    country: countries.selected,
+    category: countries.selectedCategory,
+    data: filterData({ data, columns, filter: countries.searchFilter, columnFilter: countries.columnFilter }),
     columns,
-    expandedColumns: state.countries.expandedColumns,
-    allExpandedColumns: state.countries.allExpandedColumns,
-    allColumns: state.countries.allColumns
+    allColumns: countries.allColumns,
+    selectedLASpeciesPopulation: getSelectedSpeciesPopulation(countries)
   };
 };
 

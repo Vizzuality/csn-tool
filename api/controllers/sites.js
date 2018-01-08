@@ -1,5 +1,4 @@
-const rp = require('request-promise');
-const CARTO_SQL = require('../constants').CARTO_SQL;
+const { runQuery } = require('../helpers');
 
 const RESULTS_PER_PAGE = 200;
 
@@ -63,7 +62,10 @@ function getSites(req, res) {
     ORDER BY s.country ASC, s.site_name ASC`;
   }
 
-  rp(encodeURI(`${CARTO_SQL}${query}&rows_per_page=${results}&page=${req.query.page}`))
+  runQuery(query, {
+    rows_per_page: results,
+    page: req.query.page
+  })
     .then((data) => {
       const result = JSON.parse(data);
       res.json(result.rows);
@@ -109,7 +111,7 @@ function getSitesDetails(req, res) {
     GROUP BY s.site_id, s.protected, iso3, lat, lon, s.site_name_clean`;
   }
 
-  rp(CARTO_SQL + query)
+  runQuery(query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
 
@@ -150,7 +152,8 @@ function getSitesLocations(req, res) {
     query = `SELECT s.site_name, s.site_id as id, s.lat, s.lon,
       'iba' AS site_type FROM sites s`;
   }
-  rp(CARTO_SQL + query)
+
+  runQuery(query)
     .then((data) => {
       const result = JSON.parse(data);
       res.json(result.rows);
@@ -219,12 +222,10 @@ function getSitesSpecies(req, res) {
     ORDER BY s.taxonomic_sequence`;
   }
 
-  rp(CARTO_SQL + query)
+  runQuery(query)
     .then((data) => {
-      const result = JSON.parse(data);
-      res.json({
-        data: result.rows
-      });
+      const results = JSON.parse(data).rows || [];
+      res.json(results);
     })
     .catch((err) => {
       res.status(err.statusCode || 500);

@@ -19,25 +19,23 @@ function detailLinkFrame(label, link) {
   );
 }
 
-function getDetailLink(detailLink, item) {
-  const popupContent = typeof detailLink === 'string' && detailLink.indexOf('species') > -1 ? 'species' : 'sites';
-  if (detailLink && detailLink.type === 'action') {
-    return (
-      detailLinkFrame('View species details', (
-        <button className="popup-link" onClick={() => detailLink.action(item)} icon="icon-table_arrow_right" >
-          <svg><use xlinkHref="#icon-table_arrow_right"></use></svg>
-        </button>
-      ))
-    );
-  }
+function getDetailLink(t, detailLink, item) {
+  if (!detailLink) return null;
+
+  const linkText = detailLink.toLowerCase().indexOf('species') > -1 ? t('viewSpeciesDetails') : t('viewSiteDetails');
+  const link = {
+    countrySpeciesPopulation: `/countries/${item.iso3}/lookAlikeSpecies/${item.pop_id_origin}`,
+    speciesPopulation: `/species/${item.species_id}/lookAlikeSpecies/${item.pop_id_origin}`
+  }[detailLink] || `/${detailLink}/${item.id}`;
+
   return (
-    detailLinkFrame(`View ${popupContent} details`, (
-      <NavLink className="popup-link" to={`/${detailLink}/${item.id}`} icon="icon-table_arrow_right" parent />
+    detailLinkFrame(linkText, (
+      <NavLink className="popup-link" to={link} icon="icon-table_arrow_right" parent />
     ))
   );
 }
 
-function TableList(props) {
+function TableList(props, context) {
   if (!props.data) return (<div className="c-table-list blank"><LoadingSpinner inner transparent /></div>);
 
   const colWidth = 97.5 / props.columns.length; // still need empty category
@@ -112,7 +110,7 @@ function TableList(props) {
             return (<div key={index2} className={`text ${column} ${alignClass}`} style={{ width: `${colWidth}%` }} dangerouslySetInnerHTML={{ __html: colVal }}></div>);
           })}
           {props.detailLink &&
-            getDetailLink(props.detailLink, item) ||
+            getDetailLink(context.t, props.detailLink, item) ||
             <div className="link">
               <div className="popup">
               </div>

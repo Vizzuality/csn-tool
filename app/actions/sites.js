@@ -1,6 +1,16 @@
-import { CLEAR_SITES_LIST, GET_SITES_STATS, GET_SITES_LIST, GET_SITES_SPECIES,
-         SET_SITES_PARAMS, SET_SITES_SORT, SET_SITES_COLUMN_FILTER,
-         SET_SITES_SEARCH, SET_VIEW_MODE, GET_SITES_LOCATIONS } from 'constants';
+import {
+  CLEAR_SITES_LIST,
+  GET_SITES_LIST,
+  GET_SITES_LOCATIONS,
+  GET_SITES_SPECIES,
+  GET_SITES_STATS,
+  SET_COLUMN_FILTER,
+  SET_SEARCH_FILTER,
+  SET_SITES_PARAMS,
+  SET_SORT,
+  SET_VIEW_MODE
+} from 'constants/action-types';
+import { TABLES } from 'constants/tables';
 import { RESULTS_PER_PAGE } from 'constants/config';
 import { push } from 'react-router-redux';
 
@@ -95,14 +105,14 @@ export function getSitesSpecies(id, type) {
 
 export function setSearchFilter(search) {
   return {
-    type: SET_SITES_SEARCH,
+    type: `${SET_SEARCH_FILTER}_${TABLES.SITES}`,
     payload: search
   };
 }
 
 export function resetSearchFilter() {
   return {
-    type: SET_SITES_SEARCH,
+    type: `${SET_SEARCH_FILTER}_${TABLES.SITES}`,
     payload: ''
   };
 }
@@ -116,14 +126,14 @@ export function setViewMode(viewMode) {
 
 export function setSitesTableSort(sort) {
   return {
-    type: SET_SITES_SORT,
+    type: `${SET_SORT}_${TABLES.SITES}`,
     payload: sort
   };
 }
 
 export function setSitesTableFilter(filter) {
   return {
-    type: SET_SITES_COLUMN_FILTER,
+    type: `${SET_COLUMN_FILTER}_${TABLES.SITES}`,
     payload: filter
   };
 }

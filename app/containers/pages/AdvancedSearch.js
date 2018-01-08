@@ -1,10 +1,17 @@
 import { connect } from 'react-redux';
 import AdvancedSearch from 'components/pages/AdvancedSearchPage';
 import { getSearchOptions, getSearchResults } from 'actions/search';
+import {
+  ALL_SPECIES_COLUMNS,
+  DEFAULT_SPECIES_COLUMNS
+} from 'constants/tables';
 
 const mapStateToProps = (state) => ({
   options: state.search.options,
-  hasResults: state.search.results !== null && Object.keys(state.search.results).length > 0
+  data: state.search.list,
+  isFetching: state.search.isFetching,
+  columns: DEFAULT_SPECIES_COLUMNS.over,
+  allColumns: ALL_SPECIES_COLUMNS.over
 });
 
 const mapDispatchToProps = (dispatch) => ({

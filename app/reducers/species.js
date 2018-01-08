@@ -1,63 +1,39 @@
 import {
-  CHANGE_COLUMN_ACTIVATION,
   GET_SPECIES_CRITICAL_SITES,
   GET_SPECIES_LIST,
   GET_SPECIES_LOOK_ALIKE_SPECIES,
+  GET_SPECIES_LOOK_ALIKE_SPECIES_POPULATION,
   GET_SPECIES_POPULATION,
   GET_SPECIES_SITES,
   GET_SPECIES_STATS,
-  SELECT_LA_SPECIES_POPULATION,
-  SELECT_LA_SPECIES_POPULATION_SPECIES,
-  SET_SPECIES_COLUMN_FILTER,
+  SELECT_SPECIES_TABLE_ITEM,
   SET_SPECIES_DETAIL_PARAMS,
-  SET_SPECIES_DETAIL_SEARCH,
   SET_SPECIES_PARAMS,
-  SET_SPECIES_SORT,
   TOGGLE_LEGEND_ITEM,
   TOGGLE_SPECIES_LAYER
-} from 'constants/index.js';
-import { commonSort } from './common.js';
-
-const ALL_SPECIES_COLUMNS = {
-  over: ['scientific_name', 'english_name', 'genus', 'family', 'iucn_category',
-    'aewa_annex_2'],
-  population: ['population', 'iucn_category', 'a', 'b', 'c',
-    'caf_action_plan', 'eu_birds_directive', 'flyway_range', 'year_start',
-    'year_end', 'size_min', 'size_max', 'ramsar_criterion'],
-  lookAlikeSpecies: ['population', 'original_a', 'original_b', 'original_c', 'confusion_species', 'confusion_species_as'],
-  criticalSites: ['country', 'csn_site_name', 'protected', 'population',
-    'season', 'start', 'end', 'minimum', 'maximum', 'geometric_mean',
-    'units', 'percentfly', 'csn1', 'csn2'],
-  sites: ['country', 'site_name', 'protected', 'season', 'start', 'end', 'minimum',
-    'maximum', 'geometric_mean', 'units', 'iba_criteria']
-};
-
-const DEFAULT_SPECIES_COLUMNS = {
-  over: ['scientific_name', 'genus', 'family', 'iucn_category', 'aewa_annex_2'],
-  population: ['population', 'iucn_category', 'a', 'b', 'c', 'ramsar_criterion'],
-  lookAlikeSpecies: ['population', 'original_a', 'original_b', 'original_c', 'confusion_species', 'confusion_species_as'],
-  criticalSites: ['country', 'csn_site_name', 'population', 'season',
-    'geometric_mean', 'units', 'percentfly'],
-  sites: ['country', 'site_name', 'season', 'geometric_mean', 'units', 'iba_criteria']
-};
-
-const ALL_EXPANDED_COLUMNS = ['scientific_name', 'english_name', 'population', 'a', 'b', 'c'];
-const DEFAULT_EXPANDED_COLUMNS = ['scientific_name', 'population', 'a', 'b', 'c'];
+} from 'constants/action-types';
+import {
+  ALL_SPECIES_COLUMNS,
+  DEFAULT_SPECIES_COLUMNS,
+  TABLES
+} from 'constants/tables';
+import withTable from 'reducers/withTable';
 
 const initialState = {
   columns: DEFAULT_SPECIES_COLUMNS.over,
   allColumns: ALL_SPECIES_COLUMNS.over,
-  expandedColumns: DEFAULT_EXPANDED_COLUMNS,
-  allExpandedColumns: ALL_EXPANDED_COLUMNS,
   list: false,
   selected: '',
   selectedCategory: 'sites',
+  selectedLASpeciesPopulation: null,
+  selectedTableItem: null,
   searchFilter: '',
   stats: {},
   sites: {},
   criticalSites: {},
   population: {},
   lookAlikeSpecies: {},
+  lookAlikeSpeciesPopulation: {},
   layers: {
     sites: true,
     population: true
@@ -66,12 +42,11 @@ const initialState = {
     field: '',
     order: ''
   },
-  selectedLASpeciesPopulation: null,
   highlightedPopulationId: null,
   columnFilter: {}
 };
 
-export default function (state = initialState, action) {
+const speciesReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_SPECIES_PARAMS: {
       const params = {
@@ -83,39 +58,17 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, params);
     }
     case SET_SPECIES_DETAIL_PARAMS: {
+      const category = action.payload.category;
       const params = {
         selected: action.payload.id,
-        selectedCategory: action.payload.category,
-        columns: DEFAULT_SPECIES_COLUMNS[action.payload.category],
-        allColumns: ALL_SPECIES_COLUMNS[action.payload.category],
-        selectedLASpeciesPopulation: action.payload.category === 'lookAlikeSpecies' ? state.selectLASpeciesPopulation : null
+        selectedCategory: category,
+        columns: DEFAULT_SPECIES_COLUMNS[category],
+        allColumns: ALL_SPECIES_COLUMNS[category],
+        selectedLASpeciesPopulation: category === 'lookAlikeSpeciesPopulation' ? action.payload.population : null,
+        selectedTableItem: null
       };
       return Object.assign({}, state, params);
     }
-    case CHANGE_COLUMN_ACTIVATION: {
-      const columns = action.expanded
-        ? state.expandedColumns.slice()
-        : state.columns.slice();
-      let newColumns = columns.filter((col) => col !== action.payload);
-      if (columns.length === newColumns.length) {
-        newColumns.push(action.payload);
-        const prevColumns = action.expanded
-          ? state.allExpandedColumns.slice()
-          : state.allColumns.slice();
-        newColumns = prevColumns.reduce((previous, currentItem) => {
-          const isIn = newColumns.some((newCol) => newCol === currentItem);
-          if (isIn) previous.push(currentItem);
-          return previous;
-        }, []);
-      }
-      return action.expanded
-        ? Object.assign({}, state, { expandedColumns: newColumns })
-        : Object.assign({}, state, { columns: newColumns });
-    }
-    case SET_SPECIES_COLUMN_FILTER:
-      return Object.assign({}, state, { columnFilter: action.payload });
-    case SET_SPECIES_DETAIL_SEARCH:
-      return Object.assign({}, state, { searchFilter: action.payload });
     case GET_SPECIES_STATS:
       return Object.assign({}, state, { stats: action.payload });
     case GET_SPECIES_LIST:
@@ -144,19 +97,15 @@ export default function (state = initialState, action) {
       data[action.payload.id] = action.payload.data;
       return Object.assign({}, state, { lookAlikeSpecies: data });
     }
-    case SELECT_LA_SPECIES_POPULATION: {
-      return {
-        ...state,
-        selectedLASpeciesPopulation: action.payload
-      };
+    case GET_SPECIES_LOOK_ALIKE_SPECIES_POPULATION: {
+      const data = Object.assign({}, state.lookAlikeSpeciesPopulation, {});
+      data[action.payload.populationId] = action.payload.data;
+      return Object.assign({}, state, { lookAlikeSpeciesPopulation: data });
     }
-    case SELECT_LA_SPECIES_POPULATION_SPECIES: {
+    case SELECT_SPECIES_TABLE_ITEM: {
       return {
         ...state,
-        selectedLASpeciesPopulation: {
-          ...state.selectedLASpeciesPopulation,
-          selectedALikeSpecies: action.payload
-        }
+        selectedTableItem: action.payload
       };
     }
     case TOGGLE_SPECIES_LAYER: {
@@ -170,24 +119,9 @@ export default function (state = initialState, action) {
         highlightedPopulationId: action.payload.active ? action.payload.id : null
       };
     }
-    case SET_SPECIES_SORT: {
-      let list = null;
-      let isResource = false;
-      if (state.selected && state.selectedCategory) {
-        isResource = true;
-        list = [...state[state.selectedCategory][state.selected]];
-      } else {
-        list = [...state.list];
-      }
-      list.sort(commonSort(action.payload.field, action.payload.order));
-
-      if (isResource) {
-        const data = Object.assign({}, state[state.selectedCategory], { [state.selected]: list });
-        return Object.assign({}, state, { [state.selectedCategory]: data, sort: action.payload });
-      }
-      return Object.assign({}, state, { list, sort: action.payload });
-    }
     default:
       return state;
   }
-}
+};
+
+export default withTable(TABLES.SPECIES, speciesReducer);

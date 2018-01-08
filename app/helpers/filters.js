@@ -16,30 +16,40 @@ export function filterByColumns(data, activeFilters) {
 
 export function matchSearch(searchFilter, value) {
   if (!searchFilter || !value) return false;
-  const match = value.toString().match(new RegExp(searchFilter, 'gi'));
-  return match && match.length > 0;
+  return new RegExp(searchFilter, 'gi').test(value.toString());
 }
 
 export function filterBySearch(data, searchFilter, columns) {
-  const filteredData = data.filter((item) => {
+  return data.reduce((results, item) => {
+    const itemCopy = { ...item };
     let match = false;
 
-    for (let i = 0, cLength = columns.length; i < cLength; i++) {
-      if (matchSearch(searchFilter, item[columns[i]])) {
+    columns.forEach((column) => {
+      if (matchSearch(searchFilter, itemCopy[column])) {
+        itemCopy[column] = itemCopy[column].toLowerCase().replace(searchFilter, `<span class="filtered">${searchFilter}</span>`);
         match = true;
-        break;
       }
-    }
-    return match;
-  });
-  return filteredData.map((item) => {
-    const modItem = Object.assign({}, item);
+    });
 
-    for (let i = 0, cLength = columns.length; i < cLength; i++) {
-      if (matchSearch(searchFilter, modItem[columns[i]])) {
-        modItem[columns[i]] = modItem[columns[i]].toLowerCase().replace(searchFilter, `<span class="filtered">${searchFilter}</span>`);
-      }
-    }
-    return modItem;
-  });
+    if (match) results.push(itemCopy);
+
+    return results;
+  }, []);
+}
+
+export function filterData({ data, columns, filter, columnFilter } = {}) {
+  if (!data) return false;
+
+  const searchFilter = (typeof filter === 'string') && filter.toLowerCase();
+
+  let filteredData = data.slice();
+  if (searchFilter) {
+    filteredData = filterBySearch(filteredData, searchFilter, columns);
+  }
+
+  if (columnFilter && Object.keys(columnFilter).length !== 0) {
+    filteredData = filterByColumns(filteredData, columnFilter);
+  }
+
+  return filteredData;
 }

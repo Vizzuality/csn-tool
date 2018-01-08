@@ -28,14 +28,15 @@ class CountriesPage extends React.Component {
   getData(props) {
     if (props.country) {
       if (!props.countryStats) props.getCountryStats(props.country);
-      if (!props.countryData) props.getCountryData(props.country, props.category);
+      if (!props.countryData) props.getCountryData(props.country, props.category, props.selectedPopulationId);
     }
     if (!props.countryData) props.getCountriesList();
   }
 
   hasNewParams(newProps) {
     return this.props.country !== newProps.country
-      || this.props.category !== newProps.category;
+      || this.props.category !== newProps.category
+      || this.props.selectedPopulationId !== newProps.selectedPopulationId;
   }
 
   render() {
@@ -94,6 +95,7 @@ CountriesPage.contextTypes = {
 
 CountriesPage.propTypes = {
   country: PropTypes.string,
+  selectedPopulationId: PropTypes.string,
   category: PropTypes.string,
   countryStats: PropTypes.any,
   countryData: PropTypes.any,

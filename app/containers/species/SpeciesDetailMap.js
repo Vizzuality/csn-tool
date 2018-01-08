@@ -2,11 +2,23 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import SpeciesDetailMap from 'components/species/SpeciesDetailMap';
 
+const getSelectedLASpeciesPopulation = ({ lookAlikeSpecies, selected, selectedLASpeciesPopulation }) => {
+  if (!selectedLASpeciesPopulation) return null;
+
+  const populations = lookAlikeSpecies[selected] || [];
+
+  return populations.find(
+    (las) => las.pop_id_origin === parseInt(selectedLASpeciesPopulation, 10)
+  );
+};
 const getPopulations = createSelector(
-  (species) => species.selectedLASpeciesPopulation,
+  getSelectedLASpeciesPopulation,
   (species) => species.population,
   (species) => species.selected,
-  (selectedLASpeciesPopulation, population, selected) => {
+  (species) => species.selectedTableItem,
+  (selectedLASpeciesPopulation, population, selected, selectedTableItem) => {
+    const selectedALikeSpecies = selectedTableItem;
+
     if (!selectedLASpeciesPopulation) {
       return {
         populations: population[selected],
@@ -14,14 +26,9 @@ const getPopulations = createSelector(
       };
     }
 
-    const {
-      species,
-      selectedALikeSpecies
-    } = selectedLASpeciesPopulation;
-
     const selectedSpecies = {
-      population: `${species.original_species} (${species.population})`,
-      wpepopid: selectedLASpeciesPopulation.species.pop_id_origin
+      population: `${selectedLASpeciesPopulation.original_species} (${selectedLASpeciesPopulation.population})`,
+      wpepopid: selectedLASpeciesPopulation.pop_id_origin
     };
     const results = [selectedSpecies];
     if (selectedALikeSpecies) {

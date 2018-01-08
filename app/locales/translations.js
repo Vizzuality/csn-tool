@@ -99,7 +99,8 @@ export const translations = {
     'csn_qualifying_species': 'CSN qualifying species',
     'iba_in_danger': 'IBA in Danger',
     'toolUse': 'What can I use this tool for?',
-    'searchSites': 'Search sites',
+    'searchCriticalSites': 'Search critical sites',
+    'searchIBAs': 'Search IBAs',
     'searchSpecies': 'Search species',
     'searchPopulations': 'Search populations',
     'searchForCountry': 'Search for a country',
@@ -131,7 +132,10 @@ export const translations = {
     'tools': 'Tools',
     'feedback': 'Feedback',
     'scrollText': 'Scroll down to see the data',
-    'coordinates': 'Coordinates'
+    'coordinates': 'Coordinates',
+    'birdlifeFactsheet': 'Birdlife Factsheet',
+    'viewSpeciesDetails': 'View species details',
+    'viewSiteDetails': 'View site details'
   },
   es: {
     'country': 'Pais',
@@ -231,7 +235,8 @@ export const translations = {
     'filterBy': 'Filtrar por',
     'banner': 'La Herramienta de Red Crítica de Sitios (CSN) es un recurso en línea para la conservación de 294 especies de aves acuáticas y los sitios importantes de los cuales dependen en África y Eurasia Occidental.',
     'toolUse': '¿Para qué puedo utilizar esta herramienta?',
-    'searchSites': 'Buscar sitios',
+    'searchCriticalSites': 'Buscar sitios críticos',
+    'searchIBAs': 'Buscar IBA',
     'searchSpecies': 'Buscar especies',
     'searchPopulations': 'Buscar poblaciones',
     'searchForCountry': 'Busca un pais y mira',
@@ -249,7 +254,8 @@ export const translations = {
     'tools': 'Herramientas',
     'feedback': 'Comentarios',
     'scrollText': 'Desplácese hacia abajo para ver los datos',
-    'coordinates': 'Coordenadas'
+    'coordinates': 'Coordenadas',
+    'birdlifeFactsheet': 'Birdlife Factsheet'
   },
   fr: {
     'country': 'Pays',
@@ -352,7 +358,8 @@ export const translations = {
     'csn_qualifying_species': 'CSN espèces éligibles',
     'iba_in_danger': 'ZICO en Danger',
     'toolUse': "Á quoi sert l'outil CSN?",
-    'searchSites': 'Rechercher des sites',
+    'searchCriticalSites': 'Rechercher des sites critiques',
+    'searchIBAs': 'Rechercher des ZICO',
     'searchSpecies': "Rechercher des espèces",
     'searchPopulations': 'Rechercher des populations',
     'searchForCountry': 'Rechercher un pays',
@@ -384,6 +391,7 @@ export const translations = {
     'tools': 'Outils',
     'feedback': 'Commentaires',
     'scrollText': 'Faites défiler vers le bas pour voir les données',
-    'coordinates': 'Coordonnées'
+    'coordinates': 'Coordonnées',
+    'birdlifeFactsheet': 'Birdlife Factsheet'
   },
 }

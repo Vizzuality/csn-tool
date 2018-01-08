@@ -17,17 +17,17 @@ import {
 import ReactGA from 'react-ga';
 import PropTypes from 'prop-types';
 
-import ContainerPage from 'components/pages/ContainerPage';
-import HomePage from 'components/pages/HomePage';
-import CountriesPage from 'containers/pages/CountriesPage';
-import SitesPage from 'containers/pages/SitesPage';
 import AboutPage from 'components/pages/AboutPage';
+import AdvancedSearchPage from 'containers/pages/AdvancedSearch';
+import ContainerPage from 'components/pages/ContainerPage';
+import CountriesPage from 'containers/pages/CountriesPage';
 import GuidancePage from 'components/pages/GuidancePage';
+import HomePage from 'components/pages/HomePage';
 import SitesDetailPage from 'containers/pages/SitesDetailPage';
-import SpeciesPage from 'containers/pages/SpeciesPage';
+import SitesPage from 'containers/pages/SitesPage';
 import SpeciesDetailPage from 'containers/pages/SpeciesDetailPage';
+import SpeciesPage from 'containers/pages/SpeciesPage';
 import ThersholdLookup from 'containers/pages/ThersholdLookup';
-/* import AdvancedSearch from 'containers/pages/AdvancedSearch'; */
 
 function shouldUpdateScroll(prevRouterProps, { location }) {
   /**
@@ -117,7 +117,7 @@ const Routes = ({ history }) => (
       <IndexRoute component={HomePage} />
       <Route path="countries">
         <IndexRoute component={CountriesPage} onEnter={setCountriesPage} onChange={updateCountriesPage} />
-        <Route path=":iso(/:cat)" component={CountriesPage} onEnter={setCountriesPage} />
+        <Route path=":iso(/:cat)(/:population)" component={CountriesPage} onEnter={setCountriesPage} />
       </Route>
       <Route path="sites">
         <IndexRoute component={SitesPage} onEnter={setSitesPage} onChange={updateSitesPage} />
@@ -125,12 +125,12 @@ const Routes = ({ history }) => (
       </Route>
       <Route path="species">
         <IndexRoute component={SpeciesPage} onEnter={setSpeciesPage} />
-        <Route path=":id(/:cat)" component={SpeciesDetailPage} onEnter={updateSpeciesDetailPage} />
+        <Route path=":id(/:cat)(/:population)" component={SpeciesDetailPage} onEnter={updateSpeciesDetailPage} />
       </Route>
       <Route path="threshold-lookup" component={ThersholdLookup} onEnter={setThresholdPosition} onChange={updateThresholdPosition} />
       <Route path="guidance" component={GuidancePage} />
       <Route path="about" component={AboutPage} />
-      {/* <Route path="advanced-search" component={AdvancedSearch} /> */}
+      <Route path="advanced-search" component={AdvancedSearchPage} />
     </Route>
     <Redirect from="*" to="en" />
   </Router>

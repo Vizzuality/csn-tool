@@ -166,11 +166,7 @@ class TableListHeader extends React.Component {
   }
 
   changeColumnActivation(column) {
-    if (this.props.expanded) {
-      this.props.changeColumnActivation(column, true);
-    } else {
-      this.props.changeColumnActivation(column);
-    }
+    this.props.changeColumnActivation(column);
   }
 
   filterBy(filter) {
@@ -391,7 +387,6 @@ TableListHeader.defaultProps = {
 TableListHeader.propTypes = {
   allColumns: PropTypes.array,
   detailLink: PropTypes.bool,
-  expanded: PropTypes.bool,
   selectedCategory: PropTypes.string,
   columns: PropTypes.array.isRequired,
   changeColumnActivation: PropTypes.func,

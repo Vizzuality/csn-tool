@@ -8,27 +8,15 @@ import SpeciesTableComponent from 'components/species/SpeciesTable';
 import { StickyContainer } from 'react-sticky';
 
 const setup = (newStore) => {
-  const standard = {
-    filter: {},
-    allColumns: ['scientific_name', 'english_name', 'population', 'genus', 'family'],
-    columns: ['scientific_name', 'english_name', 'population', 'genus', 'family'],
-    list: {
-      data: [
+  const state = newStore || {
+    species: {
+      filter: {},
+      allColumns: ['scientific_name', 'english_name', 'population', 'genus', 'family'],
+      columns: ['scientific_name', 'english_name', 'population', 'genus', 'family'],
+      list: [
         { scientific_name: 'Albania' },
         { scientific_name: 'England' }
       ]
-    }
-  };
-
-  const state = newStore || {
-    species: standard,
-    sort: {},
-    search: {
-      results: {
-        rows: standard.list.data,
-        sites: []
-      },
-      options: {}
     }
   };
 
@@ -57,8 +45,7 @@ const setup = (newStore) => {
   return {
     state,
     store,
-    enzymeWrapper,
-    standard
+    enzymeWrapper
   };
 };
 
@@ -70,27 +57,19 @@ describe('containers', () => {
     });
 
     it('should display columns', () => {
-      const { enzymeWrapper, standard } = setup();
+      const { enzymeWrapper, state } = setup();
       const col = 3;
 
       expect(enzymeWrapper.find('#table-rows').first()
         .find('.text')
         .at(col)
-        .hasClass(standard.columns[col])
+        .hasClass(state.species.columns[col])
       ).toBe(true);
     });
 
     it('should filter search results when the filter is empty', () => {
-      const { enzymeWrapper, standard } = setup();
-      expect(enzymeWrapper.find(SpeciesTableComponent).props().data).toEqual(standard.list.data);
-    });
-
-    it('should filter search results by search filter', () => {
-      const { state } = setup();
-      state.search.search = 'En';
-      const { enzymeWrapper } = setup(state);
-      expect(enzymeWrapper.find(SpeciesTableComponent).props().data)
-        .toEqual([{ scientific_name: '<span class="filtered">en</span>gland' }]);
+      const { enzymeWrapper, state } = setup();
+      expect(enzymeWrapper.find(SpeciesTableComponent).props().data).toEqual(state.species.list);
     });
   });
 });

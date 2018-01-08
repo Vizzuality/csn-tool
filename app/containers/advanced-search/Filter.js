@@ -5,8 +5,8 @@ import { setSearchFilter } from 'actions/search';
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = (dispatch) => ({
-  setSearchFilter: (search, filter) => {
-    dispatch(setSearchFilter(search, filter));
+  setSearchFilter: (search) => {
+    dispatch(setSearchFilter(search));
   }
 });
 

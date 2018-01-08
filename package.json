@@ -63,7 +63,6 @@
     "react-scroll": "^1.6.5",
     "react-select": "1.0.0-rc.3",
     "react-sticky": "^5.0.5",
-    "react-virtualized": "^9.4.0",
     "redux": "^3.5.2",
     "redux-i18n": "^1.0.8",
     "redux-thunk": "^2.1.0",

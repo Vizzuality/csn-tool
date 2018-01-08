@@ -1,11 +1,13 @@
-import { GET_SEARCH_OPTIONS, GET_SEARCH_RESULTS, SET_SEARCH_FILTER, BEFORE_GET_SEARCH_RESULTS } from 'constants';
-
-export function setSearchFilter(search, filter) {
-  return {
-    type: SET_SEARCH_FILTER,
-    payload: { search, filter }
-  };
-}
+import {
+  BEFORE_GET_SEARCH_RESULTS,
+  GET_SEARCH_OPTIONS,
+  GET_SEARCH_RESULTS,
+  SET_COLUMN_FILTER,
+  SET_SEARCH_FILTER,
+  SET_SORT
+} from 'constants/action-types';
+import { TABLES } from 'constants/tables';
+import { queryParams } from 'helpers/queryParams';
 
 export function getSearchOptions() {
   const url = `${config.apiHost}/search/options`;
@@ -28,24 +30,19 @@ export function getSearchOptions() {
   };
 }
 
+function getFilterValues(filters) {
+  return Object.keys(filters).reduce((result, key) => {
+    const value = filters[key];
+    result[key] = Array.isArray(value) // eslint-disable-line no-param-reassign
+      ? value.map((v) => v.value)
+      : value.value;
+    return result;
+  }, {});
+}
+
 export function getSearchResults(category, filters) {
-  let params = '';
-  Object.keys(filters).forEach((key) => {
-    if (filters[key]) {
-      params += `${params ? '&' : '?'}`;
-      if (Array.isArray(filters[key]) && filters[key].length > 0) {
-        params += `${key}=`;
-        filters[key].forEach((filter, index) => {
-          params += `${index > 0 ? ',' : ''}${filter.value}`;
-        });
-      } else {
-        params += `${key}=${filters[key].value}`;
-      }
-    }
-  });
-
-
-  const url = `${config.apiHost}/search/${category}${params}`;
+  const params = queryParams(getFilterValues(filters));
+  const url = `${config.apiHost}/search/${category}?${params}`;
   return dispatch => {
     try {
       dispatch({
@@ -56,14 +53,41 @@ export function getSearchResults(category, filters) {
         .then(data => {
           dispatch({
             type: GET_SEARCH_RESULTS,
-            payload: data
+            payload: {
+              data,
+              category
+            }
           });
         });
     } catch (err) {
       dispatch({
         type: GET_SEARCH_RESULTS,
-        payload: []
+        payload: {
+          data: [],
+          category
+        }
       });
     }
+  };
+}
+
+export function setSearchTableSort(sort) {
+  return {
+    type: `${SET_SORT}_${TABLES.SEARCH}`,
+    payload: sort
+  };
+}
+
+export function setSearchFilter(search) {
+  return {
+    type: `${SET_SEARCH_FILTER}_${TABLES.SEARCH}`,
+    payload: search
+  };
+}
+
+export function setSearchColumnFilter(filter) {
+  return {
+    type: `${SET_COLUMN_FILTER}_${TABLES.SEARCH}`,
+    payload: filter
   };
 }

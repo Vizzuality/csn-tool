@@ -7,23 +7,31 @@ import { StickyContainer } from 'react-sticky';
 
 class SpeciesDetailPage extends React.Component {
   componentWillMount() {
-    this.props.getSpeciesStats(this.props.id);
-    // Sites and populations always needed in the map
-    this.props.getSpeciesData(this.props.id, 'sites');
-    this.props.getSpeciesData(this.props.id, 'population');
+    this.getInitialData(this.props.id);
     if (this.props.category !== 'sites' && this.props.category !== 'population') {
-      this.props.getSpeciesData(this.props.id, this.props.category);
+      this.props.getSpeciesData(this.props.id, this.props.category, this.props.selectedPopulationId);
     }
   }
 
   componentWillReceiveProps(newProps) {
+    if (newProps.id !== this.props.id) {
+      this.getInitialData(newProps.id);
+    }
+
     if (this.hasNewParams(newProps) && !newProps.data) {
-      this.props.getSpeciesData(newProps.id, newProps.category);
+      this.props.getSpeciesData(newProps.id, newProps.category, newProps.selectedPopulationId);
     }
   }
 
+  getInitialData(speciesId) {
+    this.props.getSpeciesStats(speciesId);
+    // Sites and populations always needed in the map
+    this.props.getSpeciesData(speciesId, 'sites');
+    this.props.getSpeciesData(speciesId, 'population');
+  }
+
   hasNewParams(newProps) {
-    return this.props.category !== newProps.category;
+    return this.props.category !== newProps.category || this.props.selectedPopulationId !== newProps.selectedPopulationId;
   }
 
   render() {
@@ -32,8 +40,8 @@ class SpeciesDetailPage extends React.Component {
         <div className="l-navigation">
           <div className="row">
             <div className="column c-navigation">
-              {this.props.stats.species
-                ? <div className="content">
+              {this.props.stats.species &&
+                <div className="content">
                   <div className="title">
                     <GoBackLink className="breadcrumb" i18nText="back" endPoint="species" />
                     <div className="name">
@@ -47,7 +55,7 @@ class SpeciesDetailPage extends React.Component {
                     <div className="list">
                       <div className="item">
                         <div className="label">
-                          English name
+                          {this.context.t('english_name')}
                         </div>
                         <div className="value">
                           {this.props.stats.species[0].english_name}
@@ -55,7 +63,7 @@ class SpeciesDetailPage extends React.Component {
                       </div>
                       <div className="item">
                         <div className="label">
-                          Family
+                          {this.context.t('family')}
                         </div>
                         <div className="value">
                           {this.props.stats.species[0].family}
@@ -63,7 +71,7 @@ class SpeciesDetailPage extends React.Component {
                       </div>
                       <div id="birdlife-factsheet-link" className="item">
                         <div className="label">
-                          Birdlife Factsheet
+                          {this.context.t('birdlifeFactsheet')}
                         </div>
                         <div className="value">
                           <a className="external-link" target="_blank" href={this.props.stats.species[0].hyperlink}>
@@ -76,7 +84,6 @@ class SpeciesDetailPage extends React.Component {
                     </div>
                   </div>
                 </div>
-                : ''
               }
             </div>
           </div>
@@ -100,9 +107,9 @@ SpeciesDetailPage.contextTypes = {
   t: PropTypes.func.isRequired
 };
 
-
 SpeciesDetailPage.propTypes = {
   id: PropTypes.string.isRequired,
+  selectedPopulationId: PropTypes.string,
   category: PropTypes.string.isRequired,
   getSpeciesStats: PropTypes.func.isRequired,
   getSpeciesData: PropTypes.func.isRequired,

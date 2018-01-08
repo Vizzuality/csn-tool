@@ -1,7 +1,20 @@
-import { GET_COUNTRIES_LIST, GET_COUNTRIES_GEOM, GET_COUNTRIES_SITES,
-        GET_COUNTRIES_STATS, GET_COUNTRIES_CRITICAL_SITES, TOGGLE_COUNTRIES_LAYER,
-        GET_COUNTRIES_SPECIES, GET_COUNTRIES_POPULATIONS, GET_COUNTRIES_SIMILAR_SPECIES,
-        SET_COUNTRY_PARAMS, SET_COUNTRY_SEARCH, SET_COUNTRY_SORT, SET_COUNTRY_COLUMN_FILTER } from 'constants';
+import {
+  GET_COUNTRIES_CRITICAL_SITES,
+  GET_COUNTRIES_GEOM,
+  GET_COUNTRIES_LIST,
+  GET_COUNTRIES_LOOK_ALIKE_SPECIES_POPULATION,
+  GET_COUNTRIES_POPULATIONS,
+  GET_COUNTRIES_SIMILAR_SPECIES,
+  GET_COUNTRIES_SITES,
+  GET_COUNTRIES_SPECIES,
+  GET_COUNTRIES_STATS,
+  SET_COLUMN_FILTER,
+  SET_COUNTRY_PARAMS,
+  SET_SEARCH_FILTER,
+  SET_SORT,
+  TOGGLE_COUNTRIES_LAYER
+} from 'constants/action-types';
+import { TABLES } from 'constants/tables';
 import { push } from 'react-router-redux';
 
 export function goCountryDetail(iso) {
@@ -154,6 +167,24 @@ export function getCountryLookAlikeSpecies(iso) {
   };
 }
 
+export function getCountryLookAlikeSpeciesPopulation(iso, populationId) {
+  const url = `${config.apiHost}/countries/${iso}/look-alike-species/${populationId}`;
+
+  return (dispatch) => {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        dispatch({
+          type: GET_COUNTRIES_LOOK_ALIKE_SPECIES_POPULATION,
+          payload: {
+            populationId,
+            data
+          }
+        });
+      });
+  };
+}
+
 export function getCountriesGeom() {
   const url = '/geoms.topojson';
   return dispatch => {
@@ -171,14 +202,12 @@ export function getCountriesGeom() {
 export function setCountryParams(params) {
   return {
     type: SET_COUNTRY_PARAMS,
-    payload: { country: params.iso, category: params.cat, filter: params.filter }
-  };
-}
-
-export function setSearchFilter(search) {
-  return {
-    type: SET_COUNTRY_SEARCH,
-    payload: search
+    payload: {
+      country: params.iso,
+      category: params.cat,
+      filter: params.filter,
+      population: params.population
+    }
   };
 }
 
@@ -189,16 +218,23 @@ export function toggleLayer(layer) {
   };
 }
 
+export function setSearchFilter(search) {
+  return {
+    type: `${SET_SEARCH_FILTER}_${TABLES.COUNTRIES}`,
+    payload: search
+  };
+}
+
 export function setCountriesTableSort(sort) {
   return {
-    type: SET_COUNTRY_SORT,
+    type: `${SET_SORT}_${TABLES.COUNTRIES}`,
     payload: sort
   };
 }
 
 export function setCountriesTableFilter(filter) {
   return {
-    type: SET_COUNTRY_COLUMN_FILTER,
+    type: `${SET_COLUMN_FILTER}_${TABLES.COUNTRIES}`,
     payload: filter
   };
 }

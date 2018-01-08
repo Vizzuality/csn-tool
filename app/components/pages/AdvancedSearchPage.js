@@ -1,28 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
-
-import SitesTable from 'containers/sites/SitesTable';
-import SpeciesTable from 'containers/species/SpeciesTable';
-import PopulationsTable from 'containers/species/SpeciesDetailTable';
-import LoadingSpinner from 'components/common/LoadingSpinner';
 import { StickyContainer } from 'react-sticky';
 
-const rows = [
-  {
-    title: 'geography',
-    sections: ['country', 'aewa_region', 'ramsar_region', 'site', 'protection', 'site_threat', 'site_habitat']
-  },
-  {
-    title: 'taxonomy',
-    sections: ['family', 'genus', 'species', 'red_list_status', 'aewa_annex_2',
-      'species_threat', 'species_habitat_association']
-  },
-  {
-    title: 'population',
-    sections: ['aewa_table_1_status', 'eu_birds_directive', 'cms_caf_action_plan', 'multispecies_flyway', 'population_trend']
-  }
-];
+import Button from 'components/common/Button';
+import LoadingSpinner from 'components/common/LoadingSpinner';
+import SearchTable from 'containers/advanced-search/SearchTable';
+
+const SEARCH_GROUPS = {
+  geography: ['country', 'aewa_region', 'ramsar_region', 'site', 'protection', 'site_threat', 'site_habitat'],
+  taxonomy: ['family', 'genus', 'species', 'red_list_status', 'aewa_annex_2', 'species_threat', 'species_habitat_association'],
+  population: ['aewa_table_1_status', 'eu_birds_directive', 'cms_caf_action_plan', 'multispecies_flyway', 'population_trend']
+};
+const SINGLE_SELECTS = ['aewa_annex_2', 'eu_birds_directive', 'cms_caf_action_plan'];
 
 function filterSitesByCountry(countries, sites) {
   if (!countries) return sites;
@@ -31,11 +21,11 @@ function filterSitesByCountry(countries, sites) {
 }
 function filterSpeciesByGenusAndFamily(genus, families, species) {
   if (!genus && !families) return species;
-  if (!genus || !genus.length > 0) {
+  if (!genus) {
     const familyValues = families.map((item) => item.value);
     return species.filter((site) => familyValues.indexOf(site.family) > -1);
   }
-  if (!families || !families.length > 0) {
+  if (!families) {
     const genusValues = genus.map((item) => item.value);
     return species.filter((site) => genusValues.indexOf(site.genus) > -1);
   }
@@ -48,14 +38,7 @@ class AdvancedSearchPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      searchType: '',
-      filters: {
-        country: null,
-        site: null,
-        family: null,
-        genus: null,
-        species: null
-      },
+      filters: {},
       errors: {
         empty: false
       }
@@ -74,6 +57,9 @@ class AdvancedSearchPage extends React.Component {
         ...state.filters,
         [section]: value
       };
+      if (!value || (Array.isArray(value) && !value.length)) {
+        delete filters[section];
+      }
       const hasValue = this.hasFilters(filters);
       return {
         filters,
@@ -86,9 +72,6 @@ class AdvancedSearchPage extends React.Component {
 
   onSearchClick(category) {
     const { filters } = this.state;
-    this.setState({
-      searchType: category
-    });
     if (this.hasFilters(filters)) {
       this.props.onSearch(category, filters);
     } else {
@@ -104,11 +87,10 @@ class AdvancedSearchPage extends React.Component {
     const { filters } = this.state;
     switch (section) {
       case 'site':
-        return filters.country && filters.country.length > 0
-          ? filterSitesByCountry(filters.country, options)
-          : options;
+        return filters.country
+          ? filterSitesByCountry(filters.country, options) : options;
       case 'species':
-        return filters.genus && filters.genus.length > 0 || filters.family && filters.family.length > 0
+        return filters.genus && filters.family
           ? filterSpeciesByGenusAndFamily(filters.genus, filters.family, options)
           : options;
       default:
@@ -117,49 +99,44 @@ class AdvancedSearchPage extends React.Component {
   }
 
   hasFilters(filters) {
-    const keys = Object.keys(filters);
-    for (let i = 0, kLength = keys.length; i < kLength; i++) {
-      if (filters[keys[i]] && filters[keys[i]].length > 0) return true;
-    }
-    return false;
+    return Object.keys(filters).length > 0;
   }
 
-  content() {
-    const { filters } = this.state;
-    const hasSites = filters.site && filters.site.length > 0;
-    const hasSpecies = filters.species && filters.species.length > 0;
+  isFilterSelected({ filter, group }) {
+    if (group) return SEARCH_GROUPS[group].some((f) => this.isFilterSelected({ filter: f }));
 
-    let resultsTable = null;
-    switch (this.state.searchType) {
-      case 'sites':
-        resultsTable = <SitesTable />;
-        break;
-      case 'species':
-        resultsTable = <StickyContainer><SpeciesTable /></StickyContainer>;
-        break;
-      case 'populations':
-        resultsTable = <StickyContainer><PopulationsTable id={'PopulationsTable'} /></StickyContainer>;
-        break;
-      default:
-        resultsTable = [];
-        break;
-    }
+    const { filters } = this.state;
+
+    return !!(filters[filter]);
+  }
+
+  renderContent() {
+    const { filters } = this.state;
+    const { data, isFetching } = this.props;
+
+    const hasSites = this.isFilterSelected({ filter: 'site' });
+    const hasSpecies = this.isFilterSelected({ filter: 'species' });
+    const hasBeenSearched = isFetching || data;
+    const anyPopulationFilter = this.isFilterSelected({ group: 'population' });
+    const searchIBAsDisabled = hasSites || anyPopulationFilter;
 
     return (
       <div>
-        {rows.map((row, index) => (
+        {Object.keys(SEARCH_GROUPS).map((group, index) => (
           <div className="row c-search-group" key={index}>
             <div className="column small-12">
-              <h3 className="group-title">{this.context.t(row.title)}</h3>
+              <h3 className="group-title">{this.context.t(group.title)}</h3>
             </div>
-            {row.sections.map((section, index2) => {
+            {SEARCH_GROUPS[group].map((section, index2) => {
               const value = filters[section] || null;
               const options = this.props.options && this.getFilteredOptions(section, this.props.options[section]) || [];
+              const isMulti = !SINGLE_SELECTS.includes(section);
+
               return (
                 <div className="column small-12 medium-3 group-field" key={index2}>
                   <h4 className="label">{this.context.t(section)}</h4>
                   <Select
-                    multi
+                    multi={isMulti}
                     className="c-select -white"
                     name={section}
                     value={value}
@@ -172,46 +149,54 @@ class AdvancedSearchPage extends React.Component {
           </div>
         ))}
         <div className="row c-search-actions">
-          <div className="column medium-offset-6 validation-error">
+          <div className="column medium-2 validation-error">
             {this.state.errors.empty &&
               <span>{this.context.t('selectOneOption')}</span>
             }
           </div>
-          <div className="column small-12 medium-2 medium-offset-6">
-            <button
-              id="searchSitesButton"
-              className={`btn -small -dark ${hasSites ? '-disabled' : ''}`}
-              onClick={() => { if (!hasSites) this.onSearchClick('sites'); }}
+          <div className="column small-12 medium-10 action-buttons">
+            <Button
+              id="searchIBAsButton"
+              className="-small -dark"
+              disabled={searchIBAsDisabled}
+              onClick={() => this.onSearchClick('ibas')}
             >
-              {this.context.t('searchSites')}
-            </button>
-          </div>
-          <div className="column small-12 medium-2">
-            <button
+              {this.context.t('searchIBAs')}
+            </Button>
+            <Button
+              id="searchCriticalSitesButton"
+              className="-small -dark"
+              disabled={hasSites}
+              onClick={() => this.onSearchClick('criticalSites')}
+            >
+              {this.context.t('searchCriticalSites')}
+            </Button>
+            <Button
               id="searchSpeciesButton"
-              className={`btn -small -dark ${hasSpecies ? '-disabled' : ''}`}
-              onClick={() => { if (!hasSpecies) this.onSearchClick('species'); }}
+              className="-small -dark"
+              onClick={() => this.onSearchClick('species')}
+              disabled={hasSpecies}
             >
               {this.context.t('searchSpecies')}
-            </button>
-          </div>
-          <div className="column small-12 medium-2 ">
-            <button
+            </Button>
+            <Button
               id="searchPopulationsButton"
-              className="btn -small -dark"
+              className="-small -dark"
               onClick={() => this.onSearchClick('populations')}
             >
               {this.context.t('searchPopulations')}
-            </button>
+            </Button>
           </div>
         </div>
-        {this.props.hasResults &&
-          <div className="row">
-            <div className="column">
-              {resultsTable}
-            </div>
+        <div className="row">
+          <div className="column">
+            {hasBeenSearched &&
+              <StickyContainer>
+                <SearchTable />
+              </StickyContainer>
+            }
           </div>
-        }
+        </div>
       </div>
     );
   }
@@ -226,7 +211,7 @@ class AdvancedSearchPage extends React.Component {
             </div>
           </div>
           {this.props.options
-            ? this.content()
+            ? this.renderContent()
             : <LoadingSpinner />
           }
         </div>
@@ -240,7 +225,10 @@ AdvancedSearchPage.contextTypes = {
 };
 
 AdvancedSearchPage.propTypes = {
-  hasResults: PropTypes.bool.isRequired,
+  data: PropTypes.any,
+  isFetching: PropTypes.bool.isRequired,
+  columns: PropTypes.any,
+  allColumns: PropTypes.any,
   options: PropTypes.object,
   getOptions: PropTypes.func.isRequired,
   onSearch: PropTypes.func.isRequired

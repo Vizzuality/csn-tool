@@ -9,13 +9,13 @@ import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-rou
 import { i18nState } from 'redux-i18n';
 
 import * as reducers from 'reducers';
+
 import Routes from './routes/Routes';
 
 import ReactGA from 'react-ga';
 
 import './styles/lib/custom-foundation.css';
 import 'react-select/dist/react-select.css';
-import 'react-virtualized/styles.css';
 import './styles/main.pcss';
 
 /**

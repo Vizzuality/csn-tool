@@ -1,67 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Sticky } from 'react-sticky';
+
 import LoadingSpinner from 'components/common/LoadingSpinner';
+import ScrollButton from 'components/common/ScrollButton';
 import SpeciesDetailFilters from 'components/species/SpeciesDetailFilters';
+import SpeciesPopulationHeader from 'components/species/SpeciesPopulationHeader';
 import TableList from 'components/tables/TableList';
 import TableListHeader from 'containers/species/TableListHeader';
-import ScrollButton from 'components/common/ScrollButton';
-import { Sticky } from 'react-sticky';
 
 class SpeciesDetailTable extends React.Component {
   constructor(props) {
     super(props);
-    this.clearSelection = this.clearSelection.bind(this);
-    this.getLookAlikeSpecies = this.getLookAlikeSpecies.bind(this);
     this.handleTableItemClick = this.handleTableItemClick.bind(this);
   }
 
-  getLookAlikeSpecies(species) {
-    const url = `${config.apiHost}/species/${species.species_id}/look-alike-species/${species.pop_id_origin}`;
-
-    fetch(url)
-      .then(res => {
-        if (res.ok) return res.json();
-        throw Error(res.statusText);
-      })
-      .then(data => {
-        this.props.selectLASpeciesPopulation({
-          species,
-          aLikeSpecies: data
-        });
-      });
-  }
-
   getSelectedHeader() {
-    const selectedSpecies = this.props.selectedLASpeciesPopulation.species;
+    const { selectedLASpeciesPopulation } = this.props;
+
+    if (!this.props.selectedLASpeciesPopulation) return null;
 
     return (
-      <div className="table-navigation">
-        <button className="btn -back" onClick={this.clearSelection}>
-          <span className="link">{this.context.t('backToSpecies')}</span>
-        </button>
-        <div className="nav">
-          <div>
-            <span className="title">{this.context.t('species')}</span>
-            <h3>{selectedSpecies.original_species}</h3>
-          </div>
-          <div>
-            <span className="title">{this.context.t('population')}</span>
-            <span>{selectedSpecies.population}</span>
-          </div>
-          <div>
-            <span className="title">A</span>
-            <span>{selectedSpecies.original_a || '-'}</span>
-          </div>
-          <div>
-            <span className="title">B</span>
-            <span>{selectedSpecies.original_b || '-'}</span>
-          </div>
-          <div>
-            <span className="title">C</span>
-            <span>{selectedSpecies.original_c || '-'}</span>
-          </div>
-        </div>
-      </div>
+      <SpeciesPopulationHeader
+        species={selectedLASpeciesPopulation}
+        backLinkTo={`/species/${selectedLASpeciesPopulation.species_id}/lookAlikeSpecies`}
+      />
     );
   }
 
@@ -74,11 +37,9 @@ class SpeciesDetailTable extends React.Component {
       case 'criticalSites':
         return 'sites/csn';
       case 'lookAlikeSpecies':
-        if (this.props.selectedLASpeciesPopulation) return 'species';
-        return {
-          type: 'action',
-          action: this.getLookAlikeSpecies
-        };
+        return 'speciesPopulation';
+      case 'lookAlikeSpeciesPopulation':
+        return 'species';
       case 'sites':
         return 'sites/iba';
       default:
@@ -96,30 +57,21 @@ class SpeciesDetailTable extends React.Component {
 
   handleTableItemClick(item) {
     if (this.props.selectedLASpeciesPopulation) {
-      this.props.selectLASpeciesPopulationSpecies(item);
+      this.props.selectSpeciesTableItem(item);
     }
   }
 
-  clearSelection() {
-    this.props.selectLASpeciesPopulation(null);
-  }
-
-  renderTableHeader(isLookAlikeSpecies, data, columns, allColumns) {
+  renderTableHeader(isExpanded, data, columns, allColumns) {
     return (
       <div>
         <SpeciesDetailFilters
-          data={data}
+          data={data || []}
           columns={columns}
-          isSearch={this.props.isSearch}
           id={this.props.id}
           category={this.props.category}
         />
-        {isLookAlikeSpecies && this.props.selectedLASpeciesPopulation
-          ? this.getSelectedHeader()
-          : null
-        }
+        {isExpanded && this.getSelectedHeader()}
         <TableListHeader
-          expanded={isLookAlikeSpecies}
           data={data}
           columns={columns}
           allColumns={allColumns}
@@ -130,34 +82,32 @@ class SpeciesDetailTable extends React.Component {
   }
 
   render() {
-    const detailLink = this.getDetailLink(this.props.category);
-    const isLookAlikeSpecies = this.props.category === 'lookAlikeSpecies';
-    const data = this.props.data;
-    const columns = isLookAlikeSpecies && this.props.selectedLASpeciesPopulation ? this.props.expandedColumns : this.props.columns;
-    const allColumns = isLookAlikeSpecies && this.props.selectedLASpeciesPopulation ? this.props.allExpandedColumns : this.props.allColumns;
-    const isSelectable = !!(isLookAlikeSpecies && this.props.selectedLASpeciesPopulation);
-    const selectedItem = isLookAlikeSpecies && this.props.selectedLASpeciesPopulation
-            ? this.props.selectedLASpeciesPopulation.selectedALikeSpecies
-            : null;
+    const {
+      allColumns,
+      category,
+      columns,
+      data,
+      selectedLASpeciesPopulation,
+      selectedTableItem
+    } = this.props;
+
+    const detailLink = this.getDetailLink(category);
+    const isLookAlikeSpecies = category.startsWith('lookAlikeSpecies');
+    const isExpanded = !!(isLookAlikeSpecies && selectedLASpeciesPopulation);
 
     return (
       <div className="c-table" >
-        {!this.props.isSearch && <ScrollButton />}
-        {this.props.isSearch ?
-          <div>
-            {this.renderTableHeader(isLookAlikeSpecies, data, columns, allColumns)}
-          </div> :
-          <Sticky topOffset={-120} stickyClassName={'-sticky'}>
-            {this.renderTableHeader(isLookAlikeSpecies, data, columns, allColumns)}
-          </Sticky>
-        }
+        <ScrollButton />
+        <Sticky topOffset={-120} stickyClassName={'-sticky'}>
+          {this.renderTableHeader(isExpanded, data, columns, allColumns)}
+        </Sticky>
         <TableList
           data={data}
           columns={columns}
           detailLink={detailLink}
           onItemClick={this.handleTableItemClick}
-          selectable={isSelectable}
-          selectedItem={selectedItem}
+          selectable={isExpanded}
+          selectedItem={selectedTableItem}
         />
       </div>
     );
@@ -174,16 +124,13 @@ SpeciesDetailTable.childContextTypes = {
 
 SpeciesDetailTable.propTypes = {
   allColumns: PropTypes.array.isRequired,
-  allExpandedColumns: PropTypes.array.isRequired,
   id: PropTypes.string.isRequired,
-  isSearch: PropTypes.bool.isRequired,
   category: PropTypes.string.isRequired,
   data: PropTypes.any.isRequired,
   columns: PropTypes.array.isRequired,
-  expandedColumns: PropTypes.array.isRequired,
   selectedLASpeciesPopulation: PropTypes.any,
-  selectLASpeciesPopulation: PropTypes.func.isRequired,
-  selectLASpeciesPopulationSpecies: PropTypes.func.isRequired
+  selectedTableItem: PropTypes.any,
+  selectSpeciesTableItem: PropTypes.func.isRequired
 };
 
 export default SpeciesDetailTable;

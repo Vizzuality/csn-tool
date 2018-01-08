@@ -14,9 +14,17 @@ export function updateLanguage(actualState, replace, done) {
 }
 
 function getCountriesParams(state) {
+  const {
+    cat, iso, population
+  } = state.params;
+  const category = cat === 'lookAlikeSpecies' && population
+          ? 'lookAlikeSpeciesPopulation'
+          : cat;
+
   return {
-    iso: state.params.iso || '',
-    cat: state.params.cat || 'sites', // defult value
+    iso: iso || '',
+    cat: category || 'sites',
+    population,
     filter: state.location.query.filter || ''
   };
 }
@@ -48,8 +56,13 @@ export function updateCountriesPage(prevState, nextState, replace, done) {
 
 export function updateSpeciesDetailPage(actualState, replace, done) {
   const id = actualState.params.id || '';
-  const cat = actualState.params.cat || 'sites'; // default value
-  dispatch(setSpeciesDetailParams(id, cat));
+  const population = actualState.params.population;
+  const category = actualState.params.cat === 'lookAlikeSpecies' && population
+          ? 'lookAlikeSpeciesPopulation'
+          : actualState.params.cat;
+  const cat = category || 'sites'; // default value
+
+  dispatch(setSpeciesDetailParams(id, cat, population));
   done();
 }
 

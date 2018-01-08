@@ -1,26 +1,19 @@
-import { CLEAR_SITES_LIST, SET_SITES_PARAMS, GET_SITES_STATS, GET_SITES_LIST,
-         GET_SITES_SPECIES, SET_SITES_SORT, CHANGE_COLUMN_ACTIVATION,
-         SET_SITES_SEARCH, SET_VIEW_MODE, GET_SITES_LOCATIONS, SET_SITES_COLUMN_FILTER } from 'constants';
+import {
+  CLEAR_SITES_LIST,
+  GET_SITES_LIST,
+  GET_SITES_LOCATIONS,
+  GET_SITES_SPECIES,
+  GET_SITES_STATS,
+  SET_SITES_PARAMS,
+  SET_VIEW_MODE
+} from 'constants/action-types';
+import {
+  ALL_SITES_COLUMNS,
+  DEFAULT_SITES_COLUMNS,
+  TABLES
+} from 'constants/tables';
 import { RESULTS_PER_PAGE } from 'constants/config';
-import { commonSort } from './common.js';
-
-const ALL_SITES_COLUMNS = {
-  csn: ['country', 'csn_name', 'protected', 'csn', 'total_percentage'],
-  iba: ['country', 'site_name', 'protected', 'iba_species', 'iba_in_danger'],
-  ibaSpecies: ['scientific_name', 'english_name', 'iucn_category', 'season', 'start',
-    'end', 'minimum', 'maximum', 'geometric_mean', 'units', 'iba_criteria'],
-  csnSpecies: ['scientific_name', 'english_name', 'iucn_category', 'population',
-  'season', 'start', 'end', 'minimum', 'maximum', 'geometric_mean', 'units',
-  'percentfly', 'csn1', 'csn2']
-};
-
-const DEFAULT_SITES_COLUMNS = {
-  csn: ['country', 'csn_name', 'protected', 'csn', 'total_percentage'],
-  iba: ['country', 'site_name', 'protected', 'iba_species', 'iba_in_danger'],
-  ibaSpecies: ['scientific_name', 'season', 'geometric_mean', 'units', 'iba_criteria'],
-  csnSpecies: ['scientific_name', 'population', 'season', 'geometric_mean', 'units',
-  'percentfly']
-};
+import withTable from './withTable';
 
 const initialState = {
   columns: DEFAULT_SITES_COLUMNS.iba,
@@ -48,22 +41,8 @@ const initialState = {
   type: 'iba'
 };
 
-export default function (state = initialState, action) {
+const sitesReducer = (state = initialState, action) => {
   switch (action.type) {
-    case CHANGE_COLUMN_ACTIVATION: {
-      const columns = state.columns.slice();
-      let newColumns = columns.filter((col) => col !== action.payload);
-      if (columns.length === newColumns.length) {
-        newColumns.push(action.payload);
-        const prevColumns = state.allColumns.slice();
-        newColumns = prevColumns.reduce((previous, currentItem) => {
-          const isIn = newColumns.some((newCol) => newCol === currentItem);
-          if (isIn) previous.push(currentItem);
-          return previous;
-        }, []);
-      }
-      return Object.assign({}, state, { columns: newColumns });
-    }
     case SET_SITES_PARAMS: {
       const columnsSelector = action.payload.category === 'species' ? `${action.payload.type}Species` : action.payload.category;
       const params = {
@@ -79,10 +58,6 @@ export default function (state = initialState, action) {
       }
       return Object.assign({}, state, params);
     }
-    case SET_SITES_SEARCH:
-      return Object.assign({}, state, { searchFilter: action.payload });
-    case SET_SITES_COLUMN_FILTER:
-      return Object.assign({}, state, { columnFilter: action.payload });
     case SET_VIEW_MODE:
       return Object.assign({}, state, { viewMode: action.payload });
     case GET_SITES_LOCATIONS:
@@ -116,30 +91,9 @@ export default function (state = initialState, action) {
       data[action.payload.id] = action.payload.data;
       return Object.assign({}, state, { species: data });
     }
-    case SET_SITES_SORT: {
-      let list = null;
-      let isResource = false;
-      if (state.selected && state.selectedCategory) {
-        isResource = true;
-        list = [...state[state.selectedCategory][state.selected].data];
-      } else {
-        list = [...state.list.data];
-      }
-      list.sort(commonSort(action.payload.field, action.payload.order));
-
-      if (isResource) {
-        const newData = {
-          [state.selected]: {
-            data: list
-          }
-        };
-        const data = Object.assign({}, state[state.selectedCategory], newData);
-        return Object.assign({}, state, { [state.selectedCategory]: data, sort: action.payload });
-      }
-      const newList = Object.assign({}, state.list, { data: list });
-      return Object.assign({}, state, { list: newList, sort: action.payload });
-    }
     default:
       return state;
   }
-}
+};
+
+export default withTable(TABLES.SITES, sitesReducer);

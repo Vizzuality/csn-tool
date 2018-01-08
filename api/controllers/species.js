@@ -1,14 +1,13 @@
-const rp = require('request-promise');
-const CARTO_SQL = require('../constants').CARTO_SQL;
 const normalizeSiteStatus = require('../helpers/index').normalizeSiteStatus;
 const mergeNames = require('../helpers/index').mergeNames;
+const { runQuery } = require('../helpers');
 
 function getSpeciesList(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family,
     s.species_id as id, s.hyperlink, s.iucn_category, aewa_annex_2
     FROM species_main s
     ORDER BY s.taxonomic_sequence`;
-  rp(CARTO_SQL + query)
+  runQuery(query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
@@ -30,7 +29,7 @@ function getSpeciesDetails(req, res) {
     FROM species_main s
     WHERE s.species_id = ${req.params.id}
     `;
-  rp(CARTO_SQL + query)
+  runQuery(query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
@@ -73,7 +72,7 @@ function getSpeciesSites(req, res) {
     ss.season, si.country, si.iso2, si.protection_status ,si.site_name, si.lat, si.lon,
     si.hyperlink, si.site_id, 1, ss.geometric_mean, ss.start, ss._end
     ORDER BY si.site_name`;
-  rp(CARTO_SQL + query)
+  runQuery(query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
@@ -119,7 +118,7 @@ function getSpeciesCriticalSites(req, res) {
     WHERE s.species_id = '${req.params.id}'
     ORDER BY si.site_name`;
 
-  rp(CARTO_SQL + query)
+  runQuery(query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
@@ -152,7 +151,7 @@ function getSpeciesPopulation(req, res) {
     WHERE s.species_id = '${req.params.id}'
     ORDER BY p.population_name`;
 
-  rp(CARTO_SQL + query)
+  runQuery(query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
@@ -190,7 +189,7 @@ function getSpeciesLookAlikeSpecies(req, res) {
     ) as sq
 
     INNER JOIN species_main AS sm ON
-    (sq.confusion_group %26%26 sm.confusion_group)
+    (sq.confusion_group && sm.confusion_group)
     AND sm.species_id != sq.species_id
     INNER JOIN populations_iba AS pi
     ON pi.species_main_id = sm.species_id
@@ -200,7 +199,7 @@ function getSpeciesLookAlikeSpecies(req, res) {
     sq.a, sq.b, sq.c, sq.wpepopid, sq.species_id
     ORDER BY sq.population_name ASC`;
 
-  rp(CARTO_SQL + query)
+  runQuery(query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
@@ -239,11 +238,11 @@ function getPopulationsLookAlikeSpecies(req, res) {
        AND pi.wpepopid = ${req.params.populationId}
        AND sm.species_id = ${req.params.id}
     ) as sq
-    INNER JOIN species_main AS sm ON (sq.confusion_group %26%26 sm.confusion_group) AND sm.species_id != sq.species_id
+    INNER JOIN species_main AS sm ON (sq.confusion_group && sm.confusion_group) AND sm.species_id != sq.species_id
     INNER JOIN populations_iba AS pi ON pi.species_main_id = sm.species_id AND ST_INTERSECTS(sq.the_geom, pi.the_geom)
     ORDER BY sm.taxonomic_sequence ASC, pi.population_name ASC`;
 
-  rp(CARTO_SQL + query)
+  runQuery(query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
