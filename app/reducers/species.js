@@ -6,7 +6,6 @@ import {
   GET_SPECIES_POPULATION,
   GET_SPECIES_SITES,
   GET_SPECIES_STATS,
-  SELECT_SPECIES_TABLE_ITEM,
   SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_PARAMS,
   TOGGLE_LEGEND_ITEM,
@@ -101,12 +100,6 @@ const speciesReducer = (state = initialState, action) => {
       const data = Object.assign({}, state.lookAlikeSpeciesPopulation, {});
       data[action.payload.populationId] = action.payload.data;
       return Object.assign({}, state, { lookAlikeSpeciesPopulation: data });
-    }
-    case SELECT_SPECIES_TABLE_ITEM: {
-      return {
-        ...state,
-        selectedTableItem: action.payload
-      };
     }
     case TOGGLE_SPECIES_LAYER: {
       const layers = Object.assign({}, state.layers);

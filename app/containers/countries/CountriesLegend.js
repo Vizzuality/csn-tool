@@ -4,10 +4,12 @@ import Legend from 'components/maps/Legend';
 
 const PROTECTION_LEVELS = ['Little/none', 'Some', 'Most', 'Whole'];
 
-function getLegendData(countries) {
+function getLegendData(countries, ownProps) {
   const legend = [];
   if (countries.sites[countries.selected]) {
     const sites = countries.sites[countries.selected];
+    const populations = ownProps.populations || [];
+
     const unique = {};
     const distinct = [];
     sites.forEach((site) => {
@@ -31,12 +33,28 @@ function getLegendData(countries) {
       layer: 'sites',
       data: distinct
     });
+
+    if (populations.length) {
+      const toLegendData = (pop) => ({
+        icon: 'dots',
+        id: pop.wpepopid,
+        name: pop.population,
+        color: ownProps.populationColors[pop.wpepopid]
+      });
+
+      legend.push({
+        name: 'Population Boundaries',
+        active: countries.layers.population,
+        layer: 'population',
+        data: populations.map(toLegendData).sort((a, b) => a.name.toString() > b.name.toString())
+      });
+    }
   }
   return legend;
 }
 
-const mapStateToProps = (state) => ({
-  data: getLegendData(state.countries)
+const mapStateToProps = (state, ownProps) => ({
+  data: getLegendData(state.countries, ownProps)
 });
 
 const mapDispatchToProps = (dispatch) => ({

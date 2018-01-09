@@ -6,7 +6,7 @@ import {
   GET_SPECIES_POPULATION,
   GET_SPECIES_SITES,
   GET_SPECIES_STATS,
-  SELECT_SPECIES_TABLE_ITEM,
+  SELECT_TABLE_ITEM,
   SET_COLUMN_FILTER,
   SET_SEARCH_FILTER,
   SET_SORT,
@@ -215,7 +215,7 @@ export function setSpeciesFilter(filter) {
 
 export function selectSpeciesTableItem(item) {
   return {
-    type: SELECT_SPECIES_TABLE_ITEM,
+    type: `${SELECT_TABLE_ITEM}_${TABLES.SPECIES}`,
     payload: item
   };
 }

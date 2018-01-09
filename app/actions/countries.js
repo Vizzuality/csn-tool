@@ -8,6 +8,7 @@ import {
   GET_COUNTRIES_SITES,
   GET_COUNTRIES_SPECIES,
   GET_COUNTRIES_STATS,
+  SELECT_TABLE_ITEM,
   SET_COLUMN_FILTER,
   SET_COUNTRY_PARAMS,
   SET_SEARCH_FILTER,
@@ -236,5 +237,12 @@ export function setCountriesTableFilter(filter) {
   return {
     type: `${SET_COLUMN_FILTER}_${TABLES.COUNTRIES}`,
     payload: filter
+  };
+}
+
+export function selectCountriesTableItem(item) {
+  return {
+    type: `${SELECT_TABLE_ITEM}_${TABLES.COUNTRIES}`,
+    payload: item
   };
 }

@@ -7,6 +7,7 @@ import {
 } from 'constants/map';
 import BasicMap from 'components/maps/BasicMap';
 import CountriesLegend from 'containers/countries/CountriesLegend';
+import withPopulation from 'components/maps/withPopulation';
 
 const borders = {
   color: 'white',
@@ -267,7 +268,10 @@ class CountriesMap extends BasicMap {
         <div id={this.props.id} className="c-map"></div>
         {this.props.country &&
           <div className="l-legend">
-            <CountriesLegend />
+            <CountriesLegend
+              populations={this.props.populations}
+              populationColors={this.populationColors}
+            />
           </div>
         }
       </div>
@@ -287,4 +291,4 @@ CountriesMap.propTypes = {
   country: PropTypes.string
 };
 
-export default withRouter(CountriesMap);
+export default withRouter(withPopulation(CountriesMap));
