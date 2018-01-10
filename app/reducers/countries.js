@@ -36,7 +36,8 @@ const initialState = {
   lookAlikeSpecies: {},
   lookAlikeSpeciesPopulation: {},
   layers: {
-    sites: true
+    sites: true,
+    population: true
   },
   sort: {
     field: '',

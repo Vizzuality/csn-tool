@@ -7,6 +7,7 @@ import {
 } from 'constants/map';
 import CountriesLegend from 'containers/countries/CountriesLegend';
 import PopulationMap from 'components/maps/PopulationMap';
+import { TopoJSON } from 'helpers/map';
 
 const borders = {
   color: 'white',
@@ -14,6 +15,7 @@ const borders = {
   weight: 2,
   lineCap: 'round'
 };
+// country layer style based on selected base layer (map or satellite)
 const styles = {
   map: {
     hide: { fillColor: 'white', fillOpacity: 1, color: 'transparent', opacity: 0 },
@@ -38,9 +40,8 @@ class CountriesMap extends PopulationMap {
     this.initMap();
     this.initPopup();
 
-    // Adds suppport to topojson
-    this.addTopoJSONLayer();
-    this.topoLayer = new L.TopoJSON();
+    this.topoLayer = new TopoJSON();
+    this.topoLayer.setZIndex(1);
 
     if (this.props.geoms) {
       this.drawGeo(this.props.geoms, this.props.countries, this.props.searchFilter);
@@ -52,6 +53,8 @@ class CountriesMap extends PopulationMap {
   }
 
   componentWillReceiveProps(newProps) {
+    super.componentWillReceiveProps(newProps);
+
     this.setActiveLayer();
     this.drawGeo(newProps.geoms, newProps.countries, newProps.searchFilter);
 

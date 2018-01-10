@@ -90,6 +90,7 @@ class PopulationMap extends BasicMap {
   fetchPopulationLayers({ populations }) {
     if (populations) {
       populations.forEach((pop) => {
+        console.log('Fetch population layer', pop);
         this.fetchPopulationLayer(pop.wpepopid);
       });
     }
@@ -148,8 +149,6 @@ class PopulationMap extends BasicMap {
     }
   }
 }
-
-PopulationMap.defaultProps = {};
 
 PopulationMap.propTypes = {
   populations: PropTypes.any,

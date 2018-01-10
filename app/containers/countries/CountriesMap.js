@@ -17,9 +17,7 @@ const getPopulations = createSelector(
   getSelectedLASpeciesPopulation,
   (countries) => countries.selected,
   (countries) => countries.selectedTableItem,
-  (selectedLASpeciesPopulation, selected, selectedTableItem) => {
-    const selectedALikeSpecies = selectedTableItem;
-
+  (selectedLASpeciesPopulation, selected, selectedALikeSpecies) => {
     if (!selectedLASpeciesPopulation) return false;
 
     const selectedSpecies = {
