@@ -90,7 +90,7 @@ class Map extends React.Component {
      : MAP_CENTER;
     this.map = L.map(this.props.id, {
       minZoom: MAP_MIN_ZOOM,
-      zoom: query.zoom || MAP_INITIAL_ZOOM,
+      zoom: (query && query.zoom) || MAP_INITIAL_ZOOM,
       zoomControl: this.props.zoomControl,
       center,
       detectRetina: true,

@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
-import BasicMap from 'components/maps/BasicMap';
 import SpeciesDetailLegend from 'containers/species/SpeciesDetailLegend';
-import withPopulation from 'components/maps/withPopulation';
+import PopulationMap from 'components/maps/PopulationMap';
 
-class SpeciesMap extends BasicMap {
-
+class SpeciesMap extends PopulationMap {
   componentDidMount() {
     this.initMap();
 
@@ -20,6 +18,8 @@ class SpeciesMap extends BasicMap {
   }
 
   componentWillReceiveProps(newProps) {
+    super.componentWillReceiveProps(newProps);
+
     if (newProps.layers.sites) {
       if (this.props.selectedCategory !== newProps.selectedCategory) {
         this.clearMarkers();
@@ -93,21 +93,12 @@ class SpeciesMap extends BasicMap {
   }
 }
 
-SpeciesMap.contextTypes = {
-  // Define function to get the translations
-  t: PropTypes.func.isRequired
-};
-
 SpeciesMap.propTypes = {
   router: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
   sites: PropTypes.any.isRequired,
   criticalSites: PropTypes.any.isRequired,
-  populations: PropTypes.any.isRequired,
-  selectedCategory: PropTypes.string.isRequired,
-  selectedPopulationId: PropTypes.number,
-  fitToPopulationBoudaries: PropTypes.bool,
-  fitToPopulationId: PropTypes.number
+  selectedCategory: PropTypes.string.isRequired
 };
 
-export default withRouter(withPopulation(SpeciesMap));
+export default withRouter(SpeciesMap);

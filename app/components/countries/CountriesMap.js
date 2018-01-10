@@ -5,9 +5,8 @@ import {
   MAP_MIN_ZOOM,
   MAP_CENTER
 } from 'constants/map';
-import BasicMap from 'components/maps/BasicMap';
 import CountriesLegend from 'containers/countries/CountriesLegend';
-import withPopulation from 'components/maps/withPopulation';
+import PopulationMap from 'components/maps/PopulationMap';
 
 const borders = {
   color: 'white',
@@ -28,8 +27,7 @@ const styles = {
   }
 };
 
-class CountriesMap extends BasicMap {
-
+class CountriesMap extends PopulationMap {
   componentWillMount() {
     this.props.getGeoms();
   }
@@ -291,4 +289,4 @@ CountriesMap.propTypes = {
   country: PropTypes.string
 };
 
-export default withRouter(withPopulation(CountriesMap));
+export default withRouter(CountriesMap);
