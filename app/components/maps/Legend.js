@@ -4,7 +4,7 @@ import Switch from 'components/common/Switch';
 
 function getSubItems(subItems, onHover) {
   return subItems.map((subItem, index2) => (
-    <div onMouseOver={() => onHover(subItem, true)} onMouseOut={() => onHover(subItem, false)} className="sub-item" key={index2}>
+    <div onMouseOver={() => onHover && onHover(subItem, true)} onMouseOut={() => onHover && onHover(subItem, false)} className="sub-item" key={index2}>
       {
         (subItem.icon === 'dots') ? (
           <span className="dots" style={{ color: subItem.color }}>...</span>
