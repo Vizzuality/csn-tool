@@ -7,8 +7,6 @@ import BasicMap from './BasicMap';
 class PopulationMap extends BasicMap {
   constructor(props) {
     super(props);
-    this.populationLayers = [];
-
     this.setPopulationColors(props.populations);
   }
 
@@ -24,43 +22,34 @@ class PopulationMap extends BasicMap {
     this.setPopulationColors(newProps.populations);
 
     if (newProps.populations !== this.props.populations) {
-      this.removePopulationLayers();
+      this.populationLayerGroup.clearLayers(); // remove all population layers
     }
 
+    const anyPopulationLayer = !!this.populationLayerGroup.getLayers().length;
+
     if (!newProps.layers.population) {
-      this.hidePopulations();
+      this.map.removeLayer(this.populationLayerGroup); // hide population layer group
     } else {
-      if (this.populationLayers.length === 0 && this.props.populations !== newProps.populations) {
+      if (!anyPopulationLayer && this.props.populations !== newProps.populations) {
         if (newProps.fitToPopulationBoudaries) {
           this.fetchPopulationBoundaries(this.props.id);
         }
         this.fetchPopulationLayers(newProps);
       }
 
-      if (this.populationLayers.length &&
+      if (anyPopulationLayer &&
           (this.props.selectedPopulationId !== newProps.selectedPopulationId ||
            this.props.layers.population !== newProps.layers.population ||
            this.props.populations !== newProps.populations)) {
-        this.populationLayers.forEach((layer) => {
+        this.populationLayerGroup.addTo(this.map);
+        this.populationLayerGroup.eachLayer((layer) => {
           const id = layer.options.populationId;
           const isActive = id === newProps.selectedPopulationId;
 
-          layer.setStyle({
-            fill: isActive,
-            opacity: 1
-          });
+          layer.setStyle({ fill: isActive });
         });
       }
     }
-  }
-
-  hidePopulations() {
-    this.populationLayers.forEach((layer) => {
-      layer.setStyle({
-        fill: false,
-        opacity: 0
-      });
-    });
   }
 
   setPopulationColors(populations) {
@@ -117,10 +106,10 @@ class PopulationMap extends BasicMap {
 
   addPopulationLayer(populationId, layerGeoJSON) {
     // do not add layer if is already there
-    if (this.populationLayers.length > 0 &&
-        this.populationLayers.some((l) => l.options.populationId === populationId)) {
-      return;
-    }
+    const layers = this.populationLayerGroup.getLayers();
+
+    if (layers.some((l) => l.options.populationId === populationId)) return;
+
     const color = this.populationColors[populationId];
     const isActive = this.props.selectedPopulationId === populationId;
 
@@ -129,7 +118,6 @@ class PopulationMap extends BasicMap {
       noWrap: true,
       pane: 'populationBoundaries',
       style: {
-        opacity: 1,
         weight: 3,
         dashArray: [1, 7],
         lineCap: 'round',
@@ -140,19 +128,8 @@ class PopulationMap extends BasicMap {
       }
     });
     this.populationLayerGroup.addLayer(layer);
-    this.populationLayers.push(layer);
     if (this.props.fitToPopulationId === populationId) {
       this.map.fitBounds(layer.getBounds());
-    }
-  }
-
-  removePopulationLayers() {
-    if (this.populationLayers && this.populationLayers.length) {
-      this.populationLayers.forEach((l) => {
-        this.populationLayerGroup.removeLayer(l);
-      });
-
-      this.populationLayers = [];
     }
   }
 }
