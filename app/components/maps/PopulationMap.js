@@ -8,7 +8,16 @@ class PopulationMap extends BasicMap {
   constructor(props) {
     super(props);
     this.populationLayers = [];
+
     this.setPopulationColors(props.populations);
+  }
+
+  componentDidMount() {
+    super.componentDidMount();
+    const pane = this.map.createPane('populationBoundaries');
+    pane.classList.add('-layer-blending');
+    this.populationLayerGroup = L.layerGroup();
+    this.populationLayerGroup.addTo(this.map);
   }
 
   componentWillReceiveProps(newProps) {
@@ -90,7 +99,6 @@ class PopulationMap extends BasicMap {
   fetchPopulationLayers({ populations }) {
     if (populations) {
       populations.forEach((pop) => {
-        console.log('Fetch population layer', pop);
         this.fetchPopulationLayer(pop.wpepopid);
       });
     }
@@ -119,6 +127,7 @@ class PopulationMap extends BasicMap {
     const layer = L.geoJSON(layerGeoJSON, {
       populationId,
       noWrap: true,
+      pane: 'populationBoundaries',
       style: {
         opacity: 1,
         weight: 3,
@@ -130,9 +139,7 @@ class PopulationMap extends BasicMap {
         fillColor: color
       }
     });
-    layer.setZIndex(2);
-    layer.addTo(this.map);
-    layer.getPane().classList.add('-layer-blending');
+    this.populationLayerGroup.addLayer(layer);
     this.populationLayers.push(layer);
     if (this.props.fitToPopulationId === populationId) {
       this.map.fitBounds(layer.getBounds());
@@ -142,7 +149,7 @@ class PopulationMap extends BasicMap {
   removePopulationLayers() {
     if (this.populationLayers && this.populationLayers.length) {
       this.populationLayers.forEach((l) => {
-        this.map.removeLayer(l);
+        this.populationLayerGroup.removeLayer(l);
       });
 
       this.populationLayers = [];

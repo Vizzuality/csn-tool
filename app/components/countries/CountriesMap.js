@@ -35,13 +35,10 @@ class CountriesMap extends PopulationMap {
   }
 
   componentDidMount() {
+    super.componentDidMount();
     this.markers = [];
-    // Map initialization
-    this.initMap();
     this.initPopup();
-
     this.topoLayer = new TopoJSON();
-    this.topoLayer.setZIndex(1);
 
     if (this.props.geoms) {
       this.drawGeo(this.props.geoms, this.props.countries, this.props.searchFilter);
@@ -53,8 +50,6 @@ class CountriesMap extends PopulationMap {
   }
 
   componentWillReceiveProps(newProps) {
-    super.componentWillReceiveProps(newProps);
-
     this.setActiveLayer();
     this.drawGeo(newProps.geoms, newProps.countries, newProps.searchFilter);
 
@@ -80,6 +75,8 @@ class CountriesMap extends PopulationMap {
       this.outBounds();
       this.map.invalidateSize();
     }
+
+    super.componentWillReceiveProps(newProps);
   }
 
   componentWillUnmount() {
@@ -154,22 +151,13 @@ class CountriesMap extends PopulationMap {
     const HIDE_STYLE = styles[this.state.selectedBaseLayer].hide;
 
     // If selected country
-    if (isoParam.length > 0) {
-      return (iso === isoParam) ? SHOW_STYLE : HIDE_STYLE;
-    }
-
-    // Big map
-    const hasSearchFilter = searchFilter.length > 0;
-
-    let trueSearchFilter = false;
+    if (isoParam.length > 0) return (iso === isoParam) ? SHOW_STYLE : HIDE_STYLE;
 
     // Filter in play
-    if (hasSearchFilter) {
-      const countryData = this.getCountryData(countries, iso);
+    if (searchFilter && searchFilter.length > 0) {
+      const { country } = this.getCountryData(countries, iso);
 
-      trueSearchFilter = !hasSearchFilter || countryData.country.toLowerCase().indexOf(searchFilter.toLowerCase()) > -1;
-
-      return trueSearchFilter ? SHOW_STYLE : HIDE_STYLE;
+      return country.toLowerCase().includes(searchFilter.toLowerCase()) ? SHOW_STYLE : HIDE_STYLE;
     }
 
     return SHOW_STYLE; // Unfiltered, tastes great.

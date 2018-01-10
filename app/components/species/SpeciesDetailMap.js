@@ -6,7 +6,7 @@ import PopulationMap from 'components/maps/PopulationMap';
 
 class SpeciesMap extends PopulationMap {
   componentDidMount() {
-    this.initMap();
+    super.componentDidMount();
 
     this.markers = [];
     const sitesToDraw = this.props.selectedCategory === 'sites'
