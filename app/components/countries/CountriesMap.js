@@ -59,7 +59,8 @@ class CountriesMap extends PopulationMap {
 
     if (newProps.layers.sites) {
       if (newProps.data && newProps.data.length) {
-        if (this.props.data.length !== newProps.data.length) {
+        if (this.props.data.length !== newProps.data.length ||
+            !this.props.layers.sites) {
           this.clearMarkers();
           this.drawMarkers(newProps.data);
         }
