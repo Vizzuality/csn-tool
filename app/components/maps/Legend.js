@@ -17,26 +17,24 @@ function getSubItems(subItems, onHover) {
   ));
 }
 
-function Legend(props) {
-  if (props.data && !props.data.length) return null;
+function Legend({ data, onSwitchChange, onLegendItemHover }) {
+  if (data && !data.length) return null;
 
   return (
     <div className="c-legend">
-      {props.data.length &&
-        props.data.map((item, index) => {
-          const legendLine = (index > 0) ? <div className="legend-line" /> : '';
-          return (
-            <div key={index}>
-              {legendLine}
-              <div className="item" key={index}>
-                <p>{item.name}</p>
-                <Switch checked={item.active} onChange={() => props.onSwitchChange(item.layer)} />
-                {getSubItems(item.data, props.onLegendItemHover)}
-              </div>
+      {data.map((item, index) => {
+        const legendLine = (index > 0) ? <div className="legend-line" /> : '';
+        return (
+          <div key={index}>
+            {legendLine}
+            <div className="item" key={index}>
+              <p>{item.name}</p>
+              <Switch checked={item.active} onChange={() => onSwitchChange(item.layer)} />
+                {getSubItems(item.data, onLegendItemHover)}
             </div>
-          );
-        })
-      }
+          </div>
+        );
+      })}
     </div>
   );
 }

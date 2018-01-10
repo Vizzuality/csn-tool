@@ -12,8 +12,8 @@ import {
   SET_SORT,
   SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_PARAMS,
-  TOGGLE_LEGEND_ITEM,
-  TOGGLE_SPECIES_LAYER
+  TOGGLE_SPECIES_LAYER,
+  TOGGLE_SPECIES_LEGEND_ITEM
 } from 'constants/action-types';
 import { TABLES } from 'constants/tables';
 
@@ -201,7 +201,7 @@ export function toggleLayer(layer) {
 
 export function toggleLegendItem(item, active) {
   return {
-    type: TOGGLE_LEGEND_ITEM,
+    type: TOGGLE_SPECIES_LEGEND_ITEM,
     payload: { id: item.id, active }
   };
 }

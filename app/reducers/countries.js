@@ -9,7 +9,8 @@ import {
   GET_COUNTRIES_SPECIES,
   GET_COUNTRIES_STATS,
   SET_COUNTRY_PARAMS,
-  TOGGLE_COUNTRIES_LAYER
+  TOGGLE_COUNTRIES_LAYER,
+  TOGGLE_COUNTRIES_LEGEND_ITEM
 } from 'constants/action-types';
 import {
   ALL_COUNTRY_COLUMNS,
@@ -24,6 +25,7 @@ const initialState = {
   selected: '',
   selectedCategory: 'sites',
   selectedLASpeciesPopulation: null,
+  selectedTableItem: null,
   searchFilter: '',
   geoms: false,
   countries: [],
@@ -55,6 +57,7 @@ const countriesReducer = (state = initialState, action) => {
         selected: action.payload.country,
         selectedCategory: category,
         selectedLASpeciesPopulation: category === 'lookAlikeSpeciesPopulation' ? action.payload.population : null,
+        selectedTableItem: null,
         filter: action.payload.filter,
         columns: DEFAULT_COUNTRY_COLUMNS[category],
         allColumns: ALL_COUNTRY_COLUMNS[category]
@@ -105,6 +108,12 @@ const countriesReducer = (state = initialState, action) => {
       const layers = Object.assign({}, state.layers);
       layers[action.payload] = !layers[action.payload];
       return Object.assign({}, state, { layers });
+    }
+    case TOGGLE_COUNTRIES_LEGEND_ITEM: {
+      return {
+        ...state,
+        highlightedPopulationId: action.payload.active ? action.payload.id : null
+      };
     }
     default:
       return state;

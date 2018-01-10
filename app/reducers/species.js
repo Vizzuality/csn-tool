@@ -8,8 +8,8 @@ import {
   GET_SPECIES_STATS,
   SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_PARAMS,
-  TOGGLE_LEGEND_ITEM,
-  TOGGLE_SPECIES_LAYER
+  TOGGLE_SPECIES_LAYER,
+  TOGGLE_SPECIES_LEGEND_ITEM
 } from 'constants/action-types';
 import {
   ALL_SPECIES_COLUMNS,
@@ -106,7 +106,7 @@ const speciesReducer = (state = initialState, action) => {
       layers[action.payload] = !layers[action.payload];
       return Object.assign({}, state, { layers });
     }
-    case TOGGLE_LEGEND_ITEM: {
+    case TOGGLE_SPECIES_LEGEND_ITEM: {
       return {
         ...state,
         highlightedPopulationId: action.payload.active ? action.payload.id : null

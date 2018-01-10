@@ -13,7 +13,8 @@ import {
   SET_COUNTRY_PARAMS,
   SET_SEARCH_FILTER,
   SET_SORT,
-  TOGGLE_COUNTRIES_LAYER
+  TOGGLE_COUNTRIES_LAYER,
+  TOGGLE_COUNTRIES_LEGEND_ITEM
 } from 'constants/action-types';
 import { TABLES } from 'constants/tables';
 import { push } from 'react-router-redux';
@@ -216,6 +217,13 @@ export function toggleLayer(layer) {
   return {
     type: TOGGLE_COUNTRIES_LAYER,
     payload: layer
+  };
+}
+
+export function toggleLegendItem(item, active) {
+  return {
+    type: TOGGLE_COUNTRIES_LEGEND_ITEM,
+    payload: { id: item.id, active }
   };
 }
 

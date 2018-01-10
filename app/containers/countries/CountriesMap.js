@@ -51,6 +51,7 @@ const mapStateToProps = ({ countries } = {}) => {
     searchFilter: countries.searchFilter,
     data: countries.sites[countries.selected] || [],
     populations: populations || false,
+    selectedPopulationId: countries.highlightedPopulationId,
     fitToPopulationId,
     layers: countries.layers
   };

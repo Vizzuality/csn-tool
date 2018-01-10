@@ -1,15 +1,15 @@
 import { connect } from 'react-redux';
-import { toggleLayer } from 'actions/countries';
+import { toggleLayer, toggleLegendItem } from 'actions/countries';
 import Legend from 'components/maps/Legend';
 
 const PROTECTION_LEVELS = ['Little/none', 'Some', 'Most', 'Whole'];
 
 function getLegendData(countries, ownProps) {
   const legend = [];
+  const populations = ownProps.populations || [];
+
   if (countries.sites[countries.selected]) {
     const sites = countries.sites[countries.selected];
-    const populations = ownProps.populations || [];
-
     const unique = {};
     const distinct = [];
     sites.forEach((site) => {
@@ -33,22 +33,22 @@ function getLegendData(countries, ownProps) {
       layer: 'sites',
       data: distinct
     });
+  }
 
-    if (populations.length) {
-      const toLegendData = (pop) => ({
-        icon: 'dots',
-        id: pop.wpepopid,
-        name: pop.population,
-        color: ownProps.populationColors[pop.wpepopid]
-      });
+  if (populations.length) {
+    const toLegendData = (pop) => ({
+      icon: 'dots',
+      id: pop.wpepopid,
+      name: pop.population,
+      color: ownProps.populationColors[pop.wpepopid]
+    });
 
-      legend.push({
-        name: 'Population Boundaries',
-        active: countries.layers.population,
-        layer: 'population',
-        data: populations.map(toLegendData).sort((a, b) => a.name.toString() > b.name.toString())
-      });
-    }
+    legend.push({
+      name: 'Population Boundaries',
+      active: countries.layers.population,
+      layer: 'population',
+      data: populations.map(toLegendData).sort((a, b) => a.name.toString() > b.name.toString())
+    });
   }
   return legend;
 }
@@ -58,7 +58,8 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onSwitchChange: (layer) => dispatch(toggleLayer(layer))
+  onSwitchChange: (layer) => dispatch(toggleLayer(layer)),
+  onLegendItemHover: (item, active) => dispatch(toggleLegendItem(item, active))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Legend);
