@@ -50,6 +50,8 @@ class CountriesMap extends PopulationMap {
   }
 
   componentWillReceiveProps(newProps) {
+    super.componentWillReceiveProps(newProps);
+
     this.setActiveLayer();
     this.drawGeo(newProps.geoms, newProps.countries, newProps.searchFilter);
 
@@ -76,12 +78,6 @@ class CountriesMap extends PopulationMap {
       this.outBounds();
       this.map.invalidateSize();
     }
-
-    super.componentWillReceiveProps(newProps);
-  }
-
-  componentWillUnmount() {
-    this.remove();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -130,23 +126,6 @@ class CountriesMap extends PopulationMap {
     this.props.goToDetail(iso);
   }
 
-  getCountryData(countries, iso) {
-    let i = 0;
-    let countryData = {
-      iso3: '',
-      ramsar_member: false,
-      aewa_member: false
-    };
-    const length = countries.length;
-    for (i = 0; i < length; i++) {
-      if (countries[i].iso3 === iso) {
-        countryData = countries[i];
-        return countryData;
-      }
-    }
-    return countryData;
-  }
-
   getLayerStyle(searchFilter, countries, iso, isoParam) {
     const SHOW_STYLE = styles[this.state.selectedBaseLayer].base;
     const HIDE_STYLE = styles[this.state.selectedBaseLayer].hide;
@@ -156,7 +135,7 @@ class CountriesMap extends PopulationMap {
 
     // Filter in play
     if (searchFilter && searchFilter.length > 0) {
-      const { country } = this.getCountryData(countries, iso);
+      const { country } = countries.find((c) => c.iso3 === iso) || {};
 
       return country.toLowerCase().includes(searchFilter.toLowerCase()) ? SHOW_STYLE : HIDE_STYLE;
     }
