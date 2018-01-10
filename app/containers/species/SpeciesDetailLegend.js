@@ -1,56 +1,46 @@
 import { connect } from 'react-redux';
+
 import { toggleLayer, toggleLegendItem } from 'actions/species';
 import Legend from 'components/maps/Legend';
+import { uniqueBy } from 'helpers/data';
 
 function getLegendData(species, ownProps) {
   const legend = [];
-  if (species.sites[species.selected]) {
-    const sites = species.sites[species.selected];
-    const populations = ownProps.populations;
+  const showSiteProtectionLevels = ['sites', 'criticalSites'].includes(species.selectedCategory);
 
-    const unique = {};
-    const distinct = [];
-    sites.forEach((site) => {
-      if (!unique[site.protected_slug]) {
-        distinct.push({
-          icon: 'circle',
-          name: site.protected,
-          status: site.protected_slug
-        });
-        unique[site.protected_slug] = true;
-      }
-    });
-
-    const distinctPop = [];
-    if (populations) {
-      populations.forEach((pop) => {
-        distinctPop.push({
-          icon: 'dots',
-          id: pop.wpepopid,
-          name: pop.population,
-          color: ownProps.populationColors[pop.wpepopid]
-        });
-      });
-    }
+  if (showSiteProtectionLevels) {
+    const sites = species[species.selectedCategory][species.selected] || [];
+    const uniqueSites = uniqueBy(sites, 'protected_slug').map((site) => ({
+      icon: 'circle',
+      name: site.protected,
+      status: site.protected_slug
+    }));
 
     legend.push({
-      name: 'Critical Sites',
+      name: 'Protection Level',
       active: species.layers.sites,
       layer: 'sites',
-      data: distinct
-    });
-    legend.push({
-      name: 'Population Boundaries',
-      active: species.layers.population,
-      layer: 'population',
-      data: distinctPop.sort((a, b) => a.name.toString() > b.name.toString())
+      data: uniqueSites
     });
   }
+
+  const populations = (ownProps.populations || []).map((pop) => ({
+    icon: 'dots',
+    id: pop.wpepopid,
+    name: pop.population,
+    color: ownProps.populationColors[pop.wpepopid]
+  }));
+  legend.push({
+    name: 'Population Boundaries',
+    active: species.layers.population,
+    layer: 'population',
+    data: populations.sort((a, b) => a.name.toString() > b.name.toString())
+  });
   return legend;
 }
 
-const mapStateToProps = (state, ownProps) => ({
-  data: getLegendData(state.species, ownProps)
+const mapStateToProps = ({ species }, ownProps) => ({
+  data: getLegendData(species, ownProps)
 });
 
 const mapDispatchToProps = (dispatch) => ({

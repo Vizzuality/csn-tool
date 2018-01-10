@@ -28,7 +28,7 @@ function getLegendData(countries, ownProps) {
       return aIndex - bIndex;
     });
     legend.push({
-      name: 'Protection level',
+      name: 'Protection Level',
       active: countries.layers.sites,
       layer: 'sites',
       data: distinct
