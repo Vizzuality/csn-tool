@@ -36,9 +36,17 @@ function getCountrySites(req, res) {
   const query = `with stc as (select site_id,
       SUM(case when iba_criteria = '' then 0 else 1 end) as iba
         from species_sites group by site_id)
-    SELECT c.country, c.iso3,
-      s.protection_status AS protected, s.site_name, s.lat, s.lon,
-      s.site_id as id, stc.iba AS iba_species, s.hyperlink, s.iba_in_danger
+    SELECT
+      c.country,
+      c.iso3,
+      coalesce(s.protection_status, 'Unknown') AS protected,
+      s.site_name,
+      s.lat,
+      s.lon,
+      s.site_id as id,
+      stc.iba AS iba_species,
+      s.hyperlink,
+      s.iba_in_danger
     FROM sites s
   	INNER JOIN countries c ON s.country_id = c.country_id AND
     c.iso3 = '${req.params.iso}'
@@ -67,8 +75,15 @@ function getCountryCriticalSites(req, res) {
       FROM csn_species_sites
       GROUP BY site_id
     )
-    SELECT s.site_name_clean AS csn_name, protected,
-    s.site_id AS id, csc.csn_species AS csn_species, total_percentage
+    SELECT
+      s.site_id AS id,
+      s.site_name_clean AS csn_name,
+      s.site_name_clean AS site_name,
+      s.lat,
+      s.lon,
+      coalesce(protected, 'Unknown') AS protected,
+      csc.csn_species AS csn_species,
+      total_percentage
     FROM sites_csn_points s
     INNER JOIN csn_species_count AS csc ON csc.site_id = s.site_id
     WHERE s.iso3 = '${req.params.iso}'
@@ -199,9 +214,16 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
 }
 
 function getCountryLookAlikeSpecies(req, res) {
-  const query = `SELECT sm.scientific_name AS scientific_name,
-    sm.english_name, sm.species_id AS id,
-    pi.population_name AS population, pi.a, pi.b, pi.c
+  const query = `
+    SELECT
+      sm.scientific_name AS scientific_name,
+      sm.english_name,
+      sm.species_id AS id,
+      pi.population_name AS population,
+      pi.a,
+      pi.b,
+      pi.c,
+      pi.wpepopid
     FROM
     (
       SELECT confusion_group,

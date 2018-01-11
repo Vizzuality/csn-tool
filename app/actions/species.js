@@ -6,14 +6,14 @@ import {
   GET_SPECIES_POPULATION,
   GET_SPECIES_SITES,
   GET_SPECIES_STATS,
-  SELECT_SPECIES_TABLE_ITEM,
+  SELECT_TABLE_ITEM,
   SET_COLUMN_FILTER,
   SET_SEARCH_FILTER,
   SET_SORT,
   SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_PARAMS,
-  TOGGLE_LEGEND_ITEM,
-  TOGGLE_SPECIES_LAYER
+  TOGGLE_SPECIES_LAYER,
+  TOGGLE_SPECIES_LEGEND_ITEM
 } from 'constants/action-types';
 import { TABLES } from 'constants/tables';
 
@@ -201,7 +201,7 @@ export function toggleLayer(layer) {
 
 export function toggleLegendItem(item, active) {
   return {
-    type: TOGGLE_LEGEND_ITEM,
+    type: TOGGLE_SPECIES_LEGEND_ITEM,
     payload: { id: item.id, active }
   };
 }
@@ -215,7 +215,7 @@ export function setSpeciesFilter(filter) {
 
 export function selectSpeciesTableItem(item) {
   return {
-    type: SELECT_SPECIES_TABLE_ITEM,
+    type: `${SELECT_TABLE_ITEM}_${TABLES.SPECIES}`,
     payload: item
   };
 }

@@ -1,5 +1,6 @@
 import {
   CHANGE_COLUMN_ACTIVATION,
+  SELECT_TABLE_ITEM,
   SET_COLUMN_FILTER,
   SET_SEARCH_FILTER,
   SET_SORT
@@ -48,6 +49,12 @@ export default function (tableName, reducer) {
           return Object.assign({}, state, { [state.selectedCategory]: data, sort: action.payload });
         }
         return Object.assign({}, state, { list, sort: action.payload });
+      }
+      case tableAction(SELECT_TABLE_ITEM): {
+        return {
+          ...state,
+          selectedTableItem: action.payload
+        };
       }
       default:
         return state;

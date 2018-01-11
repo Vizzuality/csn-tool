@@ -1,7 +1,10 @@
 import { connect } from 'react-redux';
 import CountriesTable from 'components/countries/CountriesTable';
-import { setSearchFilter } from 'actions/countries';
 import { filterData } from 'helpers/filters';
+import {
+  selectCountriesTableItem,
+  setSearchFilter
+} from 'actions/countries';
 
 function getSelectedSpeciesPopulation(countries) {
   if (!countries.selectedLASpeciesPopulation) return null;
@@ -25,12 +28,14 @@ const mapStateToProps = (state) => {
     data: filterData({ data, columns, filter: countries.searchFilter, columnFilter: countries.columnFilter }),
     columns,
     allColumns: countries.allColumns,
+    selectedTableItem: countries.selectedTableItem,
     selectedLASpeciesPopulation: getSelectedSpeciesPopulation(countries)
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  cleanSearchFilter: (search) => dispatch(setSearchFilter(search))
-});
+const mapDispatchToProps = {
+  cleanSearchFilter: setSearchFilter,
+  selectCountriesTableItem
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(CountriesTable);

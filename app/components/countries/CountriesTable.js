@@ -10,6 +10,11 @@ import TableList from 'components/tables/TableList';
 import TableListHeader from 'containers/countries/TableListHeader';
 
 class CountriesTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleTableItemClick = this.handleTableItemClick.bind(this);
+  }
+
   componentWillMount() {
     this.props.cleanSearchFilter('');
   }
@@ -52,6 +57,12 @@ class CountriesTable extends React.Component {
     );
   }
 
+  handleTableItemClick(item) {
+    if (this.props.selectedLASpeciesPopulation) {
+      this.props.selectCountriesTableItem(item);
+    }
+  }
+
   render() {
     const {
       allColumns,
@@ -59,7 +70,8 @@ class CountriesTable extends React.Component {
       columns,
       country,
       data,
-      selectedLASpeciesPopulation
+      selectedLASpeciesPopulation,
+      selectedTableItem
     } = this.props;
 
     const detailLink = this.getDetailLink(category);
@@ -88,6 +100,9 @@ class CountriesTable extends React.Component {
             data={data}
             columns={columns}
             detailLink={detailLink}
+            onItemClick={this.handleTableItemClick}
+            selectable={isExpanded}
+            selectedItem={selectedTableItem}
           />
         }
       </div>
@@ -106,7 +121,9 @@ CountriesTable.propTypes = {
   columns: PropTypes.array.isRequired,
   data: PropTypes.any,
   cleanSearchFilter: PropTypes.func,
-  selectedLASpeciesPopulation: PropTypes.any
+  selectedTableItem: PropTypes.any,
+  selectedLASpeciesPopulation: PropTypes.any,
+  selectCountriesTableItem: PropTypes.func.isRequired
 };
 
 export default CountriesTable;

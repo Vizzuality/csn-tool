@@ -4,7 +4,7 @@ import Switch from 'components/common/Switch';
 
 function getSubItems(subItems, onHover) {
   return subItems.map((subItem, index2) => (
-    <div onMouseOver={() => onHover(subItem, true)} onMouseOut={() => onHover(subItem, false)} className="sub-item" key={index2}>
+    <div onMouseOver={() => onHover && onHover(subItem, true)} onMouseOut={() => onHover && onHover(subItem, false)} className="sub-item" key={index2}>
       {
         (subItem.icon === 'dots') ? (
           <span className="dots" style={{ color: subItem.color }}>...</span>
@@ -17,29 +17,31 @@ function getSubItems(subItems, onHover) {
   ));
 }
 
-function Legend(props) {
-  if (props.data && !props.data.length) return null;
+function Legend({ data, onSwitchChange, onLegendItemHover }, context) {
+  if (data && !data.length) return null;
 
   return (
     <div className="c-legend">
-      {props.data.length &&
-        props.data.map((item, index) => {
-          const legendLine = (index > 0) ? <div className="legend-line" /> : '';
-          return (
-            <div key={index}>
-              {legendLine}
-              <div className="item" key={index}>
-                <p>{item.name}</p>
-                <Switch checked={item.active} onChange={() => props.onSwitchChange(item.layer)} />
-                {getSubItems(item.data, props.onLegendItemHover)}
-              </div>
+      {data.map((item, index) => {
+        const legendLine = (index > 0) ? <div className="legend-line" /> : '';
+        return (
+          <div key={index}>
+            {legendLine}
+            <div className="item" key={index}>
+              <p>{item.i18nName ? context.t(item.i18nName) : item.name}</p>
+              <Switch checked={item.active} onChange={() => onSwitchChange(item.layer)} />
+                {getSubItems(item.data, onLegendItemHover)}
             </div>
-          );
-        })
-      }
+          </div>
+        );
+      })}
     </div>
   );
 }
+
+Legend.contextTypes = {
+  t: PropTypes.func.isRequired
+};
 
 Legend.propTypes = {
   data: PropTypes.array.isRequired,

@@ -8,11 +8,13 @@ import {
   GET_COUNTRIES_SITES,
   GET_COUNTRIES_SPECIES,
   GET_COUNTRIES_STATS,
+  SELECT_TABLE_ITEM,
   SET_COLUMN_FILTER,
   SET_COUNTRY_PARAMS,
   SET_SEARCH_FILTER,
   SET_SORT,
-  TOGGLE_COUNTRIES_LAYER
+  TOGGLE_COUNTRIES_LAYER,
+  TOGGLE_COUNTRIES_LEGEND_ITEM
 } from 'constants/action-types';
 import { TABLES } from 'constants/tables';
 import { push } from 'react-router-redux';
@@ -218,6 +220,13 @@ export function toggleLayer(layer) {
   };
 }
 
+export function toggleLegendItem(item, active) {
+  return {
+    type: TOGGLE_COUNTRIES_LEGEND_ITEM,
+    payload: { id: item.id, active }
+  };
+}
+
 export function setSearchFilter(search) {
   return {
     type: `${SET_SEARCH_FILTER}_${TABLES.COUNTRIES}`,
@@ -236,5 +245,12 @@ export function setCountriesTableFilter(filter) {
   return {
     type: `${SET_COLUMN_FILTER}_${TABLES.COUNTRIES}`,
     payload: filter
+  };
+}
+
+export function selectCountriesTableItem(item) {
+  return {
+    type: `${SELECT_TABLE_ITEM}_${TABLES.COUNTRIES}`,
+    payload: item
   };
 }

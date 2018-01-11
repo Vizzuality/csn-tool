@@ -90,7 +90,7 @@ class Map extends React.Component {
      : MAP_CENTER;
     this.map = L.map(this.props.id, {
       minZoom: MAP_MIN_ZOOM,
-      zoom: query.zoom || MAP_INITIAL_ZOOM,
+      zoom: (query && query.zoom) || MAP_INITIAL_ZOOM,
       zoomControl: this.props.zoomControl,
       center,
       detectRetina: true,
@@ -158,21 +158,6 @@ class Map extends React.Component {
       <Share />,
       document.getElementsByClassName('share-control')[0]
     );
-  }
-
-  addTopoJSONLayer() {
-    L.TopoJSON = L.GeoJSON.extend({
-      addData(jsonData) {
-        if (jsonData.type === 'Topology') {
-          Object.keys(jsonData.objects).forEach((key) => {
-            const geojson = topojson.feature(jsonData, jsonData.objects[key]);
-            L.GeoJSON.prototype.addData.call(this, geojson);
-          });
-        } else {
-          L.GeoJSON.prototype.addData.call(this, jsonData);
-        }
-      }
-    });
   }
 
   render() {

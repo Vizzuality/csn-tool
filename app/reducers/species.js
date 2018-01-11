@@ -6,11 +6,10 @@ import {
   GET_SPECIES_POPULATION,
   GET_SPECIES_SITES,
   GET_SPECIES_STATS,
-  SELECT_SPECIES_TABLE_ITEM,
   SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_PARAMS,
-  TOGGLE_LEGEND_ITEM,
-  TOGGLE_SPECIES_LAYER
+  TOGGLE_SPECIES_LAYER,
+  TOGGLE_SPECIES_LEGEND_ITEM
 } from 'constants/action-types';
 import {
   ALL_SPECIES_COLUMNS,
@@ -102,18 +101,12 @@ const speciesReducer = (state = initialState, action) => {
       data[action.payload.populationId] = action.payload.data;
       return Object.assign({}, state, { lookAlikeSpeciesPopulation: data });
     }
-    case SELECT_SPECIES_TABLE_ITEM: {
-      return {
-        ...state,
-        selectedTableItem: action.payload
-      };
-    }
     case TOGGLE_SPECIES_LAYER: {
       const layers = Object.assign({}, state.layers);
       layers[action.payload] = !layers[action.payload];
       return Object.assign({}, state, { layers });
     }
-    case TOGGLE_LEGEND_ITEM: {
+    case TOGGLE_SPECIES_LEGEND_ITEM: {
       return {
         ...state,
         highlightedPopulationId: action.payload.active ? action.payload.id : null

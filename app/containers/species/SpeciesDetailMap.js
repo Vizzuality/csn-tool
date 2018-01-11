@@ -45,22 +45,23 @@ const getPopulations = createSelector(
   }
 );
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({ species }) => {
   const {
     populations,
     fitToPopulationId
-  } = getPopulations(state.species);
+  } = getPopulations(species);
+  const sites = ['sites', 'criticalSites'].includes(species.selectedCategory)
+        ? species[species.selectedCategory][species.selected]
+        : false;
 
   return {
-    id: state.species.selected,
-    sites: state.species.sites[state.species.selected] || false,
-    criticalSites: state.species.criticalSites[state.species.selected] || false,
+    id: species.selected,
+    sites: sites || false,
     populations: populations || false,
-    selectedPopulationId: state.species.highlightedPopulationId,
-    fitToPopulationBoudaries: !state.species.selectedLASpeciesPopulation,
+    selectedPopulationId: species.highlightedPopulationId,
+    fitToPopulationBoudaries: !species.selectedLASpeciesPopulation,
     fitToPopulationId,
-    layers: state.species.layers,
-    selectedCategory: state.species.selectedCategory
+    layers: species.layers
   };
 };
 

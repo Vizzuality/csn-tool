@@ -5,8 +5,9 @@ import {
   MAP_MIN_ZOOM,
   MAP_CENTER
 } from 'constants/map';
-import BasicMap from 'components/maps/BasicMap';
 import CountriesLegend from 'containers/countries/CountriesLegend';
+import PopulationMap from 'components/maps/PopulationMap';
+import { TopoJSON } from 'helpers/map';
 
 const borders = {
   color: 'white',
@@ -14,6 +15,7 @@ const borders = {
   weight: 2,
   lineCap: 'round'
 };
+// country layer style based on selected base layer (map or satellite)
 const styles = {
   map: {
     hide: { fillColor: 'white', fillOpacity: 1, color: 'transparent', opacity: 0 },
@@ -27,32 +29,29 @@ const styles = {
   }
 };
 
-class CountriesMap extends BasicMap {
-
+class CountriesMap extends PopulationMap {
   componentWillMount() {
     this.props.getGeoms();
   }
 
   componentDidMount() {
+    super.componentDidMount();
     this.markers = [];
-    // Map initialization
-    this.initMap();
     this.initPopup();
-
-    // Adds suppport to topojson
-    this.addTopoJSONLayer();
-    this.topoLayer = new L.TopoJSON();
+    this.topoLayer = new TopoJSON();
 
     if (this.props.geoms) {
       this.drawGeo(this.props.geoms, this.props.countries, this.props.searchFilter);
     }
 
-    if (this.props.data && this.props.data.length) {
-      this.drawMarkers(this.props.data);
+    if (this.props.sites && this.props.sites.length) {
+      this.drawMarkers(this.props.sites);
     }
   }
 
   componentWillReceiveProps(newProps) {
+    super.componentWillReceiveProps(newProps);
+
     this.setActiveLayer();
     this.drawGeo(newProps.geoms, newProps.countries, newProps.searchFilter);
 
@@ -61,13 +60,12 @@ class CountriesMap extends BasicMap {
     }
 
     if (newProps.layers.sites) {
-      if (newProps.data && newProps.data.length) {
-        if (this.props.data.length !== newProps.data.length) {
-          this.clearMarkers();
-          this.drawMarkers(newProps.data);
-        }
-      } else {
+      if (newProps.sites !== this.props.sites) {
         this.clearMarkers();
+      }
+
+      if (!this.markers.length && newProps.sites && newProps.sites.length) {
+        this.drawMarkers(newProps.sites);
       }
     } else {
       this.clearMarkers();
@@ -78,10 +76,6 @@ class CountriesMap extends BasicMap {
       this.outBounds();
       this.map.invalidateSize();
     }
-  }
-
-  componentWillUnmount() {
-    this.remove();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -130,44 +124,18 @@ class CountriesMap extends BasicMap {
     this.props.goToDetail(iso);
   }
 
-  getCountryData(countries, iso) {
-    let i = 0;
-    let countryData = {
-      iso3: '',
-      ramsar_member: false,
-      aewa_member: false
-    };
-    const length = countries.length;
-    for (i = 0; i < length; i++) {
-      if (countries[i].iso3 === iso) {
-        countryData = countries[i];
-        return countryData;
-      }
-    }
-    return countryData;
-  }
-
   getLayerStyle(searchFilter, countries, iso, isoParam) {
     const SHOW_STYLE = styles[this.state.selectedBaseLayer].base;
     const HIDE_STYLE = styles[this.state.selectedBaseLayer].hide;
 
     // If selected country
-    if (isoParam.length > 0) {
-      return (iso === isoParam) ? SHOW_STYLE : HIDE_STYLE;
-    }
-
-    // Big map
-    const hasSearchFilter = searchFilter.length > 0;
-
-    let trueSearchFilter = false;
+    if (isoParam.length > 0) return (iso === isoParam) ? SHOW_STYLE : HIDE_STYLE;
 
     // Filter in play
-    if (hasSearchFilter) {
-      const countryData = this.getCountryData(countries, iso);
+    if (searchFilter && searchFilter.length > 0) {
+      const { country } = countries.find((c) => c.iso3 === iso) || {};
 
-      trueSearchFilter = !hasSearchFilter || countryData.country.toLowerCase().indexOf(searchFilter.toLowerCase()) > -1;
-
-      return trueSearchFilter ? SHOW_STYLE : HIDE_STYLE;
+      return country.toLowerCase().includes(searchFilter.toLowerCase()) ? SHOW_STYLE : HIDE_STYLE;
     }
 
     return SHOW_STYLE; // Unfiltered, tastes great.
@@ -225,6 +193,8 @@ class CountriesMap extends BasicMap {
     }
 
     countryData.forEach((site) => {
+      const type = site.hasOwnProperty('csn_name') ? 'csn' : 'iba';
+
       if (site.lat && site.lon) {
         const marker = L.marker([site.lat, site.lon], { icon: getMarkerIcon(site) }).addTo(this.map);
         marker.bindPopup(`<p class="text -light">${site.site_name}</p>`);
@@ -235,7 +205,7 @@ class CountriesMap extends BasicMap {
           marker.closePopup();
         });
         marker.on('click', () => {
-          this.props.goToSite(site.id);
+          this.props.goToSite(site.id, type);
         });
         this.markers.push(marker);
       }
@@ -267,7 +237,10 @@ class CountriesMap extends BasicMap {
         <div id={this.props.id} className="c-map"></div>
         {this.props.country &&
           <div className="l-legend">
-            <CountriesLegend />
+            <CountriesLegend
+              populations={this.props.populations}
+              populationColors={this.populationColors}
+            />
           </div>
         }
       </div>
@@ -282,9 +255,10 @@ CountriesMap.propTypes = {
   goToSite: PropTypes.func.isRequired,
   goToDetail: PropTypes.func.isRequired,
   getGeoms: PropTypes.func.isRequired,
-  data: PropTypes.array,
+  sites: PropTypes.any,
   geoms: PropTypes.any,
-  country: PropTypes.string
+  country: PropTypes.string,
+  layers: PropTypes.object
 };
 
 export default withRouter(CountriesMap);

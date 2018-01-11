@@ -135,7 +135,9 @@ export const translations = {
     'coordinates': 'Coordinates',
     'birdlifeFactsheet': 'Birdlife Factsheet',
     'viewSpeciesDetails': 'View species details',
-    'viewSiteDetails': 'View site details'
+    'viewSiteDetails': 'View site details',
+    'protectionLevel': 'Protection Level',
+    'populationBoundaries': 'Population Boundaries'
   },
   es: {
     'country': 'Pais',
@@ -255,7 +257,9 @@ export const translations = {
     'feedback': 'Comentarios',
     'scrollText': 'Desplácese hacia abajo para ver los datos',
     'coordinates': 'Coordenadas',
-    'birdlifeFactsheet': 'Birdlife Factsheet'
+    'birdlifeFactsheet': 'Birdlife Factsheet',
+    'protectionLevel': 'Nivel de protección',
+    'populationBoundaries': 'Límites de la población'
   },
   fr: {
     'country': 'Pays',
@@ -392,6 +396,8 @@ export const translations = {
     'feedback': 'Commentaires',
     'scrollText': 'Faites défiler vers le bas pour voir les données',
     'coordinates': 'Coordonnées',
-    'birdlifeFactsheet': 'Birdlife Factsheet'
+    'birdlifeFactsheet': 'Birdlife Factsheet',
+    'protectionLevel': 'Niveau de protection',
+    'populationBoundaries': 'Limites de la population'
   },
 }
