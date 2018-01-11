@@ -62,7 +62,7 @@ const mapStateToProps = ({ countries } = {}) => {
 
 const mapDispatchToProps = (dispatch) => ({
   getGeoms: () => dispatch(getCountriesGeom()),
-  goToSite: (id) => dispatch(goSiteDetail(id)),
+  goToSite: (id, type) => dispatch(goSiteDetail(id, type)),
   goToDetail: (iso) => dispatch(goCountryDetail(iso))
 });
 

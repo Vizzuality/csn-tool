@@ -193,6 +193,8 @@ class CountriesMap extends PopulationMap {
     }
 
     countryData.forEach((site) => {
+      const type = site.hasOwnProperty('csn_name') ? 'csn' : 'iba';
+
       if (site.lat && site.lon) {
         const marker = L.marker([site.lat, site.lon], { icon: getMarkerIcon(site) }).addTo(this.map);
         marker.bindPopup(`<p class="text -light">${site.site_name}</p>`);
@@ -203,7 +205,7 @@ class CountriesMap extends PopulationMap {
           marker.closePopup();
         });
         marker.on('click', () => {
-          this.props.goToSite(site.id);
+          this.props.goToSite(site.id, type);
         });
         this.markers.push(marker);
       }
