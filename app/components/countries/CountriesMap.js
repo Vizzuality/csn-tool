@@ -255,7 +255,7 @@ CountriesMap.propTypes = {
   goToSite: PropTypes.func.isRequired,
   goToDetail: PropTypes.func.isRequired,
   getGeoms: PropTypes.func.isRequired,
-  sites: PropTypes.array,
+  sites: PropTypes.any,
   geoms: PropTypes.any,
   country: PropTypes.string,
   layers: PropTypes.object

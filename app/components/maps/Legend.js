@@ -17,7 +17,7 @@ function getSubItems(subItems, onHover) {
   ));
 }
 
-function Legend({ data, onSwitchChange, onLegendItemHover }) {
+function Legend({ data, onSwitchChange, onLegendItemHover }, context) {
   if (data && !data.length) return null;
 
   return (
@@ -28,7 +28,7 @@ function Legend({ data, onSwitchChange, onLegendItemHover }) {
           <div key={index}>
             {legendLine}
             <div className="item" key={index}>
-              <p>{item.name}</p>
+              <p>{item.i18nName ? context.t(item.i18nName) : item.name}</p>
               <Switch checked={item.active} onChange={() => onSwitchChange(item.layer)} />
                 {getSubItems(item.data, onLegendItemHover)}
             </div>
@@ -38,6 +38,10 @@ function Legend({ data, onSwitchChange, onLegendItemHover }) {
     </div>
   );
 }
+
+Legend.contextTypes = {
+  t: PropTypes.func.isRequired
+};
 
 Legend.propTypes = {
   data: PropTypes.array.isRequired,

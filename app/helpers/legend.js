@@ -16,7 +16,7 @@ function getSitesLegendSection(sites, isActive) {
   );
 
   return {
-    name: 'Protection Level',
+    i18nName: 'protectionLevel',
     active: isActive,
     layer: 'sites',
     data: uniqueSites
@@ -33,7 +33,7 @@ function getPopulationsLegendSection(populations, populationColors, isActive) {
     color: populationColors[pop.wpepopid]
   }));
   return {
-    name: 'Population Boundaries',
+    i18nName: 'populationBoundaries',
     active: isActive,
     layer: 'population',
     data: mappedPopulation.sort((a, b) => a.name.toString() > b.name.toString())

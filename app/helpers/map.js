@@ -1,6 +1,8 @@
 import { ENDPOINT_SQL } from 'constants/map';
 
-export const TopoJSON = L.GeoJSON.extend({
+const L = window.L;
+
+export const TopoJSON = L && L.GeoJSON.extend({
   addData(jsonData) {
     if (jsonData.type === 'Topology') {
       Object.keys(jsonData.objects).forEach((key) => {
