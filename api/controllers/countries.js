@@ -67,8 +67,15 @@ function getCountryCriticalSites(req, res) {
       FROM csn_species_sites
       GROUP BY site_id
     )
-    SELECT s.site_name_clean AS csn_name, protected,
-    s.site_id AS id, csc.csn_species AS csn_species, total_percentage
+    SELECT
+      s.site_id AS id,
+      s.site_name_clean AS csn_name,
+      s.site_name_clean AS site_name,
+      s.lat,
+      s.lon,
+      protected,
+      csc.csn_species AS csn_species,
+      total_percentage
     FROM sites_csn_points s
     INNER JOIN csn_species_count AS csc ON csc.site_id = s.site_id
     WHERE s.iso3 = '${req.params.iso}'

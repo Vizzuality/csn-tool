@@ -44,12 +44,15 @@ const mapStateToProps = ({ countries } = {}) => {
     populations,
     fitToPopulationId
   } = getPopulations(countries);
+  const sites = ['sites', 'criticalSites'].includes(countries.selectedCategory)
+        ? countries[countries.selectedCategory][countries.selected]
+        : false;
 
   return {
     country: countries.selected,
     geoms: countries.geoms,
     searchFilter: countries.searchFilter,
-    data: countries.sites[countries.selected] || [],
+    sites,
     populations: populations || false,
     selectedPopulationId: countries.highlightedPopulationId,
     fitToPopulationId,

@@ -44,8 +44,8 @@ class CountriesMap extends PopulationMap {
       this.drawGeo(this.props.geoms, this.props.countries, this.props.searchFilter);
     }
 
-    if (this.props.data && this.props.data.length) {
-      this.drawMarkers(this.props.data);
+    if (this.props.sites && this.props.sites.length) {
+      this.drawMarkers(this.props.sites);
     }
   }
 
@@ -60,14 +60,12 @@ class CountriesMap extends PopulationMap {
     }
 
     if (newProps.layers.sites) {
-      if (newProps.data && newProps.data.length) {
-        if (this.props.data.length !== newProps.data.length ||
-            !this.props.layers.sites) {
-          this.clearMarkers();
-          this.drawMarkers(newProps.data);
-        }
-      } else {
+      if (newProps.sites !== this.props.sites) {
         this.clearMarkers();
+      }
+
+      if (!this.markers.length && newProps.sites && newProps.sites.length) {
+        this.drawMarkers(newProps.sites);
       }
     } else {
       this.clearMarkers();
@@ -255,9 +253,10 @@ CountriesMap.propTypes = {
   goToSite: PropTypes.func.isRequired,
   goToDetail: PropTypes.func.isRequired,
   getGeoms: PropTypes.func.isRequired,
-  data: PropTypes.array,
+  sites: PropTypes.array,
   geoms: PropTypes.any,
-  country: PropTypes.string
+  country: PropTypes.string,
+  layers: PropTypes.object
 };
 
 export default withRouter(CountriesMap);

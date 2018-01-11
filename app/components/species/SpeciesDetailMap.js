@@ -8,12 +8,11 @@ class SpeciesMap extends PopulationMap {
   componentDidMount() {
     super.componentDidMount();
 
+    const { sites } = this.props;
+
     this.markers = [];
-    const sitesToDraw = this.props.selectedCategory === 'sites'
-      ? this.props.sites
-      : this.props.criticalSites;
-    if (sitesToDraw && sitesToDraw.length) {
-      this.drawMarkers(sitesToDraw);
+    if (sites && sites.length) {
+      this.drawMarkers(sites);
     }
   }
 
@@ -21,17 +20,13 @@ class SpeciesMap extends PopulationMap {
     super.componentWillReceiveProps(newProps);
 
     if (newProps.layers.sites) {
-      if (this.props.selectedCategory !== newProps.selectedCategory) {
+      if (newProps.sites !== this.props.sites) {
         this.clearMarkers();
       }
-      if (['sites', 'criticalSites'].indexOf(newProps.selectedCategory) > -1) {
-        const sitesToDraw = newProps.selectedCategory === 'sites'
-          ? newProps.sites
-          : newProps.criticalSites;
-        if (!this.markers.length && sitesToDraw && sitesToDraw.length) {
-          this.drawMarkers(sitesToDraw);
-          this.fitMarkersBounds();
-        }
+
+      if (!this.markers.length && newProps.sites && newProps.sites.length) {
+        this.drawMarkers(newProps.sites);
+        this.fitMarkersBounds();
       }
     } else {
       this.clearMarkers();
@@ -96,9 +91,7 @@ class SpeciesMap extends PopulationMap {
 SpeciesMap.propTypes = {
   router: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
-  sites: PropTypes.any.isRequired,
-  criticalSites: PropTypes.any.isRequired,
-  selectedCategory: PropTypes.string.isRequired
+  sites: PropTypes.any.isRequired
 };
 
 export default withRouter(SpeciesMap);
