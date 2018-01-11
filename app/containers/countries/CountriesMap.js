@@ -33,16 +33,14 @@ const getPopulations = createSelector(
     }
 
     return {
-      populations: results,
-      fitToPopulationId: results.slice(-1)[0].wpepopid
+      populations: results
     };
   }
 );
 
 const mapStateToProps = ({ countries } = {}) => {
   const {
-    populations,
-    fitToPopulationId
+    populations
   } = getPopulations(countries);
   const sites = ['sites', 'criticalSites'].includes(countries.selectedCategory)
         ? countries[countries.selectedCategory][countries.selected]
@@ -55,7 +53,6 @@ const mapStateToProps = ({ countries } = {}) => {
     sites,
     populations: populations || false,
     selectedPopulationId: countries.highlightedPopulationId,
-    fitToPopulationId,
     layers: countries.layers
   };
 };
