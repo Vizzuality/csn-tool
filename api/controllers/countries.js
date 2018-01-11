@@ -36,9 +36,17 @@ function getCountrySites(req, res) {
   const query = `with stc as (select site_id,
       SUM(case when iba_criteria = '' then 0 else 1 end) as iba
         from species_sites group by site_id)
-    SELECT c.country, c.iso3,
-      s.protection_status AS protected, s.site_name, s.lat, s.lon,
-      s.site_id as id, stc.iba AS iba_species, s.hyperlink, s.iba_in_danger
+    SELECT
+      c.country,
+      c.iso3,
+      coalesce(s.protection_status, 'Unknown') AS protected,
+      s.site_name,
+      s.lat,
+      s.lon,
+      s.site_id as id,
+      stc.iba AS iba_species,
+      s.hyperlink,
+      s.iba_in_danger
     FROM sites s
   	INNER JOIN countries c ON s.country_id = c.country_id AND
     c.iso3 = '${req.params.iso}'
@@ -73,7 +81,7 @@ function getCountryCriticalSites(req, res) {
       s.site_name_clean AS site_name,
       s.lat,
       s.lon,
-      protected,
+      coalesce(protected, 'Unknown') AS protected,
       csc.csn_species AS csn_species,
       total_percentage
     FROM sites_csn_points s

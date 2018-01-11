@@ -59,7 +59,7 @@ function getSpeciesSites(req, res) {
   const query = `SELECT s.species_id,
       ss.iba_criteria, ss.maximum, ss.minimum,
       ss.season, ss.units, si.site_name, si.lat, si.lon, si.country, si.iso2,
-      si.protection_status AS protected,
+      coalesce(si.protection_status, 'Unknown') AS protected,
       string_agg(p.population_name, ', ') as population,
       si.hyperlink, si.site_id AS id, ss.geometric_mean,
       ss.start, ss._end as end
@@ -99,7 +99,8 @@ function getSpeciesCriticalSites(req, res) {
       ss.yearstart AS start, ss.yearend AS end, ss.percentfly,
       si.site_name_clean AS csn_site_name, si.site_name_clean AS site_name,
       si.lat, si.lon, si.country, si.iso2,
-      si.protected, p.population_name AS population,
+      coalesce(si.protected, 'Unknown') as protected,
+      p.population_name AS population,
       si.hyperlink, si.site_id AS id, ss.geometric_mean,
       CASE
        WHEN ss.csn1 = 1 THEN true
