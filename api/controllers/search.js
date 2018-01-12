@@ -280,8 +280,8 @@ async function getSpeciesResults(req, res) {
     } = req.query;
 
     const joinCountries = !!(country || aewa_region || ramsar_region);
-    const joinSpeciesSites = !!(site || site_habitat || site_threat);
     const joinSites = !!(site || protection);
+    const joinSpeciesSites = !!(joinSites || site_habitat || site_threat);
     const joinPopulations = !!(aewa_table_1_status || cms_caf_action_plan || eu_birds_directive || multispecies_flyway || population_trend);
     const where = [];
     const addCondition = (column, param, collection = where) => { if (param) collection.push(condition(column, param)); };
