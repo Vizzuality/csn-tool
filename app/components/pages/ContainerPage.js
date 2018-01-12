@@ -32,7 +32,7 @@ class ContainerPage extends React.Component {
 
   render() {
     return (
-      <I18n translations={translations}>
+      <I18n translations={translations} initialLang={this.props.params.lang}>
         <div>
           <Header />
           <FeedbackForm />
