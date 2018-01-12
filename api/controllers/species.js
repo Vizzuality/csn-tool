@@ -3,7 +3,7 @@ const mergeNames = require('../helpers/index').mergeNames;
 const { runQuery } = require('../helpers');
 
 function getSpeciesList(req, res) {
-  const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family,
+  const query = `SELECT s.scientific_name, s.english_name, s.french_name, s.genus, s.family,
     s.species_id as id, s.hyperlink, s.iucn_category, aewa_annex_2
     FROM species_main s
     ORDER BY s.taxonomic_sequence`;
@@ -24,7 +24,7 @@ function getSpeciesList(req, res) {
 }
 
 function getSpeciesDetails(req, res) {
-  const query = `SELECT s.scientific_name, s.english_name, s.family,
+  const query = `SELECT s.scientific_name, s.english_name, s.french_name, s.family,
     s.species_id as id, s.iucn_category, s.hyperlink
     FROM species_main s
     WHERE s.species_id = ${req.params.id}
@@ -38,6 +38,7 @@ function getSpeciesDetails(req, res) {
           species: [{
             scientific_name: row.scientific_name,
             english_name: row.english_name,
+            french_name: row.french_name,
             family: row.family,
             id: row.id,
             iucn_category: row.iucn_category,
@@ -170,7 +171,7 @@ function getSpeciesPopulation(req, res) {
 
 function getSpeciesLookAlikeSpecies(req, res) {
   const query = `SELECT sq.scientific_name AS original_species,
-    sq.species_id, sq.english_name,
+    sq.species_id, sq.english_name, sq.french_name,
     sq.population_name AS population, sq.a AS original_a,
     sq.b AS original_b, sq.c AS original_c, sq.wpepopid AS pop_id_origin,
     COUNT(*) AS confusion_species,
@@ -180,7 +181,7 @@ function getSpeciesLookAlikeSpecies(req, res) {
     (
       SELECT confusion_group,
       sm.species_id, sm.scientific_name,
-      sm.english_name, pi.the_geom,
+      sm.english_name, sm.french_name, pi.the_geom,
       pi.population_name, pi.a, pi.b, pi.c, pi.wpepopid
       FROM species_main AS sm
       INNER JOIN populations_iba AS pi
@@ -196,7 +197,7 @@ function getSpeciesLookAlikeSpecies(req, res) {
     ON pi.species_main_id = sm.species_id
     AND ST_INTERSECTS(sq.the_geom, pi.the_geom)
     GROUP BY sq.scientific_name,
-    sq.english_name, sq.population_name,
+    sq.english_name, sq.french_name, sq.population_name,
     sq.a, sq.b, sq.c, sq.wpepopid, sq.species_id
     ORDER BY sq.population_name ASC`;
 
@@ -223,6 +224,7 @@ function getPopulationsLookAlikeSpecies(req, res) {
   const query = `SELECT
     sm.scientific_name AS scientific_name,
     sm.english_name,
+    sm.french_name,
     pi.population_name AS population,
     pi.wpepopid,
     pi.a,

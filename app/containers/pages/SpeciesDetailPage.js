@@ -22,7 +22,8 @@ const mapStateToProps = (state) => ({
   selectedPopulationId: state.species.selectedLASpeciesPopulation,
   category: state.species.selectedCategory,
   stats: state.species.stats || false,
-  data: getSpeciesData(state.species)
+  data: getSpeciesData(state.species),
+  lang: state.i18nState.lang
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -105,7 +105,7 @@ function getCountryCriticalSites(req, res) {
 }
 
 function getCountrySpecies(req, res) {
-  const query = `SELECT s.scientific_name, s.english_name, s.genus, s.family,
+  const query = `SELECT s.scientific_name, s.english_name, s.french_name, s.genus, s.family,
     s.species_id as id, string_agg(p.population_name, ', ') as populations, s.hyperlink,
     sc.country_status, s.iucn_category, sc.occurrence_status
     FROM species_main s
@@ -113,7 +113,7 @@ function getCountrySpecies(req, res) {
     INNER JOIN countries c on c.country_id = sc.country_id AND
       c.iso3 = '${req.params.iso}'
     INNER JOIN populations_iba p on p.species_main_id = s.species_id
-    GROUP BY s.scientific_name, s.english_name, s.genus, s.family, s.species_id, 1,
+    GROUP BY s.scientific_name, s.english_name, s.french_name, s.genus, s.family, s.species_id, 1,
     s.hyperlink, sc.country_status, s.iucn_category, s.taxonomic_sequence,
     sc.occurrence_status
     ORDER BY s.taxonomic_sequence`;
@@ -131,6 +131,7 @@ function getCountryPopulations(req, res) {
   const query = `SELECT
     s.scientific_name,
     s.english_name,
+    s.french_name,
     s.iucn_category,
     pi.wpepopid AS pop_id,
     s.species_id AS id,
@@ -164,6 +165,7 @@ function getCountryPopulations(req, res) {
 function getCountryPopsWithLookAlikeCounts(req, res) {
   const query = `SELECT sq.scientific_name AS original_species,
     sq.english_name,
+    sq.french_name,
     sq.population_name AS population, sq.a AS original_a,
     sq.b AS original_b, sq.c AS original_c, sq.wpepopid AS pop_id_origin,
     COUNT(*) AS confusion_species,
@@ -173,7 +175,7 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
     (
       SELECT confusion_group,
       sm.species_id, sm.scientific_name,
-      sm.english_name, pi.the_geom, pi.population_name,
+      sm.english_name, sm.french_name, pi.the_geom, pi.population_name,
       pi.a, pi.b, pi.c, pi.wpepopid, sm.taxonomic_sequence
       FROM species_main AS sm
       INNER JOIN species_country AS sc
@@ -198,7 +200,7 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
     AND ST_INTERSECTS(pi.the_geom, sq.the_geom)
     AND pi.species_main_id = sm.species_id
     GROUP BY sq.scientific_name,
-    sq.english_name, sq.population_name,
+    sq.english_name, sq.french_name, sq.population_name,
     sq.a, sq.b, sq.c, sq.wpepopid, sq.taxonomic_sequence
     ORDER BY sq.taxonomic_sequence ASC`;
 
@@ -218,6 +220,7 @@ function getCountryLookAlikeSpecies(req, res) {
     SELECT
       sm.scientific_name AS scientific_name,
       sm.english_name,
+      sm.french_name,
       sm.species_id AS id,
       pi.population_name AS population,
       pi.a,

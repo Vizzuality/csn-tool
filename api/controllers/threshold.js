@@ -7,6 +7,7 @@ function getSpeciesByPosition(req, res) {
     p.species_main_id AS id,
     p.scientificname AS scientific_name,
     p.commonname AS english_name,
+    sm.french_name,
     p.population_name AS population, p.a, p.b, p.c, p.table_1_status,
     sm.iucn_category, p.caf_action_plan, p.eu_birds_directive,
     p.species, p.wpepopid, p.flyway_range, p.year_start,

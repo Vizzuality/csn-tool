@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import SearchTable from 'components/advanced-search/SearchTable';
+import { filterColumnsBasedOnLanguage } from 'helpers/language';
 import { filterData } from 'helpers/filters';
 
 const mapStateToProps = (state) => {
@@ -12,7 +13,7 @@ const mapStateToProps = (state) => {
     data: filterData({ data, columns, filter, columnFilter }),
     category: state.search.selectedCategory,
     columns,
-    allColumns: state.search.allColumns
+    allColumns: filterColumnsBasedOnLanguage(state.search.allColumns, state.i18nState.lang)
   };
 };
 

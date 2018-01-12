@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import SpeciesDetailTable from 'components/species/SpeciesDetailTable';
+import { filterColumnsBasedOnLanguage } from 'helpers/language';
 import { filterData } from 'helpers/filters';
 import { selectSpeciesTableItem } from 'actions/species';
 
@@ -29,7 +30,7 @@ const mapStateToProps = (state) => {
   return {
     category: state.species.selectedCategory,
     data: filterData({ data, columns, filter, columnFilter }),
-    allColumns: state.species.allColumns,
+    allColumns: filterColumnsBasedOnLanguage(state.species.allColumns, state.i18nState.lang),
     columns,
     selectedLASpeciesPopulation: getSelectedSpeciesPopulation(state.species),
     selectedTableItem: species.selectedTableItem

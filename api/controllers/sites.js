@@ -171,6 +171,7 @@ function getSitesSpecies(req, res) {
     query = `SELECT
       s.scientific_name,
       s.english_name,
+      s.french_name,
       s.species_id AS id,
       s.iucn_category,
       si.lat,
@@ -209,6 +210,7 @@ function getSitesSpecies(req, res) {
       p.population_name AS population,
       s.iucn_category,
       s.english_name,
+      s.french_name,
       s.scientific_name,
       si.site_name_clean AS site_name,
       s.hyperlink, ss.geometric_mean,

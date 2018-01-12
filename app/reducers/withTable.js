@@ -56,6 +56,19 @@ export default function (tableName, reducer) {
           selectedTableItem: action.payload
         };
       }
+      case 'REDUX_I18N_SET_LANGUAGE': {
+        const lang = action.lang;
+        const mapNameColumn = (column) => {
+          if (column === 'english_name' && lang === 'fr') return 'french_name';
+          if (column === 'french_name' && lang !== 'fr') return 'english_name';
+          return column;
+        };
+
+        return {
+          ...state,
+          columns: state.columns.map(mapNameColumn)
+        };
+      }
       default:
         return state;
     }

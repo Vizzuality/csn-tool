@@ -35,6 +35,8 @@ class SpeciesDetailPage extends React.Component {
   }
 
   render() {
+    const nameColumn = this.props.lang === 'fr' ? 'french_name' : 'english_name';
+
     return (
       <div className="l-page">
         <div className="l-navigation">
@@ -55,10 +57,10 @@ class SpeciesDetailPage extends React.Component {
                     <div className="list">
                       <div className="item">
                         <div className="label">
-                          {this.context.t('english_name')}
+                            {this.context.t(nameColumn)}
                         </div>
                         <div className="value">
-                          {this.props.stats.species[0].english_name}
+                          {this.props.stats.species[0][nameColumn]}
                         </div>
                       </div>
                       <div className="item">
