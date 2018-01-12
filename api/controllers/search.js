@@ -321,6 +321,7 @@ async function getSpeciesResults(req, res) {
         sp.scientific_name,
         sp.genus,
         sp.english_name,
+        sp.french_name,
         sp.family,
         sp.species_id AS id,
         sp.iucn_category,
@@ -337,7 +338,7 @@ async function getSpeciesResults(req, res) {
       ${site_habitat ? 'INNER JOIN sites_habitats sh ON sh.site_id = ss.site_id' : ''}
       ${site_threat ? 'INNER JOIN sites_threats st ON st.site_id = ss.site_id' : ''}
       ${where.length > 0 && `WHERE ${where.join(' AND ')}` || ''}
-      GROUP BY sp.scientific_name, sp.family, sp.genus, sp.english_name, sp.species_id,
+      GROUP BY sp.scientific_name, sp.family, sp.genus, sp.english_name, sp.french_name, sp.species_id,
         sp.iucn_category, sp.hyperlink, sp.taxonomic_sequence
       ORDER by taxonomic_sequence ASC`;
     const data = await runQuery(query);
@@ -411,6 +412,7 @@ async function getPopulationsResults(req, res) {
     const query = `SELECT
       sp.scientific_name,
       sp.english_name,
+      sp.french_name,
       sp.iucn_category,
       pi.wpepopid AS pop_id,
       sp.species_id AS id,
@@ -440,7 +442,7 @@ async function getPopulationsResults(req, res) {
       ${site_habitat ? 'INNER JOIN sites_habitats sh ON sh.site_id = ss.site_id' : ''}
       ${site_threat ? 'INNER JOIN sites_threats st ON st.site_id = ss.site_id' : ''}
       ${where.length > 0 && `WHERE ${where.join(' AND ')}` || ''}
-      GROUP by sp.scientific_name, sp.english_name, sp.iucn_category, pi.wpepopid,
+      GROUP by sp.scientific_name, sp.english_name, sp.french_name, sp.iucn_category, pi.wpepopid,
       sp.species_id, pi.caf_action_plan, pi.eu_birds_directive, pi.a, pi.b, pi.c,
       pi.flyway_range, pi.year_start, pi.year_end, pi.size_min, pi.size_max,
       pi.population_name, pi.ramsar_criterion_6, sp.taxonomic_sequence

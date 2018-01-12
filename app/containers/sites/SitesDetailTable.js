@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import SitesDetailTable from 'components/sites/SitesDetailTable';
+import { filterColumnsBasedOnLanguage } from 'helpers/language';
 import { filterData } from 'helpers/filters';
 
 const mapStateToProps = (state) => {
@@ -15,7 +16,7 @@ const mapStateToProps = (state) => {
     data: filterData({ data, columns, filter: sites.searchFilter, columnFilter: sites.columnFilter }),
     type: sites.type,
     columns,
-    allColumns: sites.allColumns
+    allColumns: filterColumnsBasedOnLanguage(sites.allColumns, state.i18nState.lang)
   };
 };
 
