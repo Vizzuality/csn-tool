@@ -224,6 +224,7 @@ function getPopulationsLookAlikeSpecies(req, res) {
   const query = `SELECT
     sm.scientific_name AS scientific_name,
     sm.english_name,
+    sm.french_name,
     pi.population_name AS population,
     pi.wpepopid,
     pi.a,
