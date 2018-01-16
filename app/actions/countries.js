@@ -188,7 +188,7 @@ export function getCountryLookAlikeSpeciesPopulation(iso, populationId) {
 }
 
 export function getCountriesGeom() {
-  const url = '/geoms.topojson';
+  const url = '/countries-borders-geoms.topojson';
   return dispatch => {
     fetch(url)
       .then(response => response.json())
