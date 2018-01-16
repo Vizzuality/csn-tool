@@ -1,6 +1,5 @@
 const normalizeSiteStatus = require('../helpers/index').normalizeSiteStatus;
 const { runQuery } = require('../helpers');
-const topojson = require('topojson-server');
 
 function getCountries(req, res) {
   const query = 'SELECT * FROM countries';
@@ -8,38 +7,6 @@ function getCountries(req, res) {
     .then((data) => {
       const result = JSON.parse(data).rows || [];
       res.json(result);
-    })
-    .catch((err) => {
-      res.status(err.statusCode || 500);
-      res.json({ error: err.message });
-    });
-}
-
-function getCountriesGeoms(req, res) {
-  const query = `
-    SELECT jsonb_build_object(
-      'type',     'FeatureCollection',
-      'features', jsonb_agg(feature)
-    ) as data
-    FROM (
-    SELECT jsonb_build_object(
-      'type', 'Feature',
-      'geometry', ST_AsGeoJSON(wb.the_geom)::jsonb,
-      'properties', jsonb_build_object(
-         'iso3', wb.iso3,
-         'name', c.country,
-         'id', c.country_id
-      )) as feature
-    FROM world_borders wb
-    INNER JOIN countries c on c.iso3 = wb.iso3
-    ) features
-  `;
-
-  runQuery(query)
-    .then((data) => {
-      const result = JSON.parse(data).rows || [];
-      const geoJSON = result[0] && result[0].data;
-      res.json(topojson.topology({ foo: geoJSON }));
     })
     .catch((err) => {
       res.status(err.statusCode || 500);
@@ -303,7 +270,6 @@ function getCountryLookAlikeSpecies(req, res) {
 
 module.exports = {
   getCountries,
-  getCountriesGeoms,
   getCountryDetails,
   getCountrySites,
   getCountryCriticalSites,

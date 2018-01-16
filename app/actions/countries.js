@@ -16,7 +16,6 @@ import {
   TOGGLE_COUNTRIES_LAYER,
   TOGGLE_COUNTRIES_LEGEND_ITEM
 } from 'constants/action-types';
-import { getSqlQuery } from 'helpers/map';
 import { TABLES } from 'constants/tables';
 import { push } from 'react-router-redux';
 
@@ -189,9 +188,8 @@ export function getCountryLookAlikeSpeciesPopulation(iso, populationId) {
 }
 
 export function getCountriesGeom() {
-  const url = `${config.apiHost}/countries/geoms`;
-
-  return (dispatch) => {
+  const url = '/geoms.topojson';
+  return dispatch => {
     fetch(url)
       .then(response => response.json())
       .then(data => {
