@@ -90,15 +90,9 @@ class CountriesMap extends PopulationMap {
   }
 
   getCountryLayerByIso(iso) {
-    let found;
-    const onEachFeature = (layer) => {
-      const properties = layer.feature.properties;
-      if (properties.iso3 === iso) {
-        found = layer;
-      }
-    };
-    this.topoLayer.eachLayer(onEachFeature);
-    return found;
+    return this.topoLayer
+      .getLayers()
+      .find((l) => l.feature.properties.iso3 === iso);
   }
 
   setActiveLayer() {
