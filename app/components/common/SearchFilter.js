@@ -44,6 +44,7 @@ class SearchFilter extends React.Component {
           value={this.state.search}
           placeholder={this.context.t(this.props.placeholder)}
           onChange={this.debouncedChange}
+          onKeyPress={this.props.onKeyPress}
         />
         <svg className="icon icon-search">
           <use xlinkHref="#icon-search"></use>
@@ -61,11 +62,12 @@ SearchFilter.contextTypes = {
 SearchFilter.propTypes = {
   label: PropTypes.string,
   labelType: PropTypes.string,
+  onKeyPress: PropTypes.func,
   placeholder: PropTypes.string,
-  setSearchFilter: PropTypes.func.isRequired,
   resetSearchFilter: PropTypes.func,
   router: PropTypes.object,
-  searchType: PropTypes.string
+  searchType: PropTypes.string,
+  setSearchFilter: PropTypes.func.isRequired
 };
 
 export default withRouter(SearchFilter);

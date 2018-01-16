@@ -14,7 +14,8 @@ import {
   SET_SEARCH_FILTER,
   SET_SORT,
   TOGGLE_COUNTRIES_LAYER,
-  TOGGLE_COUNTRIES_LEGEND_ITEM
+  TOGGLE_COUNTRIES_LEGEND_ITEM,
+  ZOOM_ON_COUNTRY
 } from 'constants/action-types';
 import { TABLES } from 'constants/tables';
 import { push } from 'react-router-redux';
@@ -252,5 +253,11 @@ export function selectCountriesTableItem(item) {
   return {
     type: `${SELECT_TABLE_ITEM}_${TABLES.COUNTRIES}`,
     payload: item
+  };
+}
+
+export function zoomOnCountry() {
+  return {
+    type: ZOOM_ON_COUNTRY
   };
 }
