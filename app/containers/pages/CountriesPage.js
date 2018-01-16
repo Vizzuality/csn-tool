@@ -1,4 +1,6 @@
 import { connect } from 'react-redux';
+import { get } from 'lodash';
+
 import CountriesPage from 'components/pages/CountriesPage';
 import {
   getCountryStats,
@@ -14,9 +16,7 @@ import {
 function getCountryData(countries) {
   const id = countries.selectedLASpeciesPopulation || countries.selected;
 
-  return countries[countries.selectedCategory] && countries[countries.selectedCategory][id]
-       ? countries[countries.selectedCategory][id]
-       : false;
+  return get(countries, `${countries.selectedCategory}.${id}`, false);
 }
 
 const mapStateToProps = (state) => ({
@@ -26,7 +26,7 @@ const mapStateToProps = (state) => ({
   countries: state.countries.countries,
   countryStats: state.countries.stats[state.countries.selected] || false,
   countryData: getCountryData(state.countries),
-  countriesLength: state.countries.geoms ? Object.keys(state.countries.geoms.objects).length : 0
+  countriesLength: get(state.countries, 'geoms.objects.collection.geometries.length', 0)
 });
 
 const mapDispatchToProps = (dispatch) => ({
