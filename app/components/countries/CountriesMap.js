@@ -76,6 +76,10 @@ class CountriesMap extends PopulationMap {
       this.outBounds();
       this.map.invalidateSize();
     }
+
+    if (newProps.zoomOnCountry && newProps.zoomOnCountry !== this.props.zoomOnCountry) {
+      this.fitBounds(this.getCountryLayerByIso(newProps.zoomOnCountry));
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -85,16 +89,14 @@ class CountriesMap extends PopulationMap {
     }
   }
 
+  getCountryLayerByIso(iso) {
+    return this.topoLayer
+      .getLayers()
+      .find((l) => l.feature.properties.iso3 === iso);
+  }
+
   setActiveLayer() {
-    const onEachFeature = (layer) => {
-      const properties = layer.feature.properties;
-      const iso = properties.iso3;
-      const isoParam = this.props.country;
-      if (iso === isoParam) {
-        this.activeLayer = layer;
-      }
-    };
-    this.topoLayer.eachLayer(onEachFeature);
+    this.activeLayer = this.getCountryLayerByIso(this.props.country);
   }
 
   setPopupPosition(latLng) {
@@ -258,7 +260,8 @@ CountriesMap.propTypes = {
   sites: PropTypes.any,
   geoms: PropTypes.any,
   country: PropTypes.string,
-  layers: PropTypes.object
+  layers: PropTypes.object,
+  zoomOnCountry: PropTypes.string
 };
 
 export default withRouter(CountriesMap);

@@ -10,7 +10,8 @@ import {
   GET_COUNTRIES_STATS,
   SET_COUNTRY_PARAMS,
   TOGGLE_COUNTRIES_LAYER,
-  TOGGLE_COUNTRIES_LEGEND_ITEM
+  TOGGLE_COUNTRIES_LEGEND_ITEM,
+  ZOOM_ON_COUNTRY
 } from 'constants/action-types';
 import {
   ALL_COUNTRY_COLUMNS,
@@ -45,7 +46,8 @@ const initialState = {
     field: '',
     order: ''
   },
-  columnFilter: {}
+  columnFilter: {},
+  zoomOnCountry: null
 };
 
 const countriesReducer = (state = initialState, action) => {
@@ -60,7 +62,8 @@ const countriesReducer = (state = initialState, action) => {
         selectedTableItem: null,
         filter: action.payload.filter,
         columns: DEFAULT_COUNTRY_COLUMNS[category],
-        allColumns: ALL_COUNTRY_COLUMNS[category]
+        allColumns: ALL_COUNTRY_COLUMNS[category],
+        zoomOnCountry: null
       };
       return Object.assign({}, state, params);
     }
@@ -113,6 +116,18 @@ const countriesReducer = (state = initialState, action) => {
       return {
         ...state,
         highlightedPopulationId: action.payload.active ? action.payload.id : null
+      };
+    }
+    case ZOOM_ON_COUNTRY: {
+      if (!state.searchFilter.length) return state;
+      const filtered = state.countries.filter((c) => c.country.toLowerCase().includes(state.searchFilter.toLowerCase()));
+      if (!filtered.length) return state;
+      const prevZoom = filtered.find((c) => c.iso3 === state.zoomOnCountry);
+      const prevZoomIndex = filtered.indexOf(prevZoom);
+
+      return {
+        ...state,
+        zoomOnCountry: (filtered.find((c, index) => index > prevZoomIndex) || filtered[0]).iso3
       };
     }
     default:
