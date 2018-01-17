@@ -9,12 +9,27 @@ The main table that holds country information is called **countries**. This is
 linked to the **species** table through the **species_country** table that keeps
 information about which species occur in which countries.
 
-Country boundaries are obtained from the **world_borders** table.
+### Updating country boundaries
+
+Country boundaries are held in `public/countries-borders-geoms.topojson` file,
+but are obtained from the **world_borders** table.
+
+1. Export GeoJSON data from Carto using query
+
+``` sql
+SELECT wb.the_geom, c.iso3, c.country as name, c.country_id
+FROM world_borders wb
+INNER JOIN countries c on c.iso3 = wb.iso3
+```
+2. Import this file into http://geojson.io.
+3. Export as TopoJSON file and update `countries-borders-geoms.topojson` with the exported file.
+
+### Quirks
 
 The original countries table comes with some quirks that require manual adjustment
 to work well:
 
-### Russia
+#### Russia
 
 Russia comes split into three rows:
 

@@ -143,8 +143,8 @@ function getCountryPopulations(req, res) {
     pi.population_name AS population,
     pi.ramsar_criterion_6 AS ramsar_criterion
     FROM populations_iba AS pi
-    INNER JOIN species_country AS c ON c.iso = '${req.params.iso}' AND
-    c.species_id = pi.species_main_id AND c.country_status != 'Vagrant'
+    INNER JOIN species_country AS sc ON sc.species_id = pi.species_main_id AND sc.country_status != 'Vagrant'
+    INNER JOIN countries c ON c.country_id = sc.country_id AND c.iso3 = '${req.params.iso}'
     INNER JOIN species_main AS s ON s.species_id = pi.species_main_id
     WHERE (
       ST_Intersects(pi.the_geom,(SELECT the_geom FROM world_borders WHERE iso3 = '${req.params.iso}'))
