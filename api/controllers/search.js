@@ -330,7 +330,7 @@ async function getSpeciesResults(req, res) {
       FROM species_main sp
       ${joinPopulations ? 'INNER JOIN populations_iba pi ON pi.species_main_id = sp.species_id' : ''}
       ${joinCountries &&
-        `INNER JOIN species_country sc ON sc.species_id = sc.species_id
+        `INNER JOIN species_country sc ON sc.species_id = sp.species_id
          INNER JOIN countries c ON c.country_id = sc.country_id` || ''}
       ${joinSpeciesSites ? 'INNER JOIN species_sites ss ON ss.species_id = sp.species_id' : ''}
       ${joinSites ? 'INNER JOIN sites s ON ss.site_id = s.site_id' : ''}
@@ -433,7 +433,7 @@ async function getPopulationsResults(req, res) {
       FROM populations_iba AS pi
       INNER JOIN species_main sp ON pi.species_main_id = sp.species_id
       ${joinCountries &&
-        `INNER JOIN species_country sc ON sc.species_id = sc.species_id
+        `INNER JOIN species_country sc ON sc.species_id = sp.species_id
          INNER JOIN countries c ON c.country_id = sc.country_id
          INNER JOIN world_borders AS wb ON wb.iso3 = sc.iso AND ST_INTERSECTS(pi.the_geom, wb.the_geom)` || ''}
       ${joinSpeciesSites ? 'INNER JOIN species_sites ss ON ss.species_id = sp.species_id' : ''}
