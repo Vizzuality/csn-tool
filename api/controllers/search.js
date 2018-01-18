@@ -110,12 +110,13 @@ async function getIBAsResults(req, res) {
     addCondition('sh.habitat_id', site_habitat);
     addCondition('st.threat_id', site_threat);
     // species filters
+    // TODO: ask how exactly this filter should work, maybe AND
     if (species || genus || family) {
       const speciesConditions = [];
       addCondition('sp.species_id', species, speciesConditions);
       addCondition('sp.genus', genus, speciesConditions);
       addCondition('sp.family', family, speciesConditions);
-      where.push(speciesConditions.join(' OR '));
+      where.push(`(${speciesConditions.join(' OR ')})`);
     }
     addCondition('sp.iucn_category', red_list_status);
     addCondition('sp.aewa_annex_2', aewa_annex_2);
@@ -202,7 +203,7 @@ async function getCriticalSitesResults(req, res) {
       addCondition('sp.species_id', species, speciesConditions);
       addCondition('sp.genus', genus, speciesConditions);
       addCondition('sp.family', family, speciesConditions);
-      where.push(speciesConditions.join(' OR '));
+      where.push(`(${speciesConditions.join(' OR ')})`);
     }
     addCondition('sp.iucn_category', red_list_status);
     addCondition('sp.aewa_annex_2', aewa_annex_2);
@@ -292,7 +293,7 @@ async function getSpeciesResults(req, res) {
       addCondition('sp.species_id', species, speciesConditions);
       addCondition('sp.genus', genus, speciesConditions);
       addCondition('sp.family', family, speciesConditions);
-      where.push(speciesConditions.join(' OR '));
+      where.push(`(${speciesConditions.join(' OR ')})`);
     }
     addCondition('sp.aewa_annex_2', aewa_annex_2);
     addCondition('sp.iucn_category', red_list_status);
@@ -385,7 +386,7 @@ async function getPopulationsResults(req, res) {
       addCondition('sp.species_id', species, speciesConditions);
       addCondition('sp.genus', genus, speciesConditions);
       addCondition('sp.family', family, speciesConditions);
-      where.push(speciesConditions.join(' OR '));
+      where.push(`(${speciesConditions.join(' OR ')})`);
     }
     addCondition('sp.aewa_annex_2', aewa_annex_2);
     addCondition('sp.iucn_category', red_list_status);
