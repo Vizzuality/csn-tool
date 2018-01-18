@@ -79,3 +79,22 @@ export const ALL_THRESHOLD_COLUMNS = [
 ];
 
 export const DEFAULT_THRESHOLD_COLUMNS = ['scientific_name', 'iucn_category', 'population', 'a', 'b', 'c', 'ramsar_criterion'];
+
+export const SEARCH_COLUMNS = {
+  species: {
+    columns: DEFAULT_SPECIES_COLUMNS.over,
+    allColumns: ALL_SPECIES_COLUMNS.over
+  },
+  ibas: {
+    columns: DEFAULT_SITES_COLUMNS.iba,
+    allColumns: ALL_SITES_COLUMNS.iba
+  },
+  criticalSites: {
+    columns: DEFAULT_SITES_COLUMNS.csn,
+    allColumns: ALL_SITES_COLUMNS.csn
+  },
+  populations: {
+    columns: ['scientific_name', ...DEFAULT_SPECIES_COLUMNS.population],
+    allColumns: ['scientific_name', ...ALL_SPECIES_COLUMNS.population]
+  }
+};

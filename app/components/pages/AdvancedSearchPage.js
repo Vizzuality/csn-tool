@@ -227,8 +227,6 @@ AdvancedSearchPage.contextTypes = {
 AdvancedSearchPage.propTypes = {
   data: PropTypes.any,
   isFetching: PropTypes.bool.isRequired,
-  columns: PropTypes.any,
-  allColumns: PropTypes.any,
   options: PropTypes.object,
   getOptions: PropTypes.func.isRequired,
   onSearch: PropTypes.func.isRequired
