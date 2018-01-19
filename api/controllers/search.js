@@ -107,15 +107,9 @@ async function getIBAsResults(req, res) {
     addCondition('protection_status', protection);
     addCondition('sh.habitat_id', site_habitat);
     addCondition('st.threat_id', site_threat);
-    // species filters
-    // TODO: ask how exactly this filter should work, maybe AND
-    if (species || genus || family) {
-      const speciesConditions = [];
-      addCondition('sp.species_id', species, speciesConditions);
-      addCondition('sp.genus', genus, speciesConditions);
-      addCondition('sp.family', family, speciesConditions);
-      where.push(`(${speciesConditions.join(' OR ')})`);
-    }
+    addCondition('sp.species_id', species);
+    addCondition('sp.genus', genus);
+    addCondition('sp.family', family);
     addCondition('sp.iucn_category', red_list_status);
     addCondition('sp.aewa_annex_2', aewa_annex_2);
     addCondition('spt.threat_level_1', species_threat);
@@ -195,14 +189,9 @@ async function getCriticalSitesResults(req, res) {
     addCondition('protection_status', protection);
     addCondition('sh.habitat_id', site_habitat);
     addCondition('st.threat_id', site_threat);
-    // species filters
-    if (species || genus || family) {
-      const speciesConditions = [];
-      addCondition('sp.species_id', species, speciesConditions);
-      addCondition('sp.genus', genus, speciesConditions);
-      addCondition('sp.family', family, speciesConditions);
-      where.push(`(${speciesConditions.join(' OR ')})`);
-    }
+    addCondition('sp.species_id', species);
+    addCondition('sp.genus', genus);
+    addCondition('sp.family', family);
     addCondition('sp.iucn_category', red_list_status);
     addCondition('sp.aewa_annex_2', aewa_annex_2);
     addCondition('spt.threat_level_1', species_threat);
@@ -285,14 +274,9 @@ async function getSpeciesResults(req, res) {
     const where = [];
     const addCondition = (column, param, collection = where) => { if (param) collection.push(condition(column, param)); };
 
-    // species filters
-    if (species || genus || family) {
-      const speciesConditions = [];
-      addCondition('sp.species_id', species, speciesConditions);
-      addCondition('sp.genus', genus, speciesConditions);
-      addCondition('sp.family', family, speciesConditions);
-      where.push(`(${speciesConditions.join(' OR ')})`);
-    }
+    addCondition('sp.species_id', species);
+    addCondition('sp.genus', genus);
+    addCondition('sp.family', family);
     addCondition('sp.aewa_annex_2', aewa_annex_2);
     addCondition('sp.iucn_category', red_list_status);
     addCondition('spt.threat_level_1', species_threat);
@@ -378,14 +362,9 @@ async function getPopulationsResults(req, res) {
     const where = [];
     const addCondition = (column, param, collection = where) => { if (param) collection.push(condition(column, param)); };
 
-    // species filters
-    if (species || genus || family) {
-      const speciesConditions = [];
-      addCondition('sp.species_id', species, speciesConditions);
-      addCondition('sp.genus', genus, speciesConditions);
-      addCondition('sp.family', family, speciesConditions);
-      where.push(`(${speciesConditions.join(' OR ')})`);
-    }
+    addCondition('sp.species_id', species);
+    addCondition('sp.genus', genus);
+    addCondition('sp.family', family);
     addCondition('sp.aewa_annex_2', aewa_annex_2);
     addCondition('sp.iucn_category', red_list_status);
     addCondition('spt.threat_level_1', species_threat);
