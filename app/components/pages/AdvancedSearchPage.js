@@ -14,24 +14,29 @@ const SEARCH_GROUPS = {
 };
 const SINGLE_SELECTS = ['aewa_annex_2', 'eu_birds_directive', 'cms_caf_action_plan'];
 
-function filterSitesByCountry(countries, sites) {
+function filterSitesByCountry(sites, countries) {
   if (!countries) return sites;
   const countryIds = countries.map((country) => country.value);
-  return sites.filter((site) => countryIds.indexOf(site.country_id) > -1);
+  return sites.filter((site) => countryIds.includes(site.country_id));
 }
-function filterSpeciesByGenusAndFamily(genus, families, species) {
+function filterSpeciesByGenusAndFamily(species, genus, families) {
   if (!genus && !families) return species;
   if (!genus) {
     const familyValues = families.map((item) => item.value);
-    return species.filter((site) => familyValues.indexOf(site.family) > -1);
+    return species.filter((site) => familyValues.includes(site.family));
   }
   if (!families) {
     const genusValues = genus.map((item) => item.value);
-    return species.filter((site) => genusValues.indexOf(site.genus) > -1);
+    return species.filter((site) => genusValues.includes(site.genus));
   }
   const genusValues = genus.map((item) => item.value);
   const familyValues = families.map((item) => item.value);
-  return species.filter((site) => genusValues.indexOf(site.genus) > -1 || familyValues.indexOf(site.family) > -1);
+  return species.filter((site) => genusValues.includes(site.genus) || familyValues.includes(site.family));
+}
+function filterGenusByFamily(genus, families) {
+  if (!families) return genus;
+  const familyValues = families.map((f) => f.value);
+  return genus.filter((g) => familyValues.includes(g.family));
 }
 
 class AdvancedSearchPage extends React.Component {
@@ -88,11 +93,15 @@ class AdvancedSearchPage extends React.Component {
     switch (section) {
       case 'site':
         return filters.country
-          ? filterSitesByCountry(filters.country, options) : options;
+             ? filterSitesByCountry(options, filters.country) : options;
+      case 'genus':
+        return filters.family
+             ? filterGenusByFamily(options, filters.family)
+             : options;
       case 'species':
         return filters.genus && filters.family
-          ? filterSpeciesByGenusAndFamily(filters.genus, filters.family, options)
-          : options;
+             ? filterSpeciesByGenusAndFamily(options, filters.genus, filters.family)
+             : options;
       default:
         return options;
     }
