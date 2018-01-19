@@ -95,6 +95,6 @@ export const SEARCH_COLUMNS = {
   },
   populations: {
     columns: ['scientific_name', ...DEFAULT_SPECIES_COLUMNS.population],
-    allColumns: ['scientific_name', ...ALL_SPECIES_COLUMNS.population]
+    allColumns: ['scientific_name', 'english_name', 'french_name', ...ALL_SPECIES_COLUMNS.population]
   }
 };

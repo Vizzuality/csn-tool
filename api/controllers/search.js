@@ -104,7 +104,7 @@ async function getIBAsResults(req, res) {
     addCondition('c.country_id', country);
     addCondition('c.aewa_region', aewa_region);
     addCondition('c.ramsar_region', ramsar_region);
-    addCondition('protection_status', protection);
+    addCondition('s.protection_status', protection);
     addCondition('sh.habitat_id', site_habitat);
     addCondition('st.threat_id', site_threat);
     addCondition('sp.species_id', species);
@@ -186,7 +186,7 @@ async function getCriticalSitesResults(req, res) {
     addCondition('c.country_id', country);
     addCondition('c.aewa_region', aewa_region);
     addCondition('c.ramsar_region', ramsar_region);
-    addCondition('protection_status', protection);
+    addCondition('s.protection_status', protection);
     addCondition('sh.habitat_id', site_habitat);
     addCondition('st.threat_id', site_threat);
     addCondition('sp.species_id', species);
@@ -282,16 +282,16 @@ async function getSpeciesResults(req, res) {
     addCondition('spt.threat_level_1', species_threat);
     addCondition('sph.habitat_level_1', species_habitat_association);
     // sites filters
+    addCondition('s.site_id', site);
     addCondition('s.protection_status', protection);
+    addCondition('sh.habitat_id', site_habitat);
+    addCondition('st.threat_id', site_threat);
     addCondition('c.aewa_region', aewa_region);
     addCondition('c.ramsar_region', ramsar_region);
     if (country && !site) {
       addCondition('sc.country_id', country);
       where.push("sc.country_status != 'Vagrant'");
     }
-    addCondition('s.site_id', site);
-    addCondition('sh.habitat_id', site_habitat);
-    addCondition('st.threat_id', site_threat);
     // population filters
     addCondition('trim(pi.table_1_status)', aewa_table_1_status);
     addCondition('pi.caf_action_plan', cms_caf_action_plan);
@@ -370,16 +370,16 @@ async function getPopulationsResults(req, res) {
     addCondition('spt.threat_level_1', species_threat);
     addCondition('sph.habitat_level_1', species_habitat_association);
     // sites filters
+    addCondition('s.site_id', site);
     addCondition('s.protection_status', protection);
+    addCondition('sh.habitat_id', site_habitat);
+    addCondition('st.threat_id', site_threat);
     addCondition('c.aewa_region', aewa_region);
     addCondition('c.ramsar_region', ramsar_region);
     if (country && !site) {
       addCondition('sc.country_id', country);
       where.push("sc.country_status != 'Vagrant'");
     }
-    addCondition('s.site_id', site);
-    addCondition('sh.habitat_id', site_habitat);
-    addCondition('st.threat_id', site_threat);
     // population filters
     addCondition('trim(pi.table_1_status)', aewa_table_1_status);
     addCondition('pi.caf_action_plan', cms_caf_action_plan);
