@@ -47,7 +47,7 @@ function getCountrySites(req, res) {
       stc.iba AS iba_species,
       s.hyperlink,
       s.iba_in_danger
-    FROM sites s
+    FROM sites_iba s
   	INNER JOIN countries c ON s.country_id = c.country_id AND
     c.iso3 = '${req.params.iso}'
     LEFT JOIN stc ON stc.site_id = s.site_id
@@ -108,11 +108,11 @@ function getCountrySpecies(req, res) {
   const query = `SELECT s.scientific_name, s.english_name, s.french_name, s.genus, s.family,
     s.species_id as id, string_agg(p.population_name, ', ') as populations, s.hyperlink,
     sc.country_status, s.iucn_category, sc.occurrence_status
-    FROM species_main s
+    FROM species s
     INNER JOIN species_country sc on sc.species_id = s.species_id
     INNER JOIN countries c on c.country_id = sc.country_id AND
       c.iso3 = '${req.params.iso}'
-    INNER JOIN populations_iba p on p.species_main_id = s.species_id
+    INNER JOIN populations p on p.species_main_id = s.species_id
     GROUP BY s.scientific_name, s.english_name, s.french_name, s.genus, s.family, s.species_id, 1,
     s.hyperlink, sc.country_status, s.iucn_category, s.taxonomic_sequence,
     sc.occurrence_status
@@ -142,10 +142,10 @@ function getCountryPopulations(req, res) {
     pi.size_min, pi.size_max,
     pi.population_name AS population,
     pi.ramsar_criterion_6 AS ramsar_criterion
-    FROM populations_iba AS pi
+    FROM populations AS pi
     INNER JOIN species_country AS sc ON sc.species_id = pi.species_main_id AND sc.country_status != 'Vagrant'
     INNER JOIN countries c ON c.country_id = sc.country_id AND c.iso3 = '${req.params.iso}'
-    INNER JOIN species_main AS s ON s.species_id = pi.species_main_id
+    INNER JOIN species AS s ON s.species_id = pi.species_main_id
     WHERE (
       ST_Intersects(pi.the_geom,(SELECT the_geom FROM world_borders WHERE iso3 = '${req.params.iso}'))
     )
@@ -177,25 +177,25 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
       sm.species_id, sm.scientific_name,
       sm.english_name, sm.french_name, pi.the_geom, pi.population_name,
       pi.a, pi.b, pi.c, pi.wpepopid, sm.taxonomic_sequence
-      FROM species_main AS sm
+      FROM species AS sm
       INNER JOIN species_country AS sc
       ON sc.species_id = sm.species_id
       AND sc.iso = '${req.params.iso}'
       INNER JOIN world_borders AS wb ON
       wb.iso3 = sc.iso
-      INNER JOIN populations_iba AS pi
+      INNER JOIN populations AS pi
       ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
       AND pi.species_main_id = sm.species_id
       WHERE
       sm.confusion_group IS NOT NULL
     ) as sq
 
-    INNER JOIN species_main AS sm ON
+    INNER JOIN species AS sm ON
     (sq.confusion_group && sm.confusion_group)
     AND sm.species_id != sq.species_id
     INNER JOIN world_borders AS wb ON
     wb.iso3 = '${req.params.iso}'
-    INNER JOIN populations_iba AS pi
+    INNER JOIN populations AS pi
     ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
     AND ST_INTERSECTS(pi.the_geom, sq.the_geom)
     AND pi.species_main_id = sm.species_id
@@ -233,25 +233,25 @@ function getCountryLookAlikeSpecies(req, res) {
        sm.species_id, sm.scientific_name,
        sm.taxonomic_sequence,
        pi.the_geom, pi.population_name, pi.a, pi.b, pi.c
-       FROM species_main AS sm
+       FROM species AS sm
        INNER JOIN species_country AS sc
        ON sc.species_id = sm.species_id
        AND sc.iso = '${req.params.iso}'
        INNER JOIN world_borders AS wb ON
        wb.iso3 = sc.iso
-       INNER JOIN populations_iba AS pi
+       INNER JOIN populations AS pi
        ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
        AND pi.species_main_id = sm.species_id
        AND pi.wpepopid = ${req.params.populationId}
        WHERE sm.confusion_group IS NOT NULL
     ) as sq
 
-    INNER JOIN species_main AS sm ON
+    INNER JOIN species AS sm ON
     (sq.confusion_group && sm.confusion_group)
     AND sm.species_id != sq.species_id
     INNER JOIN world_borders AS wb ON
     wb.iso3 = '${req.params.iso}'
-    INNER JOIN populations_iba AS pi
+    INNER JOIN populations AS pi
     ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
     AND ST_INTERSECTS(pi.the_geom, sq.the_geom)
     AND pi.species_main_id = sm.species_id

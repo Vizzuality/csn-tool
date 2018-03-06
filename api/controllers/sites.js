@@ -92,7 +92,7 @@ function getSitesDetails(req, res) {
       s.iba,
       COUNT(ss.species_id) AS qualifying_species,
       s.iba_in_danger
-    FROM sites s
+    FROM sites_iba s
     LEFT JOIN species_sites AS ss ON ss.site_id = s.site_id
     WHERE s.site_id = ${req.params.id}
     GROUP BY s.site_id, s.protection_status, s.iso3, s.site_name, s.lat, s.lon, s.hyperlink, s.csn, s.iba, s.iba_in_danger`;
@@ -150,7 +150,7 @@ function getSitesLocations(req, res) {
     'csn' AS site_type  FROM sites_critical s`;
   } else {
     query = `SELECT s.site_name, s.site_id as id, s.lat, s.lon,
-      'iba' AS site_type FROM sites s`;
+      'iba' AS site_type FROM sites_iba s`;
   }
 
   runQuery(query)
@@ -186,9 +186,9 @@ function getSitesSpecies(req, res) {
       ss.units,
       ss.iba_criteria,
       ss.geometric_mean
-    FROM species_main AS s
+    FROM species AS s
     INNER JOIN species_sites AS ss ON ss.species_id = s.species_id
-    INNER JOIN sites AS si ON si.site_id = ss.site_id
+    INNER JOIN sites_iba AS si ON si.site_id = ss.site_id
     WHERE si.site_id = ${req.params.id}
     ORDER BY s.taxonomic_sequence`;
   } else {
@@ -218,8 +218,8 @@ function getSitesSpecies(req, res) {
       ss.csn2::boolean
     FROM sites_critical AS si
     INNER JOIN species_sites_critical ss ON ss.site_id = si.site_id
-    INNER JOIN populations_iba p on p.wpepopid = ss.wpepopid
-    INNER JOIN species_main s ON s.species_id = p.species_main_id
+    INNER JOIN populations p on p.wpepopid = ss.wpepopid
+    INNER JOIN species s ON s.species_id = p.species_main_id
     WHERE si.site_id = '${req.params.id}'
     ORDER BY s.taxonomic_sequence`;
   }
