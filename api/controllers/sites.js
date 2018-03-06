@@ -106,7 +106,7 @@ function getSitesDetails(req, res) {
       lon,
       COUNT(ss.species_rec_id) AS qualifying_species
     FROM sites_critical AS s
-    LEFT JOIN critical_species_sites AS ss ON ss.site_id = s.site_id
+    LEFT JOIN species_sites_critical AS ss ON ss.site_id = s.site_id
     WHERE s.site_id = ${req.params.id}
     GROUP BY s.site_id, s.protected, iso3, lat, lon, s.site_name_clean`;
   }
@@ -217,7 +217,7 @@ function getSitesSpecies(req, res) {
       ss.csn1::boolean,
       ss.csn2::boolean
     FROM sites_critical AS si
-    INNER JOIN critical_species_sites ss ON ss.site_id = si.site_id
+    INNER JOIN species_sites_critical ss ON ss.site_id = si.site_id
     INNER JOIN populations_iba p on p.wpepopid = ss.wpepopid
     INNER JOIN species_main s ON s.species_id = p.species_main_id
     WHERE si.site_id = '${req.params.id}'

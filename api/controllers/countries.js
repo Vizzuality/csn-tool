@@ -72,7 +72,7 @@ function getCountryCriticalSites(req, res) {
   const query = `
     WITH csn_species_count AS (
       SELECT COUNT(*) AS csn_species, site_id
-      FROM critical_species_sites
+      FROM species_sites_critical
       GROUP BY site_id
     )
     SELECT

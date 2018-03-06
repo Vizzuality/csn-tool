@@ -115,7 +115,7 @@ function getSpeciesCriticalSites(req, res) {
       END AS csn2
     FROM species_main s
     INNER JOIN populations_iba p on p.species_main_id = s.species_id
-    INNER JOIN critical_species_sites ss ON p.wpepopid = ss.wpepopid
+    INNER JOIN species_sites_critical ss ON p.wpepopid = ss.wpepopid
     INNER JOIN sites_critical si ON ss.site_id = si.site_id
     WHERE s.species_id = '${req.params.id}'
     ORDER BY si.site_name`;
