@@ -16,8 +16,7 @@ function getSelectedSite(sites) {
 
 const mapStateToProps = (state) => ({
   selectedSite: getSelectedSite(state.sites),
-  sites: getSites(state.sites),
-  type: state.sites.type
+  sites: getSites(state.sites)
 });
 
 const mapDispatchToProps = (dispatch) => ({

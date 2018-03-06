@@ -146,8 +146,7 @@ SitesMap.propTypes = {
   selectedSite: PropTypes.any,
   goToDetail: PropTypes.func.isRequired,
   id: PropTypes.string,
-  sites: PropTypes.any,
-  type: PropTypes.string
+  sites: PropTypes.any
 };
 
 export default withRouter(SitesMap);

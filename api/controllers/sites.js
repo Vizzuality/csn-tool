@@ -33,7 +33,8 @@ function getSites(req, res) {
         s.lon,
         coalesce(stc.iba, 0) AS iba_species,
         s.hyperlink,
-        coalesce(s.iba_in_danger, false) as iba_in_danger
+        coalesce(s.iba_in_danger, false) as iba_in_danger,
+        'iba' AS type
       FROM ${table} s
       LEFT JOIN stc ON stc.site_id = s.site_id
       WHERE s.site_id IN (SELECT * from p) ${search}
@@ -55,7 +56,8 @@ function getSites(req, res) {
       stc.csn,
       s.iso3,
       s.iso2,
-      total_percentage
+      total_percentage,
+      'csn' AS type
     FROM ${table} s
     LEFT JOIN stc ON stc.site_id = s.site_id
     ${search}
@@ -91,11 +93,13 @@ function getSitesDetails(req, res) {
       s.csn,
       s.iba,
       COUNT(ss.species_id) AS qualifying_species,
-      s.iba_in_danger
+      s.iba_in_danger,
+      'iba' AS type
     FROM sites_iba s
     LEFT JOIN species_sites AS ss ON ss.site_id = s.site_id
     WHERE s.site_id = ${req.params.id}
-    GROUP BY s.site_id, s.protection_status, s.iso3, s.site_name, s.lat, s.lon, s.hyperlink, s.csn, s.iba, s.iba_in_danger`;
+    GROUP BY s.site_id, s.protection_status, s.iso3, s.site_name, s.lat, s.lon,
+    s.hyperlink, s.csn, s.iba, s.iba_in_danger`;
   } else {
     query = `SELECT
       s.site_id AS id,
@@ -104,7 +108,8 @@ function getSitesDetails(req, res) {
       site_name_clean AS site_name,
       lat,
       lon,
-      COUNT(ss.species_rec_id) AS qualifying_species
+      COUNT(ss.species_rec_id) AS qualifying_species,
+      'csn' AS type
     FROM sites_critical AS s
     LEFT JOIN species_sites_critical AS ss ON ss.site_id = s.site_id
     WHERE s.site_id = ${req.params.id}
@@ -129,7 +134,8 @@ function getSitesDetails(req, res) {
             csn: row.csn,
             iba: row.iba,
             iba_in_danger: row.iba_in_danger,
-            qualifying_species: row.qualifying_species
+            qualifying_species: row.qualifying_species,
+            type: row.type
           }]
         });
       } else {
