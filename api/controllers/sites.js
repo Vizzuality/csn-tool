@@ -3,7 +3,7 @@ const { runQuery } = require('../helpers');
 const RESULTS_PER_PAGE = 200;
 
 function getSites(req, res) {
-  const table = req.query.filter === 'iba' ? 'sites' : 'sites_critical';
+  const table = req.query.filter === 'iba' ? 'sites_iba' : 'sites_critical';
   const results = req.query.results || RESULTS_PER_PAGE;
   const search = req.query.search
     ? `${req.query.filter === 'iba' ? 'AND' : 'WHERE'} UPPER(s.country) like UPPER('%${req.query.search}%')
