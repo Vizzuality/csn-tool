@@ -72,7 +72,7 @@ function getCountryCriticalSites(req, res) {
   const query = `
     WITH csn_species_count AS (
       SELECT COUNT(*) AS csn_species, site_id
-      FROM csn_species_sites
+      FROM species_sites_critical
       GROUP BY site_id
     )
     SELECT
@@ -84,7 +84,7 @@ function getCountryCriticalSites(req, res) {
       coalesce(protected, 'Unknown') AS protected,
       csc.csn_species AS csn_species,
       total_percentage
-    FROM sites_csn_points s
+    FROM sites_critical s
     INNER JOIN csn_species_count AS csc ON csc.site_id = s.site_id
     WHERE s.iso3 = '${req.params.iso}'
     ORDER BY s.site_name ASC`;

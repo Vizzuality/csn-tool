@@ -220,7 +220,7 @@ async function getCriticalSitesResults(req, res) {
         s.iso3,
         s.iso2,
         s.total_percentage
-      FROM sites_csn_points s
+      FROM sites_critical s
       LEFT JOIN stc ON stc.site_id = s.site_id
       INNER JOIN countries c ON c.iso2 = s.iso2
       ${joinSpeciesSites ? 'INNER JOIN species_sites ss ON ss.site_id = s.site_id' : ''}
