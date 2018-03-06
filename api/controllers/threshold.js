@@ -15,7 +15,7 @@ function getSpeciesByPosition(req, res) {
     p.ramsar_criterion_6 AS ramsar_criterion,
     'http://wpe.wetlands.org/view/' || p.wpepopid AS pop_hyperlink,
     c.name AS country_name
-    FROM populations AS p
+    FROM populations_iba AS p
     INNER JOIN world_borders AS c ON
     ST_CONTAINS(c.the_geom_webmercator, ST_Transform(ST_SetSRID(ST_MakePoint(${req.params.lng},${req.params.lat}), 4326), 3857))
     INNER JOIN species_main AS sm ON

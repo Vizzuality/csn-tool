@@ -66,7 +66,7 @@ function getSpeciesSites(req, res) {
       ss.start, ss._end as end
     FROM species_main s
     INNER JOIN species_sites ss ON s.species_id = ss.species_id
-    INNER JOIN populations p on p.species_main_id = s.species_id
+    INNER JOIN populations_iba p on p.species_main_id = s.species_id
     INNER JOIN sites si ON ss.site_id = si.site_id
     WHERE s.species_id = '${req.params.id}'
     GROUP BY ss.iba_criteria, ss.maximum, ss.minimum, ss.units,
@@ -96,29 +96,29 @@ function getSpeciesSites(req, res) {
 
 function getSpeciesCriticalSites(req, res) {
   const query = `SELECT s.species_id,
-      ps.popmax as maximum, ps.popmin as minimum, ps.season, ps.units,
-      ps.yearstart AS start, ps.yearend AS end, ps.percentfly,
+      ss.popmax as maximum, ss.popmin as minimum, ss.season, ss.units,
+      ss.yearstart AS start, ss.yearend AS end, ss.percentfly,
       si.site_name_clean AS csn_site_name, si.site_name_clean AS site_name,
       si.lat, si.lon, si.country, si.iso2,
       coalesce(si.protected, 'Unknown') as protected,
       p.population_name AS population,
-      si.hyperlink, si.site_id AS id, ps.geometric_mean,
+      si.hyperlink, si.site_id AS id, ss.geometric_mean,
       CASE
-       WHEN ps.csn1 = 1 THEN true
-       WHEN ps.csn1 = 0 THEN false
+       WHEN ss.csn1 = 1 THEN true
+       WHEN ss.csn1 = 0 THEN false
        ELSE null
       END as csn1,
       CASE
-        WHEN ps.csn2 = 1 THEN true
-        WHEN ps.csn2 = 0 THEN false
+        WHEN ss.csn2 = 1 THEN true
+        WHEN ss.csn2 = 0 THEN false
         ELSE null
       END AS csn2
     FROM species_main s
-    INNER JOIN populations p on p.species_main_id = s.species_id
-    INNER JOIN populations_sites ps ON p.wpepopid = ps.wpepopid
-    INNER JOIN sites_points sp ON ps.site_id = sp.site_id
+    INNER JOIN populations_iba p on p.species_main_id = s.species_id
+    INNER JOIN critical_species_sites ss ON p.wpepopid = ss.wpepopid
+    INNER JOIN sites_critical si ON ss.site_id = si.site_id
     WHERE s.species_id = '${req.params.id}'
-    ORDER BY sp.site_name`;
+    ORDER BY si.site_name`;
 
   runQuery(query)
     .then((data) => {
@@ -149,7 +149,7 @@ function getSpeciesPopulation(req, res) {
     p.size_max, p.ramsar_criterion_6 AS ramsar_criterion,
     'http://wpe.wetlands.org/view/' || p.wpepopid AS pop_hyperlink
     FROM species_main s
-    INNER JOIN populations p on p.species_main_id = s.species_id
+    INNER JOIN populations_iba p on p.species_main_id = s.species_id
     WHERE s.species_id = '${req.params.id}'
     ORDER BY p.population_name`;
 
@@ -184,7 +184,7 @@ function getSpeciesLookAlikeSpecies(req, res) {
       sm.english_name, sm.french_name, pi.the_geom,
       pi.population_name, pi.a, pi.b, pi.c, pi.wpepopid
       FROM species_main AS sm
-      INNER JOIN populations AS pi
+      INNER JOIN populations_iba AS pi
       ON pi.species_main_id = sm.species_id
       WHERE sm.species_id = ${req.params.id}
       AND sm.confusion_group IS NOT NULL
@@ -193,7 +193,7 @@ function getSpeciesLookAlikeSpecies(req, res) {
     INNER JOIN species_main AS sm ON
     (sq.confusion_group && sm.confusion_group)
     AND sm.species_id != sq.species_id
-    INNER JOIN populations AS pi
+    INNER JOIN populations_iba AS pi
     ON pi.species_main_id = sm.species_id
     AND ST_INTERSECTS(sq.the_geom, pi.the_geom)
     GROUP BY sq.scientific_name,
@@ -235,14 +235,14 @@ function getPopulationsLookAlikeSpecies(req, res) {
        sm.species_id, sm.scientific_name,
        pi.the_geom, pi.population_name, pi.a, pi.b, pi.c
        FROM species_main AS sm
-       INNER JOIN populations AS pi
+       INNER JOIN populations_iba AS pi
        ON pi.species_main_id = sm.species_id
        WHERE sm.confusion_group IS NOT NULL
        AND pi.wpepopid = ${req.params.populationId}
        AND sm.species_id = ${req.params.id}
     ) as sq
     INNER JOIN species_main AS sm ON (sq.confusion_group && sm.confusion_group) AND sm.species_id != sq.species_id
-    INNER JOIN populations AS pi ON pi.species_main_id = sm.species_id AND ST_INTERSECTS(sq.the_geom, pi.the_geom)
+    INNER JOIN populations_iba AS pi ON pi.species_main_id = sm.species_id AND ST_INTERSECTS(sq.the_geom, pi.the_geom)
     ORDER BY sm.taxonomic_sequence ASC, pi.population_name ASC`;
 
   runQuery(query)

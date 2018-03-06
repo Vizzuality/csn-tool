@@ -3,7 +3,7 @@ const { runQuery } = require('../helpers');
 const RESULTS_PER_PAGE = 200;
 
 function getSites(req, res) {
-  const table = req.query.filter === 'iba' ? 'sites' : 'sites_points';
+  const table = req.query.filter === 'iba' ? 'sites' : 'sites_critical';
   const results = req.query.results || RESULTS_PER_PAGE;
   const search = req.query.search
     ? `${req.query.filter === 'iba' ? 'AND' : 'WHERE'} UPPER(s.country) like UPPER('%${req.query.search}%')
@@ -105,8 +105,8 @@ function getSitesDetails(req, res) {
       lat,
       lon,
       COUNT(ss.species_rec_id) AS qualifying_species
-    FROM sites_points AS s
-    LEFT JOIN populations_sites AS ss ON ss.site_id = s.site_id
+    FROM sites_critical AS s
+    LEFT JOIN critical_species_sites AS ss ON ss.site_id = s.site_id
     WHERE s.site_id = ${req.params.id}
     GROUP BY s.site_id, s.protected, iso3, lat, lon, s.site_name_clean`;
   }
@@ -147,7 +147,7 @@ function getSitesLocations(req, res) {
   let query;
   if (req.params.type === 'csn') {
     query = `SELECT s.site_name_clean AS site_name, s.site_id as id, s.lat, s.lon,
-    'csn' AS site_type  FROM sites_points s`;
+    'csn' AS site_type  FROM sites_critical s`;
   } else {
     query = `SELECT s.site_name, s.site_id as id, s.lat, s.lon,
       'iba' AS site_type FROM sites s`;
@@ -201,26 +201,26 @@ function getSitesSpecies(req, res) {
       ss.yearstart AS start,
       ss.yearend AS end,
       ss.percentfly,
-      sp.site_name_clean AS csn_site_name,
-      sp.lat,
-      sp.lon,
-      sp.country,
-      sp.iso2,
-      sp.protected,
+      si.site_name_clean AS csn_site_name,
+      si.lat,
+      si.lon,
+      si.country,
+      si.iso2,
+      si.protected,
       p.population_name AS population,
       s.iucn_category,
       s.english_name,
       s.french_name,
       s.scientific_name,
-      sp.site_name_clean AS site_name,
+      si.site_name_clean AS site_name,
       s.hyperlink, ss.geometric_mean,
       ss.csn1::boolean,
       ss.csn2::boolean
-    FROM sites_points AS sp
-    INNER JOIN populations_sites ss ON ss.site_id = sp.site_id
-    INNER JOIN populations p on p.wpepopid = ss.wpepopid
+    FROM sites_critical AS si
+    INNER JOIN critical_species_sites ss ON ss.site_id = si.site_id
+    INNER JOIN populations_iba p on p.wpepopid = ss.wpepopid
     INNER JOIN species_main s ON s.species_id = p.species_main_id
-    WHERE sp.site_id = '${req.params.id}'
+    WHERE si.site_id = '${req.params.id}'
     ORDER BY s.taxonomic_sequence`;
   }
 

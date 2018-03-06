@@ -39,11 +39,11 @@ const optionQueries = [
   { name: 'species_threat', query: queryProducer('species_threats', 'threat_level_1') },
   { name: 'species_habitat_association', query: queryProducer('species_habitat', 'habitat_level_1') },
   // population
-  { name: 'aewa_table_1_status', query: queryProducer('populations', 'trim(table_1_status)') },
+  { name: 'aewa_table_1_status', query: queryProducer('populations_iba', 'trim(table_1_status)') },
   { name: 'eu_birds_directive', query: { isBoolean: true } },
   { name: 'cms_caf_action_plan', query: { isBoolean: true } },
-  { name: 'multispecies_flyway', query: queryProducer('populations', 'flyway_range') },
-  { name: 'population_trend', query: queryProducer('populations', 'trend') }
+  { name: 'multispecies_flyway', query: queryProducer('populations_iba', 'flyway_range') },
+  { name: 'population_trend', query: queryProducer('populations_iba', 'trend') }
 ];
 
 async function getOptions(req, res) {
@@ -220,12 +220,12 @@ async function getCriticalSitesResults(req, res) {
         s.iso3,
         s.iso2,
         s.total_percentage
-      FROM sites_points s
+      FROM sites_critical s
       LEFT JOIN stc ON stc.site_id = s.site_id
       INNER JOIN countries c ON c.iso2 = s.iso2
       ${joinSpeciesSites ? 'INNER JOIN species_sites ss ON ss.site_id = s.site_id' : ''}
       ${joinSpecies ? 'INNER JOIN species_main sp ON ss.species_id = sp.species_id' : ''}
-      ${joinPopulations ? 'INNER JOIN populations pi ON pi.species_main_id = sp.species_id' : ''}
+      ${joinPopulations ? 'INNER JOIN populations_iba pi ON pi.species_main_id = sp.species_id' : ''}
       ${species_threat ? 'INNER JOIN species_threats spt ON spt.species_id = ss.species_id' : ''}
       ${species_habitat_association ? 'INNER JOIN species_habitat sph ON sph.species_id = ss.species_id' : ''}
       ${site_habitat ? 'INNER JOIN sites_habitats sh ON sh.site_id = s.site_id' : ''}
@@ -310,7 +310,7 @@ async function getSpeciesResults(req, res) {
         sp.iucn_category,
         sp.hyperlink
       FROM species_main sp
-      ${joinPopulations ? 'INNER JOIN populations pi ON pi.species_main_id = sp.species_id' : ''}
+      ${joinPopulations ? 'INNER JOIN populations_iba pi ON pi.species_main_id = sp.species_id' : ''}
       ${joinCountries &&
         `INNER JOIN species_country sc ON sc.species_id = sp.species_id
          INNER JOIN countries c ON c.country_id = sc.country_id` || ''}
@@ -407,7 +407,7 @@ async function getPopulationsResults(req, res) {
       pi.size_max,
       pi.population_name AS population,
       pi.ramsar_criterion_6 AS ramsar_criterion
-      FROM populations AS pi
+      FROM populations_iba AS pi
       INNER JOIN species_main sp ON pi.species_main_id = sp.species_id
       ${joinCountries &&
         `INNER JOIN species_country sc ON sc.species_id = sp.species_id
