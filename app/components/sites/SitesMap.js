@@ -56,7 +56,7 @@ class SitesMap extends BasicMap {
   }
 
   fetchSiteLayer(site) {
-    const dataset = site.type === 'iba' ? 'ibas_geometries' : 'csn_sites_polygons';
+    const dataset = site.type === 'iba' ? 'sites_geometries_iba' : 'csn_sites_polygons';
     const siteIdColumn = site.type === 'iba' ? 'site_id' : 'siterecid';
     const query = `
        SELECT
