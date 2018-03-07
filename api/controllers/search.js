@@ -120,7 +120,7 @@ async function getIBAsResults(req, res) {
         SELECT
           site_id,
           SUM(case when iba_criteria = '' then 0 else 1 end) as iba
-        FROM species_sites GROUP BY site_id
+        FROM species_sites_iba GROUP BY site_id
       )
       SELECT
         s.site_id AS id,
@@ -134,7 +134,7 @@ async function getIBAsResults(req, res) {
       FROM sites_iba s
       LEFT JOIN stc ON stc.site_id = s.site_id
       INNER JOIN countries c ON c.country_id = s.country_id
-      ${joinSpeciesSites ? 'INNER JOIN species_sites ss ON ss.site_id = s.site_id' : ''}
+      ${joinSpeciesSites ? 'INNER JOIN species_sites_iba ss ON ss.site_id = s.site_id' : ''}
       ${joinSpecies ? 'INNER JOIN species sp ON ss.species_id = sp.species_id' : ''}
       ${species_threat ? 'INNER JOIN species_threats spt ON spt.species_id = ss.species_id' : ''}
       ${species_habitat_association ? 'INNER JOIN species_habitat sph ON sph.species_id = ss.species_id' : ''}
@@ -206,7 +206,7 @@ async function getCriticalSitesResults(req, res) {
     const query = `
       WITH stc AS (
         SELECT site_id, COUNT(*) csn
-        FROM species_sites
+        FROM species_sites_iba
         GROUP BY site_id
       )
       SELECT
@@ -223,7 +223,7 @@ async function getCriticalSitesResults(req, res) {
       FROM sites_critical s
       LEFT JOIN stc ON stc.site_id = s.site_id
       INNER JOIN countries c ON c.iso2 = s.iso2
-      ${joinSpeciesSites ? 'INNER JOIN species_sites ss ON ss.site_id = s.site_id' : ''}
+      ${joinSpeciesSites ? 'INNER JOIN species_sites_iba ss ON ss.site_id = s.site_id' : ''}
       ${joinSpecies ? 'INNER JOIN species sp ON ss.species_id = sp.species_id' : ''}
       ${joinPopulations ? 'INNER JOIN populations pi ON pi.species_main_id = sp.species_id' : ''}
       ${species_threat ? 'INNER JOIN species_threats spt ON spt.species_id = ss.species_id' : ''}
@@ -314,7 +314,7 @@ async function getSpeciesResults(req, res) {
       ${joinCountries &&
         `INNER JOIN species_country sc ON sc.species_id = sp.species_id
          INNER JOIN countries c ON c.country_id = sc.country_id` || ''}
-      ${joinSpeciesSites ? 'INNER JOIN species_sites ss ON ss.species_id = sp.species_id' : ''}
+      ${joinSpeciesSites ? 'INNER JOIN species_sites_iba ss ON ss.species_id = sp.species_id' : ''}
       ${joinSites ? 'INNER JOIN sites_iba s ON ss.site_id = s.site_id' : ''}
       ${species_threat ? 'INNER JOIN species_threats spt ON spt.species_id = sp.species_id' : ''}
       ${species_habitat_association ? 'INNER JOIN species_habitat sph ON sph.species_id = sp.species_id' : ''}
@@ -413,7 +413,7 @@ async function getPopulationsResults(req, res) {
         `INNER JOIN species_country sc ON sc.species_id = sp.species_id
          INNER JOIN countries c ON c.country_id = sc.country_id
          INNER JOIN world_borders AS wb ON wb.iso3 = sc.iso AND ST_INTERSECTS(pi.the_geom, wb.the_geom)` || ''}
-      ${joinSpeciesSites ? 'INNER JOIN species_sites ss ON ss.species_id = sp.species_id' : ''}
+      ${joinSpeciesSites ? 'INNER JOIN species_sites_iba ss ON ss.species_id = sp.species_id' : ''}
       ${joinSites ? 'INNER JOIN sites_iba s ON ss.site_id = s.site_id' : ''}
       ${species_threat ? 'INNER JOIN species_threats spt ON spt.species_id = sp.species_id' : ''}
       ${species_habitat_association ? 'INNER JOIN species_habitat sph ON sph.species_id = sp.species_id' : ''}

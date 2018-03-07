@@ -65,7 +65,7 @@ function getSpeciesSites(req, res) {
       si.hyperlink, si.site_id AS id, ss.geometric_mean,
       ss.start, ss._end as end
     FROM species s
-    INNER JOIN species_sites ss ON s.species_id = ss.species_id
+    INNER JOIN species_sites_iba ss ON s.species_id = ss.species_id
     INNER JOIN populations p on p.species_main_id = s.species_id
     INNER JOIN sites_iba si ON ss.site_id = si.site_id
     WHERE s.species_id = '${req.params.id}'

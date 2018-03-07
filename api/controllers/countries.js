@@ -35,7 +35,7 @@ function getCountryDetails(req, res) {
 function getCountrySites(req, res) {
   const query = `with stc as (select site_id,
       SUM(case when iba_criteria = '' then 0 else 1 end) as iba
-        from species_sites group by site_id)
+        from species_sites_iba group by site_id)
     SELECT
       c.country,
       c.iso3,
