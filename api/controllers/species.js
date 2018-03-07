@@ -67,7 +67,7 @@ function getSpeciesSites(req, res) {
     FROM species s
     INNER JOIN species_sites ss ON s.species_id = ss.species_id
     INNER JOIN populations p on p.species_main_id = s.species_id
-    INNER JOIN sites_iba si ON ss.site_id = si.site_id
+    INNER JOIN sites si ON ss.site_id = si.site_id
     WHERE s.species_id = '${req.params.id}'
     GROUP BY ss.iba_criteria, ss.maximum, ss.minimum, ss.units,
     ss.season, si.country, si.iso2, si.protection_status ,si.site_name, si.lat, si.lon,
@@ -116,7 +116,7 @@ function getSpeciesCriticalSites(req, res) {
     FROM species s
     INNER JOIN populations p on p.species_main_id = s.species_id
     INNER JOIN species_sites_critical ss ON p.wpepopid = ss.wpepopid
-    INNER JOIN sites_critical si ON ss.site_id = si.site_id
+    INNER JOIN sites_points si ON ss.site_id = si.site_id
     WHERE s.species_id = '${req.params.id}'
     ORDER BY si.site_name`;
 

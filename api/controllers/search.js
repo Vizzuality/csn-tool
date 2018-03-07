@@ -131,7 +131,7 @@ async function getIBAsResults(req, res) {
         stc.iba AS iba_species,
         s.hyperlink,
         coalesce(s.iba_in_danger, false) as iba_in_danger
-      FROM sites_iba s
+      FROM sites s
       LEFT JOIN stc ON stc.site_id = s.site_id
       INNER JOIN countries c ON c.country_id = s.country_id
       ${joinSpeciesSites ? 'INNER JOIN species_sites ss ON ss.site_id = s.site_id' : ''}
@@ -220,7 +220,7 @@ async function getCriticalSitesResults(req, res) {
         s.iso3,
         s.iso2,
         s.total_percentage
-      FROM sites_critical s
+      FROM sites_points s
       LEFT JOIN stc ON stc.site_id = s.site_id
       INNER JOIN countries c ON c.iso2 = s.iso2
       ${joinSpeciesSites ? 'INNER JOIN species_sites ss ON ss.site_id = s.site_id' : ''}
@@ -315,7 +315,7 @@ async function getSpeciesResults(req, res) {
         `INNER JOIN species_country sc ON sc.species_id = sp.species_id
          INNER JOIN countries c ON c.country_id = sc.country_id` || ''}
       ${joinSpeciesSites ? 'INNER JOIN species_sites ss ON ss.species_id = sp.species_id' : ''}
-      ${joinSites ? 'INNER JOIN sites_iba s ON ss.site_id = s.site_id' : ''}
+      ${joinSites ? 'INNER JOIN sites s ON ss.site_id = s.site_id' : ''}
       ${species_threat ? 'INNER JOIN species_threats spt ON spt.species_id = sp.species_id' : ''}
       ${species_habitat_association ? 'INNER JOIN species_habitat sph ON sph.species_id = sp.species_id' : ''}
       ${site_habitat ? 'INNER JOIN sites_habitats sh ON sh.site_id = ss.site_id' : ''}
@@ -414,7 +414,7 @@ async function getPopulationsResults(req, res) {
          INNER JOIN countries c ON c.country_id = sc.country_id
          INNER JOIN world_borders AS wb ON wb.iso3 = sc.iso AND ST_INTERSECTS(pi.the_geom, wb.the_geom)` || ''}
       ${joinSpeciesSites ? 'INNER JOIN species_sites ss ON ss.species_id = sp.species_id' : ''}
-      ${joinSites ? 'INNER JOIN sites_iba s ON ss.site_id = s.site_id' : ''}
+      ${joinSites ? 'INNER JOIN sites s ON ss.site_id = s.site_id' : ''}
       ${species_threat ? 'INNER JOIN species_threats spt ON spt.species_id = sp.species_id' : ''}
       ${species_habitat_association ? 'INNER JOIN species_habitat sph ON sph.species_id = sp.species_id' : ''}
       ${site_habitat ? 'INNER JOIN sites_habitats sh ON sh.site_id = ss.site_id' : ''}
