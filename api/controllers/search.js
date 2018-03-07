@@ -22,19 +22,19 @@ const queryProducer = (table, label, value, extraColumns) => (`
 `);
 
 const optionQueries = [
-  // geography
+  // geography 
   { name: 'country', query: queryProducer('countries', 'country', 'country_id') },
   { name: 'ramsar_region', query: queryProducer('countries', 'ramsar_region') },
   { name: 'aewa_region', query: queryProducer('countries', 'aewa_region') },
-  { name: 'site', query: queryProducer('sites', 'site_name', 'site_id', ['country_id']) },
-  { name: 'protection', query: queryProducer('sites', 'protection_status') },
+  { name: 'site', query: queryProducer('sites_iba', 'site_name', 'site_id', ['country_id']) },
+  { name: 'protection', query: queryProducer('sites_iba', 'protection_status') },
   { name: 'site_threat', query: queryProducer('sites_threats', 'threat_name', 'threat_id') },
   { name: 'site_habitat', query: queryProducer('sites_habitats', 'habitat_name', 'habitat_id') },
   // species attributes
-  { name: 'family', query: queryProducer('species_main', 'family') },
-  { name: 'genus', query: queryProducer('species_main', 'genus', 'genus', ['family']) },
-  { name: 'species', query: queryProducer('species_main', 'scientific_name', 'species_id', ['family', 'genus']) },
-  { name: 'red_list_status', query: queryProducer('species_main', 'iucn_category') },
+  { name: 'family', query: queryProducer('species', 'family') },
+  { name: 'genus', query: queryProducer('species', 'genus', 'genus', ['family']) },
+  { name: 'species', query: queryProducer('species', 'scientific_name', 'species_id', ['family', 'genus']) },
+  { name: 'red_list_status', query: queryProducer('species', 'iucn_category') },
   { name: 'aewa_annex_2', query: { isBoolean: true } },
   { name: 'species_threat', query: queryProducer('species_threats', 'threat_level_1') },
   { name: 'species_habitat_association', query: queryProducer('species_habitat', 'habitat_level_1') },
