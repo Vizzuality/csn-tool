@@ -47,7 +47,7 @@ function getCountrySites(req, res) {
       stc.iba AS iba_species,
       s.hyperlink,
       s.iba_in_danger
-    FROM sites_iba s
+    FROM sites s
   	INNER JOIN countries c ON s.country_id = c.country_id AND
     c.iso3 = '${req.params.iso}'
     LEFT JOIN stc ON stc.site_id = s.site_id
@@ -84,7 +84,7 @@ function getCountryCriticalSites(req, res) {
       coalesce(protected, 'Unknown') AS protected,
       csc.csn_species AS csn_species,
       total_percentage
-    FROM sites_critical s
+    FROM sites_points s
     INNER JOIN csn_species_count AS csc ON csc.site_id = s.site_id
     WHERE s.iso3 = '${req.params.iso}'
     ORDER BY s.site_name ASC`;
