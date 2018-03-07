@@ -22,7 +22,7 @@ const queryProducer = (table, label, value, extraColumns) => (`
 `);
 
 const optionQueries = [
-  // geography 
+  // geography
   { name: 'country', query: queryProducer('countries', 'country', 'country_id') },
   { name: 'ramsar_region', query: queryProducer('countries', 'ramsar_region') },
   { name: 'aewa_region', query: queryProducer('countries', 'aewa_region') },
