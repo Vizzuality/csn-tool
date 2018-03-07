@@ -19,7 +19,7 @@ function getSites(req, res) {
         SELECT
           site_id,
           SUM(CASE WHEN iba_criteria = '' THEN 0 ELSE 1 END) as iba
-        FROM species_sites GROUP BY site_id
+        FROM species_sites_iba GROUP BY site_id
       ),
       p as (SELECT DISTINCT site_id FROM species_sites)
       SELECT
@@ -96,7 +96,7 @@ function getSitesDetails(req, res) {
       s.iba_in_danger,
       'iba' AS type
     FROM sites_iba s
-    LEFT JOIN species_sites AS ss ON ss.site_id = s.site_id
+    LEFT JOIN species_sites_iba AS ss ON ss.site_id = s.site_id
     WHERE s.site_id = ${req.params.id}
     GROUP BY s.site_id, s.protection_status, s.iso3, s.site_name, s.lat, s.lon,
     s.hyperlink, s.csn, s.iba, s.iba_in_danger`;
@@ -193,7 +193,7 @@ function getSitesSpecies(req, res) {
       ss.iba_criteria,
       ss.geometric_mean
     FROM species AS s
-    INNER JOIN species_sites AS ss ON ss.species_id = s.species_id
+    INNER JOIN species_sites_iba AS ss ON ss.species_id = s.species_id
     INNER JOIN sites_iba AS si ON si.site_id = ss.site_id
     WHERE si.site_id = ${req.params.id}
     ORDER BY s.taxonomic_sequence`;
