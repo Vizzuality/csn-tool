@@ -138,7 +138,9 @@ export const translations = {
     'viewSpeciesDetails': 'View species details',
     'viewSiteDetails': 'View site details',
     'protectionLevel': 'Protection Level',
-    'populationBoundaries': 'Population Boundaries'
+    'populationBoundaries': 'Population Boundaries',
+    'noDataFound': 'No results found',
+    'noDataFoundAdvancedSearch': 'No results found. Please adjust your search criteria and try again. Please be also mindful that we use logical AND condition between different filters and OR condition within the same filter.'
   },
   es: {
     'country': 'Pais',
@@ -261,7 +263,9 @@ export const translations = {
     'birdlifeFactsheet': 'Birdlife Factsheet',
     'protectionLevel': 'Nivel de protección',
     'populationBoundaries': 'Límites de la población',
-    'species_country_status': 'Estado del país de la especie'
+    'species_country_status': 'Estado del país de la especie',
+    'noDataFound': 'Datos no disponibles',
+    'noDataFoundAdvancedSearch': 'No results found. Please adjust your search criteria and try again. Please be also mindful that we use logical AND condition between different filters and OR condition within the same filter.'
   },
   fr: {
     'country': 'Pays',
@@ -401,6 +405,8 @@ export const translations = {
     'coordinates': 'Coordonnées',
     'birdlifeFactsheet': 'Birdlife Factsheet',
     'protectionLevel': 'Niveau de protection',
-    'populationBoundaries': 'Limites de la population'
+    'populationBoundaries': 'Limites de la population',
+    'noDataFound': 'Pas de données disponibles',
+    'noDataFoundAdvancedSearch': 'No results found. Please adjust your search criteria and try again. Please be also mindful that we use logical AND condition between different filters and OR condition within the same filter.'
   },
 }

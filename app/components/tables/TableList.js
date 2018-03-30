@@ -35,13 +35,23 @@ function getDetailLink(t, detailLink, item) {
   );
 }
 
+function renderNoDataText(t, text) {
+  return (
+    <div className="c-table-list">
+      <div className="no-data">
+        <p className="text -title">{t(text)}</p>
+      </div>
+    </div>
+  );
+}
+
 function TableList(props, context) {
   if (!props.data) return (<div className="c-table-list blank"><LoadingSpinner inner transparent /></div>);
 
   const colWidth = 97.5 / props.columns.length; // still need empty category
 
   return !props.data.length
-  ? <div className="c-table-list"><div className="no-data"><p className="text -title"> No data </p></div></div>
+  ? renderNoDataText(context.t, props.noDataText)
   : <div id="table-rows" className="c-table-list">
     <ul>
       {props.data.map((item, index) => (
@@ -130,17 +140,15 @@ TableList.contextTypes = {
 
 TableList.defaultProps = {
   detailLink: null,
+  noDataText: 'noDataFound',
   onItemClick: () => {}
 };
 
 TableList.propTypes = {
-  /* page section name or action object {
-    type: 'action',
-    action: function
-  } */
   detailLink: PropTypes.any,
   columns: PropTypes.array.isRequired,
   data: PropTypes.any.isRequired,
+  noDataText: PropTypes.string,
   fitBounds: PropTypes.func,
   scroll: PropTypes.bool,
   selectable: PropTypes.bool,

@@ -37,6 +37,7 @@ const SearchTable = ({ data, allColumns, columns, category }) => {
         data={data}
         columns={columns}
         detailLink={detailLink}
+        noDataText="noDataFoundAdvancedSearch"
       />
     </div>
   );
