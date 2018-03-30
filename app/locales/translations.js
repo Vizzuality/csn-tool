@@ -124,6 +124,7 @@ export const translations = {
     'aewa_annex_2': 'AEWA annex 2',
     'species_threat': 'Species threat',
     'species_habitat_association': 'Species habitat association',
+    'species_country_status': 'Species country status',
     'aewa_table_1_status': 'AEWA table 1 status',
     'eu_birds_directive': 'EU Birds Directive',
     'cms_caf_action_plan': 'CMS CAF action plan',
@@ -259,7 +260,8 @@ export const translations = {
     'coordinates': 'Coordenadas',
     'birdlifeFactsheet': 'Birdlife Factsheet',
     'protectionLevel': 'Nivel de protección',
-    'populationBoundaries': 'Límites de la población'
+    'populationBoundaries': 'Límites de la población',
+    'species_country_status': 'Estado del país de la especie'
   },
   fr: {
     'country': 'Pays',
@@ -387,6 +389,7 @@ export const translations = {
     'aewa_annex_2': "Annexe 2 de l'AEWA",
     'species_threat': "Menace pour l'espèce",
     'species_habitat_association': "Association d'habitat des espèces",
+    'species_country_status': "Statut du pays de l'espèce",
     'aewa_table_1_status': "Statut de la table 1 de l'AEWA",
     'eu_birds_directive': "Directive Oiseaux de l'UE",
     'cms_caf_action_plan': "Plan d'action CMS CAF",

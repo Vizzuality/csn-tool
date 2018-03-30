@@ -34,6 +34,7 @@ const optionQueries = [
   { name: 'family', query: queryProducer('species', 'family') },
   { name: 'genus', query: queryProducer('species', 'genus', 'genus', ['family']) },
   { name: 'species', query: queryProducer('species', 'scientific_name', 'species_id', ['family', 'genus']) },
+  { name: 'species_country_status', query: queryProducer('species_country', 'country_status') },
   { name: 'red_list_status', query: queryProducer('species', 'iucn_category') },
   { name: 'aewa_annex_2', query: { isBoolean: true } },
   { name: 'species_threat', query: queryProducer('species_threats', 'threat_level_1') },
@@ -91,12 +92,15 @@ async function getIBAsResults(req, res) {
       site_habitat,
       site_threat,
       species,
+      species_country_status,
       species_habitat_association,
       species_threat
     } = req.query;
 
-    const joinSpecies = !!(species || family || genus || red_list_status || aewa_annex_2);
+    const joinSpeciesCountry = !!species_country_status;
+    const joinSpecies = !!(joinSpeciesCountry || species || family || genus || red_list_status || aewa_annex_2);
     const joinSpeciesSites = !!(joinSpecies || species_threat || species_habitat_association);
+
     const where = [];
     const addCondition = (column, param, collection = where) => { if (param) collection.push(condition(column, param)); };
 
@@ -114,6 +118,7 @@ async function getIBAsResults(req, res) {
     addCondition('sp.aewa_annex_2', aewa_annex_2);
     addCondition('spt.threat_level_1', species_threat);
     addCondition('sph.habitat_level_1', species_habitat_association);
+    addCondition('spc.country_status', species_country_status);
 
     const query = `
       WITH stc AS (
@@ -136,6 +141,7 @@ async function getIBAsResults(req, res) {
       INNER JOIN countries c ON c.country_id = s.country_id
       ${joinSpeciesSites ? 'INNER JOIN species_sites_iba ss ON ss.site_id = s.site_id' : ''}
       ${joinSpecies ? 'INNER JOIN species sp ON ss.species_id = sp.species_id' : ''}
+      ${joinSpeciesCountry ? 'INNER JOIN species_country spc ON spc.species_id = sp.species_id AND spc.country_id = c.country_id' : ''}
       ${species_threat ? 'INNER JOIN species_threats spt ON spt.species_id = ss.species_id' : ''}
       ${species_habitat_association ? 'INNER JOIN species_habitat sph ON sph.species_id = ss.species_id' : ''}
       ${site_habitat ? 'INNER JOIN sites_habitats sh ON sh.site_id = s.site_id' : ''}
@@ -172,12 +178,14 @@ async function getCriticalSitesResults(req, res) {
       site_habitat,
       site_threat,
       species,
+      species_country_status,
       species_habitat_association,
       species_threat
     } = req.query;
 
     const joinPopulations = !!(aewa_table_1_status || cms_caf_action_plan || eu_birds_directive || multispecies_flyway || population_trend);
-    const joinSpecies = !!(joinPopulations || species || family || genus || red_list_status || aewa_annex_2);
+    const joinSpeciesCountry = !!species_country_status;
+    const joinSpecies = !!(joinPopulations || joinSpeciesCountry || species || family || genus || red_list_status || aewa_annex_2);
     const joinSpeciesSites = !!(joinSpecies || species_threat || species_habitat_association);
     const where = [];
     const addCondition = (column, param, collection = where) => { if (param) collection.push(condition(column, param)); };
@@ -196,6 +204,7 @@ async function getCriticalSitesResults(req, res) {
     addCondition('sp.aewa_annex_2', aewa_annex_2);
     addCondition('spt.threat_level_1', species_threat);
     addCondition('sph.habitat_level_1', species_habitat_association);
+    addCondition('spc.country_status', species_country_status);
     // population filters
     addCondition('trim(pi.table_1_status)', aewa_table_1_status);
     addCondition('pi.caf_action_plan', cms_caf_action_plan);
@@ -225,6 +234,7 @@ async function getCriticalSitesResults(req, res) {
       INNER JOIN countries c ON c.iso2 = s.iso2
       ${joinSpeciesSites ? 'INNER JOIN species_sites_iba ss ON ss.site_id = s.site_id' : ''}
       ${joinSpecies ? 'INNER JOIN species sp ON ss.species_id = sp.species_id' : ''}
+      ${joinSpeciesCountry ? 'INNER JOIN species_country spc ON spc.species_id = sp.species_id AND spc.country_id = c.country_id' : ''}
       ${joinPopulations ? 'INNER JOIN populations pi ON pi.species_main_id = sp.species_id' : ''}
       ${species_threat ? 'INNER JOIN species_threats spt ON spt.species_id = ss.species_id' : ''}
       ${species_habitat_association ? 'INNER JOIN species_habitat sph ON sph.species_id = ss.species_id' : ''}
@@ -263,11 +273,12 @@ async function getSpeciesResults(req, res) {
       site_habitat,
       site_threat,
       species,
+      species_country_status,
       species_habitat_association,
       species_threat
     } = req.query;
 
-    const joinCountries = !!(country || aewa_region || ramsar_region);
+    const joinCountries = !!(country || aewa_region || ramsar_region || species_country_status);
     const joinSites = !!(site || protection);
     const joinSpeciesSites = !!(joinSites || site_habitat || site_threat);
     const joinPopulations = !!(aewa_table_1_status || cms_caf_action_plan || eu_birds_directive || multispecies_flyway || population_trend);
@@ -288,9 +299,9 @@ async function getSpeciesResults(req, res) {
     addCondition('st.threat_id', site_threat);
     addCondition('c.aewa_region', aewa_region);
     addCondition('c.ramsar_region', ramsar_region);
+    addCondition('spc.country_status', species_country_status);
     if (country && !site) {
-      addCondition('sc.country_id', country);
-      where.push("sc.country_status != 'Vagrant'");
+      addCondition('spc.country_id', country);
     }
     // population filters
     addCondition('trim(pi.table_1_status)', aewa_table_1_status);
@@ -312,8 +323,8 @@ async function getSpeciesResults(req, res) {
       FROM species sp
       ${joinPopulations ? 'INNER JOIN populations pi ON pi.species_main_id = sp.species_id' : ''}
       ${joinCountries &&
-        `INNER JOIN species_country sc ON sc.species_id = sp.species_id
-         INNER JOIN countries c ON c.country_id = sc.country_id` || ''}
+        `INNER JOIN species_country spc ON spc.species_id = sp.species_id
+         INNER JOIN countries c ON c.country_id = spc.country_id` || ''}
       ${joinSpeciesSites ? 'INNER JOIN species_sites_iba ss ON ss.species_id = sp.species_id' : ''}
       ${joinSites ? 'INNER JOIN sites_iba s ON ss.site_id = s.site_id' : ''}
       ${species_threat ? 'INNER JOIN species_threats spt ON spt.species_id = sp.species_id' : ''}
@@ -352,11 +363,12 @@ async function getPopulationsResults(req, res) {
       site_habitat,
       site_threat,
       species,
+      species_country_status,
       species_habitat_association,
       species_threat
     } = req.query;
 
-    const joinCountries = !!(country || aewa_region || ramsar_region);
+    const joinCountries = !!(country || aewa_region || ramsar_region || species_country_status);
     const joinSites = !!(site || protection);
     const joinSpeciesSites = !!(joinSites || site_habitat || site_threat);
     const where = [];
@@ -376,9 +388,9 @@ async function getPopulationsResults(req, res) {
     addCondition('st.threat_id', site_threat);
     addCondition('c.aewa_region', aewa_region);
     addCondition('c.ramsar_region', ramsar_region);
+    addCondition('spc.country_status', species_country_status);
     if (country && !site) {
-      addCondition('sc.country_id', country);
-      where.push("sc.country_status != 'Vagrant'");
+      addCondition('spc.country_id', country);
     }
     // population filters
     addCondition('trim(pi.table_1_status)', aewa_table_1_status);
@@ -410,9 +422,9 @@ async function getPopulationsResults(req, res) {
       FROM populations AS pi
       INNER JOIN species sp ON pi.species_main_id = sp.species_id
       ${joinCountries &&
-        `INNER JOIN species_country sc ON sc.species_id = sp.species_id
-         INNER JOIN countries c ON c.country_id = sc.country_id
-         INNER JOIN world_borders AS wb ON wb.iso3 = sc.iso AND ST_INTERSECTS(pi.the_geom, wb.the_geom)` || ''}
+        `INNER JOIN species_country spc ON spc.species_id = sp.species_id
+         INNER JOIN countries c ON c.country_id = spc.country_id
+         INNER JOIN world_borders AS wb ON wb.iso3 = spc.iso AND ST_INTERSECTS(pi.the_geom, wb.the_geom)` || ''}
       ${joinSpeciesSites ? 'INNER JOIN species_sites_iba ss ON ss.species_id = sp.species_id' : ''}
       ${joinSites ? 'INNER JOIN sites_iba s ON ss.site_id = s.site_id' : ''}
       ${species_threat ? 'INNER JOIN species_threats spt ON spt.species_id = sp.species_id' : ''}
