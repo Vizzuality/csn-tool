@@ -137,7 +137,7 @@ class Map extends React.Component {
         Satellite: satelliteLayer
       };
       const overlayMaps = {
-        Hydrological: hydroLayer
+        Hydrology: hydroLayer
       };
       L.control.layers(baseLayers, overlayMaps, {
         autoZIndex: false
