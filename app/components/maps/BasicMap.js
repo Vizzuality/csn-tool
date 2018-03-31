@@ -128,16 +128,18 @@ class Map extends React.Component {
   addBaseLayers() {
     const mapLayer = L.tileLayer(BASEMAP_TILE_MAP, { type: BASEMAP_MAP }).setZIndex(0);
     const satelliteLayer = L.tileLayer(BASEMAP_TILE_SATELLITE, { type: BASEMAP_SATELLITE }).setZIndex(0);
+    const hydroLayer = L.tileLayer(BASEMAP_TILE_HYDRO, { type: BASEMAP_HYDRO }).setZIndex(0);
     const selectedLayer = this.state.selectedBaseLayer === BASEMAP_MAP ? mapLayer : satelliteLayer;
-
-    L.tileLayer(BASEMAP_TILE_HYDRO, { type: BASEMAP_HYDRO }).addTo(this.map);
 
     if (this.props.baseLayerSelector) {
       const baseLayers = {
         Map: mapLayer,
         Satellite: satelliteLayer
       };
-      L.control.layers(baseLayers, null, {
+      const overlayMaps = {
+        Hydrological: hydroLayer
+      };
+      L.control.layers(baseLayers, overlayMaps, {
         autoZIndex: false
       }).addTo(this.map);
       this.map.on('baselayerchange', this.onBaseLayerChange);
