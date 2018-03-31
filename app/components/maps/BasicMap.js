@@ -4,8 +4,10 @@ import {
   BASEMAP_ATTRIBUTION_MAPBOX,
   BASEMAP_MAP,
   BASEMAP_SATELLITE,
+  BASEMAP_HYDRO,
   BASEMAP_TILE_MAP,
   BASEMAP_TILE_SATELLITE,
+  BASEMAP_TILE_HYDRO,
   MAP_CENTER,
   MAP_INITIAL_ZOOM,
   MAP_MIN_ZOOM
@@ -127,6 +129,8 @@ class Map extends React.Component {
     const mapLayer = L.tileLayer(BASEMAP_TILE_MAP, { type: BASEMAP_MAP }).setZIndex(0);
     const satelliteLayer = L.tileLayer(BASEMAP_TILE_SATELLITE, { type: BASEMAP_SATELLITE }).setZIndex(0);
     const selectedLayer = this.state.selectedBaseLayer === BASEMAP_MAP ? mapLayer : satelliteLayer;
+
+    L.tileLayer(BASEMAP_TILE_HYDRO, { type: BASEMAP_HYDRO }).addTo(this.map);
 
     if (this.props.baseLayerSelector) {
       const baseLayers = {

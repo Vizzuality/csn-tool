@@ -26,6 +26,11 @@ const styles = {
     hide: { fillColor: 'transparent', fillOpacity: 1, color: 'transparent', opacity: 0 },
     base: { fillColor: 'transparent', fillOpacity: 0.5, ...borders },
     highlight: { fillColor: '#ffc500', fillOpacity: 1, ...borders, weight: 3 }
+  },
+  hydrological: {
+    hide: { fillColor: 'transparent', fillOpacity: 1, color: 'transparent', opacity: 0 },
+    base: { fillColor: 'transparent', fillOpacity: 0.5, ...borders },
+    highlight: { fillColor: '#ffc500', fillOpacity: 1, ...borders, weight: 3 }
   }
 };
 
