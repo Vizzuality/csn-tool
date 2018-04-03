@@ -21,7 +21,7 @@ function getSites(req, res) {
           SUM(CASE WHEN iba_criteria = '' THEN 0 ELSE 1 END) as iba
         FROM species_sites_iba GROUP BY site_id
       ),
-      p as (SELECT DISTINCT site_id FROM species_sites)
+      p as (SELECT DISTINCT site_id FROM species_sites_iba)
       SELECT
         s.country,
         s.iso3,
@@ -42,7 +42,7 @@ function getSites(req, res) {
   } else {
     query = `WITH stc AS (
       SELECT site_id, COUNT(*) csn
-      FROM species_sites
+      FROM species_sites_critical
       GROUP BY site_id
     )
     SELECT
