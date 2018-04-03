@@ -217,6 +217,7 @@ class AdvancedSearchPage extends React.Component {
           <div className="row">
             <div className="column">
               <h2 className="title">{this.context.t('advancedSearch')}</h2>
+              <p>{this.context.t('searchIntro')}</p>
             </div>
           </div>
           {this.props.options
