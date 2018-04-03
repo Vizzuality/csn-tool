@@ -19,6 +19,7 @@ export const translations = {
     'guidance': 'Guidance',
     'about': 'About',
     'advancedSearch': 'Advanced search',
+    'searchIntro': 'Searches are dependent on your selection, only meaningful searches are enabled.',
     'stay-update': 'Stay updated',
     'site_name': 'IBA name',
     'csn_site_name': 'Critical site name',
@@ -124,6 +125,7 @@ export const translations = {
     'aewa_annex_2': 'AEWA annex 2',
     'species_threat': 'Species threat',
     'species_habitat_association': 'Species habitat association',
+    'species_country_status': 'Species country status',
     'aewa_table_1_status': 'AEWA table 1 status',
     'eu_birds_directive': 'EU Birds Directive',
     'cms_caf_action_plan': 'CMS CAF action plan',
@@ -137,7 +139,9 @@ export const translations = {
     'viewSpeciesDetails': 'View species details',
     'viewSiteDetails': 'View site details',
     'protectionLevel': 'Protection Level',
-    'populationBoundaries': 'Population Boundaries'
+    'populationBoundaries': 'Population Boundaries',
+    'noDataFound': 'No results found',
+    'noDataFoundAdvancedSearch': 'No results found. Please adjust your search criteria and try again. Please be also mindful that we use logical AND condition between different filters and OR condition within the same filter.'
   },
   es: {
     'country': 'Pais',
@@ -159,6 +163,7 @@ export const translations = {
     'guidance': 'Guías',
     'about': 'Acerca',
     'advancedSearch': 'Búsqueda avanzada',
+    'searchIntro': 'Las búsquedas dependen de su selección, solo las búsquedas significativas están habilitadas.',
     'stay-update': 'Manténgase actualizado',
     'site_name': 'Nombre del IBA',
     'csn_site_name': 'Nombre del sítio',
@@ -259,7 +264,10 @@ export const translations = {
     'coordinates': 'Coordenadas',
     'birdlifeFactsheet': 'Birdlife Factsheet',
     'protectionLevel': 'Nivel de protección',
-    'populationBoundaries': 'Límites de la población'
+    'populationBoundaries': 'Límites de la población',
+    'species_country_status': 'Estado del país de la especie',
+    'noDataFound': 'Datos no disponibles',
+    'noDataFoundAdvancedSearch': 'No results found. Please adjust your search criteria and try again. Please be also mindful that we use logical AND condition between different filters and OR condition within the same filter.'
   },
   fr: {
     'country': 'Pays',
@@ -281,6 +289,7 @@ export const translations = {
     'guidelines': 'Lignes directrices',
     'about': 'Á propos',
     'advancedSearch': 'Recherche avancée',
+    'searchIntro': 'Les recherches dépendent de votre sélection, seules les recherches significatives sont activées.',
     'stay-update': 'Restez à jour',
     'site_name': 'Nom ZICO',
     'csn_site_name': 'Nom du site critique',
@@ -387,6 +396,7 @@ export const translations = {
     'aewa_annex_2': "Annexe 2 de l'AEWA",
     'species_threat': "Menace pour l'espèce",
     'species_habitat_association': "Association d'habitat des espèces",
+    'species_country_status': "Statut du pays de l'espèce",
     'aewa_table_1_status': "Statut de la table 1 de l'AEWA",
     'eu_birds_directive': "Directive Oiseaux de l'UE",
     'cms_caf_action_plan': "Plan d'action CMS CAF",
@@ -398,6 +408,8 @@ export const translations = {
     'coordinates': 'Coordonnées',
     'birdlifeFactsheet': 'Birdlife Factsheet',
     'protectionLevel': 'Niveau de protection',
-    'populationBoundaries': 'Limites de la population'
+    'populationBoundaries': 'Limites de la population',
+    'noDataFound': 'Pas de données disponibles',
+    'noDataFoundAdvancedSearch': 'No results found. Please adjust your search criteria and try again. Please be also mindful that we use logical AND condition between different filters and OR condition within the same filter.'
   },
 }

@@ -11,7 +11,7 @@ const SearchTable = ({ data, allColumns, columns, category }) => {
     species: 'species',
     ibas: 'sites/iba',
     criticalSites: 'sites/csn',
-    populations: null
+    populations: 'species'
   };
   const detailLink = detailLinkHash[category];
 
@@ -37,6 +37,7 @@ const SearchTable = ({ data, allColumns, columns, category }) => {
         data={data}
         columns={columns}
         detailLink={detailLink}
+        noDataText="noDataFoundAdvancedSearch"
       />
     </div>
   );

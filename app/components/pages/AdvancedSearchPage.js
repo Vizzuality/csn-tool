@@ -9,7 +9,7 @@ import SearchTable from 'containers/advanced-search/SearchTable';
 
 const SEARCH_GROUPS = {
   geography: ['country', 'aewa_region', 'ramsar_region', 'site', 'protection', 'site_threat', 'site_habitat'],
-  taxonomy: ['family', 'genus', 'species', 'red_list_status', 'aewa_annex_2', 'species_threat', 'species_habitat_association'],
+  taxonomy: ['family', 'genus', 'species', 'species_country_status', 'red_list_status', 'aewa_annex_2', 'species_threat', 'species_habitat_association'],
   population: ['aewa_table_1_status', 'eu_birds_directive', 'cms_caf_action_plan', 'multispecies_flyway', 'population_trend']
 };
 const SINGLE_SELECTS = ['aewa_annex_2', 'eu_birds_directive', 'cms_caf_action_plan'];
@@ -217,6 +217,7 @@ class AdvancedSearchPage extends React.Component {
           <div className="row">
             <div className="column">
               <h2 className="title">{this.context.t('advancedSearch')}</h2>
+              <p>{this.context.t('searchIntro')}</p>
             </div>
           </div>
           {this.props.options
