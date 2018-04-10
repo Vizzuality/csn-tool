@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 import {
   BASEMAP_ATTRIBUTION_MAPBOX,
   BASEMAP_MAP,
@@ -168,7 +169,12 @@ class Map extends React.Component {
 
   render() {
     return (
-      <div id={this.props.id} className="c-map"></div>
+      <div className="l-maps-container">
+        <div id={this.props.id} className={cx('c-map', this.mapClassName)}></div>
+        <div className="l-legend">
+          {this.renderLegend && this.renderLegend()}
+        </div>
+      </div>
     );
   }
 }

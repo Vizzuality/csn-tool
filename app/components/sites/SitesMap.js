@@ -19,6 +19,7 @@ class SitesMap extends BasicMap {
   constructor(props) {
     super(props);
     this.markerList = [];
+    this.mapClassName = '-full -sites';
   }
 
   componentDidMount() {
@@ -131,21 +132,12 @@ class SitesMap extends BasicMap {
     if (this.markers) this.markers.clearLayers();
     this.markerList = [];
   }
-
-  render() {
-    return (
-      <div className="l-maps-container">
-        <div id={this.props.id} className="c-map -full -sites"></div>
-      </div>
-    );
-  }
 }
 
 SitesMap.propTypes = {
-  router: PropTypes.object.isRequired,
+  ...BasicMap.propTypes,
   selectedSite: PropTypes.any,
   goToDetail: PropTypes.func.isRequired,
-  id: PropTypes.string,
   sites: PropTypes.any
 };
 

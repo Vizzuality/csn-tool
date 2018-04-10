@@ -62,7 +62,7 @@ class PopulationMap extends BasicMap {
   fetchPopulationBoundaries(speciesId) {
     const query = `
       SELECT ST_AsGeoJSON(ST_Envelope(st_union(f.the_geom))) as bbox
-      FROM species_main s
+      FROM species s
       INNER JOIN species_and_flywaygroups f on f.ssid = s.species_id
       WHERE s.species_id = ${speciesId}
     `;
@@ -135,6 +135,7 @@ class PopulationMap extends BasicMap {
 }
 
 PopulationMap.propTypes = {
+  ...BasicMap.propTypes,
   populations: PropTypes.any,
   selectedPopulationId: PropTypes.number,
   fitToPopulationBoudaries: PropTypes.bool,

@@ -9,6 +9,8 @@ class ThresholdMap extends BasicMap {
     super(props);
     this.marker = null;
     this.popupVisible = false;
+    this.mapClassName = '-full -pointer -threshold';
+
     this.drawMarker = this.drawMarker.bind(this);
     this.updateCoords = this.updateCoords.bind(this);
     this.showPopup = this.showPopup.bind(this);
@@ -123,14 +125,6 @@ class ThresholdMap extends BasicMap {
   hidePopup() {
     this.map.closePopup();
     this.popupVisible = false;
-  }
-
-  render() {
-    return (
-      <div className="l-maps-container">
-        <div id={this.props.id} className="c-map -full -pointer -threshold"></div>
-      </div>
-    );
   }
 }
 
