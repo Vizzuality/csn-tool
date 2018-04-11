@@ -63,6 +63,7 @@
     "react-router-scroll": "^0.3.2",
     "react-scroll": "^1.6.5",
     "react-select": "1.0.0-rc.3",
+    "react-smooth-collapse": "^1.5.0",
     "react-sticky": "^5.0.5",
     "redux": "^3.5.2",
     "redux-i18n": "^1.0.8",

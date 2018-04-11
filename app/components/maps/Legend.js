@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Select from 'react-select';
+import SmoothCollapse from 'react-smooth-collapse';
 import cx from 'classnames';
 
 import Switch from 'components/common/Switch';
@@ -37,7 +37,9 @@ function renderSubSections(subSections, onSwitchChange) {
         <p>{subSection.name}</p>
         <Switch checked={subSection.active} onChange={() => onSwitchChange(subSection)} />
       </div>
-      <div className="sub-section-body">{subSection.items && renderSubItems(subSection.items)}</div>
+      <SmoothCollapse className="sub-section-body" expanded={subSection.active}>
+        {subSection.items && renderSubItems(subSection.items)}
+      </SmoothCollapse>
     </div>
   ));
 }
@@ -57,10 +59,10 @@ function Legend({ sections, onSwitchChange, onLegendItemHover }, context) {
                 <p>{section.i18nName ? context.t(section.i18nName) : section.name}</p>
                 <Switch checked={section.active} onChange={() => onSwitchChange(section)} />
               </div>
-              <div className="section-body">
+              <SmoothCollapse className="section-body" expanded={section.active}>
                 {section.subSections && renderSubSections(section.subSections, onSwitchChange)}
                 {section.items && renderSubItems(section.items, onLegendItemHover)}
-              </div>
+              </SmoothCollapse>
             </div>
           </div>
         );

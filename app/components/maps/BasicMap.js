@@ -68,20 +68,6 @@ class Map extends React.Component {
     }
   }
 
-  toggleOverlayLayer(item) {
-    const layer = this.overlayLayers[item.layer] || this.addHydroLayer(item.layer);
-
-    if (!item.active) {
-      layer.addTo(this.map);
-    } else {
-      layer.remove();
-    }
-
-    this.setState(({ activeOverlayLayers }) => ({
-      activeOverlayLayers: xor(activeOverlayLayers, [item.layer])
-    }));
-  }
-
   getMapParams() {
     const { lat, lng } = this.map.getCenter();
     const view = this.state.selectedBaseLayer;
@@ -109,7 +95,21 @@ class Map extends React.Component {
     this.map.off('zoomend', this.setMapParams);
   }
 
-  addHydroLayer(layer) {
+  toggleOverlayLayer(item) {
+    const layer = this.overlayLayers[item.layer] || this.createHydroLayer(item.layer);
+
+    if (!item.active) {
+      layer.addTo(this.map);
+    } else {
+      layer.remove();
+    }
+
+    this.setState(({ activeOverlayLayers }) => ({
+      activeOverlayLayers: xor(activeOverlayLayers, [item.layer])
+    }));
+  }
+
+  createHydroLayer(layer) {
     const hydroLayer = L.tileLayer(HYDROLOGY_LAYERS[layer]).setZIndex(1);
     this.overlayLayers[layer] = hydroLayer;
     return hydroLayer;
