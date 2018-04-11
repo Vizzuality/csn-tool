@@ -207,26 +207,30 @@ class Map extends React.Component {
     return (
       <div className="l-maps-container">
         <div id={this.props.id} className={cx('c-map', this.mapClassName)} />
-        <div className="l-legend">{this.renderLegend && this.renderLegend()}</div>
+        {this.props.legend && (
+          <div className="l-legend">{this.renderLegend && this.renderLegend()}</div>
+        )}
       </div>
     );
   }
 }
 
 Map.defaultProps = {
-  urlSync: true,
-  shareControl: true,
   baseLayerSelector: true,
+  legend: true,
+  shareControl: true,
+  urlSync: true,
   zoomControl: true
 };
 
 Map.propTypes = {
+  baseLayerSelector: PropTypes.bool,
   id: PropTypes.string.isRequired,
-  router: PropTypes.object,
+  legend: PropTypes.bool,
   markerCluster: PropTypes.bool,
+  router: PropTypes.object,
   shareControl: PropTypes.bool,
   urlSync: PropTypes.bool,
-  baseLayerSelector: PropTypes.bool,
   zoomControl: PropTypes.bool
 };
 
