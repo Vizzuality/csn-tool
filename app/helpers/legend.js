@@ -9,15 +9,13 @@ const HYDROLOGY_SECTIONS = [
       {
         layer: 'freshwaterFlowPresent',
         name: 'Average annual freshwater flow (present)',
-        items: [
+        scale: [
           {
             name: '1 month',
-            icon: 'dots',
             color: '#cbf5ff'
           },
           {
             name: '12 months',
-            icon: 'dots',
             color: '#30cf92'
           }
         ]
@@ -47,16 +45,14 @@ const HYDROLOGY_SECTIONS = [
       {
         layer: 'inundationPresent',
         name: 'Average number of months inundated per year (present)',
-        items: [
+        scale: [
           {
-            name: 'White (1 month inundated)',
-            icon: 'dots',
-            color: '#cbf5ff'
+            name: '1 month',
+            color: '#fff'
           },
           {
-            name: 'Dark-blue (12 months inundated)',
-            icon: 'dots',
-            color: '#30cf92'
+            name: '12 months',
+            color: '#370093'
           }
         ]
       },

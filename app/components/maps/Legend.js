@@ -5,27 +5,43 @@ import cx from 'classnames';
 
 import Switch from 'components/common/Switch';
 
-function renderSubItems(subItems, onHover) {
-  return subItems.map((subItem, index) => (
+function renderScale(items) {
+  const colorWidth = 100 / (items.length - 1);
+  const background = `linear-gradient(to right, ${items
+    .map((i, index) => `${i.color} ${colorWidth * index}%`)
+    .join(', ')})`;
+  const rangeStyle = { background };
+  const renderScaleItem = (item, index) => <li key={`scale-item-${index}`}>{item.name}</li>;
+
+  return (
+    <div className="scale">
+      <div className="range" style={rangeStyle} />
+      <ul className="labels">{items.map(renderScaleItem)}</ul>
+    </div>
+  );
+}
+
+function renderItems(items, onHover) {
+  return items.map((item, index) => (
     <div
-      className="sub-item"
+      className="item"
       key={index}
-      onMouseOver={() => onHover && onHover(subItem, true)}
-      onMouseOut={() => onHover && onHover(subItem, false)}
+      onMouseOver={() => onHover && onHover(item, true)}
+      onMouseOut={() => onHover && onHover(item, false)}
     >
-      {subItem.icon === 'dots' ? (
-        <span className="dots" style={{ color: subItem.color }}>
+      {item.icon === 'dots' ? (
+        <span className="dots" style={{ color: item.color }}>
           ...
         </span>
       ) : (
         <span
           className={cx('icon', {
-            [`-${subItem.icon}`]: subItem.icon,
-            [`-${subItem.status}`]: subItem.status
+            [`-${item.icon}`]: item.icon,
+            [`-${item.status}`]: item.status
           })}
         />
       )}
-      <p>{subItem.name}</p>
+      <p>{item.name}</p>
     </div>
   ));
 }
@@ -38,7 +54,8 @@ function renderSubSections(subSections, onSwitchChange) {
         <Switch checked={subSection.active} onChange={() => onSwitchChange(subSection)} />
       </div>
       <SmoothCollapse className="sub-section-body" expanded={subSection.active}>
-        {subSection.items && renderSubItems(subSection.items)}
+        {subSection.items && renderItems(subSection.items)}
+        {subSection.scale && renderScale(subSection.scale)}
       </SmoothCollapse>
     </div>
   ));
@@ -61,7 +78,7 @@ function Legend({ sections, onSwitchChange, onLegendItemHover }, context) {
               </div>
               <SmoothCollapse className="section-body" expanded={section.active}>
                 {section.subSections && renderSubSections(section.subSections, onSwitchChange)}
-                {section.items && renderSubItems(section.items, onLegendItemHover)}
+                {section.items && renderItems(section.items, onLegendItemHover)}
               </SmoothCollapse>
             </div>
           </div>
@@ -77,6 +94,13 @@ const itemPropTypes = PropTypes.shape({
   icon: PropTypes.string,
   status: PropTypes.string
 });
+const sectionPropTypes = {
+  name: PropTypes.string,
+  i18nName: PropTypes.string,
+  layer: PropTypes.string,
+  active: PropTypes.bool,
+  items: PropTypes.arrayOf(itemPropTypes)
+};
 
 Legend.contextTypes = {
   t: PropTypes.func.isRequired
@@ -85,17 +109,8 @@ Legend.contextTypes = {
 Legend.propTypes = {
   sections: PropTypes.arrayOf(
     PropTypes.shape({
-      name: PropTypes.string,
-      i18nName: PropTypes.string,
-      active: PropTypes.bool,
-      layer: PropTypes.string,
-      subSections: PropTypes.arrayOf(PropTypes.shape({
-        name: PropTypes.string,
-        layer: PropTypes.string,
-        active: PropTypes.bool,
-        items: PropTypes.arrayOf(itemPropTypes)
-      })),
-      items: PropTypes.arrayOf(itemPropTypes)
+      ...sectionPropTypes,
+      subSections: PropTypes.arrayOf(PropTypes.shape(sectionPropTypes))
     })
   ),
   onSwitchChange: PropTypes.func.isRequired,

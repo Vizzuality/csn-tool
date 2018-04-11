@@ -41,12 +41,12 @@
       }
     }
 
-    .sub-item:hover p {
+    .item:hover p {
       opacity: 1;
       font-weight: bold;
     }
 
-    .sub-item {
+    .item {
       display: flex;
       align-items: center;
       justify-content: flex-start;
@@ -80,6 +80,24 @@
         line-height: 1.5;
         letter-spacing: -0.2px;
         opacity: 0.5;
+      }
+    }
+
+    .scale {
+      margin: 5px 0px;
+
+      .range {
+        height: 15px;
+      }
+
+      .labels {
+        display: flex;
+        justify-content: space-between;
+
+        li {
+          color: $font-main-inv;
+          font-size: $font-size-s;
+        }
       }
     }
   }

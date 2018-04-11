@@ -11,7 +11,6 @@ export const BASEMAP_MAP = 'map';
 export const BASEMAP_SATELLITE = 'satellite';
 export const BASEMAP_TILE_MAP = `https://api.mapbox.com/styles/v1/csn/civtok4xx004d2kpo3acytide/tiles/256/{z}/{x}/{y}@2x?access_token=${MAPBOX_TOKEN}`;
 export const BASEMAP_TILE_SATELLITE = `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}@2x?access_token=${MAPBOX_TOKEN}`;
-export const BASEMAP_TILE_HYDRO = `https://api.mapbox.com/v4/wetlands.2s8xqsrd/{z}/{x}/{y}.png?access_token=${MAPBOX_TOKEN}`;
 
 // Attributions
 export const BASEMAP_ATTRIBUTION_MAPBOX = '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a>';
