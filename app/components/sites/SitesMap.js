@@ -1,7 +1,9 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { getSqlQuery } from 'helpers/map';
 import BasicMap from 'components/maps/BasicMap';
+import SitesLegend from 'containers/sites/SitesLegend';
 
 const SELECTED_SITE_STYLE = {
   opacity: 1,
@@ -22,7 +24,7 @@ class SitesMap extends BasicMap {
   }
 
   componentDidMount() {
-    this.initMap();
+    super.componentDidMount();
 
     if (this.props.sites && this.props.sites.length) {
       this.drawMarkers(this.props.sites);
@@ -130,6 +132,10 @@ class SitesMap extends BasicMap {
   clearMarkers() {
     if (this.markers) this.markers.clearLayers();
     this.markerList = [];
+  }
+
+  renderLegend() {
+    return <SitesLegend />;
   }
 }
 

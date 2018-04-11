@@ -4,6 +4,7 @@ const PROTECTION_LEVELS_ORDER = ['Little/none', 'Some', 'Most', 'Whole', 'Unknow
 const HYDROLOGY_SECTIONS = [
   {
     name: 'Freshwater flow',
+    layer: 'freshwaterFlow',
     subSections: [
       {
         layer: 'freshwaterFlowPresent',
@@ -41,6 +42,7 @@ const HYDROLOGY_SECTIONS = [
   },
   {
     name: 'Inudation',
+    layer: 'inudation',
     subSections: [
       {
         layer: 'inundationPresent',
@@ -116,19 +118,9 @@ function getPopulationsLegendSection(populations, populationColors, isActive) {
   };
 }
 
-export function getLegendData(state, { populations, populationColors }) {
-  const legend = [];
-  const showSiteProtectionLevels = ['sites', 'criticalSites'].includes(state.selectedCategory);
+export function getHydrologySections(layers) {
+  const activeLayers = Object.keys(layers).filter(key => layers[key]);
 
-  if (showSiteProtectionLevels) {
-    const sites = state[state.selectedCategory][state.selected];
-    legend.push(getSitesLegendSection(sites, state.layers.sites));
-  }
-  legend.push(getPopulationsLegendSection(populations, populationColors, state.layers.population));
-  return legend.filter(l => l);
-}
-
-export function getHydrologySections(activeLayers) {
   return HYDROLOGY_SECTIONS.map(section => {
     const subSections = section.subSections.map(s => ({
       ...s,
@@ -138,7 +130,20 @@ export function getHydrologySections(activeLayers) {
     return {
       ...section,
       subSections,
-      active: subSections.some(s => s.active)
+      active: activeLayers.includes(section.layer)
     };
   });
+}
+
+export function getLegendData(state, { populations, populationColors }) {
+  const legend = [];
+  const showSiteProtectionLevels = ['sites', 'criticalSites'].includes(state.selectedCategory);
+
+  if (showSiteProtectionLevels) {
+    const sites = state[state.selectedCategory][state.selected];
+    legend.push(getSitesLegendSection(sites, state.layers.sites));
+  }
+  legend.push(getPopulationsLegendSection(populations, populationColors, state.layers.population));
+  legend.push(...getHydrologySections(state.layers));
+  return legend.filter(l => l);
 }

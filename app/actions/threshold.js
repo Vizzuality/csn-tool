@@ -3,7 +3,8 @@ import {
   SET_COLUMN_FILTER,
   SET_THRESHOLD_DATA,
   SET_THRESHOLD_POSITION,
-  SET_SEARCH_FILTER
+  SET_SEARCH_FILTER,
+  TOGGLE_THRESHOLD_LAYER
 } from 'constants/action-types';
 import { TABLES } from 'constants/tables';
 
@@ -52,5 +53,12 @@ export function setThresholdColumnFilter(filter) {
   return {
     type: `${SET_COLUMN_FILTER}_${TABLES.THRESHOLDS}`,
     payload: filter
+  };
+}
+
+export function toggleLayer(layer) {
+  return {
+    type: TOGGLE_THRESHOLD_LAYER,
+    payload: layer
   };
 }

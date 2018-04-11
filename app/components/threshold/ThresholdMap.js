@@ -1,7 +1,10 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import BasicMap from 'components/maps/BasicMap';
+import ThresholdLegend from 'containers/threshold/ThresholdLegend';
 import { replaceUrlParams } from 'helpers/router';
+
 
 class ThresholdMap extends BasicMap {
   constructor(props) {
@@ -29,7 +32,7 @@ class ThresholdMap extends BasicMap {
   }
 
   componentDidMount() {
-    this.initMap();
+    super.componentDidMount();
     this.initPopup();
     this.map.on('click', this.updateCoords);
     this.map.on('mouseover', this.showPopup);
@@ -124,6 +127,10 @@ class ThresholdMap extends BasicMap {
   hidePopup() {
     this.map.closePopup();
     this.popupVisible = false;
+  }
+
+  renderLegend() {
+    return <ThresholdLegend />;
   }
 }
 

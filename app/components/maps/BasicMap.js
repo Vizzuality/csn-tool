@@ -2,7 +2,6 @@ import React from 'react';
 import { render } from 'react-dom';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import xor from 'lodash/xor';
 
 import {
   BASEMAP_ATTRIBUTION_MAPBOX,
@@ -16,9 +15,7 @@ import {
   MAP_MIN_ZOOM
 } from 'constants/map';
 import Share from 'components/maps/Share';
-import Legend from 'components/maps/Legend';
 import { replaceUrlParams } from 'helpers/router';
-import { getHydrologySections } from 'helpers/legend';
 
 class Map extends React.Component {
   constructor(props) {
@@ -28,18 +25,17 @@ class Map extends React.Component {
       ? props.router.getCurrentLocation().query.view || BASEMAP_MAP
       : BASEMAP_MAP;
     this.state = {
-      selectedBaseLayer,
-      activeOverlayLayers: []
+      selectedBaseLayer
     };
     this.overlayLayers = {};
 
     this.onBaseLayerChange = this.onBaseLayerChange.bind(this);
-    this.onLegendSwitchChange = this.onLegendSwitchChange.bind(this);
     this.setMapParams = this.setMapParams.bind(this);
   }
 
   componentDidMount() {
     this.initMap();
+    this.updateHydrologyLayers();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -48,6 +44,11 @@ class Map extends React.Component {
       mapContainer.classList.remove(`-${prevState.selectedBaseLayer}-view`);
       this.setMapParams();
       mapContainer.classList.add(`-${this.state.selectedBaseLayer}-view`);
+    }
+
+    // update hydrolayers
+    if (this.props.layers !== prevProps.layers) {
+      this.updateHydrologyLayers();
     }
   }
 
@@ -58,14 +59,6 @@ class Map extends React.Component {
   onBaseLayerChange(e) {
     const selectedBaseLayer = e.layer.options.type;
     this.setState({ selectedBaseLayer });
-  }
-
-  onLegendSwitchChange(item) {
-    if (item.subSections) {
-      item.subSections.forEach(section => this.toggleOverlayLayer(section));
-    } else if (item.layer) {
-      this.toggleOverlayLayer(item);
-    }
   }
 
   getMapParams() {
@@ -95,18 +88,18 @@ class Map extends React.Component {
     this.map.off('zoomend', this.setMapParams);
   }
 
-  toggleOverlayLayer(item) {
-    const layer = this.overlayLayers[item.layer] || this.createHydroLayer(item.layer);
+  updateHydrologyLayers() {
+    Object.keys(HYDROLOGY_LAYERS).forEach((layer) => {
+      if (!this.props.layers.hasOwnProperty(layer)) return;
 
-    if (!item.active) {
-      layer.addTo(this.map);
-    } else {
-      layer.remove();
-    }
+      const layerObj = this.overlayLayers[layer] || this.createHydroLayer(layer);
 
-    this.setState(({ activeOverlayLayers }) => ({
-      activeOverlayLayers: xor(activeOverlayLayers, [item.layer])
-    }));
+      if (this.props.layers[layer]) {
+        layerObj.addTo(this.map);
+      } else {
+        layerObj.remove();
+      }
+    });
   }
 
   createHydroLayer(layer) {
@@ -197,12 +190,6 @@ class Map extends React.Component {
     render(<Share />, document.getElementsByClassName('share-control')[0]);
   }
 
-  renderLegend() {
-    const sections = getHydrologySections(this.state.activeOverlayLayers);
-
-    return <Legend sections={sections} onSwitchChange={this.onLegendSwitchChange} />;
-  }
-
   render() {
     return (
       <div className="l-maps-container">
@@ -225,6 +212,7 @@ Map.defaultProps = {
 
 Map.propTypes = {
   baseLayerSelector: PropTypes.bool,
+  layers: PropTypes.object,
   id: PropTypes.string.isRequired,
   legend: PropTypes.bool,
   markerCluster: PropTypes.bool,

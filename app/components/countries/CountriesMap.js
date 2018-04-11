@@ -239,8 +239,6 @@ class CountriesMap extends PopulationMap {
   }
 
   renderLegend() {
-    if (!this.props.country) return null;
-
     return (
       <CountriesLegend
         populations={this.props.populations}

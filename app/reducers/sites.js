@@ -5,7 +5,8 @@ import {
   GET_SITES_SPECIES,
   GET_SITES_STATS,
   SET_SITES_PARAMS,
-  SET_VIEW_MODE
+  SET_VIEW_MODE,
+  TOGGLE_SITES_LAYER
 } from 'constants/action-types';
 import {
   ALL_SITES_COLUMNS,
@@ -14,6 +15,7 @@ import {
 } from 'constants/tables';
 import { RESULTS_PER_PAGE } from 'constants/config';
 import withTable from './withTable';
+import { toggleLayer } from './common';
 
 const initialState = {
   columns: DEFAULT_SITES_COLUMNS.iba,
@@ -26,6 +28,12 @@ const initialState = {
     search: '',
     data: false,
     hasMore: false
+  },
+  layers: {
+    freshwaterFlowPresent: false,
+    freshwaterFlow2050: false,
+    inundationPresent: false,
+    inundation2050: false
   },
   filter: 'iba',
   stats: {},
@@ -91,6 +99,7 @@ const sitesReducer = (state = initialState, action) => {
       data[action.payload.id] = action.payload.data;
       return Object.assign({}, state, { species: data });
     }
+    case TOGGLE_SITES_LAYER: return toggleLayer(state, action);
     default:
       return state;
   }

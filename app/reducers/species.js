@@ -17,6 +17,7 @@ import {
   TABLES
 } from 'constants/tables';
 import withTable from 'reducers/withTable';
+import { toggleLayer } from 'reducers/common';
 
 const initialState = {
   columns: DEFAULT_SPECIES_COLUMNS.over,
@@ -35,7 +36,11 @@ const initialState = {
   lookAlikeSpeciesPopulation: {},
   layers: {
     sites: true,
-    population: true
+    population: true,
+    freshwaterFlowPresent: false,
+    freshwaterFlow2050: false,
+    inundationPresent: false,
+    inundation2050: false
   },
   sort: {
     field: '',
@@ -101,11 +106,7 @@ const speciesReducer = (state = initialState, action) => {
       data[action.payload.populationId] = action.payload.data;
       return Object.assign({}, state, { lookAlikeSpeciesPopulation: data });
     }
-    case TOGGLE_SPECIES_LAYER: {
-      const layers = Object.assign({}, state.layers);
-      layers[action.payload] = !layers[action.payload];
-      return Object.assign({}, state, { layers });
-    }
+    case TOGGLE_SPECIES_LAYER: return toggleLayer(state, action);
     case TOGGLE_SPECIES_LEGEND_ITEM: {
       return {
         ...state,
