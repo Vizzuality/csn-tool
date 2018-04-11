@@ -1,33 +1,40 @@
 import React from 'react';
+import { render } from 'react-dom';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import xor from 'lodash/xor';
+
 import {
   BASEMAP_ATTRIBUTION_MAPBOX,
   BASEMAP_MAP,
   BASEMAP_SATELLITE,
-  BASEMAP_HYDRO,
   BASEMAP_TILE_MAP,
   BASEMAP_TILE_SATELLITE,
-  BASEMAP_TILE_HYDRO,
+  HYDROLOGY_LAYERS,
   MAP_CENTER,
   MAP_INITIAL_ZOOM,
   MAP_MIN_ZOOM
 } from 'constants/map';
-import { render } from 'react-dom';
 import Share from 'components/maps/Share';
+import Legend from 'components/maps/Legend';
 import { replaceUrlParams } from 'helpers/router';
+import { getHydrologySections } from 'helpers/legend';
 
 class Map extends React.Component {
-
   constructor(props) {
     super(props);
 
     const selectedBaseLayer = props.urlSync
-            ? props.router.getCurrentLocation().query.view || BASEMAP_MAP
-            : BASEMAP_MAP;
-    this.state = { selectedBaseLayer };
+      ? props.router.getCurrentLocation().query.view || BASEMAP_MAP
+      : BASEMAP_MAP;
+    this.state = {
+      selectedBaseLayer,
+      activeOverlayLayers: []
+    };
+    this.overlayLayers = {};
 
     this.onBaseLayerChange = this.onBaseLayerChange.bind(this);
+    this.onLegendSwitchChange = this.onLegendSwitchChange.bind(this);
     this.setMapParams = this.setMapParams.bind(this);
   }
 
@@ -51,6 +58,28 @@ class Map extends React.Component {
   onBaseLayerChange(e) {
     const selectedBaseLayer = e.layer.options.type;
     this.setState({ selectedBaseLayer });
+  }
+
+  onLegendSwitchChange(item) {
+    if (item.subSections) {
+      item.subSections.forEach(section => this.toggleOverlayLayer(section));
+    } else if (item.layer) {
+      this.toggleOverlayLayer(item);
+    }
+  }
+
+  toggleOverlayLayer(item) {
+    const layer = this.overlayLayers[item.layer] || this.addHydroLayer(item.layer);
+
+    if (!item.active) {
+      layer.addTo(this.map);
+    } else {
+      layer.remove();
+    }
+
+    this.setState(({ activeOverlayLayers }) => ({
+      activeOverlayLayers: xor(activeOverlayLayers, [item.layer])
+    }));
   }
 
   getMapParams() {
@@ -80,6 +109,12 @@ class Map extends React.Component {
     this.map.off('zoomend', this.setMapParams);
   }
 
+  addHydroLayer(layer) {
+    const hydroLayer = L.tileLayer(HYDROLOGY_LAYERS[layer]).setZIndex(1);
+    this.overlayLayers[layer] = hydroLayer;
+    return hydroLayer;
+  }
+
   remove() {
     this.map.remove();
     if (this.props.urlSync) this.unsetUrlSyncListeners();
@@ -88,9 +123,7 @@ class Map extends React.Component {
 
   initMap() {
     const query = this.props.urlSync && this.props.router.getCurrentLocation().query;
-    const center = query && query.lat && query.lng
-     ? [query.lat, query.lng]
-     : MAP_CENTER;
+    const center = query && query.lat && query.lng ? [query.lat, query.lng] : MAP_CENTER;
     this.map = L.map(this.props.id, {
       minZoom: MAP_MIN_ZOOM,
       zoom: (query && query.zoom) || MAP_INITIAL_ZOOM,
@@ -128,8 +161,9 @@ class Map extends React.Component {
 
   addBaseLayers() {
     const mapLayer = L.tileLayer(BASEMAP_TILE_MAP, { type: BASEMAP_MAP }).setZIndex(0);
-    const satelliteLayer = L.tileLayer(BASEMAP_TILE_SATELLITE, { type: BASEMAP_SATELLITE }).setZIndex(0);
-    const hydroLayer = L.tileLayer(BASEMAP_TILE_HYDRO, { type: BASEMAP_HYDRO }).setZIndex(1);
+    const satelliteLayer = L.tileLayer(BASEMAP_TILE_SATELLITE, {
+      type: BASEMAP_SATELLITE
+    }).setZIndex(0);
     const selectedLayer = this.state.selectedBaseLayer === BASEMAP_MAP ? mapLayer : satelliteLayer;
 
     if (this.props.baseLayerSelector) {
@@ -137,12 +171,11 @@ class Map extends React.Component {
         Map: mapLayer,
         Satellite: satelliteLayer
       };
-      const overlayMaps = {
-        Hydrology: hydroLayer
-      };
-      L.control.layers(baseLayers, overlayMaps, {
-        autoZIndex: false
-      }).addTo(this.map);
+      L.control
+        .layers(baseLayers, null, {
+          autoZIndex: false
+        })
+        .addTo(this.map);
       this.map.on('baselayerchange', this.onBaseLayerChange);
     }
 
@@ -161,19 +194,20 @@ class Map extends React.Component {
     });
 
     this.map.addControl(new LeafletShare());
-    render(
-      <Share />,
-      document.getElementsByClassName('share-control')[0]
-    );
+    render(<Share />, document.getElementsByClassName('share-control')[0]);
+  }
+
+  renderLegend() {
+    const sections = getHydrologySections(this.state.activeOverlayLayers);
+
+    return <Legend sections={sections} onSwitchChange={this.onLegendSwitchChange} />;
   }
 
   render() {
     return (
       <div className="l-maps-container">
-        <div id={this.props.id} className={cx('c-map', this.mapClassName)}></div>
-        <div className="l-legend">
-          {this.renderLegend && this.renderLegend()}
-        </div>
+        <div id={this.props.id} className={cx('c-map', this.mapClassName)} />
+        <div className="l-legend">{this.renderLegend && this.renderLegend()}</div>
       </div>
     );
   }

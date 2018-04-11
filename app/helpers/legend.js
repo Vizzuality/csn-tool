@@ -1,11 +1,87 @@
 import { uniqueBy } from 'helpers/data';
 
 const PROTECTION_LEVELS_ORDER = ['Little/none', 'Some', 'Most', 'Whole', 'Unknown'];
+const HYDROLOGY_SECTIONS = [
+  {
+    name: 'Freshwater flow',
+    subSections: [
+      {
+        layer: 'freshwaterFlowPresent',
+        name: 'Average annual freshwater flow (present)',
+        items: [
+          {
+            name: '1 month',
+            icon: 'dots',
+            color: '#cbf5ff'
+          },
+          {
+            name: '12 months',
+            icon: 'dots',
+            color: '#30cf92'
+          }
+        ]
+      },
+      {
+        layer: 'freshwaterFlow2050',
+        name: '% change in annual freshwater flow (2050)',
+        items: [
+          {
+            name: 'Blueish colors (+10% to +100% increase)',
+            icon: 'dots',
+            color: '#cbf5ff'
+          },
+          {
+            name: 'Reddish colors (-10% to -100% decrease)',
+            icon: 'dots',
+            color: '#30cf92'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    name: 'Inudation',
+    subSections: [
+      {
+        layer: 'inundationPresent',
+        name: 'Average number of months inundated per year (present)',
+        items: [
+          {
+            name: 'White (1 month inundated)',
+            icon: 'dots',
+            color: '#cbf5ff'
+          },
+          {
+            name: 'Dark-blue (12 months inundated)',
+            icon: 'dots',
+            color: '#30cf92'
+          }
+        ]
+      },
+      {
+        layer: 'inundation2050',
+        name: 'Change in inundation duration (2050)',
+        items: [
+          {
+            name: 'Blueish colors (+10% to +100% increase)',
+            icon: 'dots',
+            color: '#cbf5ff'
+          },
+          {
+            name: 'Reddish colors (2 to 12 months decrease)',
+            icon: 'dots',
+            color: '#30cf92'
+          }
+        ]
+      }
+    ]
+  }
+];
 
 function getSitesLegendSection(sites, isActive) {
   if (!sites || !sites.length) return null;
 
-  const uniqueSites = uniqueBy(sites, 'protected_slug').map((site) => ({
+  const uniqueSites = uniqueBy(sites, 'protected_slug').map(site => ({
     icon: 'circle',
     name: site.protected,
     status: site.protected_slug
@@ -19,14 +95,14 @@ function getSitesLegendSection(sites, isActive) {
     i18nName: 'protectionLevel',
     active: isActive,
     layer: 'sites',
-    data: uniqueSites
+    items: uniqueSites
   };
 }
 
 function getPopulationsLegendSection(populations, populationColors, isActive) {
   if (!populations || !populations.length) return null;
 
-  const mappedPopulation = (populations || []).map((pop) => ({
+  const mappedPopulation = (populations || []).map(pop => ({
     icon: 'dots',
     id: pop.wpepopid,
     name: pop.population,
@@ -36,7 +112,7 @@ function getPopulationsLegendSection(populations, populationColors, isActive) {
     i18nName: 'populationBoundaries',
     active: isActive,
     layer: 'population',
-    data: mappedPopulation.sort((a, b) => a.name.toString() > b.name.toString())
+    items: mappedPopulation.sort((a, b) => a.name.toString() > b.name.toString())
   };
 }
 
@@ -50,4 +126,19 @@ export function getLegendData(state, { populations, populationColors }) {
   }
   legend.push(getPopulationsLegendSection(populations, populationColors, state.layers.population));
   return legend.filter(l => l);
+}
+
+export function getHydrologySections(activeLayers) {
+  return HYDROLOGY_SECTIONS.map(section => {
+    const subSections = section.subSections.map(s => ({
+      ...s,
+      active: activeLayers.includes(s.layer)
+    }));
+
+    return {
+      ...section,
+      subSections,
+      active: subSections.some(s => s.active)
+    };
+  });
 }

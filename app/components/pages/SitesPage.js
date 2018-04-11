@@ -72,14 +72,15 @@ class SitesPage extends React.Component {
           </div>
         </div>
         <div className={`l-container ${this.props.viewMode === 'map' ? '-map' : ''} `}>
-          {this.props.viewMode === 'list'
-            ? <div className="row">
+          {this.props.viewMode === 'list' ? (
+            <div className="row">
               <div className="column c-table">
                 <SitesTable />
               </div>
             </div>
-            : <SitesMap markerCluster id="sites-page-map" />
-          }
+          ) : (
+            <SitesMap markerCluster id="sites-page-map" />
+          )}
         </div>
       </div>
     );

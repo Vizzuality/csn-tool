@@ -5,11 +5,11 @@ import { toggleLayer, toggleLegendItem } from 'actions/countries';
 import Legend from 'components/maps/Legend';
 
 const mapStateToProps = (state, ownProps) => ({
-  data: getLegendData(state.countries, ownProps)
+  sections: getLegendData(state.countries, ownProps)
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onSwitchChange: (layer) => dispatch(toggleLayer(layer)),
+  onSwitchChange: (item) => dispatch(toggleLayer(item.layer)),
   onLegendItemHover: (item, active) => dispatch(toggleLegendItem(item, active))
 });
 

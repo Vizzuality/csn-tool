@@ -9,7 +9,6 @@ export const MAP_MAX_BOUNDS = [
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiY3NuIiwiYSI6ImNpdnRvam1qeDAwMXgyenRlZjZiZWc1a2wifQ.Gr5pLJzG-1tucwY4h-rGdA';
 export const BASEMAP_MAP = 'map';
 export const BASEMAP_SATELLITE = 'satellite';
-export const BASEMAP_HYDRO = 'hydrological';
 export const BASEMAP_TILE_MAP = `https://api.mapbox.com/styles/v1/csn/civtok4xx004d2kpo3acytide/tiles/256/{z}/{x}/{y}@2x?access_token=${MAPBOX_TOKEN}`;
 export const BASEMAP_TILE_SATELLITE = `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}@2x?access_token=${MAPBOX_TOKEN}`;
 export const BASEMAP_TILE_HYDRO = `https://api.mapbox.com/v4/wetlands.2s8xqsrd/{z}/{x}/{y}.png?access_token=${MAPBOX_TOKEN}`;
@@ -17,6 +16,13 @@ export const BASEMAP_TILE_HYDRO = `https://api.mapbox.com/v4/wetlands.2s8xqsrd/{
 // Attributions
 export const BASEMAP_ATTRIBUTION_MAPBOX = '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a>';
 export const BASEMAP_ATTRIBUTION_CARTO = 'CARTO <a href="https://carto.com/attributions" target="_blank">attribution</a>';
+
+export const HYDROLOGY_LAYERS = {
+  freshwaterFlowPresent: `https://api.mapbox.com/v4/wetlands.arrcb8z1/{z}/{x}/{y}.png?access_token=${MAPBOX_TOKEN}`,
+  freshwaterFlow2050: `https://api.mapbox.com/v4/wetlands.2i0qvaog/{z}/{x}/{y}.png?access_token=${MAPBOX_TOKEN}`,
+  inundationPresent: `https://api.mapbox.com/v4/wetlands.2s8xqsrd/{z}/{x}/{y}.png?access_token=${MAPBOX_TOKEN}`,
+  inundation2050: `https://api.mapbox.com/v4/wetlands.5o3mho9f/{z}/{x}/{y}.png?access_token=${MAPBOX_TOKEN}`
+};
 
 // Map's endpoints
 export const ENDPOINT_SQL = `https://${process.env.CARTODB_ACCOUNT}.carto.com/api/v2/sql?q=`;

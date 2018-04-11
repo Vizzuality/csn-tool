@@ -9,29 +9,42 @@
     margin: 9px 0;
   }
 
-  > div .item {
+  > div .section {
     position: relative;
-    padding-right: 24px;
 
-    > p {
-      color: $font-main-inv;
-      font-size: $font-size;
-      font-weight: 600;
+    > .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       margin-bottom: 10px;
+
+      > p {
+        color: $font-main-inv;
+        font-size: $font-size;
+        font-weight: 600;
+      }
     }
 
-    .c-switch {
-      position: absolute;
-      top: 4px;
-      right: 0;
+    .sub-section {
+      > .sub-section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 5px;
+
+        > p {
+          color: $font-main-inv;
+          font-size: $font-size-s;
+        }
+      }
     }
 
-    > .sub-item:hover p {
+    .sub-item:hover p {
       opacity: 1;
       font-weight: bold;
     }
 
-    > .sub-item {
+    .sub-item {
       display: flex;
       align-items: center;
       justify-content: flex-start;
