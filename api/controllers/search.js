@@ -426,7 +426,7 @@ async function getPopulationsResults(req, res) {
          INNER JOIN countries c ON c.country_id = spc.country_id
          INNER JOIN world_borders AS wb ON wb.iso3 = spc.iso AND ST_INTERSECTS(pi.the_geom, wb.the_geom)` || ''}
       ${joinSpeciesSites ? 'INNER JOIN species_sites_iba ss ON ss.species_id = sp.species_id' : ''}
-      ${joinSites ? 'INNER JOIN sites_iba s ON ss.site_id = s.site_id' : ''}
+      ${joinSites ? 'INNER JOIN sites_iba s ON ss.site_id = s.site_id AND ST_INTERSECTS(pi.the_geom, s.the_geom)' : ''}
       ${species_threat ? 'INNER JOIN species_threats spt ON spt.species_id = sp.species_id' : ''}
       ${species_habitat_association ? 'INNER JOIN species_habitat sph ON sph.species_id = sp.species_id' : ''}
       ${site_habitat ? 'INNER JOIN sites_habitats sh ON sh.site_id = ss.site_id' : ''}
