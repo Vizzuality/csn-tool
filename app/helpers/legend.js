@@ -39,7 +39,7 @@ const HYDROLOGY_SECTIONS = [
     ]
   },
   {
-    name: 'Inudation',
+    name: 'Inundation',
     layer: 'inudation',
     subSections: [
       {
