@@ -27,12 +27,12 @@ const HYDROLOGY_SECTIONS = [
           {
             name: 'Blueish colors (+10% to +100% increase)',
             icon: 'dots',
-            color: '#cbf5ff'
+            color: '#414df4'
           },
           {
             name: 'Reddish colors (-10% to -100% decrease)',
             icon: 'dots',
-            color: '#30cf92'
+            color: '#f44242'
           }
         ]
       }
@@ -61,14 +61,14 @@ const HYDROLOGY_SECTIONS = [
         name: 'Change in inundation duration (2050)',
         items: [
           {
-            name: 'Blueish colors (+10% to +100% increase)',
+            name: 'Blueish colors (2 to 12 months increase)',
             icon: 'dots',
-            color: '#cbf5ff'
+            color: '#414df4'
           },
           {
             name: 'Reddish colors (2 to 12 months decrease)',
             icon: 'dots',
-            color: '#30cf92'
+            color: '#f44242'
           }
         ]
       }
