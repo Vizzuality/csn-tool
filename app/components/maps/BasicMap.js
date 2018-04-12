@@ -1,30 +1,33 @@
 import React from 'react';
+import { render } from 'react-dom';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
+
 import {
   BASEMAP_ATTRIBUTION_MAPBOX,
   BASEMAP_MAP,
   BASEMAP_SATELLITE,
-  BASEMAP_HYDRO,
   BASEMAP_TILE_MAP,
   BASEMAP_TILE_SATELLITE,
-  BASEMAP_TILE_HYDRO,
+  HYDROLOGY_LAYERS,
   MAP_CENTER,
   MAP_INITIAL_ZOOM,
   MAP_MIN_ZOOM
 } from 'constants/map';
-import { render } from 'react-dom';
 import Share from 'components/maps/Share';
 import { replaceUrlParams } from 'helpers/router';
 
 class Map extends React.Component {
-
   constructor(props) {
     super(props);
 
     const selectedBaseLayer = props.urlSync
-            ? props.router.getCurrentLocation().query.view || BASEMAP_MAP
-            : BASEMAP_MAP;
-    this.state = { selectedBaseLayer };
+      ? props.router.getCurrentLocation().query.view || BASEMAP_MAP
+      : BASEMAP_MAP;
+    this.state = {
+      selectedBaseLayer
+    };
+    this.overlayLayers = {};
 
     this.onBaseLayerChange = this.onBaseLayerChange.bind(this);
     this.setMapParams = this.setMapParams.bind(this);
@@ -32,6 +35,7 @@ class Map extends React.Component {
 
   componentDidMount() {
     this.initMap();
+    this.updateHydrologyLayers();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -40,6 +44,11 @@ class Map extends React.Component {
       mapContainer.classList.remove(`-${prevState.selectedBaseLayer}-view`);
       this.setMapParams();
       mapContainer.classList.add(`-${this.state.selectedBaseLayer}-view`);
+    }
+
+    // update hydrolayers
+    if (this.props.layers !== prevProps.layers) {
+      this.updateHydrologyLayers();
     }
   }
 
@@ -79,6 +88,26 @@ class Map extends React.Component {
     this.map.off('zoomend', this.setMapParams);
   }
 
+  updateHydrologyLayers() {
+    Object.keys(HYDROLOGY_LAYERS).forEach((layer) => {
+      if (!this.props.layers.hasOwnProperty(layer)) return;
+
+      const layerObj = this.overlayLayers[layer] || this.createHydroLayer(layer);
+
+      if (this.props.layers[layer]) {
+        layerObj.addTo(this.map);
+      } else {
+        layerObj.remove();
+      }
+    });
+  }
+
+  createHydroLayer(layer) {
+    const hydroLayer = L.tileLayer(HYDROLOGY_LAYERS[layer]).setZIndex(1);
+    this.overlayLayers[layer] = hydroLayer;
+    return hydroLayer;
+  }
+
   remove() {
     this.map.remove();
     if (this.props.urlSync) this.unsetUrlSyncListeners();
@@ -87,9 +116,7 @@ class Map extends React.Component {
 
   initMap() {
     const query = this.props.urlSync && this.props.router.getCurrentLocation().query;
-    const center = query && query.lat && query.lng
-     ? [query.lat, query.lng]
-     : MAP_CENTER;
+    const center = query && query.lat && query.lng ? [query.lat, query.lng] : MAP_CENTER;
     this.map = L.map(this.props.id, {
       minZoom: MAP_MIN_ZOOM,
       zoom: (query && query.zoom) || MAP_INITIAL_ZOOM,
@@ -127,8 +154,9 @@ class Map extends React.Component {
 
   addBaseLayers() {
     const mapLayer = L.tileLayer(BASEMAP_TILE_MAP, { type: BASEMAP_MAP }).setZIndex(0);
-    const satelliteLayer = L.tileLayer(BASEMAP_TILE_SATELLITE, { type: BASEMAP_SATELLITE }).setZIndex(0);
-    const hydroLayer = L.tileLayer(BASEMAP_TILE_HYDRO, { type: BASEMAP_HYDRO }).setZIndex(1);
+    const satelliteLayer = L.tileLayer(BASEMAP_TILE_SATELLITE, {
+      type: BASEMAP_SATELLITE
+    }).setZIndex(0);
     const selectedLayer = this.state.selectedBaseLayer === BASEMAP_MAP ? mapLayer : satelliteLayer;
 
     if (this.props.baseLayerSelector) {
@@ -136,12 +164,11 @@ class Map extends React.Component {
         Map: mapLayer,
         Satellite: satelliteLayer
       };
-      const overlayMaps = {
-        Hydrology: hydroLayer
-      };
-      L.control.layers(baseLayers, overlayMaps, {
-        autoZIndex: false
-      }).addTo(this.map);
+      L.control
+        .layers(baseLayers, null, {
+          autoZIndex: false
+        })
+        .addTo(this.map);
       this.map.on('baselayerchange', this.onBaseLayerChange);
     }
 
@@ -160,33 +187,38 @@ class Map extends React.Component {
     });
 
     this.map.addControl(new LeafletShare());
-    render(
-      <Share />,
-      document.getElementsByClassName('share-control')[0]
-    );
+    render(<Share />, document.getElementsByClassName('share-control')[0]);
   }
 
   render() {
     return (
-      <div id={this.props.id} className="c-map"></div>
+      <div className="l-maps-container">
+        <div id={this.props.id} className={cx('c-map', this.mapClassName)} />
+        {this.props.legend && (
+          <div className="l-legend">{this.renderLegend && this.renderLegend()}</div>
+        )}
+      </div>
     );
   }
 }
 
 Map.defaultProps = {
-  urlSync: true,
-  shareControl: true,
   baseLayerSelector: true,
+  legend: true,
+  shareControl: true,
+  urlSync: true,
   zoomControl: true
 };
 
 Map.propTypes = {
+  baseLayerSelector: PropTypes.bool,
+  layers: PropTypes.object,
   id: PropTypes.string.isRequired,
-  router: PropTypes.object,
+  legend: PropTypes.bool,
   markerCluster: PropTypes.bool,
+  router: PropTypes.object,
   shareControl: PropTypes.bool,
   urlSync: PropTypes.bool,
-  baseLayerSelector: PropTypes.bool,
   zoomControl: PropTypes.bool
 };
 

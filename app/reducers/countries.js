@@ -19,6 +19,7 @@ import {
   TABLES
 } from 'constants/tables';
 import withTable from './withTable';
+import { toggleLayer } from './common';
 
 const initialState = {
   columns: DEFAULT_COUNTRY_COLUMNS.sites,
@@ -40,7 +41,11 @@ const initialState = {
   lookAlikeSpeciesPopulation: {},
   layers: {
     sites: true,
-    population: true
+    population: true,
+    freshwaterFlowPresent: false,
+    freshwaterFlow2050: false,
+    inundationPresent: false,
+    inundation2050: false
   },
   sort: {
     field: '',
@@ -107,11 +112,7 @@ const countriesReducer = (state = initialState, action) => {
       lookAlikeSpeciesPopulation[action.payload.populationId] = action.payload.data;
       return Object.assign({}, state, { lookAlikeSpeciesPopulation });
     }
-    case TOGGLE_COUNTRIES_LAYER: {
-      const layers = Object.assign({}, state.layers);
-      layers[action.payload] = !layers[action.payload];
-      return Object.assign({}, state, { layers });
-    }
+    case TOGGLE_COUNTRIES_LAYER: return toggleLayer(state, action);
     case TOGGLE_COUNTRIES_LEGEND_ITEM: {
       return {
         ...state,

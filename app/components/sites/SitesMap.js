@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { getSqlQuery } from 'helpers/map';
 import BasicMap from 'components/maps/BasicMap';
+import SitesLegend from 'containers/sites/SitesLegend';
 
 const SELECTED_SITE_STYLE = {
   opacity: 1,
@@ -19,10 +20,11 @@ class SitesMap extends BasicMap {
   constructor(props) {
     super(props);
     this.markerList = [];
+    this.mapClassName = '-full -sites';
   }
 
   componentDidMount() {
-    this.initMap();
+    super.componentDidMount();
 
     if (this.props.sites && this.props.sites.length) {
       this.drawMarkers(this.props.sites);
@@ -132,20 +134,15 @@ class SitesMap extends BasicMap {
     this.markerList = [];
   }
 
-  render() {
-    return (
-      <div className="l-maps-container">
-        <div id={this.props.id} className="c-map -full -sites"></div>
-      </div>
-    );
+  renderLegend() {
+    return <SitesLegend />;
   }
 }
 
 SitesMap.propTypes = {
-  router: PropTypes.object.isRequired,
+  ...BasicMap.propTypes,
   selectedSite: PropTypes.any,
   goToDetail: PropTypes.func.isRequired,
-  id: PropTypes.string,
   sites: PropTypes.any
 };
 

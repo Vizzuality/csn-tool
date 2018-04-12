@@ -5,6 +5,11 @@ import SpeciesDetailLegend from 'containers/species/SpeciesDetailLegend';
 import PopulationMap from 'components/maps/PopulationMap';
 
 class SpeciesMap extends PopulationMap {
+  constructor(props) {
+    super(props);
+    this.mapClassName = '-full';
+  }
+
   componentDidMount() {
     super.componentDidMount();
 
@@ -73,24 +78,18 @@ class SpeciesMap extends PopulationMap {
     }
   }
 
-  render() {
+  renderLegend() {
     return (
-      <div className="l-maps-container">
-        <div id={this.props.id} className="c-map -full"></div>
-        <div className="l-legend">
-          <SpeciesDetailLegend
-            populations={this.props.populations}
-            populationColors={this.populationColors}
-          />
-        </div>
-      </div>
+      <SpeciesDetailLegend
+        populations={this.props.populations}
+        populationColors={this.populationColors}
+      />
     );
   }
 }
 
 SpeciesMap.propTypes = {
-  router: PropTypes.object.isRequired,
-  id: PropTypes.string.isRequired,
+  ...PopulationMap.propTypes,
   sites: PropTypes.any.isRequired
 };
 

@@ -238,27 +238,19 @@ class CountriesMap extends PopulationMap {
     this.map.setView(MAP_CENTER, MAP_MIN_ZOOM);
   }
 
-  render() {
+  renderLegend() {
     return (
-      <div className="l-maps-container">
-        <div id={this.props.id} className="c-map"></div>
-        {this.props.country &&
-          <div className="l-legend">
-            <CountriesLegend
-              populations={this.props.populations}
-              populationColors={this.populationColors}
-            />
-          </div>
-        }
-      </div>
+      <CountriesLegend
+        populations={this.props.populations}
+        populationColors={this.populationColors}
+      />
     );
   }
 }
 
 
 CountriesMap.propTypes = {
-  id: PropTypes.string.isRequired,
-  router: PropTypes.object.isRequired,
+  ...PopulationMap.PropTypes,
   goToSite: PropTypes.func.isRequired,
   goToDetail: PropTypes.func.isRequired,
   getGeoms: PropTypes.func.isRequired,

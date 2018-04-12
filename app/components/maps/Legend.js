@@ -1,36 +1,85 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import SmoothCollapse from 'react-smooth-collapse';
+import cx from 'classnames';
+
 import Switch from 'components/common/Switch';
 
-function getSubItems(subItems, onHover) {
-  return subItems.map((subItem, index2) => (
-    <div onMouseOver={() => onHover && onHover(subItem, true)} onMouseOut={() => onHover && onHover(subItem, false)} className="sub-item" key={index2}>
-      {
-        (subItem.icon === 'dots') ? (
-          <span className="dots" style={{ color: subItem.color }}>...</span>
-        ) : (
-          <span className={`icon ${subItem.icon ? `-${subItem.icon}` : ''} ${subItem.status ? `-${subItem.status}` : ''}`} />
-        )
-      }
-      <p>{subItem.name}</p>
+function renderScale(items) {
+  const colorWidth = 100 / (items.length - 1);
+  const background = `linear-gradient(to right, ${items
+    .map((i, index) => `${i.color} ${colorWidth * index}%`)
+    .join(', ')})`;
+  const rangeStyle = { background };
+  const renderScaleItem = (item, index) => <li key={`scale-item-${index}`}>{item.name}</li>;
+
+  return (
+    <div className="scale">
+      <div className="range" style={rangeStyle} />
+      <ul className="labels">{items.map(renderScaleItem)}</ul>
+    </div>
+  );
+}
+
+function renderItems(items, onHover) {
+  return items.map((item, index) => (
+    <div
+      className="item"
+      key={index}
+      onMouseOver={() => onHover && onHover(item, true)}
+      onMouseOut={() => onHover && onHover(item, false)}
+    >
+      {item.icon === 'dots' ? (
+        <span className="dots" style={{ color: item.color }}>
+          ...
+        </span>
+      ) : (
+        <span
+          className={cx('icon', {
+            [`-${item.icon}`]: item.icon,
+            [`-${item.status}`]: item.status
+          })}
+        />
+      )}
+      <p>{item.name}</p>
     </div>
   ));
 }
 
-function Legend({ data, onSwitchChange, onLegendItemHover }, context) {
-  if (data && !data.length) return null;
+function renderSubSections(subSections, onSwitchChange) {
+  return subSections.map((subSection, index) => (
+    <div className="sub-section" key={index}>
+      <div className="sub-section-header">
+        <p>{subSection.name}</p>
+        <Switch checked={subSection.active} onChange={() => onSwitchChange(subSection)} />
+      </div>
+      <SmoothCollapse className="sub-section-body" expanded={subSection.active}>
+        {subSection.items && renderItems(subSection.items)}
+        {subSection.scale && renderScale(subSection.scale)}
+      </SmoothCollapse>
+    </div>
+  ));
+}
+
+function Legend({ sections, onSwitchChange, onLegendItemHover }, context) {
+  if (sections && !sections.length) return null;
 
   return (
     <div className="c-legend">
-      {data.map((item, index) => {
-        const legendLine = (index > 0) ? <div className="legend-line" /> : '';
+      {sections.map((section, index) => {
+        const legendLine = index > 0 ? <div className="legend-line" /> : '';
         return (
           <div key={index}>
             {legendLine}
-            <div className="item" key={index}>
-              <p>{item.i18nName ? context.t(item.i18nName) : item.name}</p>
-              <Switch checked={item.active} onChange={() => onSwitchChange(item.layer)} />
-                {getSubItems(item.data, onLegendItemHover)}
+            <div className="section" key={index}>
+              <div className="section-header">
+                <p>{section.i18nName ? context.t(section.i18nName) : section.name}</p>
+                <Switch checked={section.active} onChange={() => onSwitchChange(section)} />
+              </div>
+              <SmoothCollapse className="section-body" expanded={section.active}>
+                {section.subSections && renderSubSections(section.subSections, onSwitchChange)}
+                {section.items && renderItems(section.items, onLegendItemHover)}
+              </SmoothCollapse>
             </div>
           </div>
         );
@@ -39,12 +88,31 @@ function Legend({ data, onSwitchChange, onLegendItemHover }, context) {
   );
 }
 
+const itemPropTypes = PropTypes.shape({
+  name: PropTypes.string,
+  color: PropTypes.string,
+  icon: PropTypes.string,
+  status: PropTypes.string
+});
+const sectionPropTypes = {
+  name: PropTypes.string,
+  i18nName: PropTypes.string,
+  layer: PropTypes.string,
+  active: PropTypes.bool,
+  items: PropTypes.arrayOf(itemPropTypes)
+};
+
 Legend.contextTypes = {
   t: PropTypes.func.isRequired
 };
 
 Legend.propTypes = {
-  data: PropTypes.array.isRequired,
+  sections: PropTypes.arrayOf(
+    PropTypes.shape({
+      ...sectionPropTypes,
+      subSections: PropTypes.arrayOf(PropTypes.shape(sectionPropTypes))
+    })
+  ),
   onSwitchChange: PropTypes.func.isRequired,
   onLegendItemHover: PropTypes.func
 };

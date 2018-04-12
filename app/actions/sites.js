@@ -8,7 +8,8 @@ import {
   SET_SEARCH_FILTER,
   SET_SITES_PARAMS,
   SET_SORT,
-  SET_VIEW_MODE
+  SET_VIEW_MODE,
+  TOGGLE_SITES_LAYER
 } from 'constants/action-types';
 import { TABLES } from 'constants/tables';
 import { RESULTS_PER_PAGE } from 'constants/config';
@@ -135,5 +136,12 @@ export function setSitesTableFilter(filter) {
   return {
     type: `${SET_COLUMN_FILTER}_${TABLES.SITES}`,
     payload: filter
+  };
+}
+
+export function toggleLayer(layer) {
+  return {
+    type: TOGGLE_SITES_LAYER,
+    payload: layer
   };
 }

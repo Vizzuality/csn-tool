@@ -28,3 +28,9 @@ export const commonSort = (field, order) => {
     return 0;
   };
 };
+
+export const toggleLayer = (state, action) => {
+  const layers = { ...state.layers };
+  layers[action.payload] = !layers[action.payload];
+  return { ...state, layers };
+};

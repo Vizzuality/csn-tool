@@ -2,13 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import BasicMap from 'components/maps/BasicMap';
+import ThresholdLegend from 'containers/threshold/ThresholdLegend';
 import { replaceUrlParams } from 'helpers/router';
+
 
 class ThresholdMap extends BasicMap {
   constructor(props) {
     super(props);
     this.marker = null;
     this.popupVisible = false;
+    this.mapClassName = '-full -pointer -threshold';
+
     this.drawMarker = this.drawMarker.bind(this);
     this.updateCoords = this.updateCoords.bind(this);
     this.showPopup = this.showPopup.bind(this);
@@ -28,7 +32,7 @@ class ThresholdMap extends BasicMap {
   }
 
   componentDidMount() {
-    this.initMap();
+    super.componentDidMount();
     this.initPopup();
     this.map.on('click', this.updateCoords);
     this.map.on('mouseover', this.showPopup);
@@ -125,12 +129,8 @@ class ThresholdMap extends BasicMap {
     this.popupVisible = false;
   }
 
-  render() {
-    return (
-      <div className="l-maps-container">
-        <div id={this.props.id} className="c-map -full -pointer -threshold"></div>
-      </div>
-    );
+  renderLegend() {
+    return <ThresholdLegend />;
   }
 }
 
