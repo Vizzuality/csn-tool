@@ -89,6 +89,8 @@ class Map extends React.Component {
   }
 
   updateHydrologyLayers() {
+    if (!this.props.layers) return;
+
     Object.keys(HYDROLOGY_LAYERS).forEach((layer) => {
       if (!this.props.layers.hasOwnProperty(layer)) return;
 
