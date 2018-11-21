@@ -6,7 +6,8 @@ import {
   getSpeciesPopulation,
   getSpeciesCriticalSites,
   getSpeciesLookAlikeSpecies,
-  getSpeciesLookAlikeSpeciesPopulation
+  getSpeciesLookAlikeSpeciesPopulation,
+  getSpeciesSuitability
 } from 'actions/species';
 
 function getSpeciesData(species) {
@@ -42,6 +43,9 @@ const mapDispatchToProps = (dispatch) => ({
       case 'lookAlikeSpeciesPopulation':
         dispatch(getSpeciesLookAlikeSpecies(id));
         dispatch(getSpeciesLookAlikeSpeciesPopulation(id, populationId));
+        break;
+      case 'suitability':
+        dispatch(getSpeciesSuitability(id));
         break;
       default:
         dispatch(getSpeciesSites(id));

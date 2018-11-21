@@ -265,6 +265,30 @@ function getPopulationsLookAlikeSpecies(req, res) {
     });
 }
 
+function getSpeciesSuitability(req, res) {
+  const query = `SELECT model, sites.site_name_clean AS csn_site_name,
+    current_suitability, future_suitability, change, prediction
+    FROM species_climate_change AS scc
+    INNER JOIN sites_critical sites ON sites.site_id = scc.site_id
+    WHERE scc.ssis = '${req.params.id}'
+    ORDER BY sites.site_name_clean ASC`;
+
+  runQuery(query)
+    .then((data) => {
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        res.json(results);
+      } else {
+        res.status(404);
+        res.json({ error: 'No suitability information' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
 module.exports = {
   getSpeciesList,
   getSpeciesDetails,
@@ -272,5 +296,6 @@ module.exports = {
   getSpeciesCriticalSites,
   getSpeciesPopulation,
   getSpeciesLookAlikeSpecies,
-  getPopulationsLookAlikeSpecies
+  getPopulationsLookAlikeSpecies,
+  getSpeciesSuitability
 };

@@ -31,6 +31,7 @@ router.route('/species/:id/criticalSites').get(SpeciesCtrl.getSpeciesCriticalSit
 router.route('/species/:id/population').get(SpeciesCtrl.getSpeciesPopulation);
 router.route('/species/:id/look-alike-species').get(SpeciesCtrl.getSpeciesLookAlikeSpecies);
 router.route('/species/:id/look-alike-species/:populationId').get(SpeciesCtrl.getPopulationsLookAlikeSpecies);
+router.route('/species/:id/suitability').get(SpeciesCtrl.getSpeciesSuitability);
 
 // Threshold
 router.route('/threshold/:lat/:lng/:zoom?').get(ThresholdCtrl.getSpeciesByPosition);
