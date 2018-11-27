@@ -61,7 +61,10 @@ export const ALL_SPECIES_COLUMNS = {
     'maximum', 'geometric_mean', 'units', 'iba_criteria'],
   populationVulnerability: ['population_name', 'season', 'change_in_suitability_of_all_sites',
     'change_in_number_of_suitable_sites', 'change_in_suitability_of_critical_sites',
-    'change_in_proportion_supported', 'range_change', 'range_overlap']
+    'change_in_proportion_supported', 'range_change', 'range_overlap'],
+  triggerCriticalSuitability: ['country', 'csn_site_name', 'population_name',
+    'season', 'percentfly', 'current_suitability', 'future_suitability',
+    'change_suitability']
 };
 
 export const DEFAULT_SPECIES_COLUMNS = {
@@ -74,7 +77,10 @@ export const DEFAULT_SPECIES_COLUMNS = {
   sites: ['country', 'site_name', 'season', 'geometric_mean', 'units', 'iba_criteria'],
   populationVulnerability: ['population_name', 'season', 'change_in_suitability_of_all_sites',
     'change_in_number_of_suitable_sites', 'change_in_suitability_of_critical_sites',
-    'change_in_proportion_supported', 'range_change', 'range_overlap']
+    'change_in_proportion_supported', 'range_change', 'range_overlap'],
+  triggerCriticalSuitability: ['country', 'csn_site_name', 'population_name',
+    'season', 'percentfly', 'current_suitability', 'future_suitability',
+    'change_suitability']
 };
 
 export const ALL_THRESHOLD_COLUMNS = [

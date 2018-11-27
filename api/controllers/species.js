@@ -320,6 +320,32 @@ function getPopulationVulnerability(req, res) {
     });
 }
 
+function getTriggerCriticalSitesSuitability(req, res) {
+  const query = `SELECT sites.country, sites.site_name_clean AS csn_site_name,
+    t2a.populationname AS population_name,
+    t2a.season, t2a.percentfly, t2a.current_suitability,
+    t2a.future_suitability, ROUND(CAST(change AS numeric), 2) AS change_suitability
+    FROM table2a AS t2a
+    INNER JOIN sites_critical sites ON sites.site_id = t2a.site_id
+     WHERE t2a.ssis = '${req.params.id}'
+    ORDER BY sites.site_name_clean ASC`;
+
+  runQuery(query)
+    .then((data) => {
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        res.json(results);
+      } else {
+        res.status(404);
+        res.json({ error: 'No critical sites suitability information' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
 module.exports = {
   getSpeciesList,
   getSpeciesDetails,
@@ -328,5 +354,6 @@ module.exports = {
   getSpeciesPopulation,
   getSpeciesLookAlikeSpecies,
   getPopulationsLookAlikeSpecies,
-  getPopulationVulnerability
+  getPopulationVulnerability,
+  getTriggerCriticalSitesSuitability
 };

@@ -4,6 +4,7 @@ import {
   GET_SPECIES_LOOK_ALIKE_SPECIES,
   GET_SPECIES_LOOK_ALIKE_SPECIES_POPULATION,
   GET_SPECIES_POPULATION_VULNERABILITY,
+  GET_SPECIES_TRIGGER_CRITICAL_SUITABILITY,
   GET_SPECIES_POPULATION,
   GET_SPECIES_SITES,
   GET_SPECIES_STATS,
@@ -167,6 +168,24 @@ export function getSpeciesPopulationVulnerability(id) {
       .then(data => {
         dispatch({
           type: GET_SPECIES_POPULATION_VULNERABILITY,
+          payload: {
+            id,
+            data
+          }
+        });
+      });
+  };
+}
+
+export function getTriggerCriticalSuitability(id) {
+  const url = `${config.apiHost}/species/${id}/trigger-cs-suitability`;
+
+  return (dispatch) => {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        dispatch({
+          type: GET_SPECIES_TRIGGER_CRITICAL_SUITABILITY,
           payload: {
             id,
             data
