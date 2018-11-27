@@ -3,7 +3,7 @@ import {
   GET_SPECIES_LIST,
   GET_SPECIES_LOOK_ALIKE_SPECIES,
   GET_SPECIES_LOOK_ALIKE_SPECIES_POPULATION,
-  GET_SPECIES_SUITABILITY,
+  GET_SPECIES_POPULATION_VULNERABILITY,
   GET_SPECIES_POPULATION,
   GET_SPECIES_SITES,
   GET_SPECIES_STATS,
@@ -33,7 +33,7 @@ const initialState = {
   sites: {},
   criticalSites: {},
   population: {},
-  suitability: {},
+  populationVulnerability: {},
   lookAlikeSpecies: {},
   lookAlikeSpeciesPopulation: {},
   layers: {
@@ -108,10 +108,10 @@ const speciesReducer = (state = initialState, action) => {
       data[action.payload.populationId] = action.payload.data;
       return Object.assign({}, state, { lookAlikeSpeciesPopulation: data });
     }
-    case GET_SPECIES_SUITABILITY: {
-      const data = Object.assign({}, state.suitability, {});
+    case GET_SPECIES_POPULATION_VULNERABILITY: {
+      const data = Object.assign({}, state.populationVulnerability, {});
       data[action.payload.id] = action.payload.data;
-      return Object.assign({}, state, { suitability: data });
+      return Object.assign({}, state, { populationVulnerability: data });
     }
     case TOGGLE_SPECIES_LAYER: return toggleLayer(state, action);
     case TOGGLE_SPECIES_LEGEND_ITEM: {

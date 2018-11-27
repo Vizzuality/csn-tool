@@ -265,13 +265,44 @@ function getPopulationsLookAlikeSpecies(req, res) {
     });
 }
 
-function getSpeciesSuitability(req, res) {
-  const query = `SELECT model, sites.site_name_clean AS csn_site_name,
-    current_suitability, future_suitability, change, prediction
-    FROM species_climate_change AS scc
-    INNER JOIN sites_critical sites ON sites.site_id = scc.site_id
-    WHERE scc.ssis = '${req.params.id}'
-    ORDER BY sites.site_name_clean ASC`;
+function getPopulationVulnerability(req, res) {
+  const query = `SELECT
+   t1p.season,
+   CASE
+    WHEN change_in_suitability_of_all_sites = 'NA'
+    THEN null
+    ELSE ROUND(cast(change_in_suitability_of_all_sites AS numeric), 2)
+   END AS change_in_suitability_of_all_sites,
+   CASE
+    WHEN change_in_number_of_suitable_sites = 'NA'
+    THEN null
+    ELSE ROUND(cast(change_in_number_of_suitable_sites AS numeric), 2)
+   END AS change_in_number_of_suitable_sites,
+   CASE
+    WHEN change_in_suitability_of_critical_sites = 'NA'
+    THEN null
+    ELSE ROUND(cast(change_in_suitability_of_critical_sites AS numeric), 2)
+   END AS change_in_suitability_of_critical_sites,
+   CASE
+    WHEN change_in_proportion_supported = 'NA'
+    THEN null
+    ELSE ROUND(cast(change_in_proportion_supported AS numeric), 2)
+   END AS change_in_proportion_supported,
+   CASE
+    WHEN range_change = 'NA'
+    THEN null
+    ELSE ROUND(cast(range_change AS numeric), 2)
+   END AS range_change,
+   CASE
+    WHEN range_overlap = 'NA'
+    THEN null
+    ELSE ROUND(cast(range_overlap AS numeric), 2)
+   END AS range_overlap,
+   populations.population_name AS population_name
+   FROM table_1_populations AS t1p
+   INNER JOIN populations ON populations.wpepopid = t1p.wpepopid
+   WHERE t1p.ssis = '${req.params.id}'
+   ORDER BY populations.population_name ASC`;
 
   runQuery(query)
     .then((data) => {
@@ -280,7 +311,7 @@ function getSpeciesSuitability(req, res) {
         res.json(results);
       } else {
         res.status(404);
-        res.json({ error: 'No suitability information' });
+        res.json({ error: 'No vulnerability information' });
       }
     })
     .catch((err) => {
@@ -297,5 +328,5 @@ module.exports = {
   getSpeciesPopulation,
   getSpeciesLookAlikeSpecies,
   getPopulationsLookAlikeSpecies,
-  getSpeciesSuitability
+  getPopulationVulnerability
 };

@@ -3,7 +3,7 @@ import {
   GET_SPECIES_LIST,
   GET_SPECIES_LOOK_ALIKE_SPECIES,
   GET_SPECIES_LOOK_ALIKE_SPECIES_POPULATION,
-  GET_SPECIES_SUITABILITY,
+  GET_SPECIES_POPULATION_VULNERABILITY,
   GET_SPECIES_POPULATION,
   GET_SPECIES_SITES,
   GET_SPECIES_STATS,
@@ -158,15 +158,15 @@ export function getSpeciesLookAlikeSpeciesPopulation(id, populationId) {
   };
 }
 
-export function getSpeciesSuitability(id) {
-  const url = `${config.apiHost}/species/${id}/suitability`;
+export function getSpeciesPopulationVulnerability(id) {
+  const url = `${config.apiHost}/species/${id}/population-vulnerability`;
 
   return (dispatch) => {
     fetch(url)
       .then(response => response.json())
       .then(data => {
         dispatch({
-          type: GET_SPECIES_SUITABILITY,
+          type: GET_SPECIES_POPULATION_VULNERABILITY,
           payload: {
             id,
             data
