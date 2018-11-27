@@ -43,7 +43,7 @@ class SpeciesDetailTable extends React.Component {
       case 'sites':
         return 'sites/iba';
       case 'populationVulnerability':
-        return 'speciesPopulation'
+        return 'speciesPopulation';
       default:
         return category;
     }
