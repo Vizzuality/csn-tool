@@ -63,7 +63,7 @@ class PopulationMap extends BasicMap {
     const query = `
       SELECT ST_AsGeoJSON(ST_Envelope(st_union(f.the_geom))) as bbox
       FROM species s
-      INNER JOIN species_and_flywaygroups f on f.ssid = s.species_id
+      INNER JOIN populations f on f.species_id = s.species_id
       WHERE s.species_id = ${speciesId}
     `;
 
