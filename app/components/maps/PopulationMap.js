@@ -96,7 +96,7 @@ class PopulationMap extends BasicMap {
   fetchPopulationLayer(populationId) {
     const query = `
       SELECT the_geom
-      FROM species_and_flywaygroups
+      FROM populations
       WHERE wpepopid = ${populationId} LIMIT 1
     `;
 
