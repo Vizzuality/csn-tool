@@ -3,6 +3,7 @@ import {
   GET_SITES_LIST,
   GET_SITES_LOCATIONS,
   GET_SITES_SPECIES,
+  GET_SITES_VULNERABILITY,
   GET_SITES_STATS,
   SET_COLUMN_FILTER,
   SET_SEARCH_FILTER,
@@ -101,6 +102,24 @@ export function getSitesSpecies(id, type) {
         payload: { id, data: [] }
       });
     }
+  };
+}
+
+export function getVulnerability(id) {
+  const url = `${config.apiHost}/sites/csn/${id}/vulnerability`;
+
+  return (dispatch) => {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        dispatch({
+          type: GET_SITES_VULNERABILITY,
+          payload: {
+            id,
+            data
+          }
+        });
+      });
   };
 }
 

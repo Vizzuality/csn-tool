@@ -22,6 +22,7 @@ router.route('/sites').get(SitesCtrl.getSites);
 router.route('/sites/locations/:type').get(SitesCtrl.getSitesLocations);
 router.route('/sites/:type/:id').get(SitesCtrl.getSitesDetails);
 router.route('/sites/:type/:id/species').get(SitesCtrl.getSitesSpecies);
+router.route('/sites/csn/:id/vulnerability').get(SitesCtrl.getSitesVulnerability);
 
 // Species
 router.route('/species').get(SpeciesCtrl.getSpeciesList);

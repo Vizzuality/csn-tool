@@ -154,7 +154,8 @@ export const translations = {
     'percentfly': 'Percent flyway',
     'current_suitability': 'Current suitability',
     'future_suitability': 'Future suitability',
-    'change_suitability': 'Change suitability'
+    'change_suitability': 'Change suitability',
+    'vulnerability': 'Site Vulnerability'
   },
   es: {
     'country': 'Pais',

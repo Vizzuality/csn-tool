@@ -35,7 +35,9 @@ export const ALL_SITES_COLUMNS = {
                'end', 'minimum', 'maximum', 'geometric_mean', 'units', 'iba_criteria'],
   csnSpecies: ['scientific_name', 'english_name', 'french_name', 'iucn_category', 'population',
                'season', 'start', 'end', 'minimum', 'maximum', 'geometric_mean', 'units',
-               'percentfly', 'csn1', 'csn2']
+               'percentfly', 'csn1', 'csn2'],
+  csnVulnerability: ['scientific_name', 'english_name', 'season', 'current_suitability',
+    'future_suitability', 'change_suitability']
 };
 
 export const DEFAULT_SITES_COLUMNS = {
@@ -43,7 +45,9 @@ export const DEFAULT_SITES_COLUMNS = {
   iba: ['country', 'site_name', 'protected', 'iba_species', 'iba_in_danger'],
   ibaSpecies: ['scientific_name', 'season', 'geometric_mean', 'units', 'iba_criteria'],
   csnSpecies: ['scientific_name', 'population', 'season', 'geometric_mean', 'units',
-               'percentfly']
+               'percentfly'],
+  csnVulnerability: ['scientific_name', 'english_name', 'season', 'current_suitability',
+    'future_suitability', 'change_suitability']
 };
 
 export const ALL_SPECIES_COLUMNS = {
