@@ -1,0 +1,125 @@
+key, en, fr
+country,Country,Pays
+countries,Countries,Des pays
+site,Site,Site
+sites,Sites,Sites
+criticalSites,Critical sites,Sites critiques
+sitesList,Sites list,Liste des sites
+speciesList,Species list,Liste des espèces
+triggerSpeciesList,Trigger species list,Trigger species list
+species,Species,Espèces
+original_species,Scientific name,Nom scientifique
+populations,Populations,Populations
+populationname,Populations,Populations
+original_popname,Populations,Populations
+lookAlikeSpecies,Look-alike Species,Espèces semblables
+guidelines,Guidelines,Lignes directrices
+about,About,Sur
+advancedSearch,Advanced search,Recherche Avancée
+stay-update,Stay update,Restez à jour
+site_name,IBA name,Nom IBA
+csn_site_name,Critical site name,Nom de site critique
+csn_name,Critical site,Site critique
+scientific_name,Scientific name,Nom scientifique
+english_name,English name,Nom anglais
+protected,Protected,Protégé
+family,Family,Famille
+confusion_name,Look-alike name,Nom semblable
+confusion_species,No. of look-alike species populations,No. de populations despèces semblables
+confusion_species_as,No. of look-alike species populations in Col A,No. de populations despèces dans la Col A
+confusion_population,Population,Population
+genus,Genus,Genre
+country_status,Status,Statut
+getStarted,Get started,Commencer
+back,Back,Arrière
+backToSpecies,Back to all species,Retour à toutes les espèces
+backToCountries,Back to countries,Retour aux pays
+backToSpecies,Back to species,Retour aux espèces
+backToSites,Back to sites,Retour aux sites
+iba_criteria,IBA criteria,Critères IBA
+iba_species,No. IBA qualifying species,No. despèces qualifiées IBA
+geometric_mean,Geometric Mean,Moyenne géométrique
+season,Season,Saison
+csn,CSN,CSN
+csn_criteria,CSN criteria,Critères CSN
+csn_species,No. CSN qualifying species,No. despèces qualifiées CSN
+iba,IBA,IBA
+iso3,ISO,ISO
+maximum,Maximum,Maximum
+minimum,Minimum,Minimum
+avg,Geographic mean,Moyenne géographique
+population,Population,Population
+a,A,A
+b,B,B
+c,C,C
+original_a,A,A
+original_b,B,B
+original_c,C,C
+flyway_range,Multispecies flyway,Voie de migration multispécifique
+caf_action_plan,CMS CAF,CMS CAF
+eu_birds_directive,EU Birds directive,Directive Oiseaux de lUE
+year_start,Start,Début
+year_end,End,Fin
+size_min,Minimum,Minimum
+size_max,Maximum,Maximum
+ramsar_criterion,Ramsar criterion 6,Critère Ramsar 6
+table_1_status,Table 1 Status,Tableau 1 statut
+total_percentage,Total %,% Total
+ramsarCriterionTool,Ramsar Criterion 6,Critère Ramsar 6
+ramsarCriterionToolTitle,Ramsar Criterion 6 Thresholds,Critère Ramsar 6 Seuils
+habitats,Habitats,Habitats
+habitat_name,Habitat name,Nom de lhabitat
+habitat_level_1,Habitat level 1,Niveau dhabitat 1
+habitat_level_2,Habitat level 2,Niveau dhabitat 2
+groupBy,Group by,Regroupez par
+countriesFilter,Any term in the table,Tout terme dans le tableau
+countriesNameSearch,Country name,Nom du pays
+searchBy,Search by,Recherché par
+sitesFilter,Any term in the table,Tout terme dans le tableau
+selectAnotherPoint,Select another point,Sélectionnez un autre point
+speciesFilter,Any term in the table,Tout terme dans le tableau
+iucn_category,Red List category,Catégorie de la liste rouge
+occurrence_status,Occurrence status,Statut doccurrence
+start ,Start,Début
+end,End,Fin
+units,Units,Unités
+percentfly,Percentage flyway,Pourcentage de voie de migration
+csn1,CSN 1,CSN 1
+csn2,CSN 2,CSN 2
+map,Map,Carte
+table,Table,Tableau
+filterBy,Filter by,Filtrer par
+banner,The Critical Site Network (CSN) Tool is an online resource for the conservation of 294 species of waterbirds and the important sites upon which they depend in Africa and Western Eurasia.,Loutil Critical Site Network (CSN) est une ressource en ligne pour la conservation de 294 espèces doiseaux deau et des sites importants dont elles dépendent en Afrique et en Eurasie occidentale.
+iba_qualifying_species,IBA qualifying species,IBA espèces éligibles
+csn_qualifying_species,CSN qualifying species,CSN espèces éligibles
+iba_in_danger,IBA in Danger,IBA en Danger
+toolUse,What can I use this tool for?,Que puis-je utiliser cet outil pour?
+searchSites,Search sites,Rechercher des sites
+searchSpecies,Search species,Recherche despèces
+searchPopulations,Search populations,Recherche des populations
+searchForCountry,Search for a country,Rechercher un pays
+seeOccurringSpecies,and see all the occurring species,et voir toutes les espèces qui se produisent
+seeTheData,See the data,Voir les données
+forParticularSite,for a particular site,pour un site particulier
+searchForSpecies,Search for a species,Rechercher une espèce
+seeCriticalSites,and see its critical sites,et voir ses sites critiques
+introText1,"The tool makes it easy to obtain information on the sites critical for waterbird species by accessing several independent databases and analysing information at the biogeographical population level, so providing a comprehensive basis for management and decision making. It is designed to help a range of different users from site managers to national authorities and international organisations. The CSN Tool, one of the major achievements of the Wings Over Wetlands (WOW) project, is also an important example of the added value of cooperation between likeminded conservation organisations, international conventions and agreements, governments, UN agencies and other donors.","Loutil facilite lobtention dinformations sur les sites critiques pour les espèces doiseaux deau en accédant à plusieurs bases de données indépendantes et en analysant les informations au niveau de la population biogéographique, fournissant ainsi une base complète pour la gestion et la prise de décision. Il est conçu pour aider un large éventail dutilisateurs, des gestionnaires de sites aux autorités nationales et aux organisations internationales. Loutil CSN, lune des principales réalisations du projet Wings Over Wetlands (WOW), illustre également la valeur ajoutée de la coopération entre des organisations de conservation, des conventions et des accords internationaux, des gouvernements, des agences des Nations Unies et dautres donateurs."
+introText2,The CSN Tool supports both AEWA and the Ramsar Convention on Wetlands. It is also relevant to the EU Birds Directive and the Bern Convention’s Emerald Network.,Loutil CSN soutient à la fois lAEWA et la Convention de Ramsar sur les zones humides. Il est également pertinent pour la Directive Oiseaux de lUE et le Réseau Emeraude de la Convention de Berne.
+geography,Geography,Géographie
+taxonomy,Taxonomy,Taxonomie
+habitat,Habitat,Habitat
+selectOneOption,Select at least one option,Sélectionnez au moins une option
+ramsar_region,Ramsar region,Ramsar region
+aewa_region,AEWA region,AEWA region
+protection,Protection,Protection
+site_threat,Site threat,Menace du site
+site_habitat,Site habitat,Habitat du site
+red_list_status,Red list status,Statut de la liste rouge
+aewa_annex_2,AEWA annex 2,AEWA annexe 2
+species_threat,Species threat,Menace despèce
+species_habitat_association,Species habitat association,Association dhabitat des espèces
+aewa_table_1_status,AEWA table 1 status,Statut de la table 1 de lAEWA
+eu_birds_directive,EU birds directive,Directive européenne sur les oiseaux
+cms_caf_action_plan,CMS CAF action plan,Plan daction CMS CAF
+multispecies_flyway,Multispecies flyway,Voie de migration multispécifique
+population_trend,Population trend,Tendance de la population

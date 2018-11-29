@@ -68,7 +68,7 @@ export const ALL_SPECIES_COLUMNS = {
     'change_in_proportion_supported', 'range_change', 'range_overlap'],
   triggerCriticalSuitability: ['country', 'csn_site_name', 'population_name',
     'season', 'percentfly', 'current_suitability', 'future_suitability',
-    'change_suitability']
+    'change_suitability', 'threshold', 'season_ev']
 };
 
 export const DEFAULT_SPECIES_COLUMNS = {
@@ -84,7 +84,7 @@ export const DEFAULT_SPECIES_COLUMNS = {
     'change_in_proportion_supported', 'range_change', 'range_overlap'],
   triggerCriticalSuitability: ['country', 'csn_site_name', 'population_name',
     'season', 'percentfly', 'current_suitability', 'future_suitability',
-    'change_suitability']
+    'change_suitability', 'threshold', 'season_ev']
 };
 
 export const ALL_THRESHOLD_COLUMNS = [

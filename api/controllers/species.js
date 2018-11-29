@@ -324,7 +324,8 @@ function getTriggerCriticalSitesSuitability(req, res) {
   const query = `SELECT sites.country, sites.site_name_clean AS csn_site_name,
     t2a.populationname AS population_name,
     t2a.season, t2a.percentfly, t2a.current_suitability,
-    t2a.future_suitability, ROUND(CAST(change AS numeric), 2) AS change_suitability
+    t2a.future_suitability, ROUND(CAST(change AS numeric), 2) AS change_suitability,
+    threshold, season_ev_good_fair_poor_look_at AS season_ev
     FROM table2a AS t2a
     INNER JOIN sites_critical sites ON sites.site_id = t2a.site_id
      WHERE t2a.ssis = '${req.params.id}'
