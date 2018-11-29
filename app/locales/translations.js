@@ -150,12 +150,14 @@ export const translations = {
     'change_in_proportion_supported': 'Change in proportion supported',
     'range_change': 'Range change',
     'range_overlap': 'Range overlap',
-    'triggerCriticalSuitability': 'Trigger Sites Suitability',
+    'triggerCriticalSuitability': 'CSN Suitability',
     'percentfly': 'Percent flyway',
     'current_suitability': 'Current suitability',
     'future_suitability': 'Future suitability',
     'change_suitability': 'Change suitability',
-    'vulnerability': 'Site Vulnerability'
+    'vulnerability': 'Vulnerability of qualifying species',
+    'threshold': 'Threshold',
+    'season_ev': 'Season ev.'
   },
   es: {
     'country': 'Pais',

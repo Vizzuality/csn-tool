@@ -244,7 +244,8 @@ function getSitesSpecies(req, res) {
 function getSitesVulnerability(req, res) {
   const query = `SELECT species.scientific_name, species.english_name,
     t2a.season, t2a.current_suitability, t2a.future_suitability,
-    ROUND(CAST(change AS numeric), 2) AS change_suitability
+    ROUND(CAST(change AS numeric), 2) AS change_suitability,
+    threshold, season_ev_good_fair_poor_look_at AS season_ev
     FROM table2a AS t2a
     INNER JOIN species ON t2a.ssis::integer = species.species_id
     WHERE t2a.site_id = ${req.params.id}

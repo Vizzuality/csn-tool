@@ -37,7 +37,7 @@ export const ALL_SITES_COLUMNS = {
                'season', 'start', 'end', 'minimum', 'maximum', 'geometric_mean', 'units',
                'percentfly', 'csn1', 'csn2'],
   csnVulnerability: ['scientific_name', 'english_name', 'season', 'current_suitability',
-    'future_suitability', 'change_suitability']
+    'future_suitability', 'change_suitability', 'threshold', 'season_ev']
 };
 
 export const DEFAULT_SITES_COLUMNS = {
@@ -47,7 +47,7 @@ export const DEFAULT_SITES_COLUMNS = {
   csnSpecies: ['scientific_name', 'population', 'season', 'geometric_mean', 'units',
                'percentfly'],
   csnVulnerability: ['scientific_name', 'english_name', 'season', 'current_suitability',
-    'future_suitability', 'change_suitability']
+    'future_suitability', 'change_suitability', 'threshold', 'season_ev']
 };
 
 export const ALL_SPECIES_COLUMNS = {
