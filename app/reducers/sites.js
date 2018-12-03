@@ -3,6 +3,7 @@ import {
   GET_SITES_LIST,
   GET_SITES_LOCATIONS,
   GET_SITES_SPECIES,
+  GET_SITES_VULNERABILITY,
   GET_SITES_STATS,
   SET_SITES_PARAMS,
   SET_VIEW_MODE,
@@ -46,7 +47,8 @@ const initialState = {
     order: ''
   },
   columnFilter: {},
-  type: 'iba'
+  type: 'iba',
+  csnVulnerability: {}
 };
 
 const sitesReducer = (state = initialState, action) => {
@@ -98,6 +100,11 @@ const sitesReducer = (state = initialState, action) => {
       const data = Object.assign({}, state.species, {});
       data[action.payload.id] = action.payload.data;
       return Object.assign({}, state, { species: data });
+    }
+    case GET_SITES_VULNERABILITY: {
+      const data = Object.assign({}, state.csnVulnerability, {});
+      data[action.payload.id] = action.payload.data;
+      return Object.assign({}, state, { csnVulnerability: data });
     }
     case TOGGLE_SITES_LAYER: return toggleLayer(state, action);
     default:

@@ -1,6 +1,10 @@
 import { connect } from 'react-redux';
 import SitesDetailPage from 'components/pages/SitesDetailPage';
-import { getSitesStats, getSitesSpecies } from 'actions/sites';
+import {
+  getSitesStats,
+  getSitesSpecies,
+  getVulnerability
+} from 'actions/sites';
 
 function getSitesData(sites) {
   return sites[sites.selectedCategory] && sites[sites.selectedCategory][sites.selected]
@@ -19,7 +23,14 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getSitesStats: (id, type) => dispatch(getSitesStats(id, type)),
   getSitesData: (id, category, type) => {
-    dispatch(getSitesSpecies(id, type));
+    switch (category) {
+      case 'csnVulnerability':
+        dispatch(getVulnerability(id));
+        break;
+      default:
+        dispatch(getSitesSpecies(id, type));
+        break;
+    }
   }
 });
 

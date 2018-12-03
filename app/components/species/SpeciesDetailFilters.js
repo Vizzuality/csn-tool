@@ -13,6 +13,8 @@ function SpeciesDetailFilters(props) {
           <NavLink to={`/species/${props.id}/criticalSites`} i18nText="CSN" className={props.category && props.category === 'criticalSites' ? 'is-active' : ''} />
           <NavLink to={`/species/${props.id}/population`} i18nText="population" className={props.category && props.category === 'population' ? 'is-active' : ''} />
           <NavLink to={`/species/${props.id}/lookAlikeSpecies`} i18nText="lookAlikeSpecies" className={props.category && props.category.startsWith('lookAlikeSpecies') ? 'is-active' : ''} />
+          <NavLink to={`/species/${props.id}/populationVulnerability`} i18nText="populationVulnerability" className={props.category && props.category === 'populationVulnerability' ? 'is-active' : ''} />
+          <NavLink to={`/species/${props.id}/triggerCriticalSuitability`} i18nText="triggerCriticalSuitability" className={props.category && props.category === 'triggerCriticalSuitability' ? 'is-active' : ''} />
         </div>
         <CSVButton data={props.data} columns={props.columns} />
       </div>

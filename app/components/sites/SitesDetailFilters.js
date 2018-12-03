@@ -10,6 +10,9 @@ function SitesFilters(props) {
       <div className="column small-12 medium-8">
         <div className="tags">
           <NavLink to={`/sites/${props.type}/${props.id}/species`} i18nText={`${props.type}_qualifying_species`} className={props.category && props.category === 'species' ? 'is-active' : ''} />
+          {props.type === 'csn' &&
+            <NavLink to={`/sites/csn/${props.id}/csnVulnerability`} i18nText={'vulnerability'} className={props.category && props.category === 'csnVulnerability' ? 'is-active' : ''} />
+          }
         </div>
         <CSVButton data={props.data} columns={props.columns} />
       </div>

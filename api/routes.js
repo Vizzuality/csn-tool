@@ -22,6 +22,7 @@ router.route('/sites').get(SitesCtrl.getSites);
 router.route('/sites/locations/:type').get(SitesCtrl.getSitesLocations);
 router.route('/sites/:type/:id').get(SitesCtrl.getSitesDetails);
 router.route('/sites/:type/:id/species').get(SitesCtrl.getSitesSpecies);
+router.route('/sites/csn/:id/vulnerability').get(SitesCtrl.getSitesVulnerability);
 
 // Species
 router.route('/species').get(SpeciesCtrl.getSpeciesList);
@@ -31,6 +32,8 @@ router.route('/species/:id/criticalSites').get(SpeciesCtrl.getSpeciesCriticalSit
 router.route('/species/:id/population').get(SpeciesCtrl.getSpeciesPopulation);
 router.route('/species/:id/look-alike-species').get(SpeciesCtrl.getSpeciesLookAlikeSpecies);
 router.route('/species/:id/look-alike-species/:populationId').get(SpeciesCtrl.getPopulationsLookAlikeSpecies);
+router.route('/species/:id/population-vulnerability').get(SpeciesCtrl.getPopulationVulnerability);
+router.route('/species/:id/trigger-cs-suitability').get(SpeciesCtrl.getTriggerCriticalSitesSuitability);
 
 // Threshold
 router.route('/threshold/:lat/:lng/:zoom?').get(ThresholdCtrl.getSpeciesByPosition);

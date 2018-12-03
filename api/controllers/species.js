@@ -265,6 +265,88 @@ function getPopulationsLookAlikeSpecies(req, res) {
     });
 }
 
+function getPopulationVulnerability(req, res) {
+  const query = `SELECT
+   t1p.season,
+   CASE
+    WHEN change_in_suitability_of_all_sites = 'NA'
+    THEN null
+    ELSE ROUND(cast(change_in_suitability_of_all_sites AS numeric), 2)
+   END AS change_in_suitability_of_all_sites,
+   CASE
+    WHEN change_in_number_of_suitable_sites = 'NA'
+    THEN null
+    ELSE ROUND(cast(change_in_number_of_suitable_sites AS numeric), 2)
+   END AS change_in_number_of_suitable_sites,
+   CASE
+    WHEN change_in_suitability_of_critical_sites = 'NA'
+    THEN null
+    ELSE ROUND(cast(change_in_suitability_of_critical_sites AS numeric), 2)
+   END AS change_in_suitability_of_critical_sites,
+   CASE
+    WHEN change_in_proportion_supported = 'NA'
+    THEN null
+    ELSE ROUND(cast(change_in_proportion_supported AS numeric), 2)
+   END AS change_in_proportion_supported,
+   CASE
+    WHEN range_change = 'NA'
+    THEN null
+    ELSE ROUND(cast(range_change AS numeric), 2)
+   END AS range_change,
+   CASE
+    WHEN range_overlap = 'NA'
+    THEN null
+    ELSE ROUND(cast(range_overlap AS numeric), 2)
+   END AS range_overlap,
+   populations.population_name AS population_name
+   FROM table_1_populations AS t1p
+   INNER JOIN populations ON populations.wpepopid = t1p.wpepopid
+   WHERE t1p.ssis = '${req.params.id}'
+   ORDER BY populations.population_name ASC`;
+
+  runQuery(query)
+    .then((data) => {
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        res.json(results);
+      } else {
+        res.status(404);
+        res.json({ error: 'No vulnerability information' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
+function getTriggerCriticalSitesSuitability(req, res) {
+  const query = `SELECT sites.country, sites.site_name_clean AS csn_site_name,
+    t2a.populationname AS population_name,
+    t2a.season, t2a.percentfly, t2a.current_suitability,
+    t2a.future_suitability, ROUND(CAST(change AS numeric), 2) AS change_suitability,
+    threshold, season_ev_good_fair_poor_look_at AS season_ev
+    FROM table2a AS t2a
+    INNER JOIN sites_critical sites ON sites.site_id = t2a.site_id
+     WHERE t2a.ssis = '${req.params.id}'
+    ORDER BY sites.site_name_clean ASC`;
+
+  runQuery(query)
+    .then((data) => {
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        res.json(results);
+      } else {
+        res.status(404);
+        res.json({ error: 'No critical sites suitability information' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
 module.exports = {
   getSpeciesList,
   getSpeciesDetails,
@@ -272,5 +354,7 @@ module.exports = {
   getSpeciesCriticalSites,
   getSpeciesPopulation,
   getSpeciesLookAlikeSpecies,
-  getPopulationsLookAlikeSpecies
+  getPopulationsLookAlikeSpecies,
+  getPopulationVulnerability,
+  getTriggerCriticalSitesSuitability
 };
