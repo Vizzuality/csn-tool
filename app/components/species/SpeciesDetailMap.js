@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import SpeciesDetailLegend from 'containers/species/SpeciesDetailLegend';
-import PopulationMap from 'components/maps/PopulationMap';
+import ClimatenMap from 'components/maps/ClimateMap';
 
-class SpeciesMap extends PopulationMap {
+class SpeciesMap extends ClimatenMap {
   constructor(props) {
     super(props);
     this.mapClassName = '-full';
@@ -89,7 +89,7 @@ class SpeciesMap extends PopulationMap {
 }
 
 SpeciesMap.propTypes = {
-  ...PopulationMap.propTypes,
+  ...ClimatenMap.propTypes,
   sites: PropTypes.any.isRequired
 };
 

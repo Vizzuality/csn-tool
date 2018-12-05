@@ -41,6 +41,7 @@ const initialState = {
   layers: {
     sites: true,
     population: true,
+    climate: true,
     freshwaterFlowPresent: false,
     freshwaterFlow2050: false,
     inundationPresent: false,
