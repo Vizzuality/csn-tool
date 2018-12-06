@@ -134,6 +134,7 @@ export function getHydrologySections(layers) {
 export function getLegendData(state, { populations, populationColors }) {
   const legend = [];
   const showSiteProtectionLevels = ['sites', 'criticalSites'].includes(state.selectedCategory);
+  const showClimateLayers = state.layers.climate;
 
   if (showSiteProtectionLevels) {
     const sites = state[state.selectedCategory][state.selected];
