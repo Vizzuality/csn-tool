@@ -140,6 +140,7 @@ export function getLegendData(state, { populations, populationColors }) {
     const sites = state[state.selectedCategory][state.selected];
     legend.push(getSitesLegendSection(sites, state.layers.sites));
   }
+  //if(showCLimateLay
   legend.push(getPopulationsLegendSection(populations, populationColors, state.layers.population));
   legend.push(...getHydrologySections(state.layers));
   return legend.filter(l => l);

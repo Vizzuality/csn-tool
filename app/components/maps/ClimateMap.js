@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { MAPBOX_TOKEN } from 'constants/map';
 import PopulationMap from './PopulationMap';
 
+import { tileLayerPixelFilter } from 'helpers/filterPixel';
+
 class ClimateMap extends PopulationMap {
   constructor(props) {
     super(props);
@@ -23,7 +25,7 @@ class ClimateMap extends PopulationMap {
     const speciesId = this.props.id;
 
 
-    ['w', 'S', 'b'].forEach((season) => {
+    ['w'].forEach((season) => {
       const layer = `${speciesId}_${season}`;
       const layerPath = `https://api.mapbox.com/v4/wetlands.${layer}/{z}/{x}/{y}.png?access_token=${MAPBOX_TOKEN}`;
 
@@ -38,7 +40,13 @@ class ClimateMap extends PopulationMap {
   }
 
   createClimateLayer(layer, layerPath) {
-    const climateLayer = L.tileLayer(layerPath).setZIndex(1);
+    //const climateLayer = L.tileLayer(layerPath).setZIndex(1);
+    const filterOptions = {
+      matchRGBA: [0, 0, 0, 255],
+      missRGBA: [255, 255, 255, 64],
+      pixelCodes: [[255,0,0]]
+    };
+    var climateLayer = L.tileLayerPixelFilter(layerPath, filterOptions).setZIndex(1);
     this.climateLayers[layer] = climateLayer;
     return climateLayer;
   }
