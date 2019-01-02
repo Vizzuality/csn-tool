@@ -15,49 +15,15 @@ L.TileLayer.PixelFilter = L.TileLayer.extend({
     // then adds the all-important 'tileload' event handler which basically "detects" an unmodified tile and performs the pxiel-swap
     initialize: function (url, options) {
         options = L.extend({}, L.TileLayer.prototype.options, {
-            matchRGBA: null,
-            missRGBA: null,
-            pixelCodes: [],
             crossOrigin: true // bypass potential CORS issues by defaulting to true
         }, options);
         L.TileLayer.prototype.initialize.call(this, url, options);
         L.setOptions(this, options);
 
-        // go ahead and save our settings
-        this.setMatchRGBA(this.options.matchRGBA);
-        this.setMissRGBA(this.options.missRGBA);
-        this.setPixelCodes(this.options.pixelCodes);
-
         // and add our tile-load event hook which triggers us to do the pixel-swap
         this.on('tileload', function (event) {
             this.applyFiltersToTile(event.tile);
         });
-    },
-
-    // settings setters
-    setMatchRGBA: function (rgba) {
-        // save the setting
-        if (rgba !== null && (typeof rgba !== 'object' || typeof rgba.length !== 'number' || rgba.length !== 4) ) throw "L.TileLayer.PixelSwap expected matchRGBA to be RGBA [r,g,b,a] array or else null";
-        this.options.matchRGBA = rgba;
-
-        // force a redraw, which means new tiles, which mean new tileload events; the circle of life
-        this.redraw(true);
-    },
-    setMissRGBA: function (rgba) {
-        // save the setting
-        if (rgba !== null && (typeof rgba !== 'object' || typeof rgba.length !== 'number' || rgba.length !== 4) ) throw "L.TileLayer.PixelSwap expected missRGBA to be RGBA [r,g,b,a] array or else null";
-        this.options.missRGBA = rgba;
-
-        // force a redraw, which means new tiles, which mean new tileload events; the circle of life
-        this.redraw(true);
-    },
-    setPixelCodes: function (pixelcodes) {
-        // save the setting
-        if (typeof pixelcodes !== 'object' || typeof pixelcodes.length !== 'number') throw "L.TileLayer.PixelSwap expected pixelCodes to be a list of triplets: [ [r,g,b], [r,g,b], ... ]";
-        this.options.pixelCodes = pixelcodes;
-
-        // force a redraw, which means new tiles, which mean new tileload events; the circle of life
-        this.redraw(true);
     },
 
     // extend the _createTile function to add the .crossOrigin attribute, since loading tiles from a separate service is a pretty common need
@@ -88,32 +54,6 @@ L.TileLayer.PixelFilter = L.TileLayer.extend({
 
         // create our target imagedata
         var output = context.createImageData(width, height);
-
-        // extract out our RGBA trios into separate numbers, so we don't have to use rgba[i] a zillion times
-        var match_r, match_g, match_b, match_a;
-        var miss_r, miss_g, miss_b, miss_a;
-        var matchRGBA = this.options.matchRGBA;
-        var missRGBA  = this.options.missRGBA;
-        if (matchRGBA !== null) {
-            match_r = matchRGBA[0];
-            match_g = matchRGBA[1];
-            match_b = matchRGBA[2];
-            match_a = matchRGBA[3];
-        }
-        if (missRGBA !== null) {
-            miss_r = missRGBA[0];
-            miss_g = missRGBA[1];
-            miss_b = missRGBA[2];
-            miss_a = missRGBA[3];
-        }
-
-        // go over our pixel-code list and generate the list of integers that we'll use for RGB matching
-        // 1000000*R + 1000*G + B = 123123123 which is an integer, and finding an integer inside an array is a lot faster than finding an array inside an array
-        var pixelcodes = [];
-        for (var ii = 0, il = this.options.pixelCodes.length; ii < il; ii++) {
-            var value = 1000000 * this.options.pixelCodes[ii][0] + 1000 * this.options.pixelCodes[ii][1] + this.options.pixelCodes[ii][2];
-            pixelcodes.push(value);
-        }
 
         // iterate over the pixels (each one is 4 bytes, RGBA)
         // and see if they are on our list (recall the "addition" thing so we're comparing integers in an array for performance)
