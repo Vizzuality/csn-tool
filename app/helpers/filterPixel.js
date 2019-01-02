@@ -133,30 +133,21 @@ L.TileLayer.PixelFilter = L.TileLayer.extend({
             var b = pixels[pi+2];
             var a = pixels[pi+3];
 
-            // bail condition: if the alpha is 0 then it's already transparent, likely nodata, and we should skip it
-            //if (a == 0) {
-            //    output.data[pi  ] = 255;
-            //    output.data[pi+1] = 255;
-            //    output.data[pi+2] = 255;
-            //    output.data[pi+3] = 0;
-            //    continue;
-            //}
-
-            // default to matching, so that if we are not in fact filtering by code it's an automatic hit
-            // number matching trick: 1000000*R + 1000*G + 1*B = 123,123,123 a simple number that either is or isn't on the list
-            //var match = true;
-            //if (pixelcodes.length) {
-            //    var sum = 1000000 * r + 1000 * g + b;
-            //    if (-1 === pixelcodes.indexOf(sum)) match = false;
-            //}
-
-					  scaleColor = myScale(r).rgba();
-
             // did it match? either way we push a R, a G, and a B onto the image blob
             // if the target RGBA is a null, then we push exactly the same RGBA as we found in the source pixel
+            //
+            // For this:
+            // R = present suitability;
+            // G = future suitability;
+            // B = ?
+            // A = ?
+            // if suitability is zero, make pixel not show with A channel = 0
+            // for first tests we are using the present suitability only
+					  scaleColor = myScale(r).rgba();
             output.data[pi  ] = scaleColor[0];
             output.data[pi+1] = scaleColor[1];
             output.data[pi+2] = scaleColor[2];
+            output.data[pi+3] = r === 0 ? 0 : 255;
         }
 
         // write the image back to the canvas, and assign its base64 back into the on-screen tile to visualize the change
