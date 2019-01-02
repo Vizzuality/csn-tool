@@ -154,10 +154,9 @@ L.TileLayer.PixelFilter = L.TileLayer.extend({
 
             // did it match? either way we push a R, a G, and a B onto the image blob
             // if the target RGBA is a null, then we push exactly the same RGBA as we found in the source pixel
-            output.data[pi  ] = 123;
-            output.data[pi+1] = 230;
-            output.data[pi+2] = 12;
-            output.data[pi+3] = 1;
+            output.data[pi  ] = scaleColor[0];
+            output.data[pi+1] = scaleColor[1];
+            output.data[pi+2] = scaleColor[2];
         }
 
         // write the image back to the canvas, and assign its base64 back into the on-screen tile to visualize the change
