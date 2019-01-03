@@ -16,6 +16,12 @@ class ClimateMap extends PopulationMap {
     this.updateClimateLayers();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.layers !== prevProps.layers) {
+      this.updateClimateLayers();
+    }
+  }
+
   componentWillReceiveProps(newProps) {
     super.componentWillReceiveProps(newProps);
   }
@@ -24,30 +30,31 @@ class ClimateMap extends PopulationMap {
     if (!this.props.layers && this.props.layers.climate) return;
     const speciesId = this.props.id;
 
+    ['present', 'future'].forEach((time) => {
+      ['b', 'w', 'p', 'S'].forEach((season) => {
+        const layerId = `${time}_${speciesId}_${season}`;
+        const layerName = `${speciesId}_${season}`;
+        const layerPath = `https://api.mapbox.com/v4/wetlands.${layerName}/{z}/{x}/{y}.png?access_token=${MAPBOX_TOKEN}`;
 
-    ['w'].forEach((season) => {
-      const layer = `${speciesId}_${season}`;
-      const layerPath = `https://api.mapbox.com/v4/wetlands.${layer}/{z}/{x}/{y}.png?access_token=${MAPBOX_TOKEN}`;
+        const layerObj = this.climateLayers[layerId] || this.createClimateLayer(layerId, layerPath, time);
 
-      const layerObj = this.climateLayers[layer] || this.createClimateLayer(layer, layerPath);
-
-      if (this.props.layers.climate) {
-        layerObj.addTo(this.map);
-      } else {
-        layerObj.remove();
-      }
+        if (this.props.layers.climate && this.props.layers.climate_layers[time] &&
+           this.props.layers.climate_layers[time+'_layers'].indexOf(season)>-1) {
+          layerObj.addTo(this.map);
+        } else {
+          layerObj.remove();
+        }
+      });
     });
   }
 
-  createClimateLayer(layer, layerPath) {
+  createClimateLayer(layerId, layerPath, time) {
     //const climateLayer = L.tileLayer(layerPath).setZIndex(1);
     const filterOptions = {
-      matchRGBA: [0, 0, 0, 255],
-      missRGBA: [255, 255, 255, 64],
-      pixelCodes: [[255,0,0]]
+      present: time === 'present'
     };
-    var climateLayer = L.tileLayerPixelFilter(layerPath, filterOptions).setZIndex(1);
-    this.climateLayers[layer] = climateLayer;
+    const climateLayer = L.tileLayerPixelFilter(layerPath, filterOptions).setZIndex(1);
+    this.climateLayers[layerId] = climateLayer;
     return climateLayer;
   }
 }

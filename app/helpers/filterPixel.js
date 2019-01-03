@@ -15,6 +15,7 @@ L.TileLayer.PixelFilter = L.TileLayer.extend({
     // then adds the all-important 'tileload' event handler which basically "detects" an unmodified tile and performs the pxiel-swap
     initialize: function (url, options) {
         options = L.extend({}, L.TileLayer.prototype.options, {
+            present: true,
             crossOrigin: true // bypass potential CORS issues by defaulting to true
         }, options);
         L.TileLayer.prototype.initialize.call(this, url, options);
@@ -83,7 +84,7 @@ L.TileLayer.PixelFilter = L.TileLayer.extend({
             // A = ?
             // if suitability is zero, make pixel not show with A channel = 0
             // for first tests we are using the present suitability only
-					  scaleColor = myScale(r).rgba();
+					  scaleColor = this.options.present ? myScale(r).rgba() : myScale(g).rgba();
             output.data[pi  ] = scaleColor[0];
             output.data[pi+1] = scaleColor[1];
             output.data[pi+2] = scaleColor[2];

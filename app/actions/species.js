@@ -15,7 +15,8 @@ import {
   SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_PARAMS,
   TOGGLE_SPECIES_LAYER,
-  TOGGLE_SPECIES_LEGEND_ITEM
+  TOGGLE_SPECIES_LEGEND_ITEM,
+  TOGGLE_SPECIES_CLIMATE_LAYER
 } from 'constants/action-types';
 import { TABLES } from 'constants/tables';
 
@@ -241,6 +242,13 @@ export function toggleLegendItem(item, active) {
   return {
     type: TOGGLE_SPECIES_LEGEND_ITEM,
     payload: { id: item.id, active }
+  };
+}
+
+export function toggleClimateLayer(layer) {
+  return {
+    type: TOGGLE_SPECIES_CLIMATE_LAYER,
+    payload: layer
   };
 }
 

@@ -114,6 +114,148 @@ function getPopulationsLegendSection(populations, populationColors, isActive) {
   };
 }
 
+function getSpeciesClimateLegendSection(climate_layers) {
+  const climateSections = [
+    {
+    name: 'Climate Change - Present suitability',
+    layer: 'present',
+    climateSection: true,
+    active: climate_layers && climate_layers.present,
+    subSections: [
+      {
+      layer: 'present_w',
+      name: 'Winter',
+      active: climate_layers && climate_layers.present_layers.indexOf('w') > -1,
+      scale: [
+        {
+        name: 'Not suitable',
+        color: 'yellow'
+      },
+      {
+        name: 'Suitable',
+        color: '#008ae5'
+      }
+      ]
+    },
+    {
+      layer: 'present_b',
+      name: 'Breeding',
+      active: climate_layers && climate_layers.present_layers.indexOf('b') > -1,
+      scale: [
+        {
+        name: 'Not suitable',
+        color: 'yellow'
+      },
+      {
+        name: 'Suitable',
+        color: '#008ae5'
+      }
+      ]
+    },
+    {
+      layer: 'present_p',
+      name: 'Passage',
+      active: climate_layers && climate_layers.present_layers.indexOf('p') > -1,
+      scale: [
+        {
+        name: 'Not suitable',
+        color: 'yellow'
+      },
+      {
+        name: 'Suitable',
+        color: '#008ae5'
+      }
+      ]
+    },
+    {
+      layer: 'present_S',
+      name: 'Sedentary',
+      active: climate_layers && climate_layers.present_layers.indexOf('S') > -1,
+      scale: [
+        {
+        name: 'Not suitable',
+        color: 'yellow'
+      },
+      {
+        name: 'Suitable',
+        color: '#008ae5'
+      }
+      ]
+    }
+    ]
+  },
+  {
+    name: 'Climate Change - Future suitability',
+    layer: 'future',
+    climateSection: true,
+    active: climate_layers && climate_layers.future,
+    subSections: [
+      {
+      layer: 'future_w',
+      name: 'Winter',
+      active: climate_layers && climate_layers.future_layers.indexOf('w') > -1,
+      scale: [
+        {
+        name: 'Not suitable',
+        color: 'yellow'
+      },
+      {
+        name: 'Suitable',
+        color: '#008ae5'
+      }
+      ]
+    },
+    {
+      layer: 'future_b',
+      name: 'Breeding',
+      active: climate_layers && climate_layers.future_layers.indexOf('b') > -1,
+      scale: [
+        {
+        name: 'Not suitable',
+        color: 'yellow'
+      },
+      {
+        name: 'Suitable',
+        color: '#008ae5'
+      }
+      ]
+    },
+    {
+      layer: 'future_p',
+      name: 'Passage',
+      active: climate_layers && climate_layers.future_layers.indexOf('p') > -1,
+      scale: [
+        {
+        name: 'Not suitable',
+        color: 'yellow'
+      },
+      {
+        name: 'Suitable',
+        color: '#008ae5'
+      }
+      ]
+    },
+    {
+      layer: 'future_S',
+      name: 'Sedentary',
+      active: climate_layers && climate_layers.future_layers.indexOf('S') > -1,
+      scale: [
+        {
+        name: 'Not suitable',
+        color: 'yellow'
+      },
+      {
+        name: 'Suitable',
+        color: '#008ae5'
+      }
+      ]
+    }
+    ]
+  }
+  ];
+  return climateSections;
+}
+
 export function getHydrologySections(layers) {
   const activeLayers = Object.keys(layers).filter(key => layers[key]);
 
@@ -132,7 +274,7 @@ export function getHydrologySections(layers) {
 }
 
 export function getLegendData(state, { populations, populationColors }) {
-  const legend = [];
+  var legend = [];
   const showSiteProtectionLevels = ['sites', 'criticalSites'].includes(state.selectedCategory);
   const showClimateLayers = state.layers.climate;
 
@@ -140,8 +282,13 @@ export function getLegendData(state, { populations, populationColors }) {
     const sites = state[state.selectedCategory][state.selected];
     legend.push(getSitesLegendSection(sites, state.layers.sites));
   }
+
   //if(showCLimateLay
   legend.push(getPopulationsLegendSection(populations, populationColors, state.layers.population));
   legend.push(...getHydrologySections(state.layers));
+
+  if (showClimateLayers) {
+    legend = legend.concat(getSpeciesClimateLegendSection(state.layers.climate_layers));
+  }
   return legend.filter(l => l);
 }
