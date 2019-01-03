@@ -38,8 +38,8 @@ class ClimateMap extends PopulationMap {
 
         const layerObj = this.climateLayers[layerId] || this.createClimateLayer(layerId, layerPath, time);
 
-        if (this.props.layers.climate && this.props.layers.climate_layers[time] &&
-           this.props.layers.climate_layers[time+'_layers'].indexOf(season)>-1) {
+        const varName = ['climate', time, season].join('_');
+        if (this.props.layers.climate && this.props.layers[varName]) {
           layerObj.addTo(this.map);
         } else {
           layerObj.remove();

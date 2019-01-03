@@ -114,18 +114,17 @@ function getPopulationsLegendSection(populations, populationColors, isActive) {
   };
 }
 
-function getSpeciesClimateLegendSection(climate_layers) {
+function getSpeciesClimateLegendSection(layers) {
   const climateSections = [
     {
     name: 'Climate Change - Present suitability',
-    layer: 'present',
-    climateSection: true,
-    active: climate_layers && climate_layers.present,
+    layer: 'climate_present',
+    active: layers && layers.climate_present,
     subSections: [
       {
-      layer: 'present_w',
+      layer: 'climate_present_w',
       name: 'Winter',
-      active: climate_layers && climate_layers.present_layers.indexOf('w') > -1,
+      active: layers && layers.climate_present_w,
       scale: [
         {
         name: 'Not suitable',
@@ -138,9 +137,9 @@ function getSpeciesClimateLegendSection(climate_layers) {
       ]
     },
     {
-      layer: 'present_b',
+      layer: 'climate_present_b',
       name: 'Breeding',
-      active: climate_layers && climate_layers.present_layers.indexOf('b') > -1,
+      active: layers && layers.climate_present_b,
       scale: [
         {
         name: 'Not suitable',
@@ -153,9 +152,9 @@ function getSpeciesClimateLegendSection(climate_layers) {
       ]
     },
     {
-      layer: 'present_p',
+      layer: 'climate_present_p',
       name: 'Passage',
-      active: climate_layers && climate_layers.present_layers.indexOf('p') > -1,
+      active: layers && layers.climate_present_p,
       scale: [
         {
         name: 'Not suitable',
@@ -168,9 +167,9 @@ function getSpeciesClimateLegendSection(climate_layers) {
       ]
     },
     {
-      layer: 'present_S',
+      layer: 'climate_present_S',
       name: 'Sedentary',
-      active: climate_layers && climate_layers.present_layers.indexOf('S') > -1,
+      active: layers && layers.climate_present_S,
       scale: [
         {
         name: 'Not suitable',
@@ -186,14 +185,14 @@ function getSpeciesClimateLegendSection(climate_layers) {
   },
   {
     name: 'Climate Change - Future suitability',
-    layer: 'future',
+    layer: 'climate_future',
     climateSection: true,
-    active: climate_layers && climate_layers.future,
+    active: layers && layers.climate_future,
     subSections: [
       {
-      layer: 'future_w',
+      layer: 'climate_future_w',
       name: 'Winter',
-      active: climate_layers && climate_layers.future_layers.indexOf('w') > -1,
+      active: layers && layers.climate_future_w,
       scale: [
         {
         name: 'Not suitable',
@@ -206,9 +205,9 @@ function getSpeciesClimateLegendSection(climate_layers) {
       ]
     },
     {
-      layer: 'future_b',
+      layer: 'climate_future_b',
       name: 'Breeding',
-      active: climate_layers && climate_layers.future_layers.indexOf('b') > -1,
+      active: layers && layers.climate_future_b,
       scale: [
         {
         name: 'Not suitable',
@@ -221,9 +220,9 @@ function getSpeciesClimateLegendSection(climate_layers) {
       ]
     },
     {
-      layer: 'future_p',
+      layer: 'climate_future_p',
       name: 'Passage',
-      active: climate_layers && climate_layers.future_layers.indexOf('p') > -1,
+      active: layers && layers.climate_future_p,
       scale: [
         {
         name: 'Not suitable',
@@ -236,9 +235,9 @@ function getSpeciesClimateLegendSection(climate_layers) {
       ]
     },
     {
-      layer: 'future_S',
+      layer: 'climate_future_S',
       name: 'Sedentary',
-      active: climate_layers && climate_layers.future_layers.indexOf('S') > -1,
+      active: layers && layers.climate_future_S,
       scale: [
         {
         name: 'Not suitable',
@@ -288,7 +287,7 @@ export function getLegendData(state, { populations, populationColors }) {
   legend.push(...getHydrologySections(state.layers));
 
   if (showClimateLayers) {
-    legend = legend.concat(getSpeciesClimateLegendSection(state.layers.climate_layers));
+    legend = legend.concat(getSpeciesClimateLegendSection(state.layers));
   }
   return legend.filter(l => l);
 }

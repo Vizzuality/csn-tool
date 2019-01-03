@@ -46,12 +46,12 @@ function renderItems(items, onHover) {
   ));
 }
 
-function renderSubSections(subSections, onChangeAction) {
+function renderSubSections(subSections, onSwitchChange) {
   return subSections.map((subSection, index) => (
     <div className="sub-section" key={index}>
       <div className="sub-section-header">
         <p>{subSection.name}</p>
-        <Switch checked={subSection.active} onChange={() => onChangeAction(subSection)} />
+        <Switch checked={subSection.active} onChange={() => onSwitchChange(subSection)} />
       </div>
       <SmoothCollapse className="sub-section-body" expanded={subSection.active}>
         {subSection.items && renderItems(subSection.items)}
@@ -84,7 +84,7 @@ class Legend extends React.Component {
   render() {
     const { context, setCollapse } = this;
     const { collapse } = this.state;
-    const { sections, onSwitchChange, onLegendItemHover, onClimateLayerToggle} = this.props;
+    const { sections, onSwitchChange, onLegendItemHover } = this.props;
     if (sections && !sections.length) return null;
 
     return (
@@ -102,7 +102,6 @@ class Legend extends React.Component {
         {collapse && (
           <div className="collapse-box">
             {sections.map((section, index) => {
-              const onChangeAction = section.climateSection ? onClimateLayerToggle : onSwitchChange;
               const legendLine = index > 0 ? <div className="legend-line" /> : '';
               return (
                 <div key={index}>
@@ -110,10 +109,10 @@ class Legend extends React.Component {
                   <div className="section" key={index}>
                     <div className="section-header">
                       <p>{section.i18nName ? context.t(section.i18nName) : section.name}</p>
-                      <Switch checked={section.active} onChange={() => onChangeAction(section)} />
+                      <Switch checked={section.active} onChange={() => onSwitchChange(section)} />
                     </div>
                     <SmoothCollapse className="section-body" expanded={section.active}>
-                      {section.subSections && renderSubSections(section.subSections, onChangeAction)}
+                      {section.subSections && renderSubSections(section.subSections, onSwitchChange)}
                       {section.items && renderItems(section.items, onLegendItemHover)}
                     </SmoothCollapse>
                   </div>
@@ -153,8 +152,7 @@ Legend.propTypes = {
     })
   ),
   onSwitchChange: PropTypes.func.isRequired,
-  onLegendItemHover: PropTypes.func,
-  onClimateLayerToggle: PropTypes.func.isRequired
+  onLegendItemHover: PropTypes.func
 };
 
 export default Legend;

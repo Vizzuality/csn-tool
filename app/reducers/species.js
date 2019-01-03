@@ -11,8 +11,7 @@ import {
   SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_PARAMS,
   TOGGLE_SPECIES_LAYER,
-  TOGGLE_SPECIES_LEGEND_ITEM,
-  TOGGLE_SPECIES_CLIMATE_LAYER
+  TOGGLE_SPECIES_LEGEND_ITEM
 } from 'constants/action-types';
 import {
   ALL_SPECIES_COLUMNS,
@@ -43,12 +42,16 @@ const initialState = {
     sites: true,
     population: true,
     climate: true,
-    climate_layers: {
-      present: false,
-      future: false,
-      present_layers: [],
-      future_layers: []
-    },
+    climate_present: false,
+    climate_present_w: false,
+    climate_present_b: false,
+    climate_present_p: false,
+    climate_present_S: false,
+    climate_future: false,
+    climate_future_w: false,
+    climate_future_b: false,
+    climate_future_p: false,
+    climate_future_S: false,
     freshwaterFlowPresent: false,
     freshwaterFlow2050: false,
     inundationPresent: false,
@@ -134,23 +137,6 @@ const speciesReducer = (state = initialState, action) => {
         ...state,
         highlightedPopulationId: action.payload.active ? action.payload.id : null
       };
-    }
-    case TOGGLE_SPECIES_CLIMATE_LAYER: {
-      const layers = { ...state.layers };
-      if (action.payload.layer === 'present') {
-        layers.climate_layers['present'] = !layers.climate_layers['present'];
-      } else if (action.payload.layer === 'future') {
-        layers.climate_layers['future'] = !layers.climate_layers['future'];
-      } else {
-        const items = action.payload.layer.split('_');
-        const myIndex = layers.climate_layers[items[0]+'_layers'].indexOf(items[1]);
-        if (myIndex > -1) {
-          layers.climate_layers[items[0]+'_layers'].splice(myIndex, 1);
-        } else {
-          layers.climate_layers[items[0]+'_layers'].push(items[1]);
-        }
-      }
-      return { ...state, layers };
     }
     default:
       return state;
