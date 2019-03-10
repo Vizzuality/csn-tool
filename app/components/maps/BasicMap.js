@@ -155,7 +155,11 @@ class Map extends React.Component {
   }
 
   addBaseLayers() {
-    const mapLayer = L.tileLayer(BASEMAP_TILE_MAP, { type: BASEMAP_MAP }).setZIndex(0);
+    const mapLayer = L.tileLayer(BASEMAP_TILE_MAP, {
+      type: BASEMAP_MAP,
+      continuousWorld: false,
+      noWrap: true
+    }).setZIndex(0);
     const satelliteLayer = L.tileLayer(BASEMAP_TILE_SATELLITE, {
       type: BASEMAP_SATELLITE
     }).setZIndex(0);

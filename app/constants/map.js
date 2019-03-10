@@ -1,5 +1,5 @@
-export const MAP_INITIAL_ZOOM = 2;
-export const MAP_MIN_ZOOM = 2;
+export const MAP_INITIAL_ZOOM = 3;
+export const MAP_MIN_ZOOM = 3;
 export const MAP_CENTER = [23.738492, 27.113969];
 export const MAP_MAX_BOUNDS = [
   [82.685014, -171.843425],
