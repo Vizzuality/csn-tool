@@ -19,12 +19,12 @@ export const ALL_COUNTRY_COLUMNS = {
 };
 
 export const DEFAULT_COUNTRY_COLUMNS = {
-  species: ['scientific_name', 'iucn_category', 'country_status', 'occurrence_status'],
-  populations: ['scientific_name', 'iucn_category', 'population', 'a', 'b', 'c', 'ramsar_criterion'],
+  species: ['scientific_name', 'english_name', 'iucn_category', 'country_status', 'occurrence_status'],
+  populations: ['scientific_name', 'english_name', 'iucn_category', 'population', 'a', 'b', 'c', 'ramsar_criterion'],
   criticalSites: ['csn_name', 'protected', 'csn_species', 'total_percentage'],
-  lookAlikeSpecies: ['original_species', 'population', 'original_a', 'original_b',
+  lookAlikeSpecies: ['original_species', 'english_name', 'population', 'original_a', 'original_b',
                      'original_c', 'confusion_species', 'confusion_species_as'],
-  lookAlikeSpeciesPopulation: ['scientific_name', 'population', 'a', 'b', 'c'],
+  lookAlikeSpeciesPopulation: ['scientific_name', 'english_name', 'population', 'a', 'b', 'c'],
   sites: ['site_name', 'protected', 'iba_species', 'iba_in_danger']
 };
 
@@ -43,8 +43,8 @@ export const ALL_SITES_COLUMNS = {
 export const DEFAULT_SITES_COLUMNS = {
   csn: ['country', 'csn_name', 'protected', 'csn', 'total_percentage'],
   iba: ['country', 'site_name', 'protected', 'iba_species', 'iba_in_danger'],
-  ibaSpecies: ['scientific_name', 'season', 'geometric_mean', 'units', 'iba_criteria'],
-  csnSpecies: ['scientific_name', 'population', 'season', 'geometric_mean', 'units',
+  ibaSpecies: ['scientific_name', 'english_name', 'season', 'geometric_mean', 'units', 'iba_criteria'],
+  csnSpecies: ['scientific_name', 'english_name', 'population', 'season', 'geometric_mean', 'units',
                'percentfly'],
   csnVulnerability: ['scientific_name', 'english_name', 'season', 'current_suitability',
     'future_suitability', 'change_suitability', 'threshold', 'season_ev']
@@ -72,10 +72,10 @@ export const ALL_SPECIES_COLUMNS = {
 };
 
 export const DEFAULT_SPECIES_COLUMNS = {
-  over: ['scientific_name', 'genus', 'family', 'iucn_category', 'aewa_annex_2'],
+  over: ['scientific_name', 'english_name', 'genus', 'family', 'iucn_category', 'aewa_annex_2'],
   population: ['population', 'iucn_category', 'a', 'b', 'c', 'ramsar_criterion'],
   lookAlikeSpecies: ['population', 'original_a', 'original_b', 'original_c', 'confusion_species', 'confusion_species_as'],
-  lookAlikeSpeciesPopulation: ['scientific_name', 'population', 'a', 'b', 'c'],
+  lookAlikeSpeciesPopulation: ['scientific_name', 'english_name', 'population', 'a', 'b', 'c'],
   criticalSites: ['country', 'csn_site_name', 'population', 'season',
     'geometric_mean', 'units', 'percentfly'],
   sites: ['country', 'site_name', 'season', 'geometric_mean', 'units', 'iba_criteria'],
@@ -94,7 +94,8 @@ export const ALL_THRESHOLD_COLUMNS = [
   'ramsar_criterion'
 ];
 
-export const DEFAULT_THRESHOLD_COLUMNS = ['scientific_name', 'iucn_category', 'population', 'a', 'b', 'c', 'ramsar_criterion'];
+export const DEFAULT_THRESHOLD_COLUMNS = ['scientific_name', 'english_name',
+  'iucn_category', 'population', 'a', 'b', 'c', 'ramsar_criterion'];
 
 export const SEARCH_COLUMNS = {
   species: {
