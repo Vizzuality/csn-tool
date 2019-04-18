@@ -154,7 +154,7 @@ class TableListHeader extends React.Component {
   getAlignClass(column) {
     const colCenter = ['a', 'b', 'c', 'original_a', 'original_b',
       'original_c', 'iba', 'csn', 'iba_species', 'csn_species',
-      'site_id', 'lat', 'lon'];
+      'id', 'site_id', 'lat', 'lon'];
 
     let alignClass = '';
     if (colCenter.indexOf(column) > -1) {
