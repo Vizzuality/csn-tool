@@ -7,7 +7,7 @@ import ScrollButton from 'components/common/ScrollButton';
 import { Sticky } from 'react-sticky';
 
 function SitesDetailTable(props) {
-  const detailLink = props.category === 'species' ? props.category : '';
+  const detailLink = ['species', 'csnVulnerability'].indexOf(props.category) > -1 ? 'species' : '';
   return (
     <div className="c-table" >
       <ScrollButton />
