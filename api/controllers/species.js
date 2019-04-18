@@ -62,7 +62,8 @@ function getSpeciesSites(req, res) {
       ss.season, ss.units, si.site_name, si.lat, si.lon, si.country, si.iso2,
       coalesce(si.protection_status, 'Unknown') AS protected,
       string_agg(p.population_name, ', ') as population,
-      si.hyperlink, si.site_id AS id, ss.geometric_mean,
+      si.hyperlink, si.site_id AS id,
+      si.site_id AS site_id, ss.geometric_mean,
       ss.start, ss._end as end
     FROM species s
     INNER JOIN species_sites_iba ss ON s.species_id = ss.species_id
@@ -102,7 +103,8 @@ function getSpeciesCriticalSites(req, res) {
       si.lat, si.lon, si.country, si.iso2,
       coalesce(si.protected, 'Unknown') as protected,
       p.population_name AS population,
-      si.hyperlink, si.site_id AS id, ss.geometric_mean,
+      si.hyperlink, si.site_id AS id,
+      si.site_id AS site_id, ss.geometric_mean,
       CASE
        WHEN ss.csn1 = 1 THEN true
        WHEN ss.csn1 = 0 THEN false
