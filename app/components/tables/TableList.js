@@ -22,7 +22,9 @@ function detailLinkFrame(label, link) {
 function getDetailLink(t, detailLink, item) {
   if (!detailLink) return null;
 
-  const linkText = detailLink.toLowerCase().indexOf('species') > -1 ? t('viewSpeciesDetails') : t('viewSiteDetails');
+  const linkText = detailLink.toLowerCase().indexOf('species') > -1 ?
+    (detailLink.toLowerCase().indexOf('population') > -1 ? t('viewLookAlike') : t('viewSpeciesDetails'))
+      : t('viewSiteDetails');
   const link = {
     countrySpeciesPopulation: `/countries/${item.iso3}/lookAlikeSpecies/${item.pop_id_origin}`,
     speciesPopulation: `/species/${item.species_id}/lookAlikeSpecies/${item.pop_id_origin}`

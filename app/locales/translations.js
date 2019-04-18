@@ -137,6 +137,7 @@ export const translations = {
     'coordinates': 'Coordinates',
     'birdlifeFactsheet': 'Birdlife Factsheet',
     'viewSpeciesDetails': 'View species details',
+    'viewLookAlike': 'View look-alike species',
     'viewSiteDetails': 'View site details',
     'protectionLevel': 'Protection Level',
     'populationBoundaries': 'Population Boundaries',
