@@ -267,7 +267,17 @@ function getPopulationsLookAlikeSpecies(req, res) {
 
 function getPopulationVulnerability(req, res) {
   const query = `SELECT
-   t1p.season,
+   CASE
+    WHEN t1p.season = 'passage'
+    THEN 'Passage'
+    WHEN t1p.season = 'winter'
+    THEN 'Wintering'
+    WHEN t1p.season = 'SE'
+    THEN 'Sedentary'
+    WHEN t1p.season = 'breed'
+    THEN 'Breeding'
+    ELSE t1p.season
+   END as season,
    CASE
     WHEN change_in_suitability_of_all_sites = 'NA'
     THEN null

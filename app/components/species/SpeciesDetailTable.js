@@ -43,9 +43,9 @@ class SpeciesDetailTable extends React.Component {
       case 'sites':
         return 'sites/iba';
       case 'populationVulnerability':
-        return 'speciesPopulation';
+        return null;
       case 'triggerCriticalSuitability':
-        return 'sites/csn';
+        return null;
       default:
         return category;
     }
