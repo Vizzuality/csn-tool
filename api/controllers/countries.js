@@ -44,6 +44,7 @@ function getCountrySites(req, res) {
       s.lat,
       s.lon,
       s.site_id as id,
+      s.site_id as site_id,
       stc.iba AS iba_species,
       s.hyperlink,
       s.iba_in_danger
@@ -77,6 +78,7 @@ function getCountryCriticalSites(req, res) {
     )
     SELECT
       s.site_id AS id,
+      s.site_id AS site_id,
       s.site_name_clean AS csn_name,
       s.site_name_clean AS site_name,
       s.lat,
@@ -226,7 +228,8 @@ function getCountryLookAlikeSpecies(req, res) {
       pi.a,
       pi.b,
       pi.c,
-      pi.wpepopid
+      pi.wpepopid,
+      pi.wpepopid AS pop_id
     FROM
     (
       SELECT confusion_group,

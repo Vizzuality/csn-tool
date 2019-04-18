@@ -6,10 +6,10 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 import { numberToThousands } from 'helpers/data';
 
 const numbersAsText = ['year', 'start', 'end', 'year_end', 'year_start',
-  'id', 'site_id', 'lat', 'lon'];
+  'id', 'site_id', 'lat', 'lon', 'pop_id'];
 const columnsCenterAligned = ['a', 'b', 'c', 'original_a', 'original_b',
   'original_c', 'iba', 'csn', 'iba_species', 'csn_species',
-  'id', 'site_id', 'lat', 'lon'];
+  'id', 'site_id', 'lat', 'lon', 'pop_id'];
 
 function detailLinkFrame(label, link) {
   return (

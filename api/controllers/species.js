@@ -144,7 +144,8 @@ function getSpeciesCriticalSites(req, res) {
 }
 
 function getSpeciesPopulation(req, res) {
-  const query = `SELECT p.population_name AS population, p.a, p.b, p.c,
+  const query = `SELECT s.species_id AS id, p.wpepopid AS pop_id,
+    p.population_name AS population, p.a, p.b, p.c,
     s.iucn_category, p.caf_action_plan, p.eu_birds_directive,
     table_1_status,
     p.species, p.wpepopid, p.flyway_range, p.year_start, p.year_end, p.size_min,
@@ -173,6 +174,8 @@ function getSpeciesPopulation(req, res) {
 
 function getSpeciesLookAlikeSpecies(req, res) {
   const query = `SELECT sq.scientific_name AS original_species,
+    sq.species_id AS id,
+    sq.wpepopid AS pop_id,
     sq.species_id, sq.english_name, sq.french_name,
     sq.population_name AS population, sq.a AS original_a,
     sq.b AS original_b, sq.c AS original_c, sq.wpepopid AS pop_id_origin,
