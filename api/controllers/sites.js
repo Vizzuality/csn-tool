@@ -244,10 +244,19 @@ function getSitesSpecies(req, res) {
 }
 
 function getSitesVulnerability(req, res) {
-  const query = `SELECT species.scientific_name, species.english_name,
+  const query = `SELECT species.species_id AS id, species.scientific_name, species.english_name,
     t2a.season, t2a.current_suitability, t2a.future_suitability,
     ROUND(CAST(change AS numeric), 2) AS change_suitability,
-    threshold, season_ev_good_fair_poor_look_at AS season_ev
+    threshold,
+    CASE
+      WHEN season_ev_good_fair_poor_look_at = 'P'
+      THEN 'Poor'
+      WHEN season_ev_good_fair_poor_look_at = 'F'
+      THEN 'Fair'
+      WHEN season_ev_good_fair_poor_look_at = 'G'
+      THEN 'Good'
+      ELSE season_ev_good_fair_poor_look_at
+    END AS season_ev
     FROM table2a AS t2a
     INNER JOIN species ON t2a.ssis::integer = species.species_id
     WHERE t2a.site_id = ${req.params.id}

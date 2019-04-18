@@ -36,7 +36,7 @@ export const ALL_SITES_COLUMNS = {
   csnSpecies: ['id', 'scientific_name', 'english_name', 'french_name', 'iucn_category', 'population',
                'season', 'start', 'end', 'minimum', 'maximum', 'geometric_mean', 'units',
                'percentfly', 'csn1', 'csn2'],
-  csnVulnerability: ['scientific_name', 'english_name', 'season', 'current_suitability',
+  csnVulnerability: ['id', 'scientific_name', 'english_name', 'season', 'current_suitability',
     'future_suitability', 'change_suitability', 'threshold', 'season_ev']
 };
 
