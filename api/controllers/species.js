@@ -325,7 +325,16 @@ function getTriggerCriticalSitesSuitability(req, res) {
     t2a.populationname AS population_name,
     t2a.season, t2a.percentfly, t2a.current_suitability,
     t2a.future_suitability, ROUND(CAST(change AS numeric), 2) AS change_suitability,
-    threshold, season_ev_good_fair_poor_look_at AS season_ev
+    threshold,
+    CASE
+      WHEN season_ev_good_fair_poor_look_at = 'P'
+      THEN 'Poor'
+      WHEN season_ev_good_fair_poor_look_at = 'F'
+      THEN 'Fair'
+      WHEN season_ev_good_fair_poor_look_at = 'G'
+      THEN 'Good'
+      ELSE season_ev_good_fair_poor_look_at
+    END AS season_ev
     FROM table2a AS t2a
     INNER JOIN sites_critical sites ON sites.site_id = t2a.site_id
      WHERE t2a.ssis = '${req.params.id}'
