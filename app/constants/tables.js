@@ -29,8 +29,8 @@ export const DEFAULT_COUNTRY_COLUMNS = {
 };
 
 export const ALL_SITES_COLUMNS = {
-  csn: ['country', 'csn_name', 'protected', 'csn', 'total_percentage'],
-  iba: ['country', 'site_name', 'protected', 'iba_species', 'iba_in_danger'],
+  csn: ['site_id', 'lat', 'lon', 'country', 'csn_name', 'protected', 'csn', 'total_percentage'],
+  iba: ['site_id', 'lat', 'lon', 'country', 'site_name', 'protected', 'iba_species', 'iba_in_danger'],
   ibaSpecies: ['scientific_name', 'english_name', 'french_name', 'iucn_category', 'season', 'start',
                'end', 'minimum', 'maximum', 'geometric_mean', 'units', 'iba_criteria'],
   csnSpecies: ['scientific_name', 'english_name', 'french_name', 'iucn_category', 'population',

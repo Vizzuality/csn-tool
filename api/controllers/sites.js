@@ -23,6 +23,7 @@ function getSites(req, res) {
       ),
       p as (SELECT DISTINCT site_id FROM species_sites_iba)
       SELECT
+        s.site_id,
         s.country,
         s.iso3,
         s.iso2,
@@ -46,6 +47,7 @@ function getSites(req, res) {
       GROUP BY site_id
     )
     SELECT
+      s.site_id,
       s.country,
       s.site_name_clean AS csn_name,
       protected,
