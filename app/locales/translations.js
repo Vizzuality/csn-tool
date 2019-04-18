@@ -32,6 +32,7 @@ export const translations = {
     'confusion_species': 'No. of look-alike species populations',
     'confusion_species_as': 'No. of look-alike species populations in Col A',
     'confusion_population': 'Population',
+    'lookAlikeClickRow': 'Click on a population row to compare it with this population\'s range on the map',
     'genus': 'Genus',
     'country_status': 'Status',
     'getStarted': 'Get started',
