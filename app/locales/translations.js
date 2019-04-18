@@ -157,7 +157,7 @@ export const translations = {
     'change_suitability': 'Change suitability',
     'vulnerability': 'Vulnerability of qualifying species',
     'threshold': 'Threshold',
-    'season_ev': 'Season ev.'
+    'season_ev': 'Evaluation of seasonal model'
   },
   es: {
     'country': 'Pais',
