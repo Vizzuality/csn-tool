@@ -8,7 +8,7 @@ function SpeciesDetailFilters(props) {
   return (
     <div className="row c-table-filters">
       <div className="column small-12 medium-8">
-        <div className="tags">
+        <div className="tags tags-species-details">
           <NavLink to={`/species/${props.id}/sites`} i18nText="IBA" className={props.category && props.category === 'sites' ? 'is-active' : ''} />
           <NavLink to={`/species/${props.id}/criticalSites`} i18nText="CSN" className={props.category && props.category === 'criticalSites' ? 'is-active' : ''} />
           <NavLink to={`/species/${props.id}/population`} i18nText="population" className={props.category && props.category === 'population' ? 'is-active' : ''} />
