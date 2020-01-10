@@ -92,8 +92,8 @@ class Legend extends React.Component {
         <div className="collapse-btn-box">
           <h4>{context.t('legendsTitle')}</h4>
           <button
-            className="collapse-btn" 
-            type="button" 
+            className="collapse-btn"
+            type="button"
             onClick={() => setCollapse(!collapse)}
           >
             <CollapseIcon isopen={collapse} />
