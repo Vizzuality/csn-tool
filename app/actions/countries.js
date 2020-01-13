@@ -7,6 +7,7 @@ import {
   GET_COUNTRIES_SIMILAR_SPECIES,
   GET_COUNTRIES_SITES,
   GET_COUNTRIES_SPECIES,
+  GET_COUNTRIES_TRIGGER_VULNERABILITY,
   GET_COUNTRIES_STATS,
   SELECT_TABLE_ITEM,
   SET_COLUMN_FILTER,
@@ -172,6 +173,27 @@ export function getCountryLookAlikeSpecies(iso) {
 
 export function getCountryLookAlikeSpeciesPopulation(iso, populationId) {
   const url = `${config.apiHost}/countries/${iso}/look-alike-species/${populationId}`;
+  return dispatch => {
+    try {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          dispatch({
+            type: GET_COUNTRIES_TRIGGER_VULNERABILITY,
+            payload: { iso, data }
+          });
+        });
+    } catch (err) {
+      dispatch({
+        type: GET_COUNTRIES_TRIGGER_VULNERABILITY,
+        payload: { iso, data: [] }
+      });
+    }
+  };
+}
+
+export function getCountryTriggerVulnerability(iso) {
+  const url = `${config.apiHost}/countries/${iso}/trigger-vulnerability`;
 
   return (dispatch) => {
     fetch(url)

@@ -13,6 +13,7 @@ function TableFilters(props) {
           <NavLink to={`/countries/${props.country}/criticalSites`} i18nText="criticalSites" className={props.category && props.category === 'criticalSites' ? 'is-active' : ''} />
           <NavLink to={`/countries/${props.country}/species`} i18nText="species" className={props.category && props.category === 'species' ? 'is-active' : ''} />
           <NavLink to={`/countries/${props.country}/populations`} i18nText="populations" className={props.category && props.category === 'populations' ? 'is-active' : ''} />
+          <NavLink to={`/countries/${props.country}/triggerVulnerability`} i18nText="triggerVulnerability" className={props.category && props.category === 'triggerVulnerability' ? 'is-active' : ''} />
           <NavLink to={`/countries/${props.country}/lookAlikeSpecies`} i18nText="lookAlikeSpecies" className={props.category && props.category.startsWith('lookAlikeSpecies') ? 'is-active' : ''} />
         </div>
         <CSVButton data={props.data} columns={props.columns} />

@@ -14,6 +14,7 @@ router.route('/countries/:iso/sites').get(CountriesCtrl.getCountrySites);
 router.route('/countries/:iso/criticalSites').get(CountriesCtrl.getCountryCriticalSites);
 router.route('/countries/:iso/species').get(CountriesCtrl.getCountrySpecies);
 router.route('/countries/:iso/populations').get(CountriesCtrl.getCountryPopulations);
+router.route('/countries/:iso/trigger-suitability').get(CountriesCtrl.getTriggerSpeciesSuitability);
 router.route('/countries/:iso/look-alike-species').get(CountriesCtrl.getCountryPopsWithLookAlikeCounts);
 router.route('/countries/:iso/look-alike-species/:populationId').get(CountriesCtrl.getCountryLookAlikeSpecies);
 

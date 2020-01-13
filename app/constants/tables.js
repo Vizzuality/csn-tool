@@ -12,6 +12,8 @@ export const ALL_COUNTRY_COLUMNS = {
                 'a', 'b', 'c', 'caf_action_plan', 'eu_birds_directive', 'flyway_range',
                 'year_start', 'year_end', 'size_min', 'size_max', 'ramsar_criterion'],
   criticalSites: ['site_id', 'lat', 'lon', 'csn_name', 'protected', 'csn_species', 'total_percentage'],
+  csnVulnerability: ['id', 'scientific_name', 'english_name', 'season', 'current_suitability',
+    'future_suitability', 'change_suitability', 'threshold', 'season_ev'],
   lookAlikeSpecies: ['id', 'original_species', 'english_name', 'french_name', 'population', 'original_a', 'original_b',
                      'original_c', 'confusion_species', 'confusion_species_as'],
   lookAlikeSpeciesPopulation: ['id', 'pop_id', 'scientific_name', 'english_name', 'french_name', 'population', 'a', 'b', 'c'],
