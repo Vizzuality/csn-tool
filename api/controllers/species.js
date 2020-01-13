@@ -336,8 +336,14 @@ function getPopulationVulnerability(req, res) {
 }
 
 function getTriggerCriticalSitesSuitability(req, res) {
-  const query = `SELECT sites.country, sites.site_name_clean AS csn_site_name,
+  const query = `SELECT 
+    sites.country, 
+    sites.site_name_clean AS csn_site_name,
+    sites.site_id,
+    sites.lon,
+    sites.lat,
     t2a.populationname AS population_name,
+    t2a.wpepopid AS pop_id,
     t2a.season, t2a.percentfly, t2a.current_suitability,
     t2a.future_suitability, ROUND(CAST(change AS numeric), 2) AS change_suitability,
     threshold,
