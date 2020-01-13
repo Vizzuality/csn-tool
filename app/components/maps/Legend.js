@@ -61,31 +61,69 @@ function renderSubSections(subSections, onSwitchChange) {
   ));
 }
 
-function Legend({ sections, onSwitchChange, onLegendItemHover }, context) {
-  if (sections && !sections.length) return null;
+function CollapseIcon({ isopen }) {
+  const iconClose = <svg height="15" className="icon-collapse-close"><use xlinkHref="#icon-collapse-close"></use></svg>;
+  const iconOpen = <svg height="15" className="icon-collapse-open"><use xlinkHref="#icon-collapse-open"></use></svg>;
+  return isopen ? iconClose : iconOpen;
+}
 
-  return (
-    <div className="c-legend">
-      {sections.map((section, index) => {
-        const legendLine = index > 0 ? <div className="legend-line" /> : '';
-        return (
-          <div key={index}>
-            {legendLine}
-            <div className="section" key={index}>
-              <div className="section-header">
-                <p>{section.i18nName ? context.t(section.i18nName) : section.name}</p>
-                <Switch checked={section.active} onChange={() => onSwitchChange(section)} />
-              </div>
-              <SmoothCollapse className="section-body" expanded={section.active}>
-                {section.subSections && renderSubSections(section.subSections, onSwitchChange)}
-                {section.items && renderItems(section.items, onLegendItemHover)}
-              </SmoothCollapse>
-            </div>
+class Legend extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      collapse: true
+    };
+    this.setCollapse = this.setCollapse.bind(this);
+  }
+
+  setCollapse(value = false) {
+    this.setState({ collapse: value });
+  }
+
+  render() {
+    const { context, setCollapse } = this;
+    const { collapse } = this.state;
+    const { sections, onSwitchChange, onLegendItemHover } = this.props;
+    if (sections && !sections.length) return null;
+
+    return (
+      <div className="c-legend">
+        <div className="collapse-btn-box">
+          <h4>{context.t('legendsTitle')}</h4>
+          <button
+            className="collapse-btn"
+            type="button"
+            onClick={() => setCollapse(!collapse)}
+          >
+            <CollapseIcon isopen={collapse} />
+          </button>
+        </div>
+        {collapse && (
+          <div className="collapse-box">
+            {sections.map((section, index) => {
+              const legendLine = index > 0 ? <div className="legend-line" /> : '';
+              return (
+                <div key={index}>
+                  {legendLine}
+                  <div className="section" key={index}>
+                    <div className="section-header">
+                      <p>{section.i18nName ? context.t(section.i18nName) : section.name}</p>
+                      <Switch checked={section.active} onChange={() => onSwitchChange(section)} />
+                    </div>
+                    <SmoothCollapse className="section-body" expanded={section.active}>
+                      {section.subSections && renderSubSections(section.subSections, onSwitchChange)}
+                      {section.items && renderItems(section.items, onLegendItemHover)}
+                    </SmoothCollapse>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        );
-      })}
-    </div>
-  );
+        )}
+      </div>
+    );
+  }
 }
 
 const itemPropTypes = PropTypes.shape({

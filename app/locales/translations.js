@@ -164,7 +164,8 @@ export const translations = {
     'change_suitability': 'Change suitability',
     'vulnerability': 'Vulnerability of qualifying species',
     'threshold': 'Threshold',
-    'season_ev': 'Evaluation of seasonal model'
+    'season_ev': 'Evaluation of seasonal model',
+    'legendsTitle': 'Legend'
   },
   es: {
     'country': 'Pais',
@@ -290,7 +291,8 @@ export const translations = {
     'populationBoundaries': 'Límites de la población',
     'species_country_status': 'Estado del país de la especie',
     'noDataFound': 'Datos no disponibles',
-    'noDataFoundAdvancedSearch': 'No results found. Please adjust your search criteria and try again. Please be also mindful that we use logical AND condition between different filters and OR condition within the same filter.'
+    'noDataFoundAdvancedSearch': 'No results found. Please adjust your search criteria and try again. Please be also mindful that we use logical AND condition between different filters and OR condition within the same filter.',
+    'legendsTitle': 'Leyendas'
   },
   fr: {
     'country': 'Pays',
@@ -433,6 +435,7 @@ export const translations = {
     'protectionLevel': 'Niveau de protection',
     'populationBoundaries': 'Limites de la population',
     'noDataFound': 'Pas de données disponibles',
-    'noDataFoundAdvancedSearch': 'No results found. Please adjust your search criteria and try again. Please be also mindful that we use logical AND condition between different filters and OR condition within the same filter.'
+    'noDataFoundAdvancedSearch': 'No results found. Please adjust your search criteria and try again. Please be also mindful that we use logical AND condition between different filters and OR condition within the same filter.',
+    'legendsTitle': 'Légendes'
   },
 }
