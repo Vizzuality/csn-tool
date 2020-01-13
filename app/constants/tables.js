@@ -67,7 +67,7 @@ export const ALL_SPECIES_COLUMNS = {
   populationVulnerability: ['pop_id', 'population_name', 'season', 'change_in_suitability_of_all_sites',
     'change_in_number_of_suitable_sites', 'change_in_suitability_of_critical_sites',
     'change_in_proportion_supported', 'range_change', 'range_overlap'],
-  triggerCriticalSuitability: ['country', 'csn_site_name', 'population_name',
+  triggerCriticalSuitability: ['country', 'site_id', 'lat', 'lon', 'csn_site_name', 'pop_id', 'population_name',
     'season', 'percentfly', 'current_suitability', 'future_suitability',
     'change_suitability', 'threshold', 'season_ev']
 };
