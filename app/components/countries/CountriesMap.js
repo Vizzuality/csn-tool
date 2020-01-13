@@ -140,9 +140,8 @@ class CountriesMap extends PopulationMap {
 
     // Filter in play
     if (searchFilter && searchFilter.length > 0) {
-      const { country } = countries.find((c) => c.iso3 === iso) || {};
-
-      return country.toLowerCase().includes(searchFilter.toLowerCase()) ? SHOW_STYLE : HIDE_STYLE;
+      const { country } = countries.find(c => c.iso3 === iso) || {};
+      return country && country.toLowerCase().includes(searchFilter.toLowerCase()) ? SHOW_STYLE : HIDE_STYLE;
     }
 
     return SHOW_STYLE; // Unfiltered, tastes great.
