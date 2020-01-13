@@ -103,6 +103,7 @@ function getSpeciesCriticalSites(req, res) {
       si.lat, si.lon, si.country, si.iso2,
       coalesce(si.protected, 'Unknown') as protected,
       p.population_name AS population,
+      p.wpepopid AS pop_id,
       si.hyperlink, si.site_id AS id,
       si.site_id AS site_id, ss.geometric_mean,
       CASE
@@ -313,7 +314,8 @@ function getPopulationVulnerability(req, res) {
     THEN null
     ELSE ROUND(cast(range_overlap AS numeric), 2)
    END AS range_overlap,
-   populations.population_name AS population_name
+   populations.population_name AS population_name,
+   populations.wpepopid AS pop_id
    FROM table_1_populations AS t1p
    INNER JOIN populations ON populations.wpepopid = t1p.wpepopid
    WHERE t1p.ssis = '${req.params.id}'
