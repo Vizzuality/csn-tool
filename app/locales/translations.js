@@ -165,7 +165,7 @@ export const translations = {
     'vulnerability': 'Vulnerability of qualifying species',
     'threshold': 'Threshold',
     'season_ev': 'Evaluation of seasonal model',
-    'legendsTitle': 'Legends'
+    'legendsTitle': 'Legend'
   },
   es: {
     'country': 'Pais',
