@@ -165,20 +165,31 @@ function getCountryPopulations(req, res) {
 }
 
 function getCountryPopsWithLookAlikeCounts(req, res) {
-  const query = `SELECT sq.scientific_name AS original_species,
+  const query = `SELECT 
+    sq.scientific_name AS original_species,
     sq.english_name,
     sq.french_name,
-    sq.population_name AS population, sq.a AS original_a,
-    sq.b AS original_b, sq.c AS original_c, sq.wpepopid AS pop_id_origin,
+    sq.population_name AS population, 
+    sq.a AS original_a,
+    sq.b AS original_b, 
+    sq.c AS original_c, 
+    sq.wpepopid AS pop_id_origin,
     COUNT(*) AS confusion_species,
-    COUNT(case when pi.a IS NOT NULL
-          AND pi.a != '' then pi.population_name end) AS confusion_species_as
+    COUNT(case when sq.a IS NOT NULL AND sq.a != '' then sq.population_name end) AS confusion_species_as
     FROM
     (
       SELECT confusion_group,
-      sm.species_id, sm.scientific_name,
-      sm.english_name, sm.french_name, pi.the_geom, pi.population_name,
-      pi.a, pi.b, pi.c, pi.wpepopid, sm.taxonomic_sequence
+      sm.species_id, 
+      sm.scientific_name,
+      sm.english_name, 
+      sm.french_name, 
+      pi.the_geom, 
+      pi.population_name,
+      pi.a, 
+      pi.b, 
+      pi.c, 
+      pi.wpepopid, 
+      sm.taxonomic_sequence
       FROM species AS sm
       INNER JOIN species_country AS sc
       ON sc.species_id = sm.species_id
@@ -191,16 +202,6 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
       WHERE
       sm.confusion_group IS NOT NULL
     ) as sq
-
-    INNER JOIN species AS sm ON
-    (sq.confusion_group && sm.confusion_group)
-    AND sm.species_id != sq.species_id
-    INNER JOIN world_borders AS wb ON
-    wb.iso3 = '${req.params.iso}'
-    INNER JOIN populations AS pi
-    ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
-    AND ST_INTERSECTS(pi.the_geom, sq.the_geom)
-    AND pi.species_main_id = sm.species_id
     GROUP BY sq.scientific_name,
     sq.english_name, sq.french_name, sq.population_name,
     sq.a, sq.b, sq.c, sq.wpepopid, sq.taxonomic_sequence
