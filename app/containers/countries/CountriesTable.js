@@ -30,7 +30,8 @@ const mapStateToProps = (state) => {
     columns,
     allColumns: filterColumnsBasedOnLanguage(countries.allColumns, state.i18nState.lang),
     selectedTableItem: countries.selectedTableItem,
-    selectedLASpeciesPopulation: getSelectedSpeciesPopulation(countries)
+    selectedLASpeciesPopulation: getSelectedSpeciesPopulation(countries),
+    preload: countries.preload
   };
 };
 

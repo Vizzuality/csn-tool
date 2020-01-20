@@ -11,6 +11,7 @@ import {
   SELECT_TABLE_ITEM,
   SET_COLUMN_FILTER,
   SET_COUNTRY_PARAMS,
+  SET_COUNTRY_PRELOAD,
   SET_SEARCH_FILTER,
   SET_SORT,
   TOGGLE_COUNTRIES_LAYER,
@@ -25,6 +26,15 @@ export function goCountryDetail(iso) {
     const lang = state().i18nState.lang;
     dispatch(push(`/${lang}/countries/${iso}`));
   };
+}
+
+export function setCountryPreload(param, status) {
+  const data = {};
+  data[param] = status;
+  return {
+    type: SET_COUNTRY_PRELOAD,
+    payload: data
+  }
 }
 
 export function getCountriesList() {
@@ -64,7 +74,9 @@ export function getCountryStats(iso) {
 
 export function getCountrySites(iso) {
   const url = `${config.apiHost}/countries/${iso}/sites`;
-  return dispatch => {
+  return (dispatch, getState) => {
+    const category = getState().countries.selectedCategory;
+    dispatch(setCountryPreload(category, true));
     fetch(url)
       .then(response => {
         if (response.ok) return response.json();
@@ -75,6 +87,7 @@ export function getCountrySites(iso) {
           type: GET_COUNTRIES_SITES,
           payload: { iso, data }
         });
+        dispatch(setCountryPreload(category, false));
       })
       .catch((err) => {
         console.warn(err);
@@ -82,13 +95,16 @@ export function getCountrySites(iso) {
           type: GET_COUNTRIES_SITES,
           payload: { iso, data: [] }
         });
+        dispatch(setCountryPreload(category, false));
       });
   };
 }
 
 export function getCountryCriticalSites(iso) {
   const url = `${config.apiHost}/countries/${iso}/criticalSites`;
-  return dispatch => {
+  return (dispatch, getState) => {
+    const category = getState().countries.selectedCategory;
+    dispatch(setCountryPreload(category, true));
     try {
       fetch(url)
         .then(response => response.json())
@@ -97,19 +113,23 @@ export function getCountryCriticalSites(iso) {
             type: GET_COUNTRIES_CRITICAL_SITES,
             payload: { iso, data }
           });
+          dispatch(setCountryPreload(category, false));
         });
     } catch (err) {
       dispatch({
         type: GET_COUNTRIES_CRITICAL_SITES,
         payload: { iso, data: [] }
       });
+      dispatch(setCountryPreload(category, false));
     }
   };
 }
 
 export function getCountrySpecies(iso) {
   const url = `${config.apiHost}/countries/${iso}/species`;
-  return dispatch => {
+  return (dispatch, getState) => {
+    const category = getState().countries.selectedCategory;
+    dispatch(setCountryPreload(category, true));
     try {
       fetch(url)
         .then(response => response.json())
@@ -118,6 +138,7 @@ export function getCountrySpecies(iso) {
             type: GET_COUNTRIES_SPECIES,
             payload: { iso, data }
           });
+          dispatch(setCountryPreload(category, false));
         });
     } catch (err) {
       dispatch({
@@ -130,7 +151,9 @@ export function getCountrySpecies(iso) {
 
 export function getCountryPopulations(iso) {
   const url = `${config.apiHost}/countries/${iso}/populations`;
-  return dispatch => {
+  return (dispatch, getState) => {
+    const category = getState().countries.selectedCategory;
+    dispatch(setCountryPreload(category, true));
     try {
       fetch(url)
         .then(response => response.json())
@@ -139,20 +162,24 @@ export function getCountryPopulations(iso) {
             type: GET_COUNTRIES_POPULATIONS,
             payload: { iso, data }
           });
+          dispatch(setCountryPreload(category, false));
         });
     } catch (err) {
       dispatch({
         type: GET_COUNTRIES_POPULATIONS,
         payload: { iso, data: [] }
       });
+      dispatch(setCountryPreload(category, false));
     }
   };
 }
 
 export function getCountryLookAlikeSpecies(iso) {
   const url = `${config.apiHost}/countries/${iso}/look-alike-species`;
-  return dispatch => {
+  return (dispatch, getState) => {
+    const category = getState().countries.selectedCategory;
     try {
+      dispatch(setCountryPreload(category, true));
       fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -160,12 +187,14 @@ export function getCountryLookAlikeSpecies(iso) {
             type: GET_COUNTRIES_SIMILAR_SPECIES,
             payload: { iso, data }
           });
+          dispatch(setCountryPreload(category, false));
         });
     } catch (err) {
       dispatch({
         type: GET_COUNTRIES_SIMILAR_SPECIES,
         payload: { iso, data: [] }
       });
+      dispatch(setCountryPreload(category, false));
     }
   };
 }
@@ -173,7 +202,9 @@ export function getCountryLookAlikeSpecies(iso) {
 export function getCountryLookAlikeSpeciesPopulation(iso, populationId) {
   const url = `${config.apiHost}/countries/${iso}/look-alike-species/${populationId}`;
 
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const category = getState().countries.selectedCategory;
+    dispatch(setCountryPreload(category, true));
     fetch(url)
       .then(response => response.json())
       .then(data => {
@@ -184,6 +215,7 @@ export function getCountryLookAlikeSpeciesPopulation(iso, populationId) {
             data
           }
         });
+        dispatch(setCountryPreload(category, false));
       });
   };
 }

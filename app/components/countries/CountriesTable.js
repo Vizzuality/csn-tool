@@ -71,12 +71,14 @@ class CountriesTable extends React.Component {
       country,
       data,
       selectedLASpeciesPopulation,
-      selectedTableItem
+      selectedTableItem,
+      preload
     } = this.props;
 
     const detailLink = this.getDetailLink(category);
     const isLookAlikeSpecies = category.startsWith('lookAlikeSpecies');
     const isExpanded = !!(isLookAlikeSpecies && selectedLASpeciesPopulation);
+    const isPreload = preload[category];
 
     return (
       <div id="countriesTable" className="c-table">
@@ -94,7 +96,7 @@ class CountriesTable extends React.Component {
             detailLink
           />
         </Sticky>
-        {isExpanded && data.length === 0
+        {isPreload
           ? this.getLoading()
           : <TableList
             data={data}
@@ -123,7 +125,8 @@ CountriesTable.propTypes = {
   cleanSearchFilter: PropTypes.func,
   selectedTableItem: PropTypes.any,
   selectedLASpeciesPopulation: PropTypes.any,
-  selectCountriesTableItem: PropTypes.func.isRequired
+  selectCountriesTableItem: PropTypes.func.isRequired,
+  preload: PropTypes.object
 };
 
 export default CountriesTable;
