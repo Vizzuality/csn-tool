@@ -34,7 +34,7 @@ export function setCountryPreload(param, status) {
   return {
     type: SET_COUNTRY_PRELOAD,
     payload: data
-  }
+  };
 }
 
 export function getCountriesList() {
