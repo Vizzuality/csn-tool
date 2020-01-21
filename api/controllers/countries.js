@@ -181,37 +181,37 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
     sm.confusion_group IS NOT NULL
     `;
   const subquery = (species, confusions) => {
-    return `
-    SELECT 
-    sm.scientific_name AS original_species,
-    sm.english_name,
-    sm.french_name,
-    pi.population_name AS population, 
-    pi.a AS original_a,
-    pi.b AS original_b, 
-    pi.c AS original_c, 
-    pi.wpepopid AS pop_id_origin,
-    COUNT(*) AS confusion_species,
-    COUNT(case when pi.a IS NOT NULL
-          AND pi.a != '' then pi.population_name end) AS confusion_species_as
-    FROM species AS sm
-    INNER JOIN world_borders AS wb ON
-    wb.iso3 = '${req.params.iso}'
-    INNER JOIN populations AS pi
-    ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
-    AND pi.species_main_id = sm.species_id
-    WHERE sm.species_id NOT IN (${species})
-    AND ARRAY[${confusions}] && sm.confusion_group
-    GROUP BY sm.scientific_name,
-    sm.english_name, sm.french_name, pi.population_name,
-    pi.a, pi.b, pi.c, pi.wpepopid, sm.taxonomic_sequence
-    ORDER BY sm.taxonomic_sequence ASC
+    const q = `
+      SELECT 
+      sm.scientific_name AS original_species,
+      sm.english_name,
+      sm.french_name,
+      pi.population_name AS population, 
+      pi.a AS original_a,
+      pi.b AS original_b, 
+      pi.c AS original_c, 
+      pi.wpepopid AS pop_id_origin,
+      COUNT(*) AS confusion_species,
+      COUNT(case when pi.a IS NOT NULL
+            AND pi.a != '' then pi.population_name end) AS confusion_species_as
+      FROM species AS sm
+      INNER JOIN world_borders AS wb ON
+      wb.iso3 = '${req.params.iso}'
+      INNER JOIN populations AS pi
+      ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
+      AND pi.species_main_id = sm.species_id
+      WHERE sm.species_id NOT IN (${species})
+      AND ARRAY[${confusions}] && sm.confusion_group
+      GROUP BY sm.scientific_name,
+      sm.english_name, sm.french_name, pi.population_name,
+      pi.a, pi.b, pi.c, pi.wpepopid, sm.taxonomic_sequence
+      ORDER BY sm.taxonomic_sequence ASC
     `;
-  }
+    return q;
+  };
 
   runQuery(query)
     .then((data1) => {
-
       const result1 = JSON.parse(data1).rows;
       const species = result1.map(el => el.species_id);
       const globalConfusion = [];
@@ -219,23 +219,30 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
         const confs = el.confusion_group; // []
         confs.forEach(con => {
           if (globalConfusion.indexOf(con) === -1) {
-            globalConfusion.push("'"+con+"'");
+            // eslint-disable-next-line prefer-template
+            globalConfusion.push("'" + con + "'");
           }
         });
       });
-      if (species.length === 0) {
+      return {
+        species,
+        globalConfusion
+      };
+    })
+    .then((subresult) => {
+      if (subresult.species.length === 0) {
         res.json([]);
-        return false;
+      } else {
+        runQuery(subquery(subresult.species, subresult.globalConfusion))
+          .then((data) => {
+            const result = JSON.parse(data).rows || [];
+            res.json(result);
+          })
+          .catch((err) => {
+            res.status(err.statusCode || 500);
+            res.json({ error: err.message });
+          });
       }
-      runQuery(subquery(species, globalConfusion))
-      .then((data) => {
-        const result = JSON.parse(data).rows || [];
-        res.json(result);
-      })
-      .catch((err) => {
-        res.status(err.statusCode || 500);
-        res.json({ error: err.message });
-      });
     })
     .catch((err) => {
       res.status(err.statusCode || 500);
