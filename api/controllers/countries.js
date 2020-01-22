@@ -1,5 +1,6 @@
 const normalizeSiteStatus = require('../helpers/index').normalizeSiteStatus;
-const { runQuery } = require('../helpers');
+const { runQuery, runAsyncQuery } = require('../helpers');
+const polygonClipping = require('polygon-clipping');
 
 function getCountries(req, res) {
   const query = 'SELECT * FROM countries';
@@ -164,8 +165,65 @@ function getCountryPopulations(req, res) {
     });
 }
 
-function getCountryPopsWithLookAlikeCounts(req, res) {
+async function getCountryPopsWithLookAlikeCountsNew(req, res) {
+
   const query = `
+    SELECT sq.scientific_name AS original_species,
+    sq.confusion_group,
+    sq.species_id,
+    ST_AsGeoJSON(ST_Transform(sq.the_geom, 4326),15,0)::json as the_geom,
+    sq.english_name,
+    sq.french_name,
+    sq.population_name AS population, 
+    sq.a AS original_a,
+    sq.b AS original_b, 
+    sq.c AS original_c, 
+    sq.wpepopid AS pop_id_origin  
+    FROM
+    (
+      SELECT confusion_group,
+      sm.species_id, sm.scientific_name,
+      sm.english_name, sm.french_name, pi.the_geom, pi.population_name,
+      pi.a, pi.b, pi.c, pi.wpepopid, sm.taxonomic_sequence
+      FROM species AS sm
+      INNER JOIN species_country AS sc
+      ON sc.species_id = sm.species_id
+      AND sc.iso = '${req.params.iso}'
+      INNER JOIN world_borders AS wb ON
+      wb.iso3 = sc.iso
+      INNER JOIN populations AS pi
+      ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
+      AND pi.species_main_id = sm.species_id
+      WHERE
+      sm.confusion_group IS NOT NULL
+    ) as sq
+  `;
+
+  const data = await runAsyncQuery(query);
+  const species = JSON.parse(data).rows || [];
+
+  const speciesConfusion = species.map(sp => {
+    const speciesminus = species.filter(el => el.species_id !== sp.species_id);
+
+    const spec = speciesminus.filter(el => {
+      const isInc = el.confusion_group.filter(x => sp.confusion_group.includes(x));
+      const isArea = polygonClipping.intersection(sp.the_geom.coordinates, el.the_geom.coordinates);
+      return isInc.length > 0 && isArea.length > 1;
+    });
+    if (spec.length > 0) {
+      sp.confusion_species = spec.length;
+    }
+    return sp;
+  }).filter(sp => sp.confusion_species);
+
+  res.json(speciesConfusion.map(el => {
+    delete el.the_geom;
+    return el;
+  }));
+}
+
+function getCountryPopsWithLookAlikeCounts(req, res) {
+  const subquery = `
     SELECT confusion_group,
     sm.species_id
     FROM species AS sm
@@ -180,7 +238,7 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
     WHERE
     sm.confusion_group IS NOT NULL
     `;
-  const subquery = (species, confusions) => {
+  const query = (species, confusions) => {
     const q = `
       SELECT 
       sm.scientific_name AS original_species,
@@ -191,7 +249,9 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
       pi.b AS original_b, 
       pi.c AS original_c, 
       pi.wpepopid AS pop_id_origin,
-      COUNT(*) AS confusion_species,
+      (
+        COUNT(*)
+      ) AS confusion_species,
       COUNT(case when pi.a IS NOT NULL
             AND pi.a != '' then pi.population_name end) AS confusion_species_as
       FROM species AS sm
@@ -200,7 +260,7 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
       INNER JOIN populations AS pi
       ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
       AND pi.species_main_id = sm.species_id
-      WHERE sm.species_id NOT IN (${species})
+      WHERE sm.species_id IN (${species})
       AND ARRAY[${confusions}] && sm.confusion_group
       GROUP BY sm.scientific_name,
       sm.english_name, sm.french_name, pi.population_name,
@@ -210,12 +270,12 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
     return q;
   };
 
-  runQuery(query)
-    .then((data1) => {
-      const result1 = JSON.parse(data1).rows;
-      const species = result1.map(el => el.species_id);
+  runQuery(subquery)
+    .then((data) => {
+      const result = JSON.parse(data).rows;
+      const species = result.map(el => el.species_id);
       const globalConfusion = [];
-      result1.forEach(el => {
+      result.forEach(el => {
         const confs = el.confusion_group; // []
         confs.forEach(con => {
           if (globalConfusion.indexOf(con) === -1) {
@@ -233,7 +293,7 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
       if (subresult.species.length === 0) {
         res.json([]);
       } else {
-        runQuery(subquery(subresult.species, subresult.globalConfusion))
+        runQuery(query(subresult.species, subresult.globalConfusion))
           .then((data) => {
             const result = JSON.parse(data).rows || [];
             res.json(result);
@@ -317,5 +377,6 @@ module.exports = {
   getCountrySpecies,
   getCountryPopulations,
   getCountryPopsWithLookAlikeCounts,
+  getCountryPopsWithLookAlikeCountsNew,
   getCountryLookAlikeSpecies
 };

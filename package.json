@@ -43,6 +43,8 @@
     "json-loader": "^0.5.4",
     "lodash": "^4.17.13",
     "morgan": "^1.9.1",
+    "polygon-clipping": "^0.14.3",
+    "polygons-intersect": "^1.0.3",
     "postcss-cssnext": "^2.7.0",
     "postcss-extend": "^1.0.4",
     "postcss-functions": "^2.1.0",
