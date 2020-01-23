@@ -106,7 +106,8 @@ CountriesPage.propTypes = {
   searchFilter: PropTypes.string,
   router: PropTypes.object,
   params: PropTypes.object,
-  lang: PropTypes.string
+  lang: PropTypes.string,
+  getCountryLookAlikeSpecies: PropTypes.func
 };
 
 export default CountriesPage;

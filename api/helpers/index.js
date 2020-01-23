@@ -27,7 +27,7 @@ function mergeNames(data, params) {
 function runQuery(q, options = {}) {
   const query = q.replace(/^\s*[\r\n]/gm, ''); // remove empty lines
   if (process.env.NODE_ENV === 'development') {
-    // console.log('RUNNING QUERY: \n', query);
+    console.log('RUNNING QUERY: \n', query);
   }
 
   return rp({
@@ -39,29 +39,8 @@ function runQuery(q, options = {}) {
   });
 }
 
-function runAsyncQuery(q, options = {}) {
-  return new Promise((resolve, reject) => {
-    const query = q.replace(/^\s*[\r\n]/gm, ''); // remove empty lines
-    if (process.env.NODE_ENV === 'development') {
-      // console.log('RUNNING QUERY: \n', query);
-    }
-
-    console.log("run");
-    resolve(
-      rp({
-        uri: CARTO_SQL,
-        qs: {
-          ...options,
-          q: query
-        }
-      })
-    );
-  });
-}
-
 module.exports = {
   normalizeSiteStatus,
   mergeNames,
-  runQuery,
-  runAsyncQuery
+  runQuery
 };
