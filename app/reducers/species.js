@@ -43,6 +43,7 @@ const initialState = {
     population: true,
     climate: true,
     climate_present: false,
+    climate_gains_S: false,
     climate_present_w: false,
     climate_present_b: false,
     climate_present_p: false,

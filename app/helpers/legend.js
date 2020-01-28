@@ -122,6 +122,21 @@ function getSpeciesClimateLegendSection(layers) {
     active: layers && layers.climate_present,
     subSections: [
       {
+      layer: 'climate_gains_S',
+      name: 'Gains',
+      active: layers && layers.climate_gains_w,
+      scale: [
+        {
+        name: 'Not suitable',
+        color: 'yellow'
+      },
+      {
+        name: 'Suitable',
+        color: '#008ae5'
+      }
+      ]
+    },
+      {
       layer: 'climate_present_w',
       name: 'Winter',
       active: layers && layers.climate_present_w,

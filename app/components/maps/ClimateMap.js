@@ -30,7 +30,7 @@ class ClimateMap extends PopulationMap {
     if (!this.props.layers && this.props.layers.climate) return;
     const speciesId = this.props.id;
 
-    ['present', 'future'].forEach((time) => {
+    ['gains', 'losses', 'present', 'future'].forEach((time) => {
       ['b', 'w', 'p', 'S'].forEach((season) => {
         const layerId = `${time}_${speciesId}_${season}`;
         const layerName = `${speciesId}_${season}`;
@@ -51,7 +51,7 @@ class ClimateMap extends PopulationMap {
   createClimateLayer(layerId, layerPath, time) {
     //const climateLayer = L.tileLayer(layerPath).setZIndex(1);
     const filterOptions = {
-      present: time === 'present'
+      present: time
     };
     const climateLayer = L.tileLayerPixelFilter(layerPath, filterOptions).setZIndex(1);
     this.climateLayers[layerId] = climateLayer;
