@@ -135,6 +135,7 @@ function getCountryPopulations(req, res) {
     s.english_name,
     s.french_name,
     s.iucn_category,
+    s.taxonomic_sequence,
     pi.wpepopid AS pop_id,
     s.species_id AS id,
     'http://wpe.wetlands.org/view/' || pi.wpepopid AS pop_hyperlink,
@@ -151,7 +152,6 @@ function getCountryPopulations(req, res) {
     WHERE (
       ST_Intersects(pi.the_geom,(SELECT the_geom FROM world_borders WHERE iso3 = '${req.params.iso}'))
     )
-    ORDER BY s.taxonomic_sequence
   `;
   runQuery(query)
     .then((data) => {
