@@ -269,7 +269,6 @@ function getCountryPopsWithLookAlikeCounts(req, res) {
     ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
     AND ST_INTERSECTS(pi.the_geom, sq.the_geom)
     AND pi.species_main_id = sm.species_id
-    AND pi.wpepopid != sq.wpepopid
     GROUP BY 
     sq.scientific_name,
     sq.english_name, 
@@ -351,7 +350,6 @@ function getCountryLookAlikeSpecies(req, res) {
     ON ST_INTERSECTS(pi.the_geom, wb.the_geom)
     AND ST_INTERSECTS(pi.the_geom, sq.the_geom)
     AND pi.species_main_id = sm.species_id
-    AND pi.wpepopid != sq.wpepopid
     ORDER BY sm.taxonomic_sequence ASC`;
 
   runQuery(query)
