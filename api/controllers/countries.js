@@ -58,7 +58,7 @@ function getCountrySites(req, res) {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
         results.forEach((item) => {
-          item.protected_slug = normalizeSiteStatus(item.protected);  // eslint-disable-line no-param-reassign
+          item.protected_slug = normalizeSiteStatus(item.protected); // eslint-disable-line no-param-reassign
         });
       }
       res.json(results);
@@ -95,7 +95,7 @@ function getCountryCriticalSites(req, res) {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
         results.forEach((item) => {
-          item.protected_slug = normalizeSiteStatus(item.protected);  // eslint-disable-line no-param-reassign
+          item.protected_slug = normalizeSiteStatus(item.protected); // eslint-disable-line no-param-reassign
         });
       }
       res.json(results);
@@ -205,7 +205,6 @@ function getCountryWithLookAlikeCounts(req, res) {
 }
 
 function getCountryPopsWithLookAlikeCounts(req, res) {
-
   const { limit = 10, offset = 0 } = req.query;
 
   const query = `SELECT 
