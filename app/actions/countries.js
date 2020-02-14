@@ -167,9 +167,10 @@ export function getCountryPopulations(iso) {
       fetch(url)
         .then(response => response.json())
         .then(data => {
+          const sortedData = data.sort((a, b) => a.taxonomic_sequence < b.taxonomic_sequence);
           dispatch({
             type: GET_COUNTRIES_POPULATIONS,
-            payload: { iso, data }
+            payload: { iso, data: sortedData }
           });
           dispatch(setCountryPreload(category, false));
         });
