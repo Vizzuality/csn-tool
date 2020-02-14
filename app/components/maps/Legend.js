@@ -67,26 +67,66 @@ function CollapseIcon({ isopen }) {
   return isopen ? iconClose : iconOpen;
 }
 
-class Legend extends React.Component {
+function getClimateTableData(sections) {
+  const mainLayers = ['climate_future', 'climate_present', 'climate_gains'];
 
+  const tableSections = sections.filter(s => mainLayers.indexOf(s.layer) !== -1);
+  const climateFutureLayers = tableSections.filter(s => s.layer === mainLayers[0])[0];
+  const climatePresentLayers = tableSections.filter(s => s.layer === mainLayers[1])[0];
+  const climateGainsLayers = tableSections.filter(s => s.layer === mainLayers[2])[0];
+
+  const sublayers = [];
+  tableSections.forEach(section => {
+    section.subSections.forEach(sub => {
+      if (sublayers.indexOf(sub.name) === -1) {
+        sublayers.push(sub.name);
+      }
+    });
+  });
+
+  const tableData = [];
+  sublayers.forEach(sublayer => {
+    const climateFuture = climateFutureLayers ? climateFutureLayers.subSections.find(s => s.name === sublayer) : {};
+    const climatePresent = climatePresentLayers ? climatePresentLayers.subSections.find(s => s.name === sublayer) : {};
+    const climateGains = climateGainsLayers ? climateGainsLayers.subSections.find(s => s.name === sublayer) : {};
+    const row = {
+      sublayer,
+      climateFuture,
+      climatePresent,
+      climateGains
+    };
+    tableData.push(row);
+  });
+  return tableData;
+}
+
+class Legend extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapse: true
+      collapse: true,
+      isClimateCollapse: false
     };
     this.setCollapse = this.setCollapse.bind(this);
+    this.setClimateCollapse = this.setClimateCollapse.bind(this);
   }
 
   setCollapse(value = false) {
     this.setState({ collapse: value });
   }
 
+  setClimateCollapse(value = false) {
+    this.setState({ isClimateCollapse: value });
+  }
+
   render() {
-    const { context, setCollapse } = this;
-    const { collapse } = this.state;
+    const { context, setCollapse, setClimateCollapse } = this;
+    const { collapse, isClimateCollapse } = this.state;
     const { sections, onSwitchChange, onLegendItemHover } = this.props;
     if (sections && !sections.length) return null;
 
+    const collapseSections = sections.filter(s => s.layer !== 'climate_future' && s.layer !== 'climate_present');
+    const climateTableData = sections ? getClimateTableData(sections) : [];
     return (
       <div className="c-legend">
         <div className="collapse-btn-box">
@@ -101,7 +141,7 @@ class Legend extends React.Component {
         </div>
         {collapse && (
           <div className="collapse-box">
-            {sections.map((section, index) => {
+            {collapseSections.map((section, index) => {
               const legendLine = index > 0 ? <div className="legend-line" /> : '';
               return (
                 <div key={index}>
@@ -119,6 +159,49 @@ class Legend extends React.Component {
                 </div>
               );
             })}
+            {climateTableData.length > 0 && (
+              <div>
+                <div className="legend-line" />
+                <div className="section">
+                  <div className="section-header">
+                    <p>Climate Change</p>
+                    <Switch checked={isClimateCollapse} onChange={() => setClimateCollapse(!isClimateCollapse)} />
+                  </div>
+                  <SmoothCollapse className="section-body" expanded={isClimateCollapse}>
+                    <table className="climate-table">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th>Present Suitability</th>
+                          <th>Future Suitability</th>
+                          <th>Gains</th>
+                        </tr>
+                      </thead>
+                      {climateTableData.map((section, index) => (
+                        <tr key={index}>
+                          <td><p>{section.sublayer}</p></td>
+                          <td>
+                            {section.climatePresent && (
+                              <Switch checked={section.climatePresent.active} onChange={() => onSwitchChange(section.climatePresent)} />
+                            )}
+                          </td>
+                          <td>
+                            {section.climateFuture && (
+                              <Switch checked={section.climateFuture.active} onChange={() => onSwitchChange(section.climateFuture)} />
+                            )}
+                          </td>
+                          <td>
+                            {section.climateGains && (
+                              <Switch checked={section.climateGains.active} onChange={() => onSwitchChange(section.climateGains)} />
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </table>
+                  </SmoothCollapse>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
