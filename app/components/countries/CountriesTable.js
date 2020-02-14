@@ -1,18 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Sticky } from 'react-sticky';
-
+import { RESULTS_PER_TABLE_PAGE } from 'constants/config';
 import CountriesFilters from 'components/countries/CountriesFilters';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import ScrollButton from 'components/common/ScrollButton';
 import SpeciesPopulationHeader from 'components/species/SpeciesPopulationHeader';
 import TableList from 'components/tables/TableList';
 import TableListHeader from 'containers/countries/TableListHeader';
+import Pagination from 'react-js-pagination';
 
 class CountriesTable extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      activePage: 1
+    };
     this.handleTableItemClick = this.handleTableItemClick.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   componentWillMount() {
@@ -63,6 +68,17 @@ class CountriesTable extends React.Component {
     }
   }
 
+  handlePageChange(pageNumber) {
+    const pageSize = RESULTS_PER_TABLE_PAGE;
+    const { getCountryLookAlikeSpecies, country } = this.props;
+    const offset = (pageNumber - 1) * pageSize + 1;
+    getCountryLookAlikeSpecies(country, {
+      offset,
+      limit: pageSize
+    });
+    this.setState({ activePage: pageNumber });
+  }
+
   render() {
     const {
       allColumns,
@@ -71,12 +87,17 @@ class CountriesTable extends React.Component {
       country,
       data,
       selectedLASpeciesPopulation,
-      selectedTableItem
+      selectedTableItem,
+      preload,
+      tableCounts
     } = this.props;
 
     const detailLink = this.getDetailLink(category);
     const isLookAlikeSpecies = category.startsWith('lookAlikeSpecies');
+    const isLookAlikeSpeciesPage = category === 'lookAlikeSpecies';
     const isExpanded = !!(isLookAlikeSpecies && selectedLASpeciesPopulation);
+    const isPreload = preload[category];
+    const count = tableCounts ? tableCounts[category] : 0;
 
     return (
       <div id="countriesTable" className="c-table">
@@ -94,7 +115,7 @@ class CountriesTable extends React.Component {
             detailLink
           />
         </Sticky>
-        {isExpanded && data.length === 0
+        {isPreload
           ? this.getLoading()
           : <TableList
             data={data}
@@ -105,6 +126,17 @@ class CountriesTable extends React.Component {
             selectedItem={selectedTableItem}
           />
         }
+        {isLookAlikeSpeciesPage && (
+          <Pagination
+            activePage={this.state.activePage}
+            itemsCountPerPage={RESULTS_PER_TABLE_PAGE}
+            totalItemsCount={count}
+            pageRangeDisplayed={5}
+            onChange={this.handlePageChange}
+            itemClass="page-item"
+            linkClass="page-link"
+          />
+        )}
       </div>
     );
   }
@@ -123,7 +155,10 @@ CountriesTable.propTypes = {
   cleanSearchFilter: PropTypes.func,
   selectedTableItem: PropTypes.any,
   selectedLASpeciesPopulation: PropTypes.any,
-  selectCountriesTableItem: PropTypes.func.isRequired
+  selectCountriesTableItem: PropTypes.func.isRequired,
+  preload: PropTypes.object,
+  tableCounts: PropTypes.object,
+  getCountryLookAlikeSpecies: PropTypes.func
 };
 
 export default CountriesTable;

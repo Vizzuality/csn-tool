@@ -9,6 +9,8 @@ import {
   GET_COUNTRIES_SPECIES,
   GET_COUNTRIES_STATS,
   SET_COUNTRY_PARAMS,
+  SET_COUNTRY_PRELOAD,
+  SET_COUNTRY_TABLE_COUNTS,
   TOGGLE_COUNTRIES_LAYER,
   TOGGLE_COUNTRIES_LEGEND_ITEM,
   ZOOM_ON_COUNTRY
@@ -71,6 +73,13 @@ const countriesReducer = (state = initialState, action) => {
         zoomOnCountry: null
       };
       return Object.assign({}, state, params);
+    }
+    case SET_COUNTRY_PRELOAD: {
+      const preload = Object.assign({}, state.preload, action.payload);
+      return Object.assign({}, state, { preload });
+    }
+    case SET_COUNTRY_TABLE_COUNTS: {
+      return Object.assign({}, state, { tableCounts: action.payload });
     }
     case GET_COUNTRIES_LIST:
       return Object.assign({}, state, { countries: action.payload });
