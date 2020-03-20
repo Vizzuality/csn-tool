@@ -319,7 +319,8 @@ async function getSpeciesResults(req, res) {
         sp.family,
         sp.species_id AS id,
         sp.iucn_category,
-        sp.hyperlink
+        sp.hyperlink,
+        sp.aewa_annex_2
       FROM species sp
       ${joinPopulations ? 'INNER JOIN populations pi ON pi.species_main_id = sp.species_id' : ''}
       ${joinCountries &&
@@ -333,7 +334,7 @@ async function getSpeciesResults(req, res) {
       ${site_threat ? 'INNER JOIN sites_threats st ON st.site_id = ss.site_id' : ''}
       ${where.length > 0 && `WHERE ${where.join(' AND ')}` || ''}
       GROUP BY sp.scientific_name, sp.family, sp.genus, sp.english_name, sp.french_name, sp.species_id,
-        sp.iucn_category, sp.hyperlink, sp.taxonomic_sequence
+        sp.iucn_category, sp.hyperlink, sp.taxonomic_sequence, sp.aewa_annex_2
       ORDER by taxonomic_sequence ASC`;
     const data = await runQuery(query);
     res.json(JSON.parse(data));
