@@ -81,6 +81,8 @@ function getSpeciesSites(req, res) {
         results.map((item) => {
           const site = item;
           site.protected_slug = normalizeSiteStatus(item.protected);
+          site.lat = +item.lat.toFixed(3);
+          site.lon = +item.lon.toFixed(3);
           return site;
         });
         res.json(results);
@@ -130,6 +132,8 @@ function getSpeciesCriticalSites(req, res) {
         results.map((item) => {
           const site = item;
           site.protected_slug = normalizeSiteStatus(item.protected);
+          site.lat = +item.lat.toFixed(3);
+          site.lon = +item.lon.toFixed(3);
           return site;
         });
         res.json(results);
@@ -367,6 +371,12 @@ function getTriggerCriticalSitesSuitability(req, res) {
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
+        results.map(item => {
+          const row = item;
+          row.lat = +item.lat.toFixed(3);
+          row.lon = +item.lon.toFixed(3);
+          return row;
+        });
         res.json(results);
       } else {
         res.status(404);

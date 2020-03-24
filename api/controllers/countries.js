@@ -57,8 +57,12 @@ function getCountrySites(req, res) {
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
-        results.forEach((item) => {
-          item.protected_slug = normalizeSiteStatus(item.protected); // eslint-disable-line no-param-reassign
+        results.map((item) => {
+          const row = item;
+          row.lat = +item.lat.toFixed(3);
+          row.lon = +item.lon.toFixed(3);
+          row.protected_slug = normalizeSiteStatus(item.protected);
+          return row;
         });
       }
       res.json(results);
@@ -94,8 +98,12 @@ function getCountryCriticalSites(req, res) {
     .then((data) => {
       const results = JSON.parse(data).rows || [];
       if (results && results.length > 0) {
-        results.forEach((item) => {
-          item.protected_slug = normalizeSiteStatus(item.protected); // eslint-disable-line no-param-reassign
+        results.map((item) => {
+          const row = item;
+          row.lat = +item.lat.toFixed(3);
+          row.lon = +item.lon.toFixed(3);
+          row.protected_slug = normalizeSiteStatus(item.protected);
+          return row;
         });
       }
       res.json(results);
