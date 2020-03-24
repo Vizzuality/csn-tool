@@ -246,13 +246,15 @@ async function getCriticalSitesResults(req, res) {
       ORDER BY s.country ASC, csn_name ASC`;
 
     const data = await runQuery(query);
-    const results = JSON.parse(data).rows || [];
-    results.map(item => {
-      const row = item;
-      row.lat = +item.lat.toFixed(3);
-      row.lon = +item.lon.toFixed(3);
-      return row;
-    });
+    const results = JSON.parse(data);
+    if (results && results.rows && results.rows.length > 0) {
+      results.rows = results.rows.map(item => {
+        const row = item;
+        row.lat = +item.lat.toFixed(3);
+        row.lon = +item.lon.toFixed(3);
+        return row;
+      });
+    }
     res.json(results);
   } catch (err) {
     res.status(err.statusCode || 500);
