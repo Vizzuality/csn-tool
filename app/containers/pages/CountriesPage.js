@@ -10,6 +10,7 @@ import {
   getCountryPopulations,
   getCountryTriggerVulnerability,
   getCountryLookAlikeSpecies,
+  getCountryLookAlikeSpeciesCount,
   getCountryLookAlikeSpeciesPopulation,
   getCountriesList
 } from 'actions/countries';
@@ -46,6 +47,7 @@ const mapDispatchToProps = (dispatch) => ({
         break;
       case 'lookAlikeSpecies':
         dispatch(getCountryLookAlikeSpecies(country));
+        dispatch(getCountryLookAlikeSpeciesCount(country));
         break;
       case 'lookAlikeSpeciesPopulation':
         dispatch(getCountryLookAlikeSpecies(country));

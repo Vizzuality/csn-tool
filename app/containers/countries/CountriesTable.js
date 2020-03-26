@@ -4,7 +4,8 @@ import { filterColumnsBasedOnLanguage } from 'helpers/language';
 import { filterData } from 'helpers/filters';
 import {
   selectCountriesTableItem,
-  setSearchFilter
+  setSearchFilter,
+  getCountryLookAlikeSpecies
 } from 'actions/countries';
 
 function getSelectedSpeciesPopulation(countries) {
@@ -30,11 +31,14 @@ const mapStateToProps = (state) => {
     columns,
     allColumns: filterColumnsBasedOnLanguage(countries.allColumns, state.i18nState.lang),
     selectedTableItem: countries.selectedTableItem,
-    selectedLASpeciesPopulation: getSelectedSpeciesPopulation(countries)
+    selectedLASpeciesPopulation: getSelectedSpeciesPopulation(countries),
+    preload: countries.preload,
+    tableCounts: countries.tableCounts
   };
 };
 
 const mapDispatchToProps = {
+  getCountryLookAlikeSpecies,
   cleanSearchFilter: setSearchFilter,
   selectCountriesTableItem
 };

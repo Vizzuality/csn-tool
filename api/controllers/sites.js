@@ -71,8 +71,14 @@ function getSites(req, res) {
     page: req.query.page
   })
     .then((data) => {
-      const result = JSON.parse(data);
-      res.json(result.rows);
+      const result = JSON.parse(data).rows || [];
+      result.map(item => {
+        const row = item;
+        row.lat = +item.lat.toFixed(3);
+        row.lon = +item.lon.toFixed(3);
+        return row;
+      });
+      res.json(result);
     })
     .catch((err) => {
       res.status(err.statusCode || 500);
@@ -130,8 +136,8 @@ function getSitesDetails(req, res) {
             id: row.id,
             country: row.country,
             protected: row.protected,
-            lat: row.lat,
-            lon: row.lon,
+            lat: +row.lat.toFixed(3),
+            lon: +row.lon.toFixed(3),
             hyperlink: row.hyperlink,
             csn: row.csn,
             iba: row.iba,
@@ -163,8 +169,14 @@ function getSitesLocations(req, res) {
 
   runQuery(query)
     .then((data) => {
-      const result = JSON.parse(data);
-      res.json(result.rows);
+      const results = JSON.parse(data).rows || [];
+      results.map(item => {
+        const row = item;
+        row.lat = +item.lat.toFixed(3);
+        row.lon = +item.lon.toFixed(3);
+        return row;
+      });
+      res.json(results);
     })
     .catch((err) => {
       res.status(err.statusCode || 500);
@@ -235,6 +247,12 @@ function getSitesSpecies(req, res) {
   runQuery(query)
     .then((data) => {
       const results = JSON.parse(data).rows || [];
+      results.map(item => {
+        const row = item;
+        row.lat = +item.lat.toFixed(3);
+        row.lon = +item.lon.toFixed(3);
+        return row;
+      });
       res.json(results);
     })
     .catch((err) => {

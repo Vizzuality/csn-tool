@@ -12,7 +12,9 @@ import {
   SELECT_TABLE_ITEM,
   SET_COLUMN_FILTER,
   SET_COUNTRY_PARAMS,
+  SET_COUNTRY_PRELOAD,
   SET_SEARCH_FILTER,
+  SET_COUNTRY_TABLE_COUNTS,
   SET_SORT,
   TOGGLE_COUNTRIES_LAYER,
   TOGGLE_COUNTRIES_LEGEND_ITEM,
@@ -27,6 +29,23 @@ export function goCountryDetail(iso) {
     dispatch(push(`/${lang}/countries/${iso}`));
   };
 }
+
+export function setCountryPreload(param, status) {
+  const data = {};
+  data[param] = status;
+  return {
+    type: SET_COUNTRY_PRELOAD,
+    payload: data
+  };
+}
+
+export function setCountryTableCounts(counts, category) {
+  return {
+    type: SET_COUNTRY_TABLE_COUNTS,
+    payload: { [category]: counts }
+  };
+}
+
 
 export function getCountriesList() {
   const url = `${config.apiHost}/countries`;
@@ -65,7 +84,9 @@ export function getCountryStats(iso) {
 
 export function getCountrySites(iso) {
   const url = `${config.apiHost}/countries/${iso}/sites`;
-  return dispatch => {
+  return (dispatch, getState) => {
+    const category = getState().countries.selectedCategory;
+    dispatch(setCountryPreload(category, true));
     fetch(url)
       .then(response => {
         if (response.ok) return response.json();
@@ -76,6 +97,7 @@ export function getCountrySites(iso) {
           type: GET_COUNTRIES_SITES,
           payload: { iso, data }
         });
+        dispatch(setCountryPreload(category, false));
       })
       .catch((err) => {
         console.warn(err);
@@ -83,13 +105,16 @@ export function getCountrySites(iso) {
           type: GET_COUNTRIES_SITES,
           payload: { iso, data: [] }
         });
+        dispatch(setCountryPreload(category, false));
       });
   };
 }
 
 export function getCountryCriticalSites(iso) {
   const url = `${config.apiHost}/countries/${iso}/criticalSites`;
-  return dispatch => {
+  return (dispatch, getState) => {
+    const category = getState().countries.selectedCategory;
+    dispatch(setCountryPreload(category, true));
     try {
       fetch(url)
         .then(response => response.json())
@@ -98,19 +123,23 @@ export function getCountryCriticalSites(iso) {
             type: GET_COUNTRIES_CRITICAL_SITES,
             payload: { iso, data }
           });
+          dispatch(setCountryPreload(category, false));
         });
     } catch (err) {
       dispatch({
         type: GET_COUNTRIES_CRITICAL_SITES,
         payload: { iso, data: [] }
       });
+      dispatch(setCountryPreload(category, false));
     }
   };
 }
 
 export function getCountrySpecies(iso) {
   const url = `${config.apiHost}/countries/${iso}/species`;
-  return dispatch => {
+  return (dispatch, getState) => {
+    const category = getState().countries.selectedCategory;
+    dispatch(setCountryPreload(category, true));
     try {
       fetch(url)
         .then(response => response.json())
@@ -119,6 +148,7 @@ export function getCountrySpecies(iso) {
             type: GET_COUNTRIES_SPECIES,
             payload: { iso, data }
           });
+          dispatch(setCountryPreload(category, false));
         });
     } catch (err) {
       dispatch({
@@ -131,29 +161,38 @@ export function getCountrySpecies(iso) {
 
 export function getCountryPopulations(iso) {
   const url = `${config.apiHost}/countries/${iso}/populations`;
-  return dispatch => {
+  return (dispatch, getState) => {
+    const category = getState().countries.selectedCategory;
+    dispatch(setCountryPreload(category, true));
     try {
       fetch(url)
         .then(response => response.json())
         .then(data => {
+          const sortedData = data.sort((a, b) => a.taxonomic_sequence < b.taxonomic_sequence);
           dispatch({
             type: GET_COUNTRIES_POPULATIONS,
-            payload: { iso, data }
+            payload: { iso, data: sortedData }
           });
+          dispatch(setCountryPreload(category, false));
         });
     } catch (err) {
       dispatch({
         type: GET_COUNTRIES_POPULATIONS,
         payload: { iso, data: [] }
       });
+      dispatch(setCountryPreload(category, false));
     }
   };
 }
 
-export function getCountryLookAlikeSpecies(iso) {
-  const url = `${config.apiHost}/countries/${iso}/look-alike-species`;
-  return dispatch => {
+export function getCountryLookAlikeSpecies(iso, params = { offset: 0, limit: 10 }) {
+  let paramrow = '';
+  if (params) paramrow = Object.keys(params).map(p => `${p}=${params[p]}`).join('&');
+  const url = `${config.apiHost}/countries/${iso}/look-alike-species${paramrow !== '' ? `?${paramrow}` : ''}`;
+  return (dispatch, getState) => {
+    const category = getState().countries.selectedCategory;
     try {
+      dispatch(setCountryPreload(category, true));
       fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -161,12 +200,30 @@ export function getCountryLookAlikeSpecies(iso) {
             type: GET_COUNTRIES_SIMILAR_SPECIES,
             payload: { iso, data }
           });
+          dispatch(setCountryPreload(category, false));
         });
     } catch (err) {
       dispatch({
         type: GET_COUNTRIES_SIMILAR_SPECIES,
         payload: { iso, data: [] }
       });
+      dispatch(setCountryPreload(category, false));
+    }
+  };
+}
+
+export function getCountryLookAlikeSpeciesCount(iso) {
+  const url = `${config.apiHost}/countries/${iso}/look-alike-species-allcount`;
+  return (dispatch, getState) => {
+    const category = getState().countries.selectedCategory;
+    try {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          dispatch(setCountryTableCounts(data, category));
+        });
+    } catch (err) {
+      dispatch(setCountryTableCounts(0, category));
     }
   };
 }
@@ -195,7 +252,9 @@ export function getCountryLookAlikeSpeciesPopulation(iso, populationId) {
 export function getCountryTriggerVulnerability(iso) {
   const url = `${config.apiHost}/countries/${iso}/trigger-vulnerability`;
 
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const category = getState().countries.selectedCategory;
+    dispatch(setCountryPreload(category, true));
     fetch(url)
       .then(response => response.json())
       .then(data => {
@@ -206,6 +265,7 @@ export function getCountryTriggerVulnerability(iso) {
             data
           }
         });
+        dispatch(setCountryPreload(category, false));
       });
   };
 }
