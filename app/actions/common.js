@@ -23,7 +23,6 @@ export function commonToggleLayer(item, toggleLayer) {
         });
       } else {
         const firstSection = item.subSections[0];
-
         if (firstSection) {
           dispatch(toggleLayer(firstSection.layer));
         }
