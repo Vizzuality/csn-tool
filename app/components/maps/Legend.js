@@ -5,6 +5,12 @@ import cx from 'classnames';
 
 import Switch from 'components/common/Switch';
 
+import {
+  LAYER_KEY_CLIMATE_FUTURE,
+  LAYER_KEY_CLIMATE_PRESENT,
+  LAYER_KEY_CLIMATE_GAINS
+} from './const';
+
 function renderScale(items) {
   const colorWidth = 100 / (items.length - 1);
   const background = `linear-gradient(to right, ${items
@@ -68,7 +74,7 @@ function CollapseIcon({ isopen }) {
 }
 
 function getClimateTableData(sections) {
-  const mainLayers = ['climate_future', 'climate_present', 'climate_gains'];
+  const mainLayers = [LAYER_KEY_CLIMATE_FUTURE, LAYER_KEY_CLIMATE_PRESENT, LAYER_KEY_CLIMATE_GAINS];
 
   const tableSections = sections.filter(s => mainLayers.indexOf(s.layer) !== -1);
   const climateFutureLayers = tableSections.filter(s => s.layer === mainLayers[0])[0];
@@ -78,7 +84,7 @@ function getClimateTableData(sections) {
   const sublayers = [];
   tableSections.forEach(section => {
     section.subSections.forEach(sub => {
-      if (sublayers.indexOf(sub.name) === -1) {
+      if (sublayers.indexOf(sub.name) === -1 && sub.name !== 'Gains') {
         sublayers.push(sub.name);
       }
     });
@@ -125,7 +131,7 @@ class Legend extends React.Component {
     const { sections, onSwitchChange, onLegendItemHover } = this.props;
     if (sections && !sections.length) return null;
 
-    const collapseSections = sections.filter(s => s.layer !== 'climate_future' && s.layer !== 'climate_present');
+    const collapseSections = sections.filter(s => s.layer !== LAYER_KEY_CLIMATE_FUTURE && s.layer !== LAYER_KEY_CLIMATE_PRESENT);
     const climateTableData = sections ? getClimateTableData(sections) : [];
     return (
       <div className="c-legend">
@@ -174,29 +180,30 @@ class Legend extends React.Component {
                           <th></th>
                           <th>Present Suitability</th>
                           <th>Future Suitability</th>
-                          <th>Gains</th>
+                          <th>Gains/Losses</th>
                         </tr>
                       </thead>
-                      {climateTableData.map((section, index) => (
-                        <tr key={index}>
-                          <td><p>{section.sublayer}</p></td>
-                          <td>
-                            {section.climatePresent && (
-                              <Switch checked={section.climatePresent.active} onChange={() => onSwitchChange(section.climatePresent)} />
-                            )}
-                          </td>
-                          <td>
-                            {section.climateFuture && (
-                              <Switch checked={section.climateFuture.active} onChange={() => onSwitchChange(section.climateFuture)} />
-                            )}
-                          </td>
-                          <td>
-                            {section.climateGains && (
-                              <Switch checked={section.climateGains.active} onChange={() => onSwitchChange(section.climateGains)} />
-                            )}
-                          </td>
-                        </tr>
-                      ))}
+                      {climateTableData.map((section, index) => {
+                        return (
+                          <tr key={index}>
+                            <td><p>{section.sublayer}</p></td>
+                            <td>
+                              {section.climatePresent && (
+                                <Switch checked={section.climatePresent.active} onChange={() => onSwitchChange(section.climatePresent)} />
+                              )}
+                            </td>
+                            <td>
+                              {section.climateFuture && (
+                                <Switch checked={section.climateFuture.active} onChange={() => onSwitchChange(section.climateFuture)} />
+                              )}
+                            </td>
+                            <td>
+                              {section.climateGains && (
+                                <Switch checked={section.climateGains.active} onChange={() => onSwitchChange(section.climateGains)} />
+                              )}
+                            </td>
+                          </tr>
+                        )})}
                     </table>
                   </SmoothCollapse>
                 </div>
