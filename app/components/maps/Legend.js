@@ -75,7 +75,6 @@ function CollapseIcon({ isopen }) {
 
 function getClimateTableData(sections) {
   const mainLayers = [LAYER_KEY_CLIMATE_FUTURE, LAYER_KEY_CLIMATE_PRESENT, LAYER_KEY_CLIMATE_GAINS];
-
   const tableSections = sections.filter(s => mainLayers.indexOf(s.layer) !== -1);
   const climateFutureLayers = tableSections.filter(s => s.layer === mainLayers[0])[0];
   const climatePresentLayers = tableSections.filter(s => s.layer === mainLayers[1])[0];
@@ -84,7 +83,7 @@ function getClimateTableData(sections) {
   const sublayers = [];
   tableSections.forEach(section => {
     section.subSections.forEach(sub => {
-      if (sublayers.indexOf(sub.name) === -1 && sub.name !== 'Gains') {
+      if (sublayers.indexOf(sub.name) === -1) {
         sublayers.push(sub.name);
       }
     });

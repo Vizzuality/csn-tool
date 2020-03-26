@@ -1,3 +1,4 @@
+/* eslint-disable */
 /*
  * L.TileLayer.PixelFilter
  * https://github.com/greeninfo/L.TileLayer.PixelFilter

@@ -117,155 +117,207 @@ function getPopulationsLegendSection(populations, populationColors, isActive) {
 function getSpeciesClimateLegendSection(layers) {
   const climateSections = [
     {
-    name: 'Climate Change - Present suitability',
-    layer: 'climate_present',
-    active: layers && layers.climate_present,
-    subSections: [
-      {
-      layer: 'climate_gains_S',
-      name: 'Gains',
-      active: layers && layers.climate_gains_w,
-      scale: [
+      name: 'Climate Change - Gains and Looses',
+      layer: 'climate_gains',
+      active: layers && layers.climate_present,
+      subSections: [
         {
-        name: 'Not suitable',
-        color: 'yellow'
-      },
-      {
-        name: 'Suitable',
-        color: '#008ae5'
-      }
-      ]
-    },
-      {
-      layer: 'climate_present_w',
-      name: 'Winter',
-      active: layers && layers.climate_present_w,
-      scale: [
+          layer: 'climate_gains_S',
+          name: 'Sedentary',
+          active: layers && layers.climate_gains_S,
+          scale: [
+            {
+              name: 'Not suitable',
+              color: 'yellow'
+            },
+            {
+              name: 'Suitable',
+              color: '#008ae5'
+            }
+          ]
+        },
         {
-        name: 'Not suitable',
-        color: 'yellow'
-      },
-      {
-        name: 'Suitable',
-        color: '#008ae5'
-      }
+          layer: 'climate_gains_w',
+          name: 'Winter',
+          active: layers && layers.climate_gains_w,
+          scale: [
+            {
+              name: 'Not suitable',
+              color: 'yellow'
+            },
+            {
+              name: 'Suitable',
+              color: '#008ae5'
+            }
+          ]
+        },
+        {
+          layer: 'climate_gains_b',
+          name: 'Breeding',
+          active: layers && layers.climate_gains_b,
+          scale: [
+            {
+              name: 'Not suitable',
+              color: 'yellow'
+            },
+            {
+              name: 'Suitable',
+              color: '#008ae5'
+            }
+          ]
+        },
+        {
+          layer: 'climate_gains_p',
+          name: 'Passage',
+          active: layers && layers.climate_gains_p,
+          scale: [
+            {
+              name: 'Not suitable',
+              color: 'yellow'
+            },
+            {
+              name: 'Suitable',
+              color: '#008ae5'
+            }
+          ]
+        }
       ]
     },
     {
-      layer: 'climate_present_b',
-      name: 'Breeding',
-      active: layers && layers.climate_present_b,
-      scale: [
+      name: 'Climate Change - Present suitability',
+      layer: 'climate_present',
+      active: layers && layers.climate_present,
+      subSections: [
         {
-        name: 'Not suitable',
-        color: 'yellow'
-      },
-      {
-        name: 'Suitable',
-        color: '#008ae5'
-      }
+          layer: 'climate_present_w',
+          name: 'Winter',
+          active: layers && layers.climate_present_w,
+          scale: [
+            {
+              name: 'Not suitable',
+              color: 'yellow'
+            },
+            {
+              name: 'Suitable',
+              color: '#008ae5'
+            }
+          ]
+        },
+        {
+          layer: 'climate_present_b',
+          name: 'Breeding',
+          active: layers && layers.climate_present_b,
+          scale: [
+            {
+              name: 'Not suitable',
+              color: 'yellow'
+            },
+            {
+              name: 'Suitable',
+              color: '#008ae5'
+            }
+          ]
+        },
+        {
+          layer: 'climate_present_p',
+          name: 'Passage',
+          active: layers && layers.climate_present_p,
+          scale: [
+            {
+              name: 'Not suitable',
+              color: 'yellow'
+            },
+            {
+              name: 'Suitable',
+              color: '#008ae5'
+            }
+          ]
+        },
+        {
+          layer: 'climate_present_S',
+          name: 'Sedentary',
+          active: layers && layers.climate_present_S,
+          scale: [
+            {
+              name: 'Not suitable',
+              color: 'yellow'
+            },
+            {
+              name: 'Suitable',
+              color: '#008ae5'
+            }
+          ]
+        }
       ]
     },
     {
-      layer: 'climate_present_p',
-      name: 'Passage',
-      active: layers && layers.climate_present_p,
-      scale: [
+      name: 'Climate Change - Future suitability',
+      layer: 'climate_future',
+      climateSection: true,
+      active: layers && layers.climate_future,
+      subSections: [
         {
-        name: 'Not suitable',
-        color: 'yellow'
-      },
-      {
-        name: 'Suitable',
-        color: '#008ae5'
-      }
-      ]
-    },
-    {
-      layer: 'climate_present_S',
-      name: 'Sedentary',
-      active: layers && layers.climate_present_S,
-      scale: [
+          layer: 'climate_future_w',
+          name: 'Winter',
+          active: layers && layers.climate_future_w,
+          scale: [
+            {
+              name: 'Not suitable',
+              color: 'yellow'
+            },
+            {
+              name: 'Suitable',
+              color: '#008ae5'
+            }
+          ]
+        },
         {
-        name: 'Not suitable',
-        color: 'yellow'
-      },
-      {
-        name: 'Suitable',
-        color: '#008ae5'
-      }
+          layer: 'climate_future_b',
+          name: 'Breeding',
+          active: layers && layers.climate_future_b,
+          scale: [
+            {
+              name: 'Not suitable',
+              color: 'yellow'
+            },
+            {
+              name: 'Suitable',
+              color: '#008ae5'
+            }
+          ]
+        },
+        {
+          layer: 'climate_future_p',
+          name: 'Passage',
+          active: layers && layers.climate_future_p,
+          scale: [
+            {
+              name: 'Not suitable',
+              color: 'yellow'
+            },
+            {
+              name: 'Suitable',
+              color: '#008ae5'
+            }
+          ]
+        },
+        {
+          layer: 'climate_future_S',
+          name: 'Sedentary',
+          active: layers && layers.climate_future_S,
+          scale: [
+            {
+              name: 'Not suitable',
+              color: 'yellow'
+            },
+            {
+              name: 'Suitable',
+              color: '#008ae5'
+            }
+          ]
+        }
       ]
     }
-    ]
-  },
-  {
-    name: 'Climate Change - Future suitability',
-    layer: 'climate_future',
-    climateSection: true,
-    active: layers && layers.climate_future,
-    subSections: [
-      {
-      layer: 'climate_future_w',
-      name: 'Winter',
-      active: layers && layers.climate_future_w,
-      scale: [
-        {
-        name: 'Not suitable',
-        color: 'yellow'
-      },
-      {
-        name: 'Suitable',
-        color: '#008ae5'
-      }
-      ]
-    },
-    {
-      layer: 'climate_future_b',
-      name: 'Breeding',
-      active: layers && layers.climate_future_b,
-      scale: [
-        {
-        name: 'Not suitable',
-        color: 'yellow'
-      },
-      {
-        name: 'Suitable',
-        color: '#008ae5'
-      }
-      ]
-    },
-    {
-      layer: 'climate_future_p',
-      name: 'Passage',
-      active: layers && layers.climate_future_p,
-      scale: [
-        {
-        name: 'Not suitable',
-        color: 'yellow'
-      },
-      {
-        name: 'Suitable',
-        color: '#008ae5'
-      }
-      ]
-    },
-    {
-      layer: 'climate_future_S',
-      name: 'Sedentary',
-      active: layers && layers.climate_future_S,
-      scale: [
-        {
-        name: 'Not suitable',
-        color: 'yellow'
-      },
-      {
-        name: 'Suitable',
-        color: '#008ae5'
-      }
-      ]
-    }
-    ]
-  }
   ];
   return climateSections;
 }
@@ -288,7 +340,7 @@ export function getHydrologySections(layers) {
 }
 
 export function getLegendData(state, { populations, populationColors }) {
-  var legend = [];
+  let legend = [];
   const showSiteProtectionLevels = ['sites', 'criticalSites'].includes(state.selectedCategory);
   const showClimateLayers = state.layers.climate;
 
@@ -297,7 +349,7 @@ export function getLegendData(state, { populations, populationColors }) {
     legend.push(getSitesLegendSection(sites, state.layers.sites));
   }
 
-  //if(showCLimateLay
+  // if(showCLimateLay
   legend.push(getPopulationsLegendSection(populations, populationColors, state.layers.population));
   legend.push(...getHydrologySections(state.layers));
 
