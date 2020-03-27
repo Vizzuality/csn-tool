@@ -11,6 +11,29 @@ import {
   LAYER_KEY_CLIMATE_GAINS
 } from './const';
 
+// only for 2 colors
+function ClimateRange({ colors = [] }) {
+
+  const allColors = [];
+  const colorWidth = 100 / (colors.length - 1);
+  colors.forEach((color, index) => {
+    allColors.push({
+      width: `${colorWidth * index}%`,
+      color
+    });
+  });
+
+  const background = `linear-gradient(to right, ${allColors
+    .map(i => `${i.color} ${i.width}`)
+    .join(', ')})`;
+  const rangeStyle = { background };
+  return (
+    <div className="scale">
+      <div className="range" style={rangeStyle} />
+    </div>
+  );
+}
+
 function renderScale(items) {
   const colorWidth = 100 / (items.length - 1);
   const background = `linear-gradient(to right, ${items
@@ -177,9 +200,18 @@ class Legend extends React.Component {
                       <thead>
                         <tr>
                           <th></th>
-                          <th>Present Suitability</th>
-                          <th>Future Suitability</th>
-                          <th>Gains/Losses</th>
+                          <th>
+                            Present Suitability
+                            <ClimateRange colors={['rgb(189, 255, 167)', '#2aab00']} />
+                          </th>
+                          <th>
+                            Future Suitability
+                            <ClimateRange colors={['#248c02', 'rgb(16, 66, 0)']} />
+                          </th>
+                          <th>
+                            Gains/Losses
+                            <ClimateRange colors={['rgb(0, 255, 0)', 'rgb(255, 0, 0)']} />
+                          </th>
                         </tr>
                       </thead>
                       {climateTableData.map((section, index) => {
@@ -246,6 +278,10 @@ Legend.propTypes = {
   onSwitchChange: PropTypes.func.isRequired,
   onSwitchClimateChange: PropTypes.func.isRequired,
   onLegendItemHover: PropTypes.func
+};
+
+ClimateRange.propTypes = {
+  colors: PropTypes.array
 };
 
 export default Legend;

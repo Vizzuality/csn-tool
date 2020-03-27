@@ -68,8 +68,8 @@ L.TileLayer.PixelFilter = L.TileLayer.extend({
         }
 
         const myScale = this.options.present === 'present' 
-              ? scale(['#3fff00', '#2aab00']).domain([0, 255])
-              : scale(['#248c02', '#196700']).domain([0, 255]);
+              ? scale(['rgb(189, 255, 167)', '#2aab00']).domain([0, 255])
+              : scale(['#248c02', 'rgb(16, 66, 0)']).domain([0, 255]);
           
 				var scaleColor = null;
         for(var pi = 0, pn = pixels.length; pi < pn; pi += 4) {
