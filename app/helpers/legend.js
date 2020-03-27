@@ -119,7 +119,7 @@ function getSpeciesClimateLegendSection(layers) {
     {
       name: 'Climate Change - Gains and Looses',
       layer: 'climate_gains',
-      active: layers && layers.climate_present,
+      active: layers && layers.climate_gains,
       subSections: [
         {
           layer: 'climate_gains_S',
