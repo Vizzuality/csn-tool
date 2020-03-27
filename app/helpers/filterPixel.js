@@ -8,8 +8,6 @@
 import { scale } from 'chroma-js';
 
 L.tileLayerPixelFilter = function (url, options) {
-  console.log(url);
-  console.log(options);
     return new L.TileLayer.PixelFilter(url, options);
 };
 
@@ -68,6 +66,10 @@ L.TileLayer.PixelFilter = L.TileLayer.extend({
         } catch(e) {
             throw "L.TileLayer.PixelFilter getImageData() failed. Likely a cross-domain issue?";
         }
+
+        const myScale = this.options.present === 'present' 
+              ? scale(['#3fff00', '#2aab00']).domain([0, 255])
+              : scale(['#248c02', '#196700']).domain([0, 255]);
           
 				var scaleColor = null;
         for(var pi = 0, pn = pixels.length; pi < pn; pi += 4) {
@@ -88,39 +90,19 @@ L.TileLayer.PixelFilter = L.TileLayer.extend({
             // for first tests we are using the present suitability only
 
             if(['gains', 'losses'].indexOf(this.options.present) >= 0) {
-                if(r === undefined && g !== undefined) {
+                if(r === 0 && g !== 0) {
                   output.data[pi  ] = 0;
                   output.data[pi+1] = 255;
                   output.data[pi+2] = 0;
-                  output.data[pi+3] = r === 0 ? 0 : 255;
+                  output.data[pi+3] = 255;
                 }                
-                if(g === undefined && r !== undefined) {
+                if(g === 0 && r !== 0) {
                   output.data[pi  ] = 255;
                   output.data[pi+1] = 0;
                   output.data[pi+2] = 0;
-                  output.data[pi+3] = r === 0 ? 0 : 255;
+                  output.data[pi+3] = 255;
                 }
-              // if(this.options.present === 'gains') {
-              //   if(r === undefined && g !== undefined) {
-              //     output.data[pi  ] = 0;
-              //     output.data[pi+1] = 255;
-              //     output.data[pi+2] = 0;
-              //     output.data[pi+3] = r === 0 ? 0 : 255;
-              //   }
-              // }
-              // else if(this.options.present === 'losses') {
-              //   if(g === undefined && r !== undefined) {
-              //     output.data[pi  ] = 255;
-              //     output.data[pi+1] = 0;
-              //     output.data[pi+2] = 0;
-              //     output.data[pi+3] = r === 0 ? 0 : 255;
-              //   }
-              // }
-            }
-            else {
-              const myScale = this.options.present === 'present' 
-              ? scale(['#FFA575', 'red']).domain([0, 255])
-              : scale(['lightgreen', 'green']).domain([0, 255]);
+            } else {
               scaleColor = this.options.present === 'present' ? myScale(r).rgba() : myScale(g).rgba();
               output.data[pi  ] = scaleColor[0];
               output.data[pi+1] = scaleColor[1];

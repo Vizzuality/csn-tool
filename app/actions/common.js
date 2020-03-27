@@ -35,3 +35,15 @@ export function commonToggleLayer(item, toggleLayer) {
     }
   };
 }
+
+export function commonToggleClimateLayers(items, itemActive, toggleLayer) {
+  return dispatch => {
+    if (items.length > 0) {
+      items.forEach(item => {
+        if (item.active || item.layer === itemActive.layer) {
+          dispatch(toggleLayer(item.layer));
+        }
+      });
+    }
+  };
+}

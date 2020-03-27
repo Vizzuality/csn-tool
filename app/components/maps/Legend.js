@@ -127,7 +127,7 @@ class Legend extends React.Component {
   render() {
     const { context, setCollapse, setClimateCollapse } = this;
     const { collapse, isClimateCollapse } = this.state;
-    const { sections, onSwitchChange, onLegendItemHover } = this.props;
+    const { sections, onSwitchChange, onSwitchClimateChange, onLegendItemHover } = this.props;
     if (sections && !sections.length) return null;
 
     const collapseSections = sections.filter(s => s.layer !== LAYER_KEY_CLIMATE_FUTURE && s.layer !== LAYER_KEY_CLIMATE_PRESENT);
@@ -183,22 +183,25 @@ class Legend extends React.Component {
                         </tr>
                       </thead>
                       {climateTableData.map((section, index) => {
+
+                        const layers = [section.climatePresent, section.climateFuture, section.climateGains];
+
                         return (
                           <tr key={index}>
                             <td><p>{section.sublayer}</p></td>
                             <td>
                               {section.climatePresent && (
-                                <Switch checked={section.climatePresent.active} onChange={() => onSwitchChange(section.climatePresent)} />
+                                <Switch checked={section.climatePresent.active} onChange={() => onSwitchClimateChange(layers, section.climatePresent)} />
                               )}
                             </td>
                             <td>
                               {section.climateFuture && (
-                                <Switch checked={section.climateFuture.active} onChange={() => onSwitchChange(section.climateFuture)} />
+                                <Switch checked={section.climateFuture.active} onChange={() => onSwitchClimateChange(layers, section.climateFuture)} />
                               )}
                             </td>
                             <td>
                               {section.climateGains && (
-                                <Switch checked={section.climateGains.active} onChange={() => onSwitchChange(section.climateGains)} />
+                                <Switch checked={section.climateGains.active} onChange={() => onSwitchClimateChange(layers, section.climateGains)} />
                               )}
                             </td>
                           </tr>
@@ -241,6 +244,7 @@ Legend.propTypes = {
     })
   ),
   onSwitchChange: PropTypes.func.isRequired,
+  onSwitchClimateChange: PropTypes.func.isRequired,
   onLegendItemHover: PropTypes.func
 };
 
