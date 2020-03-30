@@ -371,12 +371,28 @@ function getCountryLookAlikeSpecies(req, res) {
     });
 }
 
+function getCountryAewaExtent(req, res) {
+  const query = `
+    SELECT * FROM aewa_extent_geo
+  `;
+  runQuery(query)
+    .then(data => {
+      const result = JSON.parse(data).rows || [];
+      res.json(result);
+    })
+    .catch(err => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
 module.exports = {
   getCountries,
   getCountryDetails,
   getCountrySites,
   getCountryCriticalSites,
   getCountrySpecies,
+  getCountryAewaExtent,
   getCountryPopulations,
   getCountryPopsWithLookAlikeCounts,
   getCountryWithLookAlikeCounts,
