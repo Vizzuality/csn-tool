@@ -49,7 +49,7 @@ class CountriesMap extends PopulationMap {
 
   constructor(props) {
     super(props);
-    this.fetchAewaLayer = this.fetchAewaLayer.bind(this);
+    this.setAewaLayer = this.setAewaLayer.bind(this);
   }
 
   componentWillMount() {
@@ -102,16 +102,16 @@ class CountriesMap extends PopulationMap {
     if (newProps.zoomOnCountry && newProps.zoomOnCountry !== this.props.zoomOnCountry) {
       this.fitBounds(this.getCountryLayerByIso(newProps.zoomOnCountry));
     }
-
-    if (newProps.aewaExtent && newProps.aewaExtent !== this.props.aewaExtent) {
-      this.fetchAewaLayer();
-    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     super.componentDidUpdate(prevProps, prevState);
     if (this.state.selectedBaseLayer !== prevState.selectedBaseLayer) {
       this.drawGeo(this.props.geoms, this.props.countries, this.props.searchFilter);
+    }
+
+    if (prevProps.layers.hasOwnProperty('aewaExtent') && prevProps.layers.aewaExtent !== this.props.layers.aewaExtent) {
+      this.setAewaLayer();
     }
   }
 
@@ -238,7 +238,7 @@ class CountriesMap extends PopulationMap {
     });
   }
 
-  fetchAewaLayer() {
+  setAewaLayer() {
     if (!this.selectedAewaLayer) {
       const query = `
          SELECT ST_AsGeoJSON(the_geom, 15, 1) as geom

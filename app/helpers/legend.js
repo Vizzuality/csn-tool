@@ -132,10 +132,12 @@ export function getHydrologySections(layers) {
 }
 
 export function getAewaSections(layers) {
+  const activeLayer = Object.keys(layers).filter(key => layers[key] && key === 'aewaExtent')[0];
   return [
     {
-      active: false,
-      layer: 'aewaExtend'
+      active: activeLayer,
+      layer: 'aewaExtent',
+      name: 'Aewa Extent'
     }
   ];
 }
@@ -150,6 +152,8 @@ export function getLegendData(state, { populations, populationColors }) {
   }
   legend.push(getPopulationsLegendSection(populations, populationColors, state.layers.population));
   legend.push(...getHydrologySections(state.layers));
-  legend.push(...getAewaSections(state.layers));
+  if (state.layers.hasOwnProperty('aewaExtent')) {
+    legend.push(...getAewaSections(state.layers));
+  }
   return legend.filter(l => l);
 }
