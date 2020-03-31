@@ -10,14 +10,14 @@ import CountriesLegend from 'containers/countries/CountriesLegend';
 import PopulationMap from 'components/maps/PopulationMap';
 
 const SELECTED_AEWA_STYLE = {
-  opacity: 1,
-  weight: 2,
+  opacity: 0.5,
+  weight: 0,
   dashArray: [1, 7],
   lineCap: 'round',
   color: 'white',
   fill: true,
   fillOpacity: 0.5,
-  fillColor: '#efd783'
+  fillColor: '#FCF0C5'
 };
 
 const borders = {
@@ -106,13 +106,13 @@ class CountriesMap extends PopulationMap {
 
   componentDidUpdate(prevProps, prevState) {
     super.componentDidUpdate(prevProps, prevState);
+    if (prevProps.layers.hasOwnProperty('aewaExtent') && prevProps.layers.aewaExtent !== this.props.layers.aewaExtent) {
+      this.setAewaLayer();
+    }
     if (this.state.selectedBaseLayer !== prevState.selectedBaseLayer) {
       this.drawGeo(this.props.geoms, this.props.countries, this.props.searchFilter);
     }
 
-    if (prevProps.layers.hasOwnProperty('aewaExtent') && prevProps.layers.aewaExtent !== this.props.layers.aewaExtent) {
-      this.setAewaLayer();
-    }
   }
 
   getCountryLayerByIso(iso) {
@@ -265,6 +265,7 @@ class CountriesMap extends PopulationMap {
       style: SELECTED_AEWA_STYLE
     });
     layer.addTo(this.map);
+    layer.bringToBack();
     this.selectedAewaLayer = layer;
   }
 

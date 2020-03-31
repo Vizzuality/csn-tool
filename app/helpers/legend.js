@@ -135,7 +135,7 @@ export function getAewaSections(layers) {
   const activeLayer = Object.keys(layers).filter(key => layers[key] && key === 'aewaExtent')[0];
   return [
     {
-      active: activeLayer,
+      active: layers[activeLayer],
       layer: 'aewaExtent',
       name: 'Aewa Extent'
     }

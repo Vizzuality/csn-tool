@@ -111,10 +111,12 @@ class Legend extends React.Component {
                       <p>{section.i18nName ? context.t(section.i18nName) : section.name}</p>
                       <Switch checked={section.active} onChange={() => onSwitchChange(section)} />
                     </div>
-                    <SmoothCollapse className="section-body" expanded={section.active}>
-                      {section.subSections && renderSubSections(section.subSections, onSwitchChange)}
-                      {section.items && renderItems(section.items, onLegendItemHover)}
-                    </SmoothCollapse>
+                    {section.subSections && (
+                      <SmoothCollapse className="section-body" expanded={section.active}>
+                        {section.subSections && renderSubSections(section.subSections, onSwitchChange)}
+                        {section.items && renderItems(section.items, onLegendItemHover)}
+                      </SmoothCollapse>
+                    )}
                   </div>
                 </div>
               );
