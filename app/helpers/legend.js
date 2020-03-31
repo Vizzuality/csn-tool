@@ -131,6 +131,15 @@ export function getHydrologySections(layers) {
   });
 }
 
+export function getAewaSections(layers) {
+  return [
+    {
+      active: false,
+      layer: 'aewaExtend'
+    }
+  ];
+}
+
 export function getLegendData(state, { populations, populationColors }) {
   const legend = [];
   const showSiteProtectionLevels = ['sites', 'criticalSites'].includes(state.selectedCategory);
@@ -141,5 +150,6 @@ export function getLegendData(state, { populations, populationColors }) {
   }
   legend.push(getPopulationsLegendSection(populations, populationColors, state.layers.population));
   legend.push(...getHydrologySections(state.layers));
+  legend.push(...getAewaSections(state.layers));
   return legend.filter(l => l);
 }

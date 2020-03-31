@@ -16,7 +16,6 @@ import {
 
 function getCountryData(countries) {
   const id = countries.selectedLASpeciesPopulation || countries.selected;
-
   return get(countries, `${countries.selectedCategory}.${id}`, false);
 }
 
