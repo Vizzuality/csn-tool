@@ -49,7 +49,8 @@ export function commonToggleClimateLayers(items, itemActive, toggleLayer) {
       if (itemActive.layer.indexOf('climate_gains') === -1) {
         items.filter(item =>
           item.layer.indexOf('climate_gains') === -1
-          & item.active
+          && item.layer !== itemActive.layer
+          && item.active
           && item.layer.split('_')[2] === season
         )
           .forEach(item => dispatch(toggleLayer(item.layer)));

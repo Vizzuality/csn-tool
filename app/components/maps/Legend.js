@@ -96,7 +96,17 @@ function CollapseIcon({ isopen }) {
   return isopen ? iconClose : iconOpen;
 }
 
-function getClimateTableData(sections) {
+function getSeasonLetter (season) {
+  const letters = {
+    SE: 'S',
+    winter: 'w',
+    breed: 'b',
+    passage: 'p'
+  };
+  return letters[season];
+}
+
+function getClimateTableData(sections, seasonsList) {
   const mainLayers = [LAYER_KEY_CLIMATE_FUTURE, LAYER_KEY_CLIMATE_PRESENT, LAYER_KEY_CLIMATE_GAINS];
   const tableSections = sections.filter(s => mainLayers.indexOf(s.layer) !== -1);
   const climateFutureLayers = tableSections.filter(s => s.layer === mainLayers[0])[0];
@@ -106,12 +116,11 @@ function getClimateTableData(sections) {
   const sublayers = [];
   tableSections.forEach(section => {
     section.subSections.forEach(sub => {
-      if (sublayers.indexOf(sub.name) === -1) {
+      if (sublayers.indexOf(sub.name) === -1 && seasonsList.indexOf(sub.layer.split('_')[2]) !== -1) {
         sublayers.push(sub.name);
       }
     });
   });
-
   const tableData = [];
   sublayers.forEach(sublayer => {
     const climateFuture = climateFutureLayers ? climateFutureLayers.subSections.find(s => s.name === sublayer) : {};
@@ -161,11 +170,18 @@ class Legend extends React.Component {
   render() {
     const { context, setCollapse, setClimateCollapse } = this;
     const { collapse, isClimateCollapse } = this.state;
-    const { sections, onSwitchChange, onSwitchClimateChange, onLegendItemHover } = this.props;
+    const {
+      sections,
+      onSwitchChange,
+      onSwitchClimateChange,
+      onLegendItemHover,
+      seasons
+    } = this.props;
     if (sections && !sections.length) return null;
 
+    const seasonsList = seasons.map(s => getSeasonLetter(s.season));
     const collapseSections = sections.filter(s => s.layer !== LAYER_KEY_CLIMATE_FUTURE && s.layer !== LAYER_KEY_CLIMATE_PRESENT);
-    const climateTableData = sections ? getClimateTableData(sections) : [];
+    const climateTableData = sections ? getClimateTableData(sections, seasonsList) : [];
     const climateLayers = climateTableData ? getClimateLayers(climateTableData) : [];
     return (
       <div className="c-legend">
@@ -227,9 +243,6 @@ class Legend extends React.Component {
                         </tr>
                       </thead>
                       {climateTableData.map((section, index) => {
-
-                        const layers = [section.climatePresent, section.climateFuture, section.climateGains];
-
                         return (
                           <tr key={index}>
                             <td><p>{section.sublayer}</p></td>
@@ -281,6 +294,7 @@ Legend.contextTypes = {
 };
 
 Legend.propTypes = {
+  seasons: PropTypes.array,
   sections: PropTypes.arrayOf(
     PropTypes.shape({
       ...sectionPropTypes,

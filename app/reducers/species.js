@@ -10,6 +10,7 @@ import {
   GET_SPECIES_STATS,
   SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_PARAMS,
+  SET_SPECIES_SEASONS,
   TOGGLE_SPECIES_LAYER,
   TOGGLE_SPECIES_LEGEND_ITEM
 } from 'constants/action-types';
@@ -26,6 +27,7 @@ const initialState = {
   allColumns: ALL_SPECIES_COLUMNS.over,
   list: false,
   selected: '',
+  seasons: [],
   selectedCategory: 'sites',
   selectedLASpeciesPopulation: null,
   selectedTableItem: null,
@@ -72,6 +74,12 @@ const initialState = {
 
 const speciesReducer = (state = initialState, action) => {
   switch (action.type) {
+    case SET_SPECIES_SEASONS: {
+      const params = {
+        seasons: action.payload
+      };
+      return Object.assign({}, state, params);
+    }
     case SET_SPECIES_PARAMS: {
       const params = {
         selected: action.payload.id,

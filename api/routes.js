@@ -30,6 +30,7 @@ router.route('/sites/csn/:id/vulnerability').get(SitesCtrl.getSitesVulnerability
 router.route('/species').get(SpeciesCtrl.getSpeciesList);
 router.route('/species/:id').get(SpeciesCtrl.getSpeciesDetails);
 router.route('/species/:id/sites').get(SpeciesCtrl.getSpeciesSites);
+router.route('/species/:id/seasons').get(SpeciesCtrl.getSpeciesSeasons);
 router.route('/species/:id/criticalSites').get(SpeciesCtrl.getSpeciesCriticalSites);
 router.route('/species/:id/population').get(SpeciesCtrl.getSpeciesPopulation);
 router.route('/species/:id/look-alike-species').get(SpeciesCtrl.getSpeciesLookAlikeSpecies);

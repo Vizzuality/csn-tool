@@ -6,7 +6,8 @@ import { commonToggleLayer, commonToggleClimateLayers } from 'actions/common';
 import Legend from 'components/maps/Legend';
 
 const mapStateToProps = ({ species }, ownProps) => ({
-  sections: getLegendData(species, ownProps)
+  sections: getLegendData(species, ownProps),
+  seasons: species.seasons
 });
 
 const mapDispatchToProps = dispatch => ({
