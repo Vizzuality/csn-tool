@@ -137,7 +137,7 @@ export function getAewaSections(layers) {
     {
       active: layers[activeLayer],
       layer: 'aewaExtent',
-      name: 'Aewa Extent'
+      name: 'AEWA Extent'
     }
   ];
 }
