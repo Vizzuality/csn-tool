@@ -5,20 +5,9 @@ import {
   MAP_MIN_ZOOM,
   MAP_CENTER
 } from 'constants/map';
-import { getSqlQuery, TopoJSON } from 'helpers/map';
+import { TopoJSON } from 'helpers/map';
 import CountriesLegend from 'containers/countries/CountriesLegend';
 import PopulationMap from 'components/maps/PopulationMap';
-
-const SELECTED_AEWA_STYLE = {
-  opacity: 0.5,
-  weight: 0,
-  dashArray: [1, 7],
-  lineCap: 'round',
-  color: 'white',
-  fill: true,
-  fillOpacity: 0.5,
-  fillColor: '#FCF0C5'
-};
 
 const borders = {
   color: 'white',
@@ -46,11 +35,6 @@ const styles = {
 };
 
 class CountriesMap extends PopulationMap {
-
-  constructor(props) {
-    super(props);
-    this.setAewaLayer = this.setAewaLayer.bind(this);
-  }
 
   componentWillMount() {
     this.props.getGeoms();
@@ -106,13 +90,12 @@ class CountriesMap extends PopulationMap {
 
   componentDidUpdate(prevProps, prevState) {
     super.componentDidUpdate(prevProps, prevState);
-    if (prevProps.layers.hasOwnProperty('aewaExtent') && prevProps.layers.aewaExtent !== this.props.layers.aewaExtent) {
-      this.setAewaLayer();
-    }
+    // if (prevProps.layers.hasOwnProperty('aewaExtent') && prevProps.layers.aewaExtent !== this.props.layers.aewaExtent) {
+    //   this.setAewaLayer();
+    // }
     if (this.state.selectedBaseLayer !== prevState.selectedBaseLayer) {
       this.drawGeo(this.props.geoms, this.props.countries, this.props.searchFilter);
     }
-
   }
 
   getCountryLayerByIso(iso) {
@@ -236,37 +219,6 @@ class CountriesMap extends PopulationMap {
         this.markers.push(marker);
       }
     });
-  }
-
-  setAewaLayer() {
-    if (!this.selectedAewaLayer) {
-      const query = `
-         SELECT ST_AsGeoJSON(the_geom, 15, 1) as geom
-         FROM aewa_extent_geo LIMIT 1
-       `; // asGeoJSON with options - add bbox for fitBound
-      getSqlQuery(query)
-        .then(this.addAewaLayer.bind(this));
-    } else {
-      this.selectedAewaLayer.remove(this.map);
-      this.selectedAewaLayer = null;
-    }
-  }
-
-  addAewaLayer(data) {
-    // layer not found, just set map view on selectedSite with default zoom
-    if (!data.rows.length) {
-      this.map.setView([this.props.selectedSite.lat, this.props.selectedSite.lon], 8);
-      return;
-    }
-
-    const geom = JSON.parse(data.rows[0].geom);
-    const layer = L.geoJSON(geom, {
-      noWrap: true,
-      style: SELECTED_AEWA_STYLE
-    });
-    layer.addTo(this.map);
-    layer.bringToBack();
-    this.selectedAewaLayer = layer;
   }
 
   clearMarkers() {
