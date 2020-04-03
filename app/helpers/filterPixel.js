@@ -92,8 +92,8 @@ L.TileLayer.PixelFilter = L.TileLayer.extend({
             if(['gains', 'losses'].indexOf(this.options.present) >= 0) {
                 if(r === 0 && g !== 0) {
                   output.data[pi  ] = 0;
-                  output.data[pi+1] = 255;
-                  output.data[pi+2] = 0;
+                  output.data[pi+1] = 0;
+                  output.data[pi+2] = 255;
                   output.data[pi+3] = 255;
                 }                
                 if(g === 0 && r !== 0) {

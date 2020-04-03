@@ -29,8 +29,9 @@ class ClimateMap extends PopulationMap {
   updateClimateLayers() {
     if (!this.props.layers && this.props.layers.climate) return;
     const speciesId = this.props.id;
+    const frontLayers = [];
 
-    ['gains', 'losses', 'present', 'future'].forEach((time) => {
+    ['present', 'future', 'gains', 'losses'].forEach((time) => {
       ['b', 'w', 'p', 'S'].forEach((season) => {
         const layerId = `${time}_${speciesId}_${season}`;
         const layerName = `${speciesId}_${season}`;
@@ -41,11 +42,16 @@ class ClimateMap extends PopulationMap {
         const varName = ['climate', time, season].join('_');
         if (this.props.layers.climate && this.props.layers[varName]) {
           layerObj.addTo(this.map);
+          if (time === 'gains') {
+            frontLayers.push(layerObj);
+          }
         } else {
           layerObj.remove();
         }
       });
     });
+
+    frontLayers.map(fl => fl.bringToFront());
   }
 
   createClimateLayer(layerId, layerPath, time) {

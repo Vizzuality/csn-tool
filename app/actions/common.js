@@ -38,11 +38,30 @@ export function commonToggleLayer(item, toggleLayer) {
 export function commonToggleClimateLayers(items, itemActive, toggleLayer) {
   return dispatch => {
     if (items.length > 0) {
-      items.forEach(item => {
-        if (item.active || item.layer === itemActive.layer) {
-          dispatch(toggleLayer(item.layer));
-        }
-      });
+      dispatch(toggleLayer(itemActive.layer));
+      const season = itemActive.layer.split('_')[2];
+      if (itemActive.layer.indexOf('climate_gains') !== -1) {
+        items.filter(item =>
+          item.layer !== itemActive.layer
+          && item.active
+          && item.layer.split('_')[2] !== season
+        )
+          .forEach(item => dispatch(toggleLayer(item.layer)));
+      } else {
+        items.filter(item =>
+          item.layer !== itemActive.layer
+          && item.active
+          && item.layer.split('_')[2] !== season
+        )
+          .forEach(item => dispatch(toggleLayer(item.layer)));
+
+        items.filter(item =>
+          item.layer.indexOf('climate_gains') === -1
+          & item.active
+          && item.layer.split('_')[2] === season
+        )
+          .forEach(item => dispatch(toggleLayer(item.layer)));
+      }
     }
   };
 }
