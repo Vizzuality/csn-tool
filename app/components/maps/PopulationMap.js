@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { getSqlQuery } from 'helpers/map';
 import { BOUNDARY_COLORS, SELECTED_AEWA_STYLE } from 'constants/map';
 import BasicMap from './BasicMap';
-export { SELECTED_AEWA_STYLE } from 'components/maps/constants';
 
 class PopulationMap extends BasicMap {
   constructor(props) {
