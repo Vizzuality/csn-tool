@@ -351,7 +351,7 @@ export function getLegendData(state, { populations, populationColors }) {
 
   // if(showCLimateLay
   legend.push(getPopulationsLegendSection(populations, populationColors, state.layers.population));
-  legend.push(...getHydrologySections(state.layers));
+  // legend.push(...getHydrologySections(state.layers));
 
   if (showClimateLayers) {
     legend = legend.concat(getSpeciesClimateLegendSection(state.layers));

@@ -113,8 +113,6 @@ class CountriesMap extends PopulationMap {
   }
 
   showPopup(latlng, properties) {
-    console.log(this.context);
-
     const html = `<h3 class="header -map-title -highlighted">${properties.name}</h3><p class="text -light">${this.context.t('countriesMapTooltip')}</p>`;
     this.popup.setLatLng(latlng)
       .setContent(html)

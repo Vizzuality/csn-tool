@@ -179,8 +179,12 @@ class Legend extends React.Component {
     } = this.props;
     if (sections && !sections.length) return null;
 
-    const seasonsList = seasons.map(s => getSeasonLetter(s.season));
-    const collapseSections = sections.filter(s => s.layer !== LAYER_KEY_CLIMATE_FUTURE && s.layer !== LAYER_KEY_CLIMATE_PRESENT);
+    const seasonsList = seasons ? seasons.map(s => getSeasonLetter(s.season)) : [];
+    const collapseSections = sections.filter(s =>
+      s.layer !== LAYER_KEY_CLIMATE_FUTURE
+      && s.layer !== LAYER_KEY_CLIMATE_PRESENT
+      && s.layer !== LAYER_KEY_CLIMATE_GAINS
+    );
     const climateTableData = sections ? getClimateTableData(sections, seasonsList) : [];
     const climateLayers = climateTableData ? getClimateLayers(climateTableData) : [];
     return (
@@ -302,7 +306,7 @@ Legend.propTypes = {
     })
   ),
   onSwitchChange: PropTypes.func.isRequired,
-  onSwitchClimateChange: PropTypes.func.isRequired,
+  onSwitchClimateChange: PropTypes.func,
   onLegendItemHover: PropTypes.func
 };
 
