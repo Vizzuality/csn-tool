@@ -34,3 +34,9 @@ export function commonToggleLayer(item, toggleLayer) {
     }
   };
 }
+
+export function commonSetLayer(layer, value, setLayer) {
+  return dispatch => {
+    dispatch(setLayer(layer, value));
+  };
+}

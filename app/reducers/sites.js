@@ -7,6 +7,7 @@ import {
   GET_SITES_STATS,
   SET_SITES_PARAMS,
   SET_VIEW_MODE,
+  SET_SITES_LAYER,
   TOGGLE_SITES_LAYER
 } from 'constants/action-types';
 import {
@@ -16,7 +17,7 @@ import {
 } from 'constants/tables';
 import { RESULTS_PER_PAGE } from 'constants/config';
 import withTable from './withTable';
-import { toggleLayer } from './common';
+import { toggleLayer, setLayer } from './common';
 
 const initialState = {
   columns: DEFAULT_SITES_COLUMNS.iba,
@@ -34,7 +35,8 @@ const initialState = {
     freshwaterFlowPresent: false,
     freshwaterFlow2050: false,
     inundationPresent: false,
-    inundation2050: false
+    inundation2050: false,
+    aewaExtent: false
   },
   filter: 'iba',
   stats: {},
@@ -107,6 +109,7 @@ const sitesReducer = (state = initialState, action) => {
       return Object.assign({}, state, { csnVulnerability: data });
     }
     case TOGGLE_SITES_LAYER: return toggleLayer(state, action);
+    case SET_SITES_LAYER: return setLayer(state, action);
     default:
       return state;
   }

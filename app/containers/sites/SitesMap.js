@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
-import { goSiteDetail } from 'actions/sites';
+import { toggleLayer, goSiteDetail } from 'actions/sites';
+import { commonToggleLayer } from 'actions/common';
 import SitesMap from 'components/sites/SitesMap';
 
 function getSites(sites) {
@@ -21,7 +22,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  goToDetail: (id, type) => dispatch(goSiteDetail(id, type))
+  goToDetail: (id, type) => dispatch(goSiteDetail(id, type)),
+  onSwitchChange: (item) => dispatch(commonToggleLayer(item, toggleLayer)),
+  onAewaLegendDisable: () => dispatch(commonToggleLayer('aewaExtent', toggleLayer))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SitesMap);

@@ -4,6 +4,7 @@ import { withRouter } from 'react-router';
 import { getSqlQuery } from 'helpers/map';
 import BasicMap from 'components/maps/BasicMap';
 import SitesLegend from 'containers/sites/SitesLegend';
+import { SELECTED_AEWA_STYLE } from 'constants/map';
 
 const SELECTED_SITE_STYLE = {
   opacity: 1,
@@ -21,6 +22,7 @@ class SitesMap extends BasicMap {
     super(props);
     this.markerList = [];
     this.mapClassName = '-full -sites';
+    this.setAewaLayer = this.setAewaLayer.bind(this);
   }
 
   componentDidMount() {
@@ -45,6 +47,50 @@ class SitesMap extends BasicMap {
     }
 
     if (newSiteHasBeenSelected) this.setSelectedSite(newProps);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    super.componentDidUpdate(prevProps, prevState);
+    if (prevProps.layers.hasOwnProperty('aewaExtent') && prevProps.layers.aewaExtent !== this.props.layers.aewaExtent) {
+      this.setAewaLayer();
+    }
+  }
+
+  setAewaLayer() {
+    if (!this.selectedAewaLayer) {
+      this.addAewaLayer();
+    } else {
+      this.removeAewaLayer();
+    }
+  }
+
+  removeAewaLayer() {
+    this.selectedAewaLayer.remove(this.map);
+    this.selectedAewaLayer = null;
+  }
+
+  addAewaLayer() {
+    const query = `
+      SELECT ST_AsGeoJSON(the_geom, 15, 1) as geom
+      FROM aewa_extent_geo LIMIT 1
+    `; // asGeoJSON with options - add bbox for fitBound
+    getSqlQuery(query)
+      .then(data => {
+        // layer not found, just set map view on selectedSite with default zoom
+        if (!data.rows.length) {
+          this.map.setView([this.props.selectedSite.lat, this.props.selectedSite.lon], 8);
+          return;
+        }
+
+        const geom = JSON.parse(data.rows[0].geom);
+        const layer = L.geoJSON(geom, {
+          noWrap: true,
+          style: SELECTED_AEWA_STYLE
+        });
+        layer.addTo(this.map);
+        layer.bringToBack();
+        this.selectedAewaLayer = layer;
+      });
   }
 
   setSelectedSite(props) {

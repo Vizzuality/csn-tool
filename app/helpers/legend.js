@@ -142,6 +142,16 @@ export function getAewaSections(layers) {
   ];
 }
 
+export function getSitesSections(state) {
+  const legend = [];
+  const getLayers = state.layers || {};
+  legend.push(...getHydrologySections(getLayers));
+  if (getLayers.hasOwnProperty('aewaExtent') && state.selected === '') {
+    legend.push(...getAewaSections(getLayers));
+  }
+  return legend;
+}
+
 export function getLegendData(state, { populations, populationColors }) {
   const legend = [];
   const showSiteProtectionLevels = ['sites', 'criticalSites'].includes(state.selectedCategory);
@@ -152,6 +162,7 @@ export function getLegendData(state, { populations, populationColors }) {
   }
   legend.push(getPopulationsLegendSection(populations, populationColors, state.layers.population));
   legend.push(...getHydrologySections(state.layers));
+  // console.log(state.layers);
   if (state.layers.hasOwnProperty('aewaExtent')) {
     legend.push(...getAewaSections(state.layers));
   }

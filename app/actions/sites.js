@@ -10,6 +10,7 @@ import {
   SET_SITES_PARAMS,
   SET_SORT,
   SET_VIEW_MODE,
+  SET_SITES_LAYER,
   TOGGLE_SITES_LAYER
 } from 'constants/action-types';
 import { TABLES } from 'constants/tables';
@@ -162,5 +163,12 @@ export function toggleLayer(layer) {
   return {
     type: TOGGLE_SITES_LAYER,
     payload: layer
+  };
+}
+
+export function setLayer(layer, value) {
+  return {
+    type: SET_SITES_LAYER,
+    payload: { layer, value }
   };
 }

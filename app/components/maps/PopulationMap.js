@@ -1,19 +1,9 @@
 import PropTypes from 'prop-types';
 
 import { getSqlQuery } from 'helpers/map';
-import { BOUNDARY_COLORS } from 'constants/map';
+import { BOUNDARY_COLORS, SELECTED_AEWA_STYLE } from 'constants/map';
 import BasicMap from './BasicMap';
-
-const SELECTED_AEWA_STYLE = {
-  opacity: 0.5,
-  weight: 0,
-  dashArray: [1, 7],
-  lineCap: 'round',
-  color: 'white',
-  fill: true,
-  fillOpacity: 0.5,
-  fillColor: '#FCF0C5'
-};
+export { SELECTED_AEWA_STYLE } from 'components/maps/constants';
 
 class PopulationMap extends BasicMap {
   constructor(props) {

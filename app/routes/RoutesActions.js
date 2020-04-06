@@ -5,7 +5,8 @@ import {
   setSpeciesParams,
   setSpeciesDetailParams
 } from 'actions/species';
-import { setViewMode, setSiteParams } from 'actions/sites';
+import { setViewMode, setSiteParams, setLayer } from 'actions/sites';
+import { commonSetLayer } from 'actions/common';
 import { setLocation } from 'actions/threshold';
 
 export function updateLanguage(actualState, replace, done) {
@@ -18,8 +19,8 @@ function getCountriesParams(state) {
     cat, iso, population
   } = state.params;
   const category = cat === 'lookAlikeSpecies' && population
-          ? 'lookAlikeSpeciesPopulation'
-          : cat;
+    ? 'lookAlikeSpeciesPopulation'
+    : cat;
 
   return {
     iso: iso || '',
@@ -58,8 +59,8 @@ export function updateSpeciesDetailPage(actualState, replace, done) {
   const id = actualState.params.id || '';
   const population = actualState.params.population;
   const category = actualState.params.cat === 'lookAlikeSpecies' && population
-          ? 'lookAlikeSpeciesPopulation'
-          : actualState.params.cat;
+    ? 'lookAlikeSpeciesPopulation'
+    : actualState.params.cat;
   const cat = category || 'sites'; // default value
 
   dispatch(setSpeciesDetailParams(id, cat, population));
@@ -85,6 +86,11 @@ export function updateSitesDetailPage(actualState, replace, done) {
   const site = actualState.params.site || '';
   const cat = actualState.params.cat || 'species'; // default value
   const type = actualState.params.type || 'iba';
+
+  if (site !== '') {
+    dispatch(commonSetLayer('aewaExtent', false, setLayer));
+  }
+
   dispatch(setSiteParams(site, cat, undefined, type));
   done();
 }
