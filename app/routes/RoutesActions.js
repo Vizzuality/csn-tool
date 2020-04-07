@@ -3,7 +3,8 @@ import { setLanguage } from 'redux-i18n';
 import { setCountryParams } from 'actions/countries';
 import {
   setSpeciesParams,
-  setSpeciesDetailParams
+  setSpeciesDetailParams,
+  getSpeciesSeasons
 } from 'actions/species';
 import { setViewMode, setSiteParams, setLayer } from 'actions/sites';
 import { commonSetLayer } from 'actions/common';
@@ -64,6 +65,7 @@ export function updateSpeciesDetailPage(actualState, replace, done) {
   const cat = category || 'sites'; // default value
 
   dispatch(setSpeciesDetailParams(id, cat, population));
+  dispatch(getSpeciesSeasons(id));
   done();
 }
 

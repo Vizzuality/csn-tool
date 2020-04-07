@@ -40,3 +40,27 @@ export function commonSetLayer(layer, value, setLayer) {
     dispatch(setLayer(layer, value));
   };
 }
+
+export function commonToggleClimateLayers(items, itemActive, toggleLayer) {
+  return dispatch => {
+    if (items.length > 0) {
+      dispatch(toggleLayer(itemActive.layer));
+      const season = itemActive.layer.split('_')[2];
+      items.filter(item =>
+        item.layer !== itemActive.layer
+        && item.active
+        && item.layer.split('_')[2] !== season
+      )
+        .forEach(item => dispatch(toggleLayer(item.layer)));
+      if (itemActive.layer.indexOf('climate_gains') === -1) {
+        items.filter(item =>
+          item.layer.indexOf('climate_gains') === -1
+          && item.layer !== itemActive.layer
+          && item.active
+          && item.layer.split('_')[2] === season
+        )
+          .forEach(item => dispatch(toggleLayer(item.layer)));
+      }
+    }
+  };
+}
