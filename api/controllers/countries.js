@@ -371,6 +371,41 @@ function getCountryLookAlikeSpecies(req, res) {
     });
 }
 
+function getTriggerSpeciesSuitability(req, res) {
+  const query = `SELECT t2a.populationname AS population_name,
+    t2a.species_c_254 AS species,
+    t2a.season, t2a.percentfly, t2a.current_suitability,
+    t2a.future_suitability, ROUND(CAST(change AS numeric), 2) AS change_suitability,
+    threshold,
+    CASE
+      WHEN season_ev_good_fair_poor_look_at = 'P'
+      THEN 'Poor'
+      WHEN season_ev_good_fair_poor_look_at = 'F'
+      THEN 'Fair'
+      WHEN season_ev_good_fair_poor_look_at = 'G'
+      THEN 'Good'
+      ELSE season_ev_good_fair_poor_look_at
+    END AS season_ev
+    FROM table2a AS t2a
+    WHERE t2a.iso3 = '${req.params.iso}'
+    ORDER BY t2a.species_c_254 ASC`;
+
+  runQuery(query)
+    .then((data) => {
+      const results = JSON.parse(data).rows || [];
+      if (results && results.length > 0) {
+        res.json(results);
+      } else {
+        res.status(404);
+        res.json({ error: 'No species suitability information' });
+      }
+    })
+    .catch((err) => {
+      res.status(err.statusCode || 500);
+      res.json({ error: err.message });
+    });
+}
+
 module.exports = {
   getCountries,
   getCountryDetails,
@@ -379,6 +414,7 @@ module.exports = {
   getCountrySpecies,
   getCountryPopulations,
   getCountryPopsWithLookAlikeCounts,
-  getCountryWithLookAlikeCounts,
-  getCountryLookAlikeSpecies
+  getCountryLookAlikeSpecies,
+  getTriggerSpeciesSuitability,
+  getCountryWithLookAlikeCounts
 };

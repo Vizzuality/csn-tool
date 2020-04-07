@@ -389,9 +389,19 @@ function getTriggerCriticalSitesSuitability(req, res) {
     });
 }
 
+function getSpeciesSeasons(req, res) {
+  const query = `SELECT DISTINCT season FROM table_1_species WHERE ssis = ${req.params.id}`;
+  runQuery(query)
+    .then((data) => {
+      const results = JSON.parse(data).rows || [];
+      res.json(results);
+    });
+}
+
 module.exports = {
   getSpeciesList,
   getSpeciesDetails,
+  getSpeciesSeasons,
   getSpeciesSites,
   getSpeciesCriticalSites,
   getSpeciesPopulation,

@@ -14,6 +14,7 @@ import {
   SET_SORT,
   SET_SPECIES_DETAIL_PARAMS,
   SET_SPECIES_PARAMS,
+  SET_SPECIES_SEASONS,
   TOGGLE_SPECIES_LAYER,
   TOGGLE_SPECIES_LEGEND_ITEM
 } from 'constants/action-types';
@@ -195,10 +196,32 @@ export function getTriggerCriticalSuitability(id) {
   };
 }
 
+export function getSpeciesSeasons(id) {
+  const url = `${config.apiHost}/species/${id}/seasons`;
+
+  return (dispatch) => {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        dispatch({
+          type: SET_SPECIES_SEASONS,
+          payload: data
+        });
+      });
+  };
+}
+
 export function setSpeciesTableSort(sort) {
   return {
     type: `${SET_SORT}_${TABLES.SPECIES}`,
     payload: sort
+  };
+}
+
+export function setSpeciesSeasons(seasons) {
+  return {
+    type: SET_SPECIES_SEASONS,
+    payload: seasons
   };
 }
 

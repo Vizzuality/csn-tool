@@ -3,7 +3,8 @@ import { setLanguage } from 'redux-i18n';
 import { setCountryParams } from 'actions/countries';
 import {
   setSpeciesParams,
-  setSpeciesDetailParams
+  setSpeciesDetailParams,
+  getSpeciesSeasons
 } from 'actions/species';
 import { setViewMode, setSiteParams } from 'actions/sites';
 import { setLocation } from 'actions/threshold';
@@ -58,11 +59,12 @@ export function updateSpeciesDetailPage(actualState, replace, done) {
   const id = actualState.params.id || '';
   const population = actualState.params.population;
   const category = actualState.params.cat === 'lookAlikeSpecies' && population
-          ? 'lookAlikeSpeciesPopulation'
-          : actualState.params.cat;
+    ? 'lookAlikeSpeciesPopulation'
+    : actualState.params.cat;
   const cat = category || 'sites'; // default value
 
   dispatch(setSpeciesDetailParams(id, cat, population));
+  dispatch(getSpeciesSeasons(id));
   done();
 }
 

@@ -7,6 +7,7 @@ import {
   GET_COUNTRIES_SIMILAR_SPECIES,
   GET_COUNTRIES_SITES,
   GET_COUNTRIES_SPECIES,
+  GET_COUNTRIES_TRIGGER_SUITABILITY,
   GET_COUNTRIES_STATS,
   SELECT_TABLE_ITEM,
   SET_COLUMN_FILTER,
@@ -240,6 +241,28 @@ export function getCountryLookAlikeSpeciesPopulation(iso, populationId) {
           type: GET_COUNTRIES_LOOK_ALIKE_SPECIES_POPULATION,
           payload: {
             populationId,
+            data
+          }
+        });
+        dispatch(setCountryPreload(category, false));
+      });
+  };
+}
+
+export function getCountryTriggerSuitability(iso) {
+  const url = `${config.apiHost}/countries/${iso}/trigger-suitability`;
+
+  return (dispatch, getState) => {
+    const category = getState().countries.selectedCategory;
+    dispatch(setCountryPreload(category, true));
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        dispatch({
+          type: GET_COUNTRIES_TRIGGER_SUITABILITY,
+          payload: {
+            iso,
             data
           }
         });

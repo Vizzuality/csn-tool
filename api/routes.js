@@ -14,6 +14,7 @@ router.route('/countries/:iso/sites').get(CountriesCtrl.getCountrySites);
 router.route('/countries/:iso/criticalSites').get(CountriesCtrl.getCountryCriticalSites);
 router.route('/countries/:iso/species').get(CountriesCtrl.getCountrySpecies);
 router.route('/countries/:iso/populations').get(CountriesCtrl.getCountryPopulations);
+router.route('/countries/:iso/trigger-suitability').get(CountriesCtrl.getTriggerSpeciesSuitability);
 router.route('/countries/:iso/look-alike-species').get(CountriesCtrl.getCountryPopsWithLookAlikeCounts);
 router.route('/countries/:iso/look-alike-species-allcount').get(CountriesCtrl.getCountryWithLookAlikeCounts);
 router.route('/countries/:iso/look-alike-species/:populationId').get(CountriesCtrl.getCountryLookAlikeSpecies);
@@ -29,6 +30,7 @@ router.route('/sites/csn/:id/vulnerability').get(SitesCtrl.getSitesVulnerability
 router.route('/species').get(SpeciesCtrl.getSpeciesList);
 router.route('/species/:id').get(SpeciesCtrl.getSpeciesDetails);
 router.route('/species/:id/sites').get(SpeciesCtrl.getSpeciesSites);
+router.route('/species/:id/seasons').get(SpeciesCtrl.getSpeciesSeasons);
 router.route('/species/:id/criticalSites').get(SpeciesCtrl.getSpeciesCriticalSites);
 router.route('/species/:id/population').get(SpeciesCtrl.getSpeciesPopulation);
 router.route('/species/:id/look-alike-species').get(SpeciesCtrl.getSpeciesLookAlikeSpecies);

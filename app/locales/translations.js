@@ -163,6 +163,7 @@ export const translations = {
     'current_suitability': 'Current suitability',
     'future_suitability': 'Future suitability',
     'change_suitability': 'Change suitability',
+    'triggerSuitability': 'Trigger Suitability',
     'vulnerability': 'Vulnerability of qualifying species',
     'threshold': 'Threshold',
     'season_ev': 'Evaluation of seasonal model',
