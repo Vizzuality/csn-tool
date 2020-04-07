@@ -339,6 +339,27 @@ export function getHydrologySections(layers) {
   });
 }
 
+export function getAewaSections(layers) {
+  const activeLayer = Object.keys(layers).filter(key => layers[key] && key === 'aewaExtent')[0];
+  return [
+    {
+      active: layers[activeLayer],
+      layer: 'aewaExtent',
+      name: 'AEWA Extent'
+    }
+  ];
+}
+
+export function getSitesSections(state) {
+  const legend = [];
+  const getLayers = state.layers || {};
+  legend.push(...getHydrologySections(getLayers));
+  if (getLayers.hasOwnProperty('aewaExtent') && state.selected === '') {
+    legend.push(...getAewaSections(getLayers));
+  }
+  return legend;
+}
+
 export function getLegendData(state, { populations, populationColors }) {
   let legend = [];
   const showSiteProtectionLevels = ['sites', 'criticalSites'].includes(state.selectedCategory);
@@ -351,6 +372,11 @@ export function getLegendData(state, { populations, populationColors }) {
 
   // if(showCLimateLay
   legend.push(getPopulationsLegendSection(populations, populationColors, state.layers.population));
+  legend.push(...getHydrologySections(state.layers));
+  // console.log(state.layers);
+  if (state.layers.hasOwnProperty('aewaExtent')) {
+    legend.push(...getAewaSections(state.layers));
+  }
   // legend.push(...getHydrologySections(state.layers));
 
   if (showClimateLayers) {

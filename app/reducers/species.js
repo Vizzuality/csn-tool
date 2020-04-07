@@ -62,7 +62,8 @@ const initialState = {
     freshwaterFlowPresent: false,
     freshwaterFlow2050: false,
     inundationPresent: false,
-    inundation2050: false
+    inundation2050: false,
+    aewaExtent: false
   },
   sort: {
     field: '',

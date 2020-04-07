@@ -5,9 +5,9 @@ import {
   MAP_MIN_ZOOM,
   MAP_CENTER
 } from 'constants/map';
+import { TopoJSON } from 'helpers/map';
 import CountriesLegend from 'containers/countries/CountriesLegend';
 import PopulationMap from 'components/maps/PopulationMap';
-import { TopoJSON } from 'helpers/map';
 
 const borders = {
   color: 'white',
@@ -35,9 +35,6 @@ const styles = {
 };
 
 class CountriesMap extends PopulationMap {
-  constructor(props) {
-    super(props);
-  }
 
   componentWillMount() {
     this.props.getGeoms();
@@ -93,6 +90,9 @@ class CountriesMap extends PopulationMap {
 
   componentDidUpdate(prevProps, prevState) {
     super.componentDidUpdate(prevProps, prevState);
+    // if (prevProps.layers.hasOwnProperty('aewaExtent') && prevProps.layers.aewaExtent !== this.props.layers.aewaExtent) {
+    //   this.setAewaLayer();
+    // }
     if (this.state.selectedBaseLayer !== prevState.selectedBaseLayer) {
       this.drawGeo(this.props.geoms, this.props.countries, this.props.searchFilter);
     }

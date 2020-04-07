@@ -34,3 +34,11 @@ export const toggleLayer = (state, action) => {
   layers[action.payload] = !layers[action.payload];
   return { ...state, layers };
 };
+
+export const setLayer = (state, action) => {
+  const layers = { ...state.layers };
+  if (action.payload.layer) {
+    layers[action.payload.layer] = action.payload.value;
+  }
+  return { ...state, layers };
+};

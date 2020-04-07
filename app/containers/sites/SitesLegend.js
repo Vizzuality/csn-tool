@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 
-import { getHydrologySections } from 'helpers/legend';
+import { getSitesSections } from 'helpers/legend';
 import { toggleLayer } from 'actions/sites';
 import { commonToggleLayer } from 'actions/common';
 import Legend from 'components/maps/Legend';
 
 const mapStateToProps = (state) => ({
-  sections: getHydrologySections(state.sites.layers)
+  sections: getSitesSections(state.sites, state.sites)
 });
 
 const mapDispatchToProps = (dispatch) => ({

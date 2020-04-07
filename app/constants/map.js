@@ -40,3 +40,16 @@ export const BOUNDARY_COLORS = [
   '#6a3d9a',
   '#ffff99'
 ];
+
+// aewa styles
+export const SELECTED_AEWA_STYLE = {
+  opacity: 0.5,
+  weight: 0,
+  dashArray: [1, 7],
+  lineCap: 'round',
+  color: 'white',
+  fill: true,
+  fillOpacity: 0.5,
+  fillColor: '#FCF0C5'
+};
+
