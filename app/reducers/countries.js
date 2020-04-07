@@ -7,7 +7,7 @@ import {
   GET_COUNTRIES_SIMILAR_SPECIES,
   GET_COUNTRIES_SITES,
   GET_COUNTRIES_SPECIES,
-  GET_COUNTRIES_TRIGGER_VULNERABILITY,
+  GET_COUNTRIES_TRIGGER_SUITABILITY,
   GET_COUNTRIES_STATS,
   SET_COUNTRY_PARAMS,
   SET_COUNTRY_PRELOAD,
@@ -40,7 +40,7 @@ const initialState = {
   criticalSites: {},
   species: {},
   populations: {},
-  triggerVulnerability: {},
+  triggerSuitability: {},
   lookAlikeSpecies: {},
   lookAlikeSpeciesPopulation: {},
   layers: {
@@ -123,10 +123,10 @@ const countriesReducer = (state = initialState, action) => {
       lookAlikeSpeciesPopulation[action.payload.populationId] = action.payload.data;
       return Object.assign({}, state, { lookAlikeSpeciesPopulation });
     }
-    case GET_COUNTRIES_TRIGGER_VULNERABILITY: {
-      const triggerVulnerability = Object.assign({}, state.triggerVulnerability, {});
-      triggerVulnerability[action.payload.iso] = action.payload.data;
-      return Object.assign({}, state, { triggerVulnerability });
+    case GET_COUNTRIES_TRIGGER_SUITABILITY: {
+      const triggerSuitability = Object.assign({}, state.triggerSuitability, {});
+      triggerSuitability[action.payload.iso] = action.payload.data;
+      return Object.assign({}, state, { triggerSuitability });
     }
     case TOGGLE_COUNTRIES_LAYER: return toggleLayer(state, action);
     case TOGGLE_COUNTRIES_LEGEND_ITEM: {

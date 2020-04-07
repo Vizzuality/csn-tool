@@ -8,7 +8,7 @@ import {
   getCountryCriticalSites,
   getCountrySpecies,
   getCountryPopulations,
-  getCountryTriggerVulnerability,
+  getCountryTriggerSuitability,
   getCountryLookAlikeSpecies,
   getCountryLookAlikeSpeciesCount,
   getCountryLookAlikeSpeciesPopulation,
@@ -53,8 +53,8 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(getCountryLookAlikeSpecies(country));
         dispatch(getCountryLookAlikeSpeciesPopulation(country, populationId));
         break;
-      case 'triggerVulnerability':
-        dispatch(getCountryTriggerVulnerability(country));
+      case 'triggerSuitability':
+        dispatch(getCountryTriggerSuitability(country));
         break;
       default:
         dispatch(getCountrySites(country));
