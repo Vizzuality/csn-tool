@@ -17,6 +17,7 @@ class ClimateMap extends PopulationMap {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    super.componentDidUpdate(prevProps, prevState);
     if (this.props.layers !== prevProps.layers) {
       this.updateClimateLayers();
     }
