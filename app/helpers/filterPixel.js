@@ -103,11 +103,11 @@ L.TileLayer.PixelFilter = L.TileLayer.extend({
                   output.data[pi+3] = 255;
                 }
             } else {
-              scaleColor = this.options.present === 'present' ? myScale(r).rgba() : myScale(g).rgba();
+              scaleColor = this.options.present === 'present' ? myScale(g).rgba() : myScale(r).rgba();
               output.data[pi  ] = scaleColor[0];
               output.data[pi+1] = scaleColor[1];
               output.data[pi+2] = scaleColor[2];
-              output.data[pi+3] = r === 0 ? 0 : 255;
+              output.data[pi+3] = (this.options.present === 'present' && r === 0) || (this.options.present === 'future' && g === 0) ? 0 : 255;
             }
         }
 
