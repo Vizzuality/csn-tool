@@ -82,32 +82,32 @@ L.TileLayer.PixelFilter = L.TileLayer.extend({
             // if the target RGBA is a null, then we push exactly the same RGBA as we found in the source pixel
             //
             // For this:
-            // R = present suitability;
-            // G = future suitability;
-            // B = ?
+            // R -> G (updated) = present suitability;
+            // G -> B (updated) = future suitability;
+            // B -> A (updated) = ?
             // A = ?
             // if suitability is zero, make pixel not show with A channel = 0
             // for first tests we are using the present suitability only
 
             if(['gains', 'losses'].indexOf(this.options.present) >= 0) {
-                if(r === 0 && g !== 0) {
+                if(g === 0 && b !== 0) {
                   output.data[pi  ] = 0;
                   output.data[pi+1] = 0;
                   output.data[pi+2] = 255;
                   output.data[pi+3] = 255;
-                }                
-                if(g === 0 && r !== 0) {
+                }
+                if(b === 0 && g !== 0) {
                   output.data[pi  ] = 255;
                   output.data[pi+1] = 0;
                   output.data[pi+2] = 0;
                   output.data[pi+3] = 255;
                 }
             } else {
-              scaleColor = this.options.present === 'present' ? myScale(g).rgba() : myScale(r).rgba();
+              scaleColor = this.options.present === 'present' ? myScale(g).rgba() : myScale(b).rgba();
               output.data[pi  ] = scaleColor[0];
               output.data[pi+1] = scaleColor[1];
               output.data[pi+2] = scaleColor[2];
-              output.data[pi+3] = (this.options.present === 'present' && r === 0) || (this.options.present === 'future' && g === 0) ? 0 : 255;
+              output.data[pi+3] = (this.options.present === 'present' && g === 0) || (this.options.present === 'future' && b === 0) ? 0 : 255;
             }
         }
 
