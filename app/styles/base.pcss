@@ -47,3 +47,12 @@ a {
   text-decoration: none;
 }
 
+body {
+  &.body-open {
+    overflow-y: hidden;
+    .ReactModal__Overlay {
+      z-index: 401;
+      background-color: rgba(0, 0, 0, 0.5) !important;
+    }
+  }
+}

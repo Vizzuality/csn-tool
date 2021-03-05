@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ModalPopup from '../common/Popup';
 
 // Filters only for columns a, b and c
 const PROTECTION_HIERARCHY_FILTER = 'abc';
@@ -127,11 +128,20 @@ class TableListHeader extends React.Component {
     this.filters = null;
     this.activeFilters = {};
     this.hasProducedFilters = false;
+    this.state = {
+      modalOpen: false,
+      modalTitle: '',
+      modalDescription: '',
+    };
 
     if (props.data && props.data.length > 0) {
       this.filters = getFilters(props.columns, props.data);
       this.hasProducedFilters = true;
     }
+  }
+
+  handlerPopup = () => {
+    this.setState({ modalOpen: !this.state.modalOpen });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -202,13 +212,43 @@ class TableListHeader extends React.Component {
   }
 
   renderHeaderColumn({ children, index, colWidth, extraClass, column, style }) {
+    const handlerPopup = () => {
+      if (typeof column === 'string') {
+        this.setState({
+          modalTitle: this.context.t(column),
+          modalDescription: this.context.t(`${column}_descr`),
+          modalOpen: !this.state.modalOpen,
+        });
+      } else {
+        this.setState({
+          modalTitle: this.context.t('AEWA Table 1 Column'),
+          modalDescription: this.context.t(`AEWA Table 1 Column`),
+          modalOpen: !this.state.modalOpen,
+        });
+      }
+    }
+
     return (
       <div
         key={index}
-        className={`text -title ${extraClass}`}
+        className={`text -title popup ${extraClass}`}
         style={{ width: `${colWidth}%`, ...style }}
         title={column && getTitle(column)}
+        onClick={handlerPopup}
       >
+        {typeof column === 'string' ? (
+          <span className="popup">
+            <div className="popup-content">
+                <h3 className="popup-content-title">
+                  {this.context.t(column)}
+                </h3>
+                <div className="popup-content-description">
+                  {this.context.t(`${column}_descr`)}
+                </div>
+            </div>
+          </span>
+          ) : null
+        }
         {children}
       </div>
     );
@@ -297,6 +337,12 @@ class TableListHeader extends React.Component {
 
     const header = (
       <li className="header">
+        <ModalPopup
+          onRequestClose={this.handlerPopup}
+          isOpen={this.state.modalOpen}
+          title={this.state.modalTitle}
+          description={this.state.modalDescription}
+        />
         {columnChunks.map((item, index) => {
           let columnInner = null;
           let thisColWidth = colWidth;
@@ -310,7 +356,22 @@ class TableListHeader extends React.Component {
             style.paddingRight = 0;
 
             columnInner = [
-              <div key={`${index}Overheader`} className="overheader">{item.title}</div>,
+              <div
+                key={`${index}Overheader`}
+                className="overheader"
+              >
+                <span className="popup">
+                  <div className="popup-content">
+                      <h3 className="popup-content-title">
+                        {item.title}
+                      </h3>
+                      <div className="popup-content-description">
+                        {this.context.t(`AEWA Table 1 Column`)}
+                      </div>
+                  </div>
+                </span>
+                {item.title}
+              </div>,
               <div key={`${index}OverheaderCols`}>{item.columns.map((col) =>
                 this.renderHeaderColumn({
                   children: this.renderHeaderColumnInner(col),
@@ -334,9 +395,9 @@ class TableListHeader extends React.Component {
             })
           );
         })
-      }
+        }
 
-      {this.props.detailLink &&
+        {this.props.detailLink &&
         <div className="text -title link" style={{ width: `${DETAIL_LINK_WIDTH_PERCENT}%` }}>
           <div className="dropdown">
             <div className="dropbtn">...</div>
@@ -361,7 +422,8 @@ class TableListHeader extends React.Component {
                             </svg>
                           </div>
                         </div>
-                      ); })
+                      );
+                    })
                     }
                   </div>
                 ))
@@ -369,7 +431,7 @@ class TableListHeader extends React.Component {
             </div>
           </div>
         </div>
-      }
+        }
       </li>
     );
 
@@ -383,7 +445,9 @@ TableListHeader.contextTypes = {
 };
 
 TableListHeader.defaultProps = {
-  includeSort: true
+  includeSort: true,
+  showPopup: false,
+  popupPosition: 'left'
 };
 
 TableListHeader.propTypes = {
@@ -396,7 +460,9 @@ TableListHeader.propTypes = {
   includeSort: PropTypes.bool,
   sort: PropTypes.object,
   sortBy: PropTypes.func.isRequired,
-  filterBy: PropTypes.func
+  filterBy: PropTypes.func,
+  showPopup: PropTypes.bool,
+  popupPosition: PropTypes.string
 };
 
 export default TableListHeader;

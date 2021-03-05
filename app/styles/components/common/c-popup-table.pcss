@@ -1,0 +1,97 @@
+.popup-container {
+  display: flex;
+  width: fit-content;
+  position: relative;
+  cursor: pointer;
+
+  div.popup-block.popup-text {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) !important;
+    background-color: #2a2823;
+    padding: 6px;
+    font-size: 14px;
+    color: white;
+    white-space: pre;
+    box-sizing: border-box;
+    width: fit-content;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity, visibility 0.5s;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 0;
+      height: 0;
+      border-top: 0.375rem solid transparent;
+      border-bottom: 0.375rem solid transparent;
+      border-right: 0.375rem solid #2a2823;
+      transform: translateY(-50%);
+    }
+
+    &.show {
+      opacity: 1;
+      z-index: 10;
+      visibility: visible;
+      transform: translateY(-50%) !important;
+    }
+
+    &.position-right {
+      left: 100%;
+    }
+
+    &.position-right.show {
+      left: calc(100% + 5px);
+    }
+
+    &.position-left {
+      right: 100%;
+    }
+
+    &.position-left::after {
+      right: -6px;
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    &.position-left.show {
+      right: calc(100% + 10px);
+    }
+
+    &.position-top {
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%) translateY(-100%) !important;
+    }
+
+    &.position-top.show {
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%) translateY(calc(-100% - 5px)) !important;
+    }
+
+    &.position-top::after {
+      top: initial;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-90deg);
+    }
+
+    &.position-bottom {
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%) translateY(100%) !important;
+    }
+
+    &.position-bottom::after {
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%) rotate(90deg);
+    }
+
+    &.position-bottom.show {
+      transform: translateX(-50%) translateY(calc(100%)) !important;
+    }
+  }
+}
