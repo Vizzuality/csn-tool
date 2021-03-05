@@ -23,7 +23,6 @@ class SpeciesTable extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     const { data, columns } = this.props;
     return (
       <div id="speciesTable">

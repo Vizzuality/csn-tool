@@ -124,6 +124,7 @@ class CountriesTable extends React.Component {
             onItemClick={this.handleTableItemClick}
             selectable={isExpanded}
             selectedItem={selectedTableItem}
+            isLookAlike={isLookAlikeSpecies}
           />
         }
         {isLookAlikeSpeciesPage && (
