@@ -9,7 +9,6 @@ class SpeciesTable extends React.Component {
 
   renderCommonTableHeader() {
     const { data, columns, allColumns } = this.props;
-
     return (
       <div>
         <SpeciesFilters data={data || []} columns={columns} />
@@ -24,6 +23,7 @@ class SpeciesTable extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     const { data, columns } = this.props;
     return (
       <div id="speciesTable">
