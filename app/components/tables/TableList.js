@@ -22,7 +22,26 @@ function detailLinkFrame(label, link) {
   );
 }
 
-function getDetailLink(t, detailLink, item) {
+function compareDetailLinkFrame(item, onClick, label, link) {
+  return (
+    <div className="link">
+      <div className="popup">
+        <div className="popup-content">Add to compare</div>
+        <div className="compare-button" onClick={() => onClick(item)}>
+          <svg className="icon -small">
+            <use xlinkHref="#icon-plus"></use>
+          </svg>
+        </div>
+      </div>
+      <div className="popup">
+        <div className="popup-content">{label}</div>
+        {link}
+      </div>
+    </div>
+  );
+}
+
+function getDetailLink(t, detailLink, item, isLookAlike, onClick) {
   if (!detailLink) return null;
 
   const linkText = detailLink.toLowerCase().indexOf('species') > -1 ?
@@ -33,11 +52,19 @@ function getDetailLink(t, detailLink, item) {
     speciesPopulation: `/species/${item.species_id}/lookAlikeSpecies/${item.pop_id_origin}`
   }[detailLink] || `/${detailLink}/${item.id}`;
 
-  return (
-    detailLinkFrame(linkText, (
-      <NavLink className="popup-link" to={link} icon="icon-table_arrow_right" parent />
+  if (isLookAlike && detailLink === 'species') {
+    return (
+      compareDetailLinkFrame(item, onClick, linkText, (
+        <NavLink className="popup-link" to={link} icon="icon-table_arrow_right" parent />
+      )
     ))
-  );
+  } else {
+    return (
+      detailLinkFrame(linkText, (
+        <NavLink className="popup-link" to={link} icon="icon-table_arrow_right" parent />
+      ))
+    )
+  }
 }
 
 function renderNoDataText(t, text) {
@@ -60,7 +87,7 @@ function TableList(props, context) {
   : <div id="table-rows" className="c-table-list">
     <ul>
       {props.data.map((item, index) => (
-        <li key={index} className={classNames('table-row', 'f32', { selectable: props.selectable, selected: props.selectedItem === item })} onClick={() => props.onItemClick(item)}>
+        <li key={index} className={classNames('table-row', 'f32', { selectable: props.selectable, selected: props.selectedItem === item })}>
           {props.columns.map((column, index2) => {
             let alignClass = '';
             if (columnsCenterAligned.indexOf(column) > -1) {
@@ -125,7 +152,7 @@ function TableList(props, context) {
             return (<div key={index2} className={`text ${column} ${alignClass}`} style={{ width: `${colWidth}%` }} dangerouslySetInnerHTML={{ __html: colVal }}></div>);
           })}
           {props.detailLink &&
-            getDetailLink(context.t, props.detailLink, item) ||
+            getDetailLink(context.t, props.detailLink, item, props.isLookAlike, props.onItemClick) ||
             <div className="link">
               <div className="popup">
               </div>

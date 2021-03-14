@@ -16,6 +16,13 @@
         border-bottom: rem(2) solid $border-color;
         align-items: flex-end;
 
+        &.popup {
+          cursor: pointer;
+          &:hover {
+            color: rgba(42, 40, 35, 0.6);
+          }
+        }
+
         .header-link {
           flex-basis: 24px;
         }
@@ -43,11 +50,15 @@
       }
 
       &.selectable {
-        cursor: pointer;
+        /* cursor: pointer; */
 
         &:hover {
           background-color: $table-bg-hover;
         }
+      }
+
+      &.selected .link .compare-button {
+        background-color: $table-bg-selected;
       }
 
       &.selected {
@@ -340,6 +351,18 @@
   white-space: nowrap;
 }
 
+.popup-content-title {
+  padding: 0;
+  margin: 0;
+  color: $white;
+  font-size: 16px;
+  text-align: left;
+}
+
+.popup-content-description {
+  font-size: 14px;
+}
+
 .link .popup-content {
   bottom: 2px;
   right: -3px;
@@ -362,4 +385,25 @@
 
 .link .popup .popup-link:hover {
   background-color: #f9f9f9;
+}
+
+.compare-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  background-color: rgba(255, 197, 0, 1);
+  transform: scale(1.2);
+  transition: all 0.3s ease-in-out;
+  padding: 0.375rem 0.375rem 0.375rem 0.5rem;
+  border-radius: 50%;
+  position: absolute;
+  right: 1.4rem;
+  top: -0.15rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f9f9f9;
+  }
 }

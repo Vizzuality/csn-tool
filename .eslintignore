@@ -1,2 +1,3 @@
 dist/**/*.js
 app/locales/translations.js
+app/**/**
